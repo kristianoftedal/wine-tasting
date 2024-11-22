@@ -153,7 +153,7 @@ const SelectedFlavors: React.FC<SelectedFlavorsProps> = ({ selectedFlavors, onFl
         <h6>{x[0]}</h6>
         <div className="beer-badge-group">
           {x[1]?.map((y) => (
-            <button key={y.flavor.name + y.category.name + y.category.name} className="chip" onClick={() => onFlavorClick(y.category, y.subcategory, y.flavor)}>
+            <button key={y.flavor.name + y.category.name + y.category.name} className="chip fill" onClick={() => onFlavorClick(y.category, y.subcategory, y.flavor)}>
               {y.flavor.icon} {y.flavor.name} ({y.subcategory.name})
             </button>
           ))}
