@@ -1,0 +1,439 @@
+ [
+    {
+      "name": "Fruit",
+      "description": "",
+      "subcategories": [
+        {
+          "description": "",
+          "name": "Citrus",
+          "flavors": [
+            {
+              "name": "Lemon",
+              "description": "Bright and tart, often associated with fresh acidity.",
+              "icon": "🍋"
+            },
+            {
+              "name": "Lemon Zest",
+              "description": "Sharp and aromatic, with a slightly bitter edge.",
+              "icon": "🍋"
+            },
+            {
+              "name": "Lime",
+              "description": "Fresh and tangy, with a slightly sweeter undertone than lemon.",
+              "icon": "🍈"
+            },
+            {
+              "name": "Lime Zest",
+              "description": "Crisp and aromatic, with a strong citrus aroma.",
+              "icon": "🍈"
+            },
+            {
+              "name": "Grapefruit",
+              "description": "Tart with a hint of bitterness, often juicy and refreshing.",
+              "icon": "🍊"
+            },
+            {
+              "name": "Ruby Red Grapefruit",
+              "description": "Sweeter and less tart than regular grapefruit.",
+              "icon": "🍊"
+            },
+            {
+              "name": "Orange",
+              "description": "Sweet and juicy, with a balanced acidity.",
+              "icon": "🍊"
+            },
+            {
+              "name": "Orange Zest",
+              "description": "Bitter and aromatic, often used to describe spiced or zesty wines.",
+              "icon": "🍊"
+            },
+            {
+              "name": "Tangerine",
+              "description": "Sweeter and softer than orange, with a floral aroma.",
+              "icon": "🍊"
+            },
+            {
+              "name": "Mandarin",
+              "description": "Delicately sweet, with a slightly perfumed citrus note.",
+              "icon": "🍊"
+            },
+            {
+              "name": "Yuzu",
+              "description": "Complex and tart, often with floral and herbal undertones.",
+              "icon": "🍋"
+            },
+            {
+              "name": "Kumquat",
+              "description": "Tangy and slightly bitter, with a unique sweetness in the peel.",
+              "icon": "🍊"
+            },
+            {
+              "name": "Bergamot",
+              "description": "Fragrant and floral, reminiscent of Earl Grey tea.",
+              "icon": "🍋"
+            }
+          ]
+        },
+        {
+          "name": "Red Fruits",
+          "description": "",
+          "flavors": [
+            {
+              "name": "Strawberry",
+              "description": "Sweet and juicy, with a hint of freshness.",
+              "icon": "🍓"
+            },
+            {
+              "name": "Raspberry",
+              "description": "Tart and tangy, with a rich fruity aroma.",
+              "icon": "🍇"
+            },
+            {
+              "name": "Cherry",
+              "description": "Juicy and sweet, with a slight tart edge.",
+              "icon": "🍒"
+            },
+            {
+              "name": "Cranberry",
+              "description": "Tart and bright, often with a sharp acidity.",
+              "icon": "🫐"
+            },
+            {
+              "name": "Red Currant",
+              "description": "Tart and zesty, with a refreshing juiciness.",
+              "icon": "🍒"
+            }
+          ]
+        },
+        {
+          "name": "Dark Fruits",
+          "description": "berries, stone fruit",
+          "flavors": [
+            {
+              "name": "Blackberry",
+              "description": "Dark and jammy, with a hint of tartness.",
+              "icon": "🍇"
+            },
+            {
+              "name": "Blueberry",
+              "description": "Sweet with a deep, rich berry flavor.",
+              "icon": "🫐"
+            },
+            {
+              "name": "Black Currant",
+              "description": "Deep and intense, with a tart and earthy profile.",
+              "icon": "🍇"
+            },
+            {
+              "name": "Plum",
+              "description": "Rich and sweet, with a soft texture and subtle tartness.",
+              "icon": "🍑"
+            },
+            {
+              "name": "Elderberry",
+              "description": "Dark and earthy, with a slightly bitter finish.",
+              "icon": "🍇"
+            }
+          ]
+        },
+        {
+          "name": "Stone Fruit",
+          "description": "apples, and other fruits with a hard seed",
+          "flavors": [
+            {
+              "name": "Peach",
+              "description": "Sweet and juicy, with a subtle floral aroma.",
+              "icon": "🍑"
+            },
+            {
+              "name": "Apricot",
+              "description": "Delicately sweet, with a slight tartness.",
+              "icon": "🍑"
+            },
+            {
+              "name": "Nectarine",
+              "description": "Sweet and smooth, with a bright aroma.",
+              "icon": "🍑"
+            },
+            {
+            "name": "Green Apple",
+            "description": "Crisp and tart, with a refreshing acidity.",
+            "icon": "🍏"
+            },
+            {
+            "name": "Golden Apple",
+            "description": "Sweet and mellow, with a softer, rounder profile than green apple.",
+            "icon": "🍎"
+            },
+            {
+            "name": "Red Apple",
+            "description": "Sweet and juicy, with a balanced, familiar flavor.",
+            "icon": "🍎"
+            },
+            {
+            "name": "Pear",
+            "description": "Delicate and sweet, with a soft, floral finish.",
+            "icon": "🍐"
+            },
+            {
+            "name": "Baked Apple",
+            "description": "Warm and spiced, reminiscent of cooked apples with cinnamon.",
+            "icon": "🍎"
+            },
+            {
+            "name": "Quince",
+            "description": "Tart and aromatic, with a unique floral and apple-like profile.",
+            "icon": "🍐"
+            }
+        ]
+        
+        },
+        {
+          "name": "Tropical",
+          "description": "pineapple, mango",
+          "flavors": [
+            {
+              "name": "Pineapple",
+              "description": "Sweet and tangy, with a sharp tropical aroma.",
+              "icon": "🍍"
+            },
+            {
+              "name": "Mango",
+              "description": "Rich and sweet, with a smooth tropical flavor.",
+              "icon": "🥭"
+            },
+            {
+              "name": "Papaya",
+              "description": "Sweet and creamy, with a mild tropical flavor.",
+              "icon": "🍈"
+            },
+            {
+              "name": "Banana",
+              "description": "Sweet and creamy, with a smooth, soft texture.",
+              "icon": "🍌"
+            }
+          ]
+        },
+        {
+          "name": "Dried Fruit",
+          "description": "raisin, fig, date, prune",
+          "flavors": [
+            {
+              "name": "Raisin",
+              "description": "Sweet and chewy, with a concentrated fruitiness.",
+              "icon": "🍇"
+            },
+            {
+              "name": "Fig",
+              "description": "Sweet and earthy, with a honeyed flavor.",
+              "icon": "🍈"
+            },
+            {
+              "name": "Date",
+              "description": "Rich and caramel-like, with a sweet, dense texture.",
+              "icon": "🍈"
+            },
+            {
+              "name": "Prune",
+              "description": "Sweet and slightly tart, with a deep, earthy flavor.",
+              "icon": "🍇"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Floral",
+      "description": "flowers, rose, jasmin",
+      "subcategories": [
+        {
+          "name": "Fresh",
+          "flavors": [
+            {
+              "name": "Rose",
+              "description": "Elegant and perfumed, with a soft floral sweetness.",
+              "icon": "🌹"
+            },
+            {
+              "name": "Jasmine",
+              "description": "Delicately sweet and intensely aromatic.",
+              "icon": "🌼"
+            },
+            {
+              "name": "Lavender",
+              "description": "Herbal and floral, with a slightly sweet aroma.",
+              "icon": "🌸"
+            },
+            {
+              "name": "Orange Blossom",
+              "description": "Bright and citrusy, with a sweet floral aroma.",
+              "icon": "🌼"
+            }
+          ]
+        },
+        {
+          "name": "Herbal",
+          "description": "mint, basil",
+          "flavors": [
+            {
+              "name": "Mint",
+              "description": "Cool and refreshing, with a sharp herbal aroma.",
+              "icon": "🌿"
+            },
+            {
+              "name": "Eucalyptus",
+              "description": "Cooling and aromatic, with a woody undertone.",
+              "icon": "🌱"
+            },
+            {
+              "name": "Basil",
+              "description": "Fresh and peppery, with a sweet herbal flavor.",
+              "icon": "🌿"
+            },
+            {
+              "name": "Sage",
+              "description": "Earthy and slightly peppery, with a woody aroma.",
+              "icon": "🌿"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Earthy",
+      "description": "mineral-like, wet stones",
+      "subcategories": [
+        {
+          "name": "Mineralic",
+          "description": "typical",
+          "flavors": [
+            {
+              "name": "Flint",
+              "description": "Sharp and stony, reminiscent of struck match or wet stones.",
+              "icon": "🪨"
+            },
+            {
+              "name": "Chalk",
+              "description": "Dry and powdery, evoking the aroma of crushed chalk.",
+              "icon": "🧱"
+            },
+            {
+              "name": "Slate",
+              "description": "Clean and mineral-like, often associated with wet stone aromas.",
+              "icon": "🪨"
+            },
+            {
+              "name": "Salinity",
+              "description": "A subtle saltiness, evoking sea spray or briny notes.",
+              "icon": "🌊"
+            }
+          ]
+        },
+        {
+          "name": "Reductive",
+          "description": "gunpowder, wet wool",
+          "flavors": [
+            {
+              "name": "Matchstick",
+              "description": "A sharp, sulfurous aroma reminiscent of struck matches.",
+              "icon": "🔥"
+            },
+            {
+              "name": "Gunpowder",
+              "description": "Smoky and sharp, reminiscent of spent fireworks.",
+              "icon": "💥"
+            },
+            {
+              "name": "Wet Wool",
+              "description": "Earthy and damp, with a unique textural aroma.",
+              "icon": "🧶"
+            },
+            {
+              "name": "Rubber",
+              "description": "Dark and smoky, with an industrial edge.",
+              "icon": "⚙️"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Winemaking",
+      "description": "from aging, tobacco, vanilla",
+      "subcategories": [
+        {
+          "name": "Aging",
+          "description": "vanilla, tobacco",
+          "flavors": [
+            {
+              "name": "Leather",
+              "description": "Earthy and rich, often found in aged red wines.",
+              "icon": "👜"
+            },
+            {
+              "name": "Tobacco",
+              "description": "Warm and smoky, reminiscent of dried leaves or cigars.",
+              "icon": "🚬"
+            },
+            {
+              "name": "Dried Fruit",
+              "description": "Sweet and concentrated, like raisins or figs.",
+              "icon": "🍇"
+            },
+            {
+              "name": "Earth",
+              "description": "Rich and damp, evocative of forest floor or soil.",
+              "icon": "🌱"
+            },
+            {
+              "name": "Mushroom",
+              "description": "Earthy and savory, often found in mature wines.",
+              "icon": "🍄"
+            },
+            {
+              "name": "Honey",
+              "description": "Sweet and floral, common in aged white wines.",
+              "icon": "🍯"
+            }
+          ]
+        },
+        {
+          "name": "Oak Aging",
+          "description": "vanilla",
+          "flavors": [
+            {
+              "name": "Vanilla",
+              "description": "Sweet and creamy, often a hallmark of oak aging.",
+              "icon": "🍦"
+            },
+            {
+              "name": "Coconut",
+              "description": "Rich and tropical, often associated with American oak.",
+              "icon": "🥥"
+            },
+            {
+              "name": "Spice",
+              "description": "Warm and aromatic, with hints of cinnamon or nutmeg.",
+              "icon": "🧂"
+            },
+            {
+              "name": "Smoke",
+              "description": "Smoky and toasty, imparted by charred oak barrels.",
+              "icon": "🔥"
+            },
+            {
+              "name": "Toast",
+              "description": "Warm and toasty, reminiscent of baked bread or caramelized crust.",
+              "icon": "🍞"
+            },
+            {
+              "name": "Caramel",
+              "description": "Sweet and buttery, with a rich depth.",
+              "icon": "🍬"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
