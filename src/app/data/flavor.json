@@ -1,6 +1,6 @@
  [
     {
-      "name": "Fruit",
+      "name": "Fruit 🍋🍊🍓🍎",
       "description": "Citrus, tree fruits, red berries, dark berries, stone fruit..",
       "subcategories": [
         {
@@ -243,7 +243,7 @@
       ]
     },
     {
-      "name": "Floral",
+      "name": "Floral 🌼🌹🌿",
       "description": "Flowers, rose, jasmine, lavender",
       "subcategories": [
         {
@@ -300,7 +300,7 @@
       ]
     },
     {
-      "name": "Earthy",
+      "name": "Earthy 🧱",
       "description": "Mineralic, reductive, flint, chalk",
       "subcategories": [
         {
@@ -358,7 +358,7 @@
       ]
     },
     {
-      "name": "Winemaking",
+      "name": "Winemaking 👜🚬",
       "description": "Leather, tobacco, vanilla",
       "subcategories": [
         {
@@ -398,7 +398,7 @@
           ]
         },
         {
-          "name": "Oak Aging",
+          "name": "Oak Aging ",
           "description": "vanilla",
           "flavors": [
             {
