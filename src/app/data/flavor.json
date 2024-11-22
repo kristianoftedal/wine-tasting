@@ -1,7 +1,7 @@
  [
     {
       "name": "Fruit",
-      "description": "A fruit is the seed-bearing structure in flowering plants that is formed from the ovary after flowering",
+      "description": "Citrus, tree fruits, red berries, dark berries, stone fruit..",
       "subcategories": [
         {
           "description": "A genus of flowering trees and shrubs in the family Rutaceae.",
@@ -76,7 +76,7 @@
         },
         {
           "name": "Red Fruits",
-          "description": "",
+          "description": "Strawberries, raspberries, red berries, garden berries",
           "flavors": [
             {
               "name": "Strawberry",
@@ -107,7 +107,7 @@
         },
         {
           "name": "Dark Fruits",
-          "description": "",
+          "description": "Blackberry, blue berry, plum",
           "flavors": [
             {
               "name": "Blackberry",
@@ -138,7 +138,7 @@
         },
         {
           "name": "Stone Fruit",
-          "description": " ",
+          "description": "Apples, pears, apricot..",
           "flavors": [
             {
               "name": "Peach",
@@ -190,7 +190,7 @@
         },
         {
           "name": "Tropical",
-          "description": " ",
+          "description": "Pineapple, mango...",
           "flavors": [
             {
               "name": "Pineapple",
@@ -216,7 +216,7 @@
         },
         {
           "name": "Dried Fruit",
-          "description": " ",
+          "description": "Raisin, fig, date..",
           "flavors": [
             {
               "name": "Raisin",
@@ -244,7 +244,7 @@
     },
     {
       "name": "Floral",
-      "description": " ",
+      "description": "Flowers, rose, jasmine, lavender",
       "subcategories": [
         {
           "name": "Fresh",
@@ -273,7 +273,7 @@
         },
         {
           "name": "Herbal",
-          "description": " ",
+          "description": "Mint, basil",
           "flavors": [
             {
               "name": "Mint",
@@ -301,7 +301,7 @@
     },
     {
       "name": "Earthy",
-      "description": "earthy",
+      "description": "Mineralic, reductive, flint, chalk",
       "subcategories": [
         {
           "name": "Mineralic",
@@ -359,7 +359,7 @@
     },
     {
       "name": "Winemaking",
-      "description": "Leather, tobacco",
+      "description": "Leather, tobacco, vanilla",
       "subcategories": [
         {
           "name": "Aging",
