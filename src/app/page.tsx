@@ -47,9 +47,7 @@ export default function Home() {
 
   return (
    <main className="responsive max">
-      <header className="beer-header">
-        <h1>🍷 Wine Flavor Selector</h1>
-      </header>
+      <h1>🍷 Wine Flavor Selector</h1>
       <SelectedFlavors selectedFlavors={selectedFlavors} onFlavorClick={handleFlavorClick} />
 
       {wineFlavorsData.map((categoryItem) => (
@@ -110,7 +108,7 @@ const Accordion: React.FC<AccordionProps> = ({ category, subcategories, selected
               </summary>
               <div className="grid large-space">
                 {subcategory.flavors.map((flavor: Flavor) => (
-                  <article className="s12 m6 l3 round" key={flavor.name}>
+                  <article className="10 m6 m2 round" key={flavor.name}>
                     <div className="row">
                       <div className="max">
                         <h5>{flavor.name} {flavor.icon}</h5>
