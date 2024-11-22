@@ -1,10 +1,10 @@
  [
     {
       "name": "Fruit",
-      "description": "",
+      "description": "A fruit is the seed-bearing structure in flowering plants that is formed from the ovary after flowering",
       "subcategories": [
         {
-          "description": "",
+          "description": "A genus of flowering trees and shrubs in the family Rutaceae.",
           "name": "Citrus",
           "flavors": [
             {
