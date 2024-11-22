@@ -108,7 +108,7 @@ const Accordion: React.FC<AccordionProps> = ({ category, subcategories, selected
               </summary>
               <div className="grid large-space">
                 {subcategory.flavors.map((flavor: Flavor) => (
-                  <article className="10 m6 m2 round" key={flavor.name}>
+                  <article className="s10 m6 m2 round" key={flavor.name}>
                     <div className="row">
                       <div className="max">
                         <h5>{flavor.name} {flavor.icon}</h5>
