@@ -18,21 +18,42 @@ type Step = {
 export default function Tasting() {
   const params = useParams<{ id: string }>();
   const wine = winesData.find((x: Wine) => x.code === params.id);
-  const [selectedFlavors, setSelectedFlavors] = useState<SelectedFlavor[]>([]);
+
   const [index, setIndex] = useState<number>(0);
+  const [steps] = useState<Step[]>([
+    { title: 'Se' },
+    { title: 'Aroma' },
+    { title: 'Smak' },
+    { title: 'Egenskaper' },
+    { title: 'Oppsummering' }
+  ]);
+
+  const [selectedFlavorsLukt, setSelectedFlavorsLukt] = useState<SelectedFlavor[]>([]);
+  const [selectedFlavorsSmak, setSelectedFlavorsSmak] = useState<SelectedFlavor[]>([]);
+
+  const [farge, setFarge] = useState<string>('');
+  const [lukt, setLukt] = useState<string>('');
+  const [smak, setSmak] = useState<string>('');
 
   const [friskhet, setFriskhet] = useState<number>(0);
-
   const [fylde, setFylde] = useState<number>(0);
-
   const [sødme, setSødme] = useState<number>(0);
-
   const [karakter, setKarakter] = useState<number>(0);
+  const [egenskaper, setKommentarEgenskaper] = useState<string>('');
 
-  const [steps] = useState<Step[]>([{ title: 'Se' }, { title: 'Aroma' }, { title: 'Smak' }, { title: 'Egenskaper' }]);
+  const [showWine, setShowWine] = useState<boolean>(false);
 
-  const handleFlavorClick = (category: Category, subcategory: Subcategory, flavor: Flavor) => {
-    setSelectedFlavors(prev => {
+  const handleFlavorLuktClick = (category: Category, subcategory: Subcategory, flavor: Flavor) => {
+    setSelectedFlavorsLukt(prev => {
+      const categoryFlavors = prev.length === 0 ? [] : prev;
+      const updatedFlavors = categoryFlavors.some(x => x.flavor.name == flavor.name)
+        ? categoryFlavors.filter(x => x.flavor.name !== flavor.name)
+        : [...categoryFlavors, { category, subcategory, flavor }];
+      return updatedFlavors;
+    });
+  };
+  const handleFlavorSmakClick = (category: Category, subcategory: Subcategory, flavor: Flavor) => {
+    setSelectedFlavorsSmak(prev => {
       const categoryFlavors = prev.length === 0 ? [] : prev;
       const updatedFlavors = categoryFlavors.some(x => x.flavor.name == flavor.name)
         ? categoryFlavors.filter(x => x.flavor.name !== flavor.name)
@@ -67,7 +88,7 @@ export default function Tasting() {
         </nav>
       </header>
       <main
-        className="responsive max"
+        className="responsive"
         key={'unique'}>
         {index === 0 && (
           <article>
@@ -86,7 +107,11 @@ export default function Tasting() {
                 <p>Årgang: {wine.year}</p>
                 <p>Nr: {index + 1}</p>
                 <div className="field border">
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={farge}
+                    onChange={event => setFarge(event.target.value)}
+                  />
                   <span className="helper">Farge</span>
                 </div>
               </div>
@@ -101,15 +126,21 @@ export default function Tasting() {
                   key={categoryItem.name}
                   category={categoryItem}
                   subcategories={categoryItem.subcategories}
-                  onFlavorClick={handleFlavorClick}
+                  onFlavorClick={handleFlavorLuktClick}
                 />
               </div>
             ))}
 
             <SelectedFlavors
-              selectedFlavors={selectedFlavors}
-              onFlavorClick={handleFlavorClick}
+              selectedFlavors={selectedFlavorsLukt}
+              onFlavorClick={handleFlavorLuktClick}
             />
+            <div className="field textarea border">
+              <textarea
+                value={lukt}
+                onChange={value => setLukt(value.target.value)}></textarea>
+              <span className="helper">Kommentar</span>
+            </div>
           </div>
         )}
         {index === 2 && (
@@ -120,15 +151,21 @@ export default function Tasting() {
                   key={categoryItem.name}
                   category={categoryItem}
                   subcategories={categoryItem.subcategories}
-                  onFlavorClick={handleFlavorClick}
+                  onFlavorClick={handleFlavorSmakClick}
                 />
               </div>
             ))}
 
             <SelectedFlavors
-              selectedFlavors={selectedFlavors}
-              onFlavorClick={handleFlavorClick}
+              selectedFlavors={selectedFlavorsSmak}
+              onFlavorClick={handleFlavorSmakClick}
             />
+            <div className="field textarea border">
+              <textarea
+                value={smak}
+                onChange={event => setSmak(event.target.value)}></textarea>
+              <span className="helper">Kommentar</span>
+            </div>
           </div>
         )}
         {index === 3 && (
@@ -141,11 +178,13 @@ export default function Tasting() {
               </div>
               <div className="row">
                 <p>1</p>
-                <label className="slider">
+                <label className="max">
                   <input
+                    style={{ width: '100%' }}
                     type="range"
                     min="1"
                     max="12"
+                    value={friskhet}
                     onChange={value => setFriskhet(parseInt(value.target.value))}
                   />
                   <span></span>
@@ -168,11 +207,13 @@ export default function Tasting() {
               </div>
               <div className="row">
                 <p>1</p>
-                <label className="slider">
+                <label className="max">
                   <input
+                    style={{ width: '100%' }}
                     type="range"
                     min="1"
                     max="12"
+                    value={fylde}
                     onChange={value => setFylde(parseInt(value.target.value))}
                   />
                   <span></span>
@@ -195,11 +236,13 @@ export default function Tasting() {
               </div>
               <div className="row">
                 <p>1</p>
-                <label className="slider">
+                <label className="max">
                   <input
+                    style={{ width: '100%' }}
                     type="range"
                     min="1"
                     max="12"
+                    value={sødme}
                     onChange={value => setSødme(parseInt(value.target.value))}
                   />
                   <span></span>
@@ -222,11 +265,13 @@ export default function Tasting() {
               </div>
               <div className="row">
                 <p>1</p>
-                <label className="slider">
+                <label className="max">
                   <input
+                    style={{ width: '100%' }}
                     type="range"
                     min="1"
                     max="6"
+                    value={karakter}
                     onChange={value => setKarakter(parseInt(value.target.value))}
                   />
                   <span></span>
@@ -240,7 +285,58 @@ export default function Tasting() {
               </div>
               <hr />
             </div>
+            <div className="l12 s12">
+              <div className="field textarea border">
+                <textarea
+                  value={egenskaper}
+                  onChange={event => setKommentarEgenskaper(event.target.value)}></textarea>
+                <span className="helper">Kommentar</span>
+              </div>
+            </div>
           </div>
+        )}
+        {index === 4 && (
+          <article>
+            <div className="row">
+              <div className="max">
+                <p>Farge: {farge}</p>
+                <p>Lukt: {lukt}</p>
+                <p>{selectedFlavorsLukt.map(x => x.flavor).join(', ')}</p>
+                <hr />
+                <p>Smak: {smak}</p>
+                <p>{selectedFlavorsSmak.map(x => x.flavor).join(', ')}</p>
+                <hr />
+                <p>Friskhet: {friskhet}</p>
+                <p>Fylde: {fylde}</p>
+                <p>Sødme: {sødme}</p>
+                <p>Karakter: {karakter}</p>
+                <p>Kommentar: {egenskaper}</p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="max">
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    onChange={() => setShowWine(!showWine)}
+                  />
+                  <span style={{ paddingLeft: '8px' }}> Sammenlign</span>
+                </label>
+              </div>
+            </div>
+            {showWine && (
+              <div className="row">
+                <div className="max">
+                  <p>Farge: {wine.color}</p>
+                  <p>Lukt: {wine.smell}</p>
+                  <p>Smak: {wine.taste}</p>
+                  {wine.content.characteristics.map(x => (
+                    <p key={x.name}>{x.readableValue}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+          </article>
         )}
       </main>
       <footer>
