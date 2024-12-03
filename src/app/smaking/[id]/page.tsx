@@ -304,10 +304,10 @@ export default function Tasting() {
               <div className="max">
                 <p>Farge: {farge}</p>
                 <p>Lukt: {lukt}</p>
-                <p>{selectedFlavorsLukt.map(x => x.flavor).join(', ')}</p>
+                <p>{selectedFlavorsLukt.map(x => x.flavor.name).join(', ')}</p>
                 <hr />
                 <p>Smak: {smak}</p>
-                <p>{selectedFlavorsSmak.map(x => x.flavor).join(', ')}</p>
+                <p>{selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}</p>
                 <hr />
                 <p>Friskhet: {friskhet}</p>
                 <p>Fylde: {fylde}</p>
