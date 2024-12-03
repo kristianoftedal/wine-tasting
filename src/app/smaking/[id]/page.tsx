@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Accordion } from '@/app/components/flavorAccordion';
@@ -16,6 +16,7 @@ type Step = {
 };
 
 export default function Tasting() {
+  const router = useRouter();
   const params = useParams<{ id: string }>();
   const wine = winesData.find((x: Wine) => x.code === params.id);
 
@@ -71,7 +72,7 @@ export default function Tasting() {
           <p>Click the button to start a conversation</p>
           <div className="space"></div>
           <nav className="center-align">
-            <button>Tilbake</button>
+            <button onClick={() => router.push('/')}>Tilbake</button>
           </nav>
         </div>
       </article>
@@ -81,7 +82,9 @@ export default function Tasting() {
     <>
       <header className="primary-container">
         <nav>
-          <button className="circle transparent">
+          <button
+            className="circle transparent"
+            onClick={() => router.push('/')}>
             <i>arrow_back</i>
           </button>
           <h5 className="max">{wine.name}</h5>
