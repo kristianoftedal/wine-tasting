@@ -33,8 +33,14 @@ type SelectedFlavor = {
   flavor: Flavor
 }
 
+type Step = {
+  title: string
+}
+
 export default function Home() {
     const [selectedFlavors, setSelectedFlavors] = useState<SelectedFlavor[]>([]);
+    const [index, setIndex] = useState<number>(0);
+    const [steps] = useState<Step[]>([{title: 'Aroma' }, {title: 'Smak'}]);
 
   const handleFlavorClick = (category: Category, subcategory: Subcategory, flavor: Flavor) => {
     setSelectedFlavors((prev) => {
@@ -54,30 +60,44 @@ export default function Home() {
     <button className="circle transparent">
       <i>arrow_back</i>
     </button>
-    <h5 className="max">Vinklubb</h5>
-    <button className="circle transparent">
-      <i>attach_file</i>
-    </button>
-    <button className="circle transparent">
-      <i>today</i>
-    </button>
-    <button className="circle transparent">
-      <i>more_vert</i>
-    </button>
+    <h5 className="max">{steps[index].title}</h5>
   </nav>
 </header>
-   <main className="responsive max">
-      <SelectedFlavors selectedFlavors={selectedFlavors} onFlavorClick={handleFlavorClick} />
-
-      {wineFlavorsData.map((categoryItem) => (
-        <Accordion
-          key={categoryItem.name}
-          category={categoryItem}
-          subcategories={categoryItem.subcategories}
-          onFlavorClick={handleFlavorClick}
-        />
+   <main className="responsive max" key={"unique"}>      
+      {index === 0 && wineFlavorsData.map((categoryItem) => (
+        <div key={categoryItem.name}>
+          <Accordion
+            key={categoryItem.name}
+            category={categoryItem}
+            subcategories={categoryItem.subcategories}
+            onFlavorClick={handleFlavorClick}
+          />
+          <SelectedFlavors selectedFlavors={selectedFlavors} onFlavorClick={handleFlavorClick} />
+        </div>
+      ))}
+      {index === 1 && wineFlavorsData.map((categoryItem) => (
+        <div key={categoryItem.name}>
+          <Accordion
+            key={categoryItem.name}
+            category={categoryItem}
+            subcategories={categoryItem.subcategories}
+            onFlavorClick={handleFlavorClick}
+          />
+          <SelectedFlavors selectedFlavors={selectedFlavors} onFlavorClick={handleFlavorClick} />
+        </div>
       ))}
     </main>
+    <footer>
+  <nav>
+    <button className="circle transparent" onClick={() => setIndex(index > 0 ? index - 1 : 0)}>
+      <i>arrow_back</i>
+    </button>
+      <div className="max"></div>
+    <button className="circle transparent" onClick={() => setIndex(index + 1 < steps.length ? index + 1 : index)}>
+      <i>arrow_forward</i>
+    </button>
+  </nav>
+</footer>
     </>
   );
 };
@@ -96,7 +116,7 @@ const Accordion: React.FC<AccordionProps> = ({ category, subcategories, onFlavor
 
   return (
     <>
-    <details style={{ border: '1px solid' + category.backgroundColor}}>
+    <details style={{ border: '1px solid ' + category.backgroundColor}}>
       <summary
       className="padding"
         onClick={() => setIsOpen(!isOpen)}
@@ -107,29 +127,29 @@ const Accordion: React.FC<AccordionProps> = ({ category, subcategories, onFlavor
       </summary>
       {isOpen && (
         <div className="" key={category.name} style={{ marginLeft: '16px'}}>
-          {subcategories.map((subcategory: Subcategory) => (
-            <>
-              <details key={subcategory.name} className="padding">
+          {subcategories.map((subcategory: Subcategory, index: number) => (
+            <div key={subcategory.name + (index * 0.4243)}>
+              <details  className="padding">
                 <summary className="padding">
                     {subcategory.name}   |
                     <label>  {subcategory.description}</label>
                 </summary>
                 <div style={{marginLeft: "16px"}}>
                   {subcategory.flavors.map((flavor: Flavor) => (
-                    <>
-                    <div className="row padding" key={flavor.name}>
-                    <label className="checkbox" key={flavor.name}>
+                    <div key={flavor.name}>
+                    <div className="row padding">
+                    <label className="checkbox">
                       <input type="checkbox" onClick={() => onFlavorClick(category, subcategory, flavor)} />
                       <span>{flavor.name} {flavor.icon}</span>
                     </label>
                     </div>
                     <hr />
-                    </>
+                    </div>
                   ))}
                 </div>
               </details>
             <hr />
-            </>
+            </div>
           ))}
         </div>
       )}
@@ -171,4 +191,3 @@ const SelectedFlavors: React.FC<SelectedFlavorsProps> = ({ selectedFlavors, onFl
   </div>
 );
 }
-
