@@ -54,7 +54,7 @@ export default function Home() {
           <button className="circle transparent">
             <i>arrow_back</i>
           </button>
-          <h5 className="max">Title</h5>
+          <h5 className="max">vinklubb</h5>
           <button className="circle transparent">
             <i>attach_file</i>
           </button>
@@ -109,22 +109,25 @@ const Accordion: React.FC<AccordionProps> = ({ category, subcategories, onFlavor
         <div className="" key={category.name} style={{ marginLeft: '16px'}}>
           {subcategories.map((subcategory: Subcategory) => (
             <>
-            <details key={subcategory.name} className="padding">
-              <summary>
-                  {subcategory.name}   |
-                  <label>  {subcategory.description}</label>
-              </summary>
-              <div style={{marginLeft: "16px"}}>
-                {subcategory.flavors.map((flavor: Flavor) => (
-                  <div className="row padding surface-container" key={flavor.name}>
-                  <label className="checkbox" key={flavor.name}>
-                    <input type="checkbox" onClick={() => onFlavorClick(category, subcategory, flavor)} />
-                    <span>{flavor.name} {flavor.icon}</span>
-                  </label>
-                  </div>
-                ))}
-              </div>
-            </details>
+              <details key={subcategory.name} className="padding">
+                <summary className="padding">
+                    {subcategory.name}   |
+                    <label>  {subcategory.description}</label>
+                </summary>
+                <div style={{marginLeft: "16px"}}>
+                  {subcategory.flavors.map((flavor: Flavor) => (
+                    <>
+                    <div className="row padding" key={flavor.name}>
+                    <label className="checkbox" key={flavor.name}>
+                      <input type="checkbox" onClick={() => onFlavorClick(category, subcategory, flavor)} />
+                      <span>{flavor.name} {flavor.icon}</span>
+                    </label>
+                    </div>
+                    <hr />
+                    </>
+                  ))}
+                </div>
+              </details>
             <hr />
             </>
           ))}
