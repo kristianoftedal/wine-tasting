@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import wineFlavorsData from './data/flavor.json'
+import wineFlavorsData from '../data/flavor.json'
 
 // Define the Flavor type as a type alias
 type Flavor = {
@@ -64,7 +64,9 @@ export default function Home() {
   </nav>
 </header>
    <main className="responsive max" key={"unique"}>      
-      {index === 0 && wineFlavorsData.map((categoryItem) => (
+      {index === 0 && (
+        <div>
+        {wineFlavorsData.map((categoryItem) => (
         <div key={categoryItem.name}>
           <Accordion
             key={categoryItem.name}
@@ -72,10 +74,14 @@ export default function Home() {
             subcategories={categoryItem.subcategories}
             onFlavorClick={handleFlavorClick}
           />
+        </div>))}
+        
           <SelectedFlavors selectedFlavors={selectedFlavors} onFlavorClick={handleFlavorClick} />
         </div>
-      ))}
-      {index === 1 && wineFlavorsData.map((categoryItem) => (
+      )}
+      {index === 1 && (
+        <div>
+        {wineFlavorsData.map((categoryItem) => (
         <div key={categoryItem.name}>
           <Accordion
             key={categoryItem.name}
@@ -83,9 +89,11 @@ export default function Home() {
             subcategories={categoryItem.subcategories}
             onFlavorClick={handleFlavorClick}
           />
+        </div>))}
+        
           <SelectedFlavors selectedFlavors={selectedFlavors} onFlavorClick={handleFlavorClick} />
         </div>
-      ))}
+      )}
     </main>
     <footer>
   <nav>
@@ -191,3 +199,4 @@ const SelectedFlavors: React.FC<SelectedFlavorsProps> = ({ selectedFlavors, onFl
   </div>
 );
 }
+
