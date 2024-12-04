@@ -1,6 +1,5 @@
 import { Category, Flavor, Subcategory } from '../models/flavorModel';
 
-// Accordion Component to render Category and Subcategories
 type AccordionProps = {
   category: Category;
   subcategories: Subcategory[];
