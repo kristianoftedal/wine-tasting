@@ -6,7 +6,7 @@ import { SelectedFlavors } from '@/app/components/selectedFlavours';
 import { Category, Flavor, SelectedFlavor, Subcategory } from '@/app/models/flavorModel';
 import wineFlavorsData from '../data/flavor.json';
 import { Wine } from '../models/productModel';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 type Step = {
   title: string;
@@ -19,7 +19,7 @@ type TastingWizardProps = {
 
 export const TastingWizard: React.FC<TastingWizardProps> = ({ wine }) => {
 
-  const router = useRouter()
+  const router = useRouter();
 
   const [index, setIndex] = useState<number>(0);
   const [steps] = useState<Step[]>([
