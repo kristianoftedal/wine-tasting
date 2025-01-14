@@ -1,22 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Accordion } from '@/app/components/flavorAccordion';
 import { SelectedFlavors } from '@/app/components/selectedFlavours';
 import { Category, Flavor, SelectedFlavor, Subcategory } from '@/app/models/flavorModel';
-import { Wine } from '@/app/models/productModel';
-import Image from 'next/image';
 import wineFlavorsData from '../data/flavor.json';
+import { Wine } from '../models/productModel';
+import { useRouter } from 'next/router';
 
 type Step = {
   title: string;
 };
 
-interface TastingProps {
+type TastingWizardProps = {
   wine: Wine;
 }
 
-export default function TastingWizard({ wine }) {
+
+export const TastingWizard: React.FC<TastingWizardProps> = ({ wine }) => {
+
+  const router = useRouter()
 
   const [index, setIndex] = useState<number>(0);
   const [steps] = useState<Step[]>([
@@ -358,19 +361,3 @@ export default function TastingWizard({ wine }) {
   );
 }
 
-export const getWine = async (id) => {
-  try {
-      const client = await clientPromise;
-      const db = client.db("Wines");
-      const wine = await db
-      .collection("WinesDetailed")
-        .find({
-          code: id
-      })
-        .limit(1);
-    return JSON.parse(JSON.stringify(wine));
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-};

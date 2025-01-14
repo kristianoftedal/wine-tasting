@@ -1,23 +1,22 @@
 "use client"
-import { Category, Flavor, Subcategory } from '../models/flavorModel';
-import { searchModel } from '../models/searchModel';
 import keyValues from '../data/wines-key-value.json';
 import { useState } from 'react';
+import { searchModel } from '../models/searchModel';
 
 type SearchProperties = {
-  onWineSelected: (wine: searchModel) => searchModel;
-};
+  onWineSelected: (wine: searchModel) => void;
+}
 
-export const Search: React.FC<AccordionProps> = ({ onWineSelected }) => {
+export const Search: React.FC<SearchProperties> = ({ onWineSelected }) => {
 
-  const [wines, setWines] = useState([]);
-  const handleChange = (e) => {
-    if (e.target.value.length < 3) return;
+  const [wines, setWines] = useState(new Array<searchModel>());
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e?.target.value.length < 3) return;
     const results = keyValues.filter(x => x.productShortName.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase()));
     setWines(results);
   }
 
-  const handleSelected = (wine) => {
+  const handleSelected = (wine: searchModel) => {
     setWines([]);
     onWineSelected(wine)
   }
