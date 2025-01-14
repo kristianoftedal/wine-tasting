@@ -95,8 +95,8 @@ export default function TastingWizard({ wine }) {
           <article>
             <div className="row">
               <div className="max">
-                <p>Druer: {wine.content?.ingredients?.map(x => x.formattedValue).join(', ')}</p>
-                <p>Land: {wine.main_country?.name}</p>
+                <p>Druer: {wine.content.ingredients?.map(x => x.formattedValue).join(', ')}</p>
+                <p>Land: {wine.mainCountry.name}</p>
                 <p>Område: {wine.district.name}</p>
                 <p>Årgang: {wine.year}</p>
                 <p>Nr: {index + 1}</p>
