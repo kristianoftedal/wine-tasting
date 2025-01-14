@@ -5,7 +5,7 @@ import { searchModel } from './models/searchModel';
 import { useState } from 'react';
 
 export default function Index() {
-  const [wines, setWines] = useState([]);
+  const [wines, setWines] = useState(new Array<searchModel>());
 
   const onSelected = (wine: searchModel) => {
     setWines([...wines, wine]);

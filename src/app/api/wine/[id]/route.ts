@@ -1,5 +1,3 @@
-
-import { Wine } from "@/app/models/productModel";
 import clientPromise from "../../../../lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -20,13 +18,13 @@ export async function GET(
     const wine = await winesCollection.findOne({ code: id });
 
     if (!wine) {
-      return NextResponse.json(wine).status(404).json({ message: 'Wine not found' });
+      return NextResponse.json({ message: 'Wine not found' });
     }
 
     // Return the found wine document
     return NextResponse.json(wine);
   } catch (error) {
     console.error('Error fetching wine:', error);
-    return NextResponse.status(500).json({ message: 'Server error' });
+    return NextResponse.json({ message: 'Server error' });
   }
 }
