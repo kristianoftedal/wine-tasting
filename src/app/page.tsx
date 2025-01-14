@@ -1,6 +1,15 @@
+"use client"
 import Link from 'next/link';
+import { Search } from './components/search';
+import { searchModel } from './models/searchModel';
+import { useState } from 'react';
 
 export default function Index() {
+  const [wines, setWines] = useState([]);
+
+  const onSelected = (wine: searchModel) => {
+    setWines([...wines, wine]);
+  }
   return (
     <>
       <nav className="bottom">
@@ -18,22 +27,17 @@ export default function Index() {
         </a>
       </nav>
       <main className="responsive">
-        <h3>Vinklubb</h3>
-        <article>
-          <h5>Chardonnay smaking</h5>
-          <p>Kveldens viner er som følger</p>
+        <h3>Smak på vin</h3>
+        <Search onWineSelected={onSelected} />
+        {wines.map(x => (
           <Link
-            href="/smaking/13769701"
+            key={x.productId}
+            href={`/smaking/${x.productId}`}
             className="row wave">
-            Maison Romane Hautes-Cotes de Nuits 2019
+            {x.productShortName}
           </Link>
-          <hr />
-          <Link
-            href="/smaking/8153901"
-            className="row wave">
-            Rolet Arbois Chardonnay 2022
-          </Link>
-        </article>
+
+        ))}
       </main>
     </>
   );
