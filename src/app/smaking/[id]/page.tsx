@@ -17,3 +17,10 @@ const getWine = async (id: string) => {
   const model = data;
   return model;
 };
+
+const getBaseUrl = () => {
+  if (process.env.NODE_ENV ===  "production") {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  }
+  return 'http://localhost:3000';
+};
