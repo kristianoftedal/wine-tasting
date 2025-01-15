@@ -12,7 +12,7 @@ export default async function Tasting(
 }
 
 const getWine = async (id: string) => {
-  const res = await fetch(`${process.env.API_URL}/api/wine/${id}`);
+  const res = await fetch(`${getBaseUrl()}/api/wine/${id}`);
   const data = await res.json();
   const model = data;
   return model;
