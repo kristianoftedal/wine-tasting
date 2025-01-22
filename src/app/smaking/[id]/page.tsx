@@ -13,7 +13,6 @@ export default async function Tasting(
 }
 
 const getWine = async (id: string) => {
-  console.log(id);
   try {
     const client = clientPromise;
     await client.connect();

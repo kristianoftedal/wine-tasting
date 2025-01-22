@@ -20,7 +20,7 @@ export async function GET(
     if (!wine) {
       return NextResponse.json({ message: 'Wine not found' });
     }
-
+    await client.dis
     // Return the found wine document
     return NextResponse.json(wine);
   } catch (error) {
