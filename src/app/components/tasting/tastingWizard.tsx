@@ -4,25 +4,17 @@ import React, { useState } from 'react';
 import { Accordion } from '@/app/components/flavorAccordion';
 import { SelectedFlavors } from '@/app/components/selectedFlavours';
 import { Category, Flavor, SelectedFlavor, Subcategory } from '@/app/models/flavorModel';
-import wineFlavorsData from '../data/flavor.json';
-import { Wine } from '../models/productModel';
+import wineFlavorsData from '../../data/flavor.json';
 import { useRouter } from 'next/navigation';
-
-type Step = {
-  title: string;
-};
-
-type TastingWizardProps = {
-  wine: Wine;
-}
+import { TastingProps, WizardStep } from './props';
 
 
-export const TastingWizard: React.FC<TastingWizardProps> = ({ wine }) => {
+export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
 
   const router = useRouter();
 
   const [index, setIndex] = useState<number>(0);
-  const [steps] = useState<Step[]>([
+  const [steps] = useState<WizardStep[]>([
     { title: 'Se' },
     { title: 'Aroma' },
     { title: 'Smak' },
@@ -64,21 +56,6 @@ export const TastingWizard: React.FC<TastingWizardProps> = ({ wine }) => {
     });
   };
 
-  if (!wine)
-    return (
-      <article className="medium middle-align center-align">
-        <div>
-          <i className="extra">bottle</i>
-          <h5>Vi kunne dessverre ikke finne denne vinen</h5>
-          <p>Click the button to start a conversation</p>
-          <div className="space"></div>
-          <nav className="center-align">
-            <button onClick={() => router.push('/')}>Tilbake</button>
-          </nav>
-        </div>
-      </article>
-    );
-
   return (
     <>
       <header className="primary-container">
@@ -100,9 +77,8 @@ export const TastingWizard: React.FC<TastingWizardProps> = ({ wine }) => {
               <div className="max">
                 <p>Druer: {wine.content.ingredients?.map(x => x.formattedValue).join(', ')}</p>
                 <p>Land: {wine.mainCountry.name}</p>
-                <p>Område: {wine.district.name}</p>
+                {wine.district && (<p>Område: {wine.district.name}</p>)}
                 <p>Årgang: {wine.year}</p>
-                <p>Nr: {index + 1}</p>
                 <div className="field border">
                   <input
                     type="text"

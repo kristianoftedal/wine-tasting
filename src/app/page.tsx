@@ -13,18 +13,6 @@ export default function Index() {
   return (
     <>
       <nav className="bottom">
-        <a>
-          <i>home</i>
-          <div>Home</div>
-        </a>
-        <a>
-          <i>search</i>
-          <div>Search</div>
-        </a>
-        <a>
-          <i>share</i>
-          <div>share</div>
-        </a>
       </nav>
       <main className="responsive">
         <h3>Smak på vin</h3>
@@ -36,7 +24,6 @@ export default function Index() {
             className="row wave">
             {x.productShortName}
           </Link>
-
         ))}
       </main>
     </>
