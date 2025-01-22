@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Category, Flavor, Subcategory } from '../models/flavorModel';
 
 type AccordionProps = {
@@ -12,18 +13,19 @@ export const Accordion: React.FC<AccordionProps> = ({ category, subcategories, o
       <details style={{ border: '1px solid ' + category.backgroundColor }}>
         <summary
           className="padding"
-          style={{ cursor: 'pointer', color: '#FFF', backgroundColor: category.backgroundColor }}>
+          style={{ cursor: 'pointer', border: '1px solid ' + category.backgroundColor }}>
           {category.name} |<label> {category.description}</label>
+          {category.image ? <Image width={400} height={40} alt="image" src={`/images/${category.image}`} />: category.icon}
+
         </summary>
         <div
-          className=""
           key={category.name}
           style={{ marginLeft: '16px' }}>
           {subcategories.map((subcategory: Subcategory, index: number) => (
             <div key={subcategory.name + index * 0.4243}>
               <details className="padding">
                 <summary className="padding">
-                  {subcategory.name} |<label> {subcategory.description}</label>
+                  {subcategory.name} |<label> {subcategory.description} - {subcategory.icon}</label>
                 </summary>
                 <div style={{ marginLeft: '16px' }}>
                   {subcategory.flavors.map((flavor: Flavor) => (

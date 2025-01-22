@@ -3,7 +3,7 @@
       "name": "Fruktig",
       "backgroundColor": "#ED4C67",
       "description": "Aromaer og smaker som minner om ulike flavors frukt.",
-      "icon": "🍎",
+      "icon": "🍎🍓🍑🍋🥭🍈🫐🍇",
       "subcategories": [
         {
           "name": "Sitrus",
@@ -64,6 +64,16 @@
           ]
         },
         {
+          "name": "Tørket frukt",
+          "description": "Aromaer og smaker som minner om tørkede frukter.",
+          "icon": "🍇",
+          "backgroundColor": "#1B1464",
+          "flavors": [
+            { "name": "Rosiner", "icon": "🍇" },
+            { "name": "Tranebær", "icon": "🍒" }
+          ]
+        },
+        {
           "name": "Annet",
           "description": "Andre fruktflavors som ikke passer i andre nameer.",
           "icon": "🍏",
@@ -74,34 +84,17 @@
           ]
         }
       ]
-    },    
-    {
-      "name": "Tørket frukt",
-      "description": "Aromaer og smaker som minner om tørkede frukter.",
-      "icon": "🍇",
-      "backgroundColor": "#1B1464",
-      "subcategories": [
-        {
-          "name": "Tørket bær",
-          "description": "Intense smaker fra tørkede bær.",
-          "icon": "🍇",
-          "flavors": [
-            { "name": "Rosiner", "icon": "🍇" },
-            { "name": "Tranebær", "icon": "🍒" }
-          ]
-        }
-      ]
     },
     {
-      "name": "Blomstret",
+      "name": "Floral",
       "description": "Delikate aromaer av blomster.",
-      "icon": "🌸",      
+      "icon": "🌸🌼🌺",
       "backgroundColor": "#FDA7DF",
       "subcategories": [
         {
           "name": "Lett",
           "description": "Subtile, florale aromaer.",
-          "icon": "🌼",          
+          "icon": "🌼",
           "backgroundColor": "",
           "flavors": [
             { "name": "Kamille", "icon": "🌼" },
@@ -112,7 +105,7 @@
         {
           "name": "Intens",
           "description": "Sterkere blomsteraromaer.",
-          "icon": "🌹",          
+          "icon": "🌹",
           "backgroundColor": "",
           "flavors": [
             { "name": "Fiol", "icon": "🌺" },
@@ -121,11 +114,11 @@
           ]
         }
       ]
-    },    
+    },
     {
       "name": "Urteaktig",
       "description": "Friske eller krydrede urtearomaer.",
-      "icon": "🌿",      
+      "icon": "🌿🍃🌱🪴🍂",
       "backgroundColor": "#009432",
       "subcategories": [
         {
@@ -141,7 +134,7 @@
         {
           "name": "Krydret",
           "description": "Varme, krydrede noter.",
-          "icon": "🪴",          
+          "icon": "🪴",
           "backgroundColor": "",
           "flavors": [
             { "name": "Basilikum", "icon": "🌿" },
@@ -154,7 +147,7 @@
     {
       "name": "Jordaktig",
       "description": "Aromaer som minner om jord og natur.",
-      "icon": "🌍",      
+      "icon": "🪨💦🌍🍄🏺",
       "backgroundColor": "#6F1E51",
       "subcategories": [
         {
@@ -183,7 +176,7 @@
     {
       "name": "Treaktig",
       "description": "Noter fra tre og fatlagring.",
-      "icon": "🌳",
+      "icon": "🌳🪵🍞🔥",
       "backgroundColor": "#EE5A24",
       "subcategories": [
         {
@@ -212,7 +205,7 @@
     {
       "name": "Krydret",
       "description": "Sterke, aromatiske krydder.",
-      "icon": "🌶️",
+      "icon": "🌶️🌰🧂",
       "backgroundColor": "#006266",
       "subcategories": [
         {
@@ -240,7 +233,7 @@
     {
       "name": "Søt",
       "description": "Søte aromaer som minner om desserter.",
-      "icon": "🍬",
+      "icon": "🍫🍯🍬",
       "backgroundColor": "#F79F1F",
       "subcategories": [
         {
@@ -268,7 +261,7 @@
     {
       "name": "Kjemisk",
       "description": "Aromaer og smaker som minner om kjemikalier.",
-      "icon": "⚗️",
+      "icon": "⚗️🧴⛽",
       "backgroundColor": "#0652DD",
       "subcategories": [
         {
@@ -305,7 +298,7 @@
     {
       "name": "Nøtter",
       "description": "Aromaer og smaker som minner om nøtter og nøtteprodukter.",
-      "icon": "🥜",
+      "icon": "🥜🌰",
       "backgroundColor": "#9980FA",
       "subcategories": [
         {
