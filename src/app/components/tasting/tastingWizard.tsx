@@ -269,19 +269,20 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
           </div>
         )}
         {index === 4 && (
-          <article>
+          <div className="grid">
+          <div className="s6">
             <div className="row">
               <div className="max">
                 <p>Farge: {farge}</p>
                 <p>Lukt: {lukt}</p>
-                <p>{selectedFlavorsLukt.map(x => x.flavor.name).join(', ')}</p>
+                <p>{selectedFlavorsLukt.map(x => x.flavor.name).join(', ') || '&nbsp;'}</p>
                 <hr />
                 <p>Smak: {smak}</p>
                 <p>{selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}</p>
                 <hr />
-                <p>Friskhet: {friskhet}</p>
-                <p>Fylde: {fylde}</p>
-                <p>Sødme: {sødme}</p>
+                <p>Friskhet: {friskhet} av 12</p>
+                <p>Fylde: {fylde} av 12</p>
+                <p>Sødme: {sødme} av 12</p>
                 <p>Karakter: {karakter}</p>
                 <p>Kommentar: {egenskaper}</p>
               </div>
@@ -296,20 +297,28 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
                   <span style={{ paddingLeft: '8px' }}> Sammenlign</span>
                 </label>
               </div>
+              </div>
             </div>
+            <div className="s6">
             {showWine && (
+
               <div className="row">
                 <div className="max">
                   <p>Farge: {wine.color}</p>
-                  <p>Lukt: {wine.smell}</p>
-                  <p>Smak: {wine.taste}</p>
+                  <p>Lukt: </p>
+                  <p>{wine.smell || '&nbsp;'}</p>
+                  <hr />
+                  <p>Smak:</p>
+                  <p> {wine.taste}</p>
+                  <hr />
                   {wine.content.characteristics.map(x => (
                     <p key={x.name}>{x.readableValue}</p>
                   ))}
                 </div>
               </div>
             )}
-          </article>
+            </div>
+          </div>
         )}
       </main>
       <footer>
