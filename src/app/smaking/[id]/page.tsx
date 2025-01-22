@@ -1,4 +1,5 @@
-import { TastingWizard } from '@/app/components/tastingWizard';
+import { TastingWizard } from '@/app/components/tasting/tastingWizard';
+import clientPromise from "@/lib/mongodb";
 
 export default async function Tasting(
   { params }: { params: Promise<{ id: string }> }
@@ -12,15 +13,24 @@ export default async function Tasting(
 }
 
 const getWine = async (id: string) => {
-  const res = await fetch(`${getBaseUrl()}/api/wine/${id}`);
-  const data = await res.json();
-  const model = data;
-  return model;
-};
+  console.log(id);
+  try {
+    const client = clientPromise;
+    await client.connect();
 
-const getBaseUrl = () => {
-  if (process.env.NODE_ENV ===  "production") {
-    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+    const db = client.db("Wines");
+    const winesCollection = db.collection('WinesDetailed'); // Replace with your collection name
+
+    // Query for a wine where 'code' matches the 'id' from the route parameter
+    const wine = await winesCollection.findOne({ code: id });
+
+    if (!wine) {
+      return null
+    }
+
+    return JSON.parse(JSON.stringify(wine));
+  } catch (error) {
+    console.error('Error fetching wine:', error);
+    return null;
   }
-  return 'http://localhost:3000';
 };
