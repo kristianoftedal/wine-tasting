@@ -43,7 +43,6 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const vmpSnærp = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'garvestoffer')?.value;
   const vmpSødme = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'sødme')?.value;
 
-  debugger;
   const handleFlavorLuktClick = (category: Category, subcategory: Subcategory, flavor: Flavor) => {
     setSelectedFlavorsLukt(prev => {
       const categoryFlavors = prev.length === 0 ? [] : prev;
@@ -338,41 +337,59 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
               </>
           )}
             {showWine && (
+              <>
               <div className="grid">
                 <div className="s2">
                 </div>
                 <div className="s5">Deg</div>
                 <div className="s5">VMP</div>
+              </div>
+              <hr className="tasting-hr"></hr>
+              <div className="grid">
                 <div className="s2">Farge</div>
                 <div className="s5">{farge}</div>
                 <div className="s5">{wine.color}</div>
-                <hr></hr>
+                </div>
+              <hr className="tasting-hr"></hr>
+              <div className="grid">
                 <div className="s2">Lukt</div>
                 <div className="s5">{selectedFlavorsLukt.map(x => x.flavor.name).join(', ')}</div>
                 <div className="s5">{wine.smell}</div>
-
+              </div>
+              <hr className="tasting-hr"></hr>
+              <div className="grid">
                 <div className="s2">Smak</div>
                 <div className="s5">{selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}</div>
                 <div className="s5">{wine.taste}</div>
+              </div>
+              <hr className="tasting-hr"></hr>
+              <div className="grid">
                 <div className="s2">Friskhet</div>
                 <div className="s5">{friskhet}</div>
                 <div className="s5">{vmpFriskhet}</div>
+              </div>
+              <hr className="tasting-hr"></hr>
+              <div className="grid">
                 <div className="s2">Fylde</div>
                 <div className="s5">{fylde}</div>
                 <div className="s5">{vmpFylde}</div>
-                {wine.mainCategory.code === 'rødvin' && (
-                  <>
-                    <div className="s2">Snærp</div>
-                    <div className="s5">{snærp}</div>
-                    <div className="s5">{vmpSnærp}</div></>
-                  )}
-                {wine.mainCategory.code !== 'rødvin' && (
-                  <>
-                      <div className="s2">Sødme</div>
-                      <div className="s5">{sødme}</div>
-                      <div className="s5">{vmpSødme}</div></>
-                  )}
               </div>
+              <hr className="tasting-hr"></hr>
+              {wine.mainCategory.code === 'rødvin' && (
+                <div className="grid">
+                  <div className="s2">Snærp</div>
+                  <div className="s5">{snærp}</div>
+                  <div className="s5">{vmpSnærp}</div>
+                </div>
+              )}
+              {wine.mainCategory.code !== 'rødvin' && (
+                <div className="grid">
+                  <div className="s2">Sødme</div>
+                  <div className="s5">{sødme}</div>
+                  <div className="s5">{vmpSødme}</div>
+                </div>
+              )}
+              </>
           )}
           </article>
         )}

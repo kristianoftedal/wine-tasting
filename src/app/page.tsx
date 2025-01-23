@@ -18,12 +18,14 @@ export default function Index() {
         <h3>Smak på vin</h3>
         <Search onWineSelected={onSelected} />
         {wines.map(x => (
+          <button className="responsive primary"
+          key={x.productId}>
           <Link
-            key={x.productId}
             href={`/smaking/${x.productId}`}
             className="row wave">
             {x.productShortName}
-          </Link>
+            </Link>
+            </button>
         ))}
       </main>
     </>
