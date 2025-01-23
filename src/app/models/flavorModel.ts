@@ -21,6 +21,7 @@ export type Category = {
   description?: string; // Description of the category
   subcategories: Subcategory[]; // List of subcategories in this category
   backgroundColor?: string;
+  icon?: string;
   image?: string;
 };
 
