@@ -32,11 +32,18 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const [friskhet, setFriskhet] = useState<number>(0);
   const [fylde, setFylde] = useState<number>(0);
   const [sødme, setSødme] = useState<number>(0);
+  const [snærp, setSnærp] = useState<number>(0);
   const [karakter, setKarakter] = useState<number>(0);
   const [egenskaper, setKommentarEgenskaper] = useState<string>('');
 
   const [showWine, setShowWine] = useState<boolean>(false);
 
+  const vmpFylde = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'fylde')?.value;
+  const vmpFriskhet = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'friskhet')?.value;
+  const vmpSnærp = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'garvestoffer')?.value;
+  const vmpSødme = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'sødme')?.value;
+
+  debugger;
   const handleFlavorLuktClick = (category: Category, subcategory: Subcategory, flavor: Flavor) => {
     setSelectedFlavorsLukt(prev => {
       const categoryFlavors = prev.length === 0 ? [] : prev;
@@ -201,34 +208,67 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
               <hr />
             </div>
 
-            <div className="l12 s12">
-              <div
-                className="center middle-align row"
-                style={{ marginTop: 0 }}>
-                Sødme
+            {wine.mainCategory.code !== 'rødvin' && (
+              <div className="l12 s12">
+                <div
+                  className="center middle-align row"
+                  style={{ marginTop: 0 }}>
+                  Sødme
+                </div>
+                <div className="row">
+                  <p>1</p>
+                  <label className="max">
+                    <input
+                      style={{ width: '100%' }}
+                      type="range"
+                      min="1"
+                      max="12"
+                      value={sødme}
+                      onChange={value => setSødme(parseInt(value.target.value))}
+                    />
+                    <span></span>
+                  </label>
+                  <p>12</p>
+                </div>
+                <div
+                  className="center middle-align row"
+                  style={{ marginTop: 0, marginBottom: '8px' }}>
+                  {sødme}
+                </div>
+                <hr />
               </div>
-              <div className="row">
-                <p>1</p>
-                <label className="max">
-                  <input
-                    style={{ width: '100%' }}
-                    type="range"
-                    min="1"
-                    max="12"
-                    value={sødme}
-                    onChange={value => setSødme(parseInt(value.target.value))}
-                  />
-                  <span></span>
-                </label>
-                <p>12</p>
+            )}
+
+            {wine.mainCategory.code === 'rødvin' && (
+              <div className="l12 s12">
+                <div
+                  className="center middle-align row"
+                  style={{ marginTop: 0 }}>
+                  Snærp
+                </div>
+                <div className="row">
+                  <p>1</p>
+                  <label className="max">
+                    <input
+                      style={{ width: '100%' }}
+                      type="range"
+                      min="1"
+                      max="12"
+                      value={snærp}
+                      onChange={value => setSnærp(parseInt(value.target.value))}
+                    />
+                    <span></span>
+                  </label>
+                  <p>12</p>
+                </div>
+                <div
+                  className="center middle-align row"
+                  style={{ marginTop: 0, marginBottom: '8px' }}>
+                  {snærp}
+                </div>
+                <hr />
               </div>
-              <div
-                className="center middle-align row"
-                style={{ marginTop: 0, marginBottom: '8px' }}>
-                {sødme}
-              </div>
-              <hr />
-            </div>
+            )}
 
             <div className="l12 s12">
               <div
@@ -269,56 +309,72 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
           </div>
         )}
         {index === 4 && (
-          <div className="grid">
-          <div className="s6">
-            <div className="row">
-              <div className="max">
-                <p>Farge: {farge}</p>
-                <p>Lukt: {lukt}</p>
-                <p>{selectedFlavorsLukt.map(x => x.flavor.name).join(', ') || '&nbsp;'}</p>
-                <hr />
-                <p>Smak: {smak}</p>
-                <p>{selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}</p>
-                <hr />
-                <p>Friskhet: {friskhet} av 12</p>
-                <p>Fylde: {fylde} av 12</p>
-                <p>Sødme: {sødme} av 12</p>
-                <p>Karakter: {karakter}</p>
-                <p>Kommentar: {egenskaper}</p>
-              </div>
-            </div>
-            <div className="row">
-              <div className="max">
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    onChange={() => setShowWine(!showWine)}
-                  />
-                  <span style={{ paddingLeft: '8px' }}> Sammenlign</span>
-                </label>
-              </div>
-              </div>
-            </div>
-            <div className="s6">
-            {showWine && (
-
+          <article>
+            {!showWine && (
+              <>
               <div className="row">
                 <div className="max">
-                  <p>Farge: {wine.color}</p>
-                  <p>Lukt: </p>
-                  <p>{wine.smell || '&nbsp;'}</p>
-                  <hr />
-                  <p>Smak:</p>
-                  <p> {wine.taste}</p>
-                  <hr />
-                  {wine.content.characteristics.map(x => (
-                    <p key={x.name}>{x.readableValue}</p>
-                  ))}
+                  <p>Farge: {farge}</p>
+                  <p>Lukt: {selectedFlavorsLukt.map(x => x.flavor.name).join(', ') || '&nbsp;'}, {lukt}</p>
+                  <p>Smak: {selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}, {smak}</p>
+                  <p>Friskhet: {friskhet}</p>
+                  <p>Fylde: {fylde}</p>
+                  <p>Sødme: {sødme}</p>
+                  <p>Karakter: {karakter}</p>
+                  <p>Kommentar: {egenskaper}</p>
                 </div>
               </div>
-            )}
-            </div>
-          </div>
+              <div className="row">
+                <div className="max">
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      onChange={() => setShowWine(!showWine)}
+                    />
+                    <span style={{ paddingLeft: '8px' }}> Sammenlign</span>
+                  </label>
+                </div>
+                </div>
+              </>
+          )}
+            {showWine && (
+              <div className="grid">
+                <div className="s2">
+                </div>
+                <div className="s5">Deg</div>
+                <div className="s5">VMP</div>
+                <div className="s2">Farge</div>
+                <div className="s5">{farge}</div>
+                <div className="s5">{wine.color}</div>
+                <hr></hr>
+                <div className="s2">Lukt</div>
+                <div className="s5">{selectedFlavorsLukt.map(x => x.flavor.name).join(', ')}</div>
+                <div className="s5">{wine.smell}</div>
+
+                <div className="s2">Smak</div>
+                <div className="s5">{selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}</div>
+                <div className="s5">{wine.taste}</div>
+                <div className="s2">Friskhet</div>
+                <div className="s5">{friskhet}</div>
+                <div className="s5">{vmpFriskhet}</div>
+                <div className="s2">Fylde</div>
+                <div className="s5">{fylde}</div>
+                <div className="s5">{vmpFylde}</div>
+                {wine.mainCategory.code === 'rødvin' && (
+                  <>
+                    <div className="s2">Snærp</div>
+                    <div className="s5">{snærp}</div>
+                    <div className="s5">{vmpSnærp}</div></>
+                  )}
+                {wine.mainCategory.code !== 'rødvin' && (
+                  <>
+                      <div className="s2">Sødme</div>
+                      <div className="s5">{sødme}</div>
+                      <div className="s5">{vmpSødme}</div></>
+                  )}
+              </div>
+          )}
+          </article>
         )}
       </main>
       <footer>
