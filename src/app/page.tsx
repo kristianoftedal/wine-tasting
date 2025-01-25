@@ -1,8 +1,8 @@
 "use client"
-import Link from 'next/link';
 import { Search } from './components/search';
 import { searchModel } from './models/searchModel';
 import { useState } from 'react';
+import { redirect } from 'next/navigation';
 
 export default function Index() {
   const [wines, setWines] = useState(new Array<searchModel>());
@@ -19,12 +19,9 @@ export default function Index() {
         <Search onWineSelected={onSelected} />
         {wines.map(x => (
           <button className="responsive primary"
-          key={x.productId}>
-          <Link
-            href={`/smaking/${x.productId}`}
-            className="row wave">
+          key={x.productId} onClick={() => redirect(`/smaking/${x.productId}`)}>
+
             {x.productShortName}
-            </Link>
             </button>
         ))}
       </main>

@@ -3,7 +3,7 @@
       "name": "Fruktig",
       "backgroundColor": "#ED4C67",
       "description": "Aromaer og smaker som minner om ulike flavors frukt.",
-      "icon": "🍎🍓🍑🍋🥭🍈🫐🍇",
+      "icon": "🍎🍓🍉🍑🍋🥭🍈🫐🍇",
       "subcategories": [
         {
           "name": "Sitrus",
@@ -13,30 +13,52 @@
           "flavors": [
             { "name": "Sitron", "icon": "🍋" },
             { "name": "Lime", "icon": "🍈" },
+            { "name": "Sitrusskall", "icon": "🍋" },
+            { "name": "Bakt sitron", "icon": "🍋" },
+            { "name": "Grapefrukt", "icon": "🍊" },
             { "name": "Appelsin", "icon": "🍊" },
-            { "name": "Grapefrukt", "icon": "🍊" }
+            { "name": "Marmelade", "icon": "🍊" }
+          ]
+        },
+        {
+          "name": "Trefrukt",
+          "description": "Andre fruktflavors som ikke passer i andre nameer.",
+          "icon": "🍏",
+          "backgroundColor": "#FFC312",
+          "flavors": [
+            { "name": "Eple", "icon": "🍏" },
+            { "name": "Pære", "icon": "🍐" },
+            { "name": "Vannmelon", "icon": "🍉" },
+            { "name": "Honningmelon", "icon": "🍈" },
+            { "name": "Cantaloupe", "icon": "🍈" }
           ]
         },
         {
           "name": "Steinfrukt",
           "description": "Søte og saftige frukter med stein i midten.",
           "icon": "🍑",
-          "backgroundColor": "",
+          "backgroundColor": "#F79F1F",
           "flavors": [
             { "name": "Fersken", "icon": "🍑" },
-            { "name": "Plomme", "icon": "🍈" },
+            { "name": "Hvit fersken", "icon": "🍑" },
+            { "name": "Nektarin", "icon": "🍑" },
             { "name": "Aprikos", "icon": "🍑" }
           ]
         },
         {
-          "name": "Bær",
+          "name": "Rød frukt",
           "description": "Søte eller syrlige små frukter.",
           "icon": "🍓",
-          "backgroundColor": "",
+          "backgroundColor": "#EA2027",
           "flavors": [
+            { "name": "Plomme", "icon": "🍈" },
+            { "name": "Kirsebær", "icon": "🍒" },
+            { "name": "Sure kirsebær", "icon": "🍒" },
+            { "name": "Moreller", "icon": "🍒" },
             { "name": "Jordbær", "icon": "🍓" },
-            { "name": "Bjørnebær", "icon": "🍇" },
             { "name": "Bringebær", "icon": "🍇" },
+            { "name": "Bjørnebær", "icon": "🍇" },
+            { "name": "Solbær", "icon": "🍇" },
             { "name": "Blåbær", "icon": "🫐" }
           ]
         },
@@ -44,45 +66,25 @@
           "name": "Tropisk",
           "description": "Eksotiske, søte frukter fra tropiske klima.",
           "icon": "🍍",
-          "backgroundColor": "",
+          "backgroundColor": "#D980FA",
           "flavors": [
             { "name": "Ananas", "icon": "🍍" },
             { "name": "Mango", "icon": "🥭" },
+            { "name": "Pasjonsfrukt", "icon": "🥭" },
             { "name": "Banan", "icon": "🍌" },
             { "name": "Papaya", "icon": "🥭" }
-          ]
-        },
-        {
-          "name": "Melon",
-          "description": "Saftige og milde frukter med høy vanninnhold.",
-          "icon": "🍉",
-          "backgroundColor": "",
-          "flavors": [
-            { "name": "Vannmelon", "icon": "🍉" },
-            { "name": "Honningmelon", "icon": "🍈" },
-            { "name": "Cantaloupe", "icon": "🍈" }
           ]
         },
         {
           "name": "Tørket frukt",
           "description": "Aromaer og smaker som minner om tørkede frukter.",
           "icon": "🍇",
-          "backgroundColor": "#1B1464",
+          "backgroundColor": "#B53471",
           "flavors": [
             { "name": "Rosiner", "icon": "🍇" },
             { "name": "Tranebær", "icon": "🍒" }
           ]
         },
-        {
-          "name": "Annet",
-          "description": "Andre fruktflavors som ikke passer i andre nameer.",
-          "icon": "🍏",
-          "backgroundColor": "",
-          "flavors": [
-            { "name": "Eple", "icon": "🍏" },
-            { "name": "Pære", "icon": "🍐" }
-          ]
-        }
       ]
     },
     {
