@@ -26,36 +26,33 @@ export default function Login() {
 
   return (
     <section className="center-align middle-align">
-      <form className="padding" onSubmit={handleSubmit}>
-        <div>
-          {error && <div className="text-black">{error}</div>}
-          <h3 style={{ marginBottom: "16px" }}>Logg inn</h3>
-          <div class="field label border">
-            <input type="email" placeholder="Email" name="email" />
-            <label>Email</label>
+      <article style={{ minWidth: "20vw" }}>
+        <form className="padding" onSubmit={handleSubmit}>
+          <div>
+            {error && <div className="text-black">{error}</div>}
+            <h3 style={{ marginBottom: "16px" }}>Logg inn</h3>
+            <div className="field label border">
+              <input type="email" placeholder="Email" name="email" />
+              <label>Email</label>
+            </div>
+            <div className="field label border">
+              <input type="password" placeholder="Password" name="password" />
+              <label>Password</label>
+            </div>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+            >
+              <button className="primary">Logg inn</button>
+              <Link href="/register" className="border">
+                Opprett konto
+              </Link>
+              <Link href="/register" className="border">
+                Fortsett uten innlogging
+              </Link>
+            </div>
           </div>
-          <div class="field label border">
-            <input
-              type="password"
-              placeholder="Password"
-              className=""
-              name="password"
-            />
-            <label>Password</label>
-          </div>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-          >
-            <button className="primary">Logg inn</button>
-            <Link href="/register" className="border">
-              Opprett konto
-            </Link>
-            <Link href="/register" className="border">
-              Fortsett uten innlogging
-            </Link>
-          </div>
-        </div>
-      </form>
+        </form>
+      </article>
     </section>
   );
 }

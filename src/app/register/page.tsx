@@ -26,27 +26,33 @@ export default function Register() {
 
   return (
     <section className="center-align middle-align">
-      <form ref={ref} action={handleSubmit} className="padding">
-        {error && <div className="">{error}</div>}
-        <h3 style={{ marginBottom: "16px" }}>Registrer deg</h3>
+      <article style={{ minWidth: "20vw" }}>
+        <form ref={ref} action={handleSubmit} className="padding">
+          {error && <div>{error}</div>}
+          <h3 style={{ marginBottom: "16px" }}>Registrer deg</h3>
 
-        <div class="field label border">
-          <input type="text" placeholder="Navn" className="" name="name" />
-          <label>Navn</label>
-        </div>
-        <div class="field label border">
-          <input type="email" placeholder="Email" className="" name="email" />
-          <label>Email</label>
-        </div>
+          <div className="field label border">
+            <input type="text" placeholder="Navn" name="name" />
+            <label>Navn</label>
+          </div>
+          <div className="field label border">
+            <input type="email" placeholder="Email" name="email" />
+            <label>E-post</label>
+          </div>
 
-        <div class="field label border">
-          <input type="password" placeholder="Password" name="password" />
-          <label>Password</label>
-        </div>
-        <button className="primary">Registrer</button>
+          <div className="field label border">
+            <input type="password" placeholder="Password" name="password" />
+            <label>Passord</label>
+          </div>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            <button className="primary">Registrer</button>
 
-        <Link href="/login">Har du allerede en konto?</Link>
-      </form>
+            <Link href="/login">Har du allerede en konto?</Link>
+          </div>
+        </form>
+      </article>
     </section>
   );
 }

@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Provider>
-        <body className="light">{children}</body>
+        <body className="light">
+          <main className="responsive">{children}</main>
+        </body>
       </Provider>
     </html>
   );
