@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Progress } from "./components/progress";
 
 export default function Index() {
   const [wines, setWines] = useState(new Array<searchModel>());
@@ -32,7 +33,7 @@ export default function Index() {
         </button>
       );
     } else if (status === "loading") {
-      return <progress className="circle large"></progress>;
+      return <Progress />;
     } else {
       return (
         <Link
@@ -47,7 +48,7 @@ export default function Index() {
   return (
     <>
       <nav className="bottom"></nav>
-      <main className="responsive">
+      <div>
         <h3>Smak på vin</h3>
         {showSession()}
         <Search onWineSelected={onSelected} />
@@ -60,7 +61,7 @@ export default function Index() {
             {x.productShortName}
           </button>
         ))}
-      </main>
+      </div>
     </>
   );
 }
