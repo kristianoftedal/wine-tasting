@@ -11,6 +11,7 @@
           "icon": "🍋",
           "backgroundColor": "#C4E538",
           "flavors": [
+            { "name": "Sitrus", "icon": "🍋" },
             { "name": "Sitron", "icon": "🍋" },
             { "name": "Lime", "icon": "🍈" },
             { "name": "Sitrusskall", "icon": "🍋" },
