@@ -1,11 +1,13 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { Progress } from "./progress";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Progress } from "./progress";
 
 export default function AppBar() {
   const { status } = useSession();
+  const router = useRouter();
 
   const loginStatus = () => {
     if (status === "authenticated") {

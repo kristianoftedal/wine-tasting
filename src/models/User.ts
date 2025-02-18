@@ -33,8 +33,8 @@ const UserSchema = new Schema<UserDocument>(
   },
   {
     timestamps: true,
-  },
-  { collection: "users" }
+    collection: "users",
+  }
 );
 
 const User = mongoose.models?.User || model<UserDocument>("User", UserSchema);
