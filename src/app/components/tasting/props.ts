@@ -1,9 +1,8 @@
-import { Wine } from "@/app/models/productModel"
+import { Wine } from "@/app/models/productModel";
 
 export type TastingProps = {
-  wine: Wine
-}
-
+  wine: Wine;
+};
 
 export type WizardStep = {
   title: string;

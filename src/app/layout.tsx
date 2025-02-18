@@ -2,10 +2,9 @@ import "beercss";
 import "beercss/dist/cdn/beer";
 import "material-dynamic-colors";
 import type { Metadata } from "next";
+import AppBar from "./components/AppBar";
 import "./globals.css";
 import { Provider } from "./provider";
-import Image from "next/image";
-import AppBar from "./components/AppBar";
 
 export const metadata: Metadata = {
   title: "Smak på vin",
