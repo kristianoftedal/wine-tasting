@@ -12,18 +12,18 @@ export async function GET(
     await client.connect();
 
     const db = client.db("Wines");
-    const winesCollection = db.collection('WinesDetailed'); // Replace with your collection name
+    const winesCollection = db.collection("WinesDetailed"); // Replace with your collection name
 
     // Query for a wine where 'code' matches the 'id' from the route parameter
     const wine = await winesCollection.findOne({ code: id });
 
     if (!wine) {
-      return NextResponse.json({ message: 'Wine not found' });
+      return NextResponse.json({ message: "Wine not found" });
     }
     // Return the found wine document
     return NextResponse.json(wine);
   } catch (error) {
-    console.error('Error fetching wine:', error);
-    return NextResponse.json({ message: 'Server error' });
+    console.error("Error fetching wine:", error);
+    return NextResponse.json({ message: "Server error" });
   }
 }
