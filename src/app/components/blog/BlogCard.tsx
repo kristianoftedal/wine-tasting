@@ -2,7 +2,19 @@
 
 import { redirect } from "next/navigation";
 
-const BlogCard = ({ slug, title, description, meta }) => {
+type BlogCardProps = {
+  slug: string;
+  title: string;
+  description: string;
+  meta: string;
+};
+
+const BlogCard: React.FC<BlogCardProps> = ({
+  slug,
+  title,
+  description,
+  meta,
+}) => {
   return (
     <article className="no-padding border round">
       {/* <Image

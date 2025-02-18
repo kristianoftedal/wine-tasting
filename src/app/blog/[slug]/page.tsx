@@ -1,7 +1,7 @@
-import { Metadata } from "next";
-import { getDocFromParams, getNextBlogPost, removeEmojis } from "@/lib/blog";
 import BlogCard from "@/app/components/blog/BlogCard";
 import { Mdx } from "@/app/components/blog/Mdx";
+import { getDocFromParams, getNextBlogPost, removeEmojis } from "@/lib/blog";
+import { Metadata } from "next";
 
 export const generateMetadata = async (props: Props): Promise<Metadata> => {
   const params = await props.params;
@@ -43,7 +43,6 @@ const Page: React.FC<Props> = async (props) => {
             title={nextDoc.title}
             description={nextDoc.description}
             meta={nextDoc.date}
-            disableMaxWidth
           />
         </div>
       )}
