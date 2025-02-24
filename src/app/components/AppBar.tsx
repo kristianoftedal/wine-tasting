@@ -3,10 +3,9 @@
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Progress } from "./progress";
 
 export default function AppBar() {
-  const { status } = useSession();
+  const { status, data } = useSession();
   const router = useRouter();
 
   const loginStatus = () => {
@@ -20,11 +19,9 @@ export default function AppBar() {
             });
           }}
         >
-          Logg ut
+          Logg ut {data?.user?.name}
         </button>
       );
-    } else if (status === "loading") {
-      return <Progress />;
     } else {
       return (
         <button
@@ -40,7 +37,7 @@ export default function AppBar() {
   return (
     <header>
       <nav>
-        <button className="circle transparent">
+        <button className="circle transparent" onClick={() => router.push("/")}>
           <Image
             alt="app bar image"
             className="responsive"
@@ -51,6 +48,12 @@ export default function AppBar() {
         </button>
         <h5 className="max center-align">Smak Vin!</h5>
         {loginStatus()}
+        <button className="circle transparent">
+          <i className="extra">person</i>
+        </button>
+        {/* <button className="circle transparent">
+          <i>menu</i>
+        </button> */}
       </nav>
     </header>
   );

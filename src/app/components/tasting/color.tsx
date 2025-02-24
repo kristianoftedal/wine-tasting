@@ -1,10 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
-import { TastingProps } from "./props";
+import React from "react";
+import { tastingAtom } from "../../store/tasting";
 
-export const Color: React.FC<TastingProps> = ({ wine }) => {
-  const [farge, setFarge] = useState<string>("");
+export const Color: React.FC = () => {
+  const [setTasting] = useAtom(tastingAtom);
+  const [wine] = useAtom(wineAtom);
+
+  const onChange = (value: string) => {
+    setTasting((prev) => {
+      return { ...prev, farge: value };
+    });
+  };
 
   return (
     <article>
@@ -21,7 +28,7 @@ export const Color: React.FC<TastingProps> = ({ wine }) => {
             <input
               type="text"
               value={farge}
-              onChange={(event) => setFarge(event.target.value)}
+              onChange={(event) => onChange(event.target.value)}
             />
             <span className="helper">Farge</span>
           </div>

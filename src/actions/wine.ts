@@ -1,18 +1,6 @@
-import { TastingWizard } from "@/app/components/tasting/TastingWizard";
 import clientPromise from "@/lib/mongodb";
 
-export default async function Tasting({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const wine = await getWine(id);
-
-  return <TastingWizard wine={wine} />;
-}
-
-const getWine = async (id: string) => {
+export const getWineById = async (id: string) => {
   try {
     const client = clientPromise;
     await client.connect();
@@ -21,7 +9,7 @@ const getWine = async (id: string) => {
     const winesCollection = db.collection("WinesDetailed"); // Replace with your collection name
 
     // Query for a wine where 'code' matches the 'id' from the route parameter
-    const wine = await winesCollection.findOne({ code: id });
+    const wine = await winesCollection.find({ code: id });
 
     if (!wine) {
       return null;
