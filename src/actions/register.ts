@@ -1,6 +1,6 @@
 "use server";
+import User from "@/db-schemas/User";
 import { connectDB } from "@/lib/mongoose";
-import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

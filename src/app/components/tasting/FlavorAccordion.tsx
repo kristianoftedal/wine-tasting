@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { Category, Flavor, Subcategory } from "../models/flavorModel";
+import { Category, Flavor, Subcategory } from "../../models/flavorModel";
 
 type AccordionProps = {
   category: Category;
@@ -8,7 +8,7 @@ type AccordionProps = {
   onFlavorClick: (
     category: Category,
     subcategory: Subcategory,
-    flavor: Flavor
+    flavor: Flavor,
   ) => void;
 };
 
@@ -19,12 +19,15 @@ export const Accordion: React.FC<AccordionProps> = ({
 }) => {
   return (
     <>
-      <details style={{ border: "1px solid " + category.backgroundColor }}>
+      <details
+        style={{ backgroundColor: category.backgroundColor, color: "#FFF" }}
+      >
         <summary
           className="padding"
           style={{
             cursor: "pointer",
-            border: "1px solid " + category.backgroundColor,
+            backgroundColor: category.backgroundColor,
+            color: "#FFF",
           }}
         >
           {category.name} |<label> {category.description}</label>
@@ -41,9 +44,15 @@ export const Accordion: React.FC<AccordionProps> = ({
         </summary>
         <div key={category.name} style={{ marginLeft: "16px" }}>
           {subcategories.map((subcategory: Subcategory, index: number) => (
-            <div key={subcategory.name + index * 0.4243}>
+            <div
+              key={subcategory.name + index * 0.4243}
+              style={{
+                backgroundColor: subcategory.backgroundColor,
+                color: "white",
+              }}
+            >
               <details className="padding">
-                <summary className="padding">
+                <summary>
                   {subcategory.name} |
                   <label>
                     {" "}
@@ -56,12 +65,13 @@ export const Accordion: React.FC<AccordionProps> = ({
                       <div className="row padding">
                         <label className="checkbox">
                           <input
+                            style={{ color: "#FFF" }}
                             type="checkbox"
                             onClick={() =>
                               onFlavorClick(category, subcategory, flavor)
                             }
                           />
-                          <span>
+                          <span style={{ color: "#FFF" }}>
                             {flavor.name} {flavor.icon}
                           </span>
                         </label>

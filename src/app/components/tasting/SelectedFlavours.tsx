@@ -3,7 +3,7 @@ import {
   Flavor,
   SelectedFlavor,
   Subcategory,
-} from "../models/flavorModel";
+} from "../../models/flavorModel";
 
 // Accordion Component to render Category and Subcategories
 type SelectedFlavorsProps = {
@@ -11,7 +11,7 @@ type SelectedFlavorsProps = {
   onFlavorClick: (
     category: Category,
     subcategory: Subcategory,
-    flavor: Flavor
+    flavor: Flavor,
   ) => void;
 };
 

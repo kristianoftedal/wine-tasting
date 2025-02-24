@@ -14,7 +14,7 @@ export const Search: React.FC<SearchProperties> = ({ onWineSelected }) => {
     const results = keyValues.filter((x) =>
       x.productShortName
         .toLocaleLowerCase()
-        .includes(e.target.value.toLocaleLowerCase())
+        .includes(e.target.value.toLocaleLowerCase()),
     );
     setWines(results);
   };
