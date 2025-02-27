@@ -6,7 +6,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { Color } from './Color';
+import { Color } from './Color1';
 import { FlavorSelection } from './FlavorSelection';
 import { TastingProps } from './props';
 import { Summary } from './Summary';
