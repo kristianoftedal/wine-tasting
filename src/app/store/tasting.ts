@@ -1,21 +1,36 @@
-import { SelectedFlavor } from "@/app/models/flavorModel";
-import { atom } from "jotai";
+import { atom } from 'jotai';
+import { Wine } from '../models/productModel';
+import { TastingModel } from '../models/tastingModel';
 
-export type TastingModel = {
-  farge: string;
-  lukt: string;
-  smak: string;
-  friskhet: number;
-  fylde: number;
-  sødme: number;
-  snærp: number;
-  karakter: number;
-  egenskaper: string;
-  selectedFlavorsLukt: SelectedFlavor[];
-  selectedFlavorsSmak: SelectedFlavor[];
-  userId: string;
-  productId: string;
-};
+export const initialTastingValue = {
+  farge: '',
+  lukt: '',
+  smak: '',
+  friskhet: 0,
+  fylde: 0,
+  sødme: 0,
+  snærp: 0,
+  karakter: 0,
+  egenskaper: '',
+  selectedFlavorsLukt: [],
+  selectedFlavorsSmak: [],
+  userId: '',
+  productId: ''
+} as TastingModel;
 
-export const wineAtom = atom<Wine>();
-export const tastingAtom = atom<TastingModel>({});
+export const wineAtom = atom<Wine | null>(null);
+export const tastingAtom = atom<TastingModel>({
+  farge: '',
+  lukt: '',
+  smak: '',
+  friskhet: 0,
+  fylde: 0,
+  sødme: 0,
+  snærp: 0,
+  karakter: 0,
+  egenskaper: '',
+  selectedFlavorsLukt: [],
+  selectedFlavorsSmak: [],
+  userId: '',
+  productId: ''
+});

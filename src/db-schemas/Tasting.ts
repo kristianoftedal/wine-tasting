@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const TastingSchema = new mongoose.Schema(
   {
@@ -14,11 +14,12 @@ const TastingSchema = new mongoose.Schema(
     selectedFlavorsLukt: Array,
     selectedFlavorsSmak: Array,
     userId: String,
+    productId: String,
+    tastedAt: String
   },
-  { collection: "tastings" }, // Specifies the collection name
+  { collection: 'Tastings' } // Specifies the collection name
 );
 
-const Tasting =
-  mongoose.models.Tasting || mongoose.model("Tasting", TastingSchema);
+const Tasting = mongoose.models.Tasting || mongoose.model('Tasting', TastingSchema);
 
 export default Tasting;

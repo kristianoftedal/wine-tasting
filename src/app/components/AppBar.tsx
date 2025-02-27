@@ -1,34 +1,32 @@
-"use client";
+'use client';
 
-import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { signOut, useSession } from 'next-auth/react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function AppBar() {
   const { status, data } = useSession();
   const router = useRouter();
 
   const loginStatus = () => {
-    if (status === "authenticated") {
+    if (status === 'authenticated') {
       return (
         <button
           className="padding border small-round"
           onClick={() => {
             signOut({ redirect: false }).then(() => {
-              router.push("/");
+              router.push('/');
             });
-          }}
-        >
+          }}>
           Logg ut {data?.user?.name}
         </button>
       );
     } else {
       return (
         <button
-          onClick={() => router.push("/login")}
-          className="border small-round"
-        >
-          Login
+          onClick={() => router.push('/login')}
+          className="border small-round">
+          Logg inn
         </button>
       );
     }
@@ -37,7 +35,9 @@ export default function AppBar() {
   return (
     <header>
       <nav>
-        <button className="circle transparent" onClick={() => router.push("/")}>
+        <button
+          className="circle transparent"
+          onClick={() => router.push('/')}>
           <Image
             alt="app bar image"
             className="responsive"

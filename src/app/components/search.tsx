@@ -1,7 +1,7 @@
-"use client";
-import { useState } from "react";
-import keyValues from "../data/wines-key-value.json";
-import { searchModel } from "../models/searchModel";
+'use client';
+import { useState } from 'react';
+import keyValues from '../data/wines-key-value.json';
+import { searchModel } from '../models/searchModel';
 
 type SearchProperties = {
   onWineSelected: (wine: searchModel) => void;
@@ -11,10 +11,8 @@ export const Search: React.FC<SearchProperties> = ({ onWineSelected }) => {
   const [wines, setWines] = useState(new Array<searchModel>());
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e?.target.value.length < 3) return;
-    const results = keyValues.filter((x) =>
-      x.productShortName
-        .toLocaleLowerCase()
-        .includes(e.target.value.toLocaleLowerCase()),
+    const results = keyValues.filter(x =>
+      x.productShortName.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase())
     );
     setWines(results);
   };
@@ -34,12 +32,11 @@ export const Search: React.FC<SearchProperties> = ({ onWineSelected }) => {
             <input onChange={handleChange} />
             <i className="front">close</i>
           </div>
-          {wines.map((x) => (
+          {wines.map(x => (
             <button
               key={x.productId}
               className="row"
-              onClick={() => handleSelected(x)}
-            >
+              onClick={() => handleSelected(x)}>
               <div>{x.productShortName}</div>
             </button>
           ))}

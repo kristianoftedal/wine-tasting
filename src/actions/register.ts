@@ -1,7 +1,7 @@
-"use server";
-import User from "@/db-schemas/User";
-import { connectDB } from "@/lib/mongoose";
-import bcrypt from "bcryptjs";
+'use server';
+import User from '@/db-schemas/User';
+import { connectDB } from '@/lib/mongoose';
+import bcrypt from 'bcryptjs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const register = async (values: any) => {
@@ -11,14 +11,14 @@ export const register = async (values: any) => {
     const userFound = await User.findOne({ email });
     if (userFound) {
       return {
-        error: "Email already exists!",
+        error: 'Email already exists!'
       };
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       name,
       email,
-      password: hashedPassword,
+      password: hashedPassword
     });
     await user.save();
   } catch (e) {
