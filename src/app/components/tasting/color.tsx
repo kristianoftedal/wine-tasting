@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
-import { tastingAtom } from "../../store/tasting";
+import { useAtom, useAtomValue } from 'jotai';
+import React from 'react';
+import { tastingAtom, wineAtom } from '../../store/tasting';
 
 export const Color: React.FC = () => {
-  const [setTasting] = useAtom(tastingAtom);
-  const [wine] = useAtom(wineAtom);
+  const [tasting, setTasting] = useAtom(tastingAtom);
+  const wine = useAtomValue(wineAtom);
 
   const onChange = (value: string) => {
-    setTasting((prev) => {
+    setTasting(prev => {
       return { ...prev, farge: value };
     });
   };
@@ -17,18 +18,15 @@ export const Color: React.FC = () => {
     <article>
       <div className="row">
         <div className="max">
-          <p>
-            Druer:{" "}
-            {wine.content.ingredients?.map((x) => x.formattedValue).join(", ")}
-          </p>
+          <p>Druer: {wine.content.ingredients?.map(x => x.formattedValue).join(', ')}</p>
           <p>Land: {wine.mainCountry.name}</p>
           {wine.district && <p>Område: {wine.district.name}</p>}
           <p>Årgang: {wine.year}</p>
           <div className="field border">
             <input
               type="text"
-              value={farge}
-              onChange={(event) => onChange(event.target.value)}
+              value={tasting.farge ?? ''}
+              onChange={event => onChange(event.target.value)}
             />
             <span className="helper">Farge</span>
           </div>

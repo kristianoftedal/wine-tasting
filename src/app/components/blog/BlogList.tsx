@@ -1,19 +1,19 @@
-import { blogPosts } from "@/lib/blog";
-import BlogCard from "./BlogCard";
+import { blogPosts } from '@/lib/blog';
+import BlogCard from './BlogCard';
 
 interface Props {
   numberOfPosts?: number;
 }
 
 const BlogList: React.FC<Props> = ({ numberOfPosts }) => {
-  const postsToShow = numberOfPosts
-    ? blogPosts.slice(0, numberOfPosts)
-    : blogPosts;
+  const postsToShow = numberOfPosts ? blogPosts.slice(0, numberOfPosts) : blogPosts;
 
   return (
     <div className="grid">
       {postsToShow.map((doc, index) => (
-        <div className="s12 m6 l3" key={doc.slug}>
+        <div
+          className="s12 m6 l3"
+          key={doc.slug}>
           <BlogCard
             key={doc.slug}
             slug={doc.slug}

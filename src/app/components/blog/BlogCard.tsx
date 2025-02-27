@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 
 type BlogCardProps = {
   slug: string;
@@ -9,12 +9,7 @@ type BlogCardProps = {
   meta: string;
 };
 
-const BlogCard: React.FC<BlogCardProps> = ({
-  slug,
-  title,
-  description,
-  meta,
-}) => {
+const BlogCard: React.FC<BlogCardProps> = ({ slug, title, description, meta }) => {
   return (
     <article className="no-padding border round">
       {/* <Image

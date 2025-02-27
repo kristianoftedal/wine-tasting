@@ -7,7 +7,8 @@
     "build": "contentlayer2 build && next build",
     "start": "next start",
     "lint": "next lint",
-    "build:content": "contentlayer2 build"
+    "build:content": "contentlayer2 build",
+    "format": "prettier --write . && eslint --fix ."
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -30,8 +31,8 @@
     "@types/node": "^20",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.24.1",
-    "@typescript-eslint/parser": "^8.24.1",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^10.0.1",

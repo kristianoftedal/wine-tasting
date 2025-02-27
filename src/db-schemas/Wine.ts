@@ -1,57 +1,58 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const CharacteristicSchema = new mongoose.Schema({
   name: String,
   readableValue: String,
-  value: String,
+  value: String
 });
 
 const IngredientSchema = new mongoose.Schema({
   code: String,
   formattedValue: String,
-  readableValue: String,
+  readableValue: String
 });
 
 const MainCategorySchema = new mongoose.Schema({
   code: String,
-  name: String,
+  name: String
 });
 
 const StoragePotentialSchema = new mongoose.Schema({
   code: String,
-  formattedValue: String,
+  formattedValue: String
 });
 
 const StyleSchema = new mongoose.Schema({
   code: String,
   description: String,
-  name: String,
+  name: String
 });
 
 const TraitSchema = new mongoose.Schema({
   formattedValue: String,
   name: String,
-  readableValue: String,
+  readableValue: String
 });
 
 const DistrictSchema = new mongoose.Schema({
   code: String,
   name: String,
   searchQuery: String,
-  url: String,
+  url: String
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ImageSchema = new mongoose.Schema({
   altText: String,
   format: String,
   imageType: String,
-  url: String,
+  url: String
 });
 
 const LitrePriceSchema = new mongoose.Schema({
   formattedValue: String,
   readableValue: String,
-  value: Number,
+  value: Number
 });
 
 const ContentSchema = new mongoose.Schema({
@@ -60,7 +61,7 @@ const ContentSchema = new mongoose.Schema({
   isGoodFor: [MainCategorySchema],
   storagePotential: StoragePotentialSchema,
   style: StyleSchema,
-  traits: [TraitSchema],
+  traits: [TraitSchema]
 });
 
 const WineSchema = new mongoose.Schema(
@@ -99,13 +100,12 @@ const WineSchema = new mongoose.Schema(
     url: String,
     volume: LitrePriceSchema,
     wholeSaler: String,
-    year: String,
+    year: String
   },
-  { collection: "wine" }, // Specifies the collection name in MongoDB
+  { collection: 'WinesDetailed' } // Specifies the collection name in MongoDB
 );
 
 // Ensure the model is registered only once
-const Wine =
-  mongoose.models.Wine || mongoose.model("Wine", WineSchema, "winesdetailed");
+const Wine = mongoose.models.Wine || mongoose.model('Wine', WineSchema, 'WinesDetailed');
 
 export default Wine;
