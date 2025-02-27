@@ -1,6 +1,7 @@
 'use client';
 
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
+import { useAtom } from 'jotai';
 import React, { useState } from 'react';
 
 export const Summary: React.FC = () => {
@@ -9,10 +10,10 @@ export const Summary: React.FC = () => {
 
   const [showWine, setShowWine] = useState<boolean>(false);
 
-  const vmpFylde = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'fylde')?.value;
-  const vmpFriskhet = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'friskhet')?.value;
-  const vmpSnærp = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'garvestoffer')?.value;
-  const vmpSødme = wine.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'sødme')?.value;
+  const vmpFylde = wine!.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'fylde')?.value;
+  const vmpFriskhet = wine!.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'friskhet')?.value;
+  const vmpSnærp = wine!.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'garvestoffer')?.value;
+  const vmpSødme = wine!.content.characteristics.find(x => x.name.toLocaleLowerCase() === 'sødme')?.value;
 
   return (
     <article>
@@ -59,19 +60,19 @@ export const Summary: React.FC = () => {
           <div className="grid">
             <div className="s2">Farge</div>
             <div className="s5">{tastingState.farge}</div>
-            <div className="s5">{wine.color}</div>
+            <div className="s5">{wine!.color}</div>
           </div>
           <hr className="tasting-hr"></hr>
           <div className="grid">
             <div className="s2">Lukt</div>
             <div className="s5">{tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')}</div>
-            <div className="s5">{wine.smell}</div>
+            <div className="s5">{wine!.smell}</div>
           </div>
           <hr className="tasting-hr"></hr>
           <div className="grid">
             <div className="s2">Smak</div>
             <div className="s5">{tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}</div>
-            <div className="s5">{wine.taste}</div>
+            <div className="s5">{wine!.taste}</div>
           </div>
           <hr className="tasting-hr"></hr>
           <div className="grid">
@@ -86,14 +87,14 @@ export const Summary: React.FC = () => {
             <div className="s5">{vmpFylde}</div>
           </div>
           <hr className="tasting-hr"></hr>
-          {wine.mainCategory.code === 'rødvin' && (
+          {wine!.mainCategory.code === 'rødvin' && (
             <div className="grid">
               <div className="s2">Snærp</div>
               <div className="s5">{tastingState.snærp}</div>
               <div className="s5">{vmpSnærp}</div>
             </div>
           )}
-          {wine.mainCategory.code !== 'rødvin' && (
+          {wine!.mainCategory.code !== 'rødvin' && (
             <div className="grid">
               <div className="s2">Sødme</div>
               <div className="s5">{tastingState.sødme}</div>

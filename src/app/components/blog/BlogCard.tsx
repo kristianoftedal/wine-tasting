@@ -1,6 +1,7 @@
 'use client';
 
 import { redirect } from 'next/navigation';
+import React from 'react';
 
 type BlogCardProps = {
   slug: string;
@@ -21,7 +22,6 @@ const BlogCard: React.FC<BlogCardProps> = ({ slug, title, description, meta }) =
       /> */}
       <div className="padding">
         <h5>{title}</h5>
-
         <p className="text-gray-600 mb-4">{description}</p>
         <p className="text-sm text-gray-500">{meta}</p>
         <nav>

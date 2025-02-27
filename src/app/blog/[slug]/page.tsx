@@ -2,6 +2,7 @@ import BlogCard from '@/app/components/blog/BlogCard';
 import { Mdx } from '@/app/components/blog/Mdx';
 import { getDocFromParams, getNextBlogPost, removeEmojis } from '@/lib/blog';
 import { Metadata } from 'next';
+import React from 'react';
 
 export const generateMetadata = async (props: Props): Promise<Metadata> => {
   const params = await props.params;

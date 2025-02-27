@@ -2,6 +2,7 @@
 
 import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
+import { TastingModel } from '../../models/tastingModel';
 import { tastingAtom, wineAtom } from '../../store/tasting';
 
 export const Color: React.FC = () => {
@@ -9,10 +10,14 @@ export const Color: React.FC = () => {
   const wine = useAtomValue(wineAtom);
 
   const onChange = (value: string) => {
-    setTasting(prev => {
+    setTasting((prev: TastingModel) => {
       return { ...prev, farge: value };
     });
   };
+
+  if (!wine) {
+    return <p>Ingen vin valgt</p>;
+  }
 
   return (
     <article>

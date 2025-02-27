@@ -3,6 +3,8 @@ import { SelectedFlavors } from '@/app/components/tasting/SelectedFlavours';
 import wineFlavorsData from '@/app/data/flavor.json';
 import { Category, Flavor, Subcategory } from '@/app/models/flavorModel';
 import { useAtom } from 'jotai';
+import React from 'react';
+import { TastingModel } from '../../models/tastingModel';
 import { tastingAtom } from '../../store/tasting';
 
 interface Props {
@@ -13,7 +15,7 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt' }) => {
   const [tastingState, setTastingState] = useAtom(tastingAtom);
 
   const handleFlavorClick = (category: Category, subcategory: Subcategory, flavor: Flavor) => {
-    setTastingState(prev => {
+    setTastingState((prev: TastingModel) => {
       const key = type === 'lukt' ? 'selectedFlavorsLukt' : 'selectedFlavorsSmak';
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const existing = prev[key] as any[];
@@ -44,7 +46,9 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt' }) => {
       <div className="field textarea border">
         <textarea
           value={tastingState[type]}
-          onChange={event => setTastingState(prev => ({ ...prev, [type]: event.target.value }))}></textarea>
+          onChange={event =>
+            setTastingState((prev: TastingModel) => ({ ...prev, [type]: event.target.value }))
+          }></textarea>
         <span className="helper">Kommentar</span>
       </div>
     </div>

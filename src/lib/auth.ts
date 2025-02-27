@@ -37,9 +37,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     session({ session, token }) {
-      // I skipped the line below coz it gave me a TypeError
-      // session.accessToken = token.accessToken;
-      session.user.id = token.id;
+      session.user.id = token.id as string;
 
       return session;
     }

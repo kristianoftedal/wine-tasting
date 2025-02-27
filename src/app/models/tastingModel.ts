@@ -1,3 +1,5 @@
+import { SelectedFlavor } from './flavorModel';
+
 export type TastingModel = {
   farge: string;
   lukt: string;
@@ -12,4 +14,5 @@ export type TastingModel = {
   selectedFlavorsSmak: SelectedFlavor[];
   userId: string;
   productId: string;
+  tastedAt: Date;
 };

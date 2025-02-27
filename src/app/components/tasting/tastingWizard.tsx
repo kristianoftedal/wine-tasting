@@ -1,12 +1,12 @@
 'use client';
 
 import { addTasting } from '@/actions/tasting';
+import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { tastingAtom, wineAtom } from '../../store/tasting';
-import { Color } from './color';
+import { Color } from './Color';
 import { FlavorSelection } from './FlavorSelection';
 import { TastingProps } from './props';
 import { Summary } from './Summary';
@@ -24,6 +24,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
 
   const onSave = async () => {
     const userId = data?.user?.id.toString();
+    if (!userId) return;
     const productId = wine.code;
     const tastedAt = new Date();
     await addTasting({ ...tasting, userId, productId, tastedAt });
@@ -48,7 +49,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
         {index === 1 && <FlavorSelection type="lukt" />}
         {index === 2 && <FlavorSelection type="smak" />}
         {index === 3 && <TastingAttributes />}
-        {index === 4 && <Summary wine={wine} />}
+        {index === 4 && <Summary />}
 
         {index === 4 && status === 'authenticated' && (
           <div style={{ marginTop: '32px' }}>

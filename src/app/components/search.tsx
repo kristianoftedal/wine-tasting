@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import keyValues from '../data/wines-key-value.json';
 import { searchModel } from '../models/searchModel';
 
