@@ -4,8 +4,8 @@ import { useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import BlogList from './components/blog/BlogList';
-import { Progress } from './components/Progress1';
-import { Search } from './components/Search1';
+import { Progress } from './components/Progress';
+import { Search } from './components/Search';
 import { searchModel } from './models/searchModel';
 import { initialTastingValue, tastingAtom } from './store/tasting';
 
