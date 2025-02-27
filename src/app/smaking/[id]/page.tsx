@@ -1,4 +1,4 @@
-import { TastingWizard } from '@/app/components/tasting/TastingWizard1';
+import { TastingWizard } from '@/app/components/tasting/TastingWizard';
 import clientPromise from '@/lib/mongodb';
 
 export default async function Tasting({ params }: { params: Promise<{ id: string }> }) {
