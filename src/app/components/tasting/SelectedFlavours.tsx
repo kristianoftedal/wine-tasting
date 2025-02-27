@@ -1,3 +1,4 @@
+import React from 'react';
 import { Category, Flavor, SelectedFlavor, Subcategory } from '../../models/flavorModel';
 
 // Accordion Component to render Category and Subcategories

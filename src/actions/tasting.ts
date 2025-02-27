@@ -1,8 +1,8 @@
 'use server';
 import { connectDB } from '@/lib/mongoose';
+import { TastingModel } from '../app/models/tastingModel';
 import Tasting from '../db-schemas/Tasting';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const addTasting = async (tastingModel: TastingModel) => {
   try {
     await connectDB();

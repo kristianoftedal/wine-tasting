@@ -4,15 +4,16 @@ import { useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import BlogList from './components/blog/BlogList';
-import { Progress } from './components/progress';
+import { Progress } from './components/Progress';
 import { Search } from './components/Search';
+import { searchModel } from './models/searchModel';
 import { initialTastingValue, tastingAtom } from './store/tasting';
 
 export default function Index() {
   const { status } = useSession();
   const setTasting = useSetAtom(tastingAtom);
 
-  const onWineSelected = wine => {
+  const onWineSelected = (wine: searchModel) => {
     setTasting(initialTastingValue);
     redirect(`/smaking/${wine.productId}`);
   };

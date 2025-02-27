@@ -5,6 +5,8 @@ import { format } from 'date-fns';
 import { getServerSession } from 'next-auth';
 import User from '../../db-schemas/User';
 import { authOptions } from '../../lib/auth';
+import { SelectedFlavor } from '../models/flavorModel';
+import { TastingModel } from '../models/tastingModel';
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -26,8 +28,8 @@ export default async function Page() {
         <p>Ingen smaksnotater funnet.</p>
       ) : (
         <ul className="list bordered">
-          {tastings.map(tasting => (
-            <li key={tasting._id}>
+          {tastings.map((tasting: TastingModel, index: number) => (
+            <li key={index}>
               <details>
                 <summary>
                   Navn: <strong>{wines.find(x => x.code === tasting.productId)?.name}</strong>,{' '}
@@ -36,10 +38,12 @@ export default async function Page() {
                 <div className="max">
                   <p>Farge: {tasting.farge}</p>
                   <p>
-                    Lukt: {tasting.selectedFlavorsLukt.map(x => x.flavor.name).join(', ') || '&nbsp;'}, {tasting.lukt}
+                    Lukt: {tasting.selectedFlavorsLukt.map((x: SelectedFlavor) => x.flavor.name).join(', ') || '&nbsp;'}
+                    , {tasting.lukt}
                   </p>
                   <p>
-                    Smak: {tasting.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}, {tasting.smak}
+                    Smak: {tasting.selectedFlavorsSmak.map((x: SelectedFlavor) => x.flavor.name).join(', ')},{' '}
+                    {tasting.smak}
                   </p>
                   <p>Friskhet: {tasting.friskhet}</p>
                   <p>Fylde: {tasting.fylde}</p>

@@ -1,4 +1,5 @@
 import { blogPosts } from '@/lib/blog';
+import React from 'react';
 import BlogCard from './BlogCard';
 
 interface Props {

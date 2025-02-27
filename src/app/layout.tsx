@@ -2,6 +2,7 @@ import 'beercss';
 import 'beercss/dist/cdn/beer';
 import 'material-dynamic-colors';
 import type { Metadata } from 'next';
+import React from 'react';
 import AppBar from './components/AppBar';
 import './globals.css';
 import { Provider } from './provider';

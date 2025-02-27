@@ -2,6 +2,9 @@
   "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   "parser": "@typescript-eslint/parser",
   "rules": {
-    "@typescript-eslint/no-explicit-any": "error"
-  }
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-undef": "error"
+  },
+  "ignorePatterns": ["*/api/auth/**/*.ts"]
 }
