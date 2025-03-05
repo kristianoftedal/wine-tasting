@@ -11,6 +11,10 @@
     "format": "prettier --write . && eslint --fix ."
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "@next/mdx": "^15.2.0",
+    "@types/mdx": "^2.0.13",
     "bcryptjs": "^2.4.3",
     "beercss": "^3.7.12",
     "contentlayer2": "^0.5.4",

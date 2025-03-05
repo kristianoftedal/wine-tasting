@@ -48,7 +48,9 @@ export default function AppBar() {
         </button>
         <h5 className="max center-align">Smak Vin!</h5>
         {loginStatus()}
-        <button className="circle transparent">
+        <button
+          className="circle transparent"
+          onClick={() => router.push('/profil')}>
           <i className="extra">person</i>
         </button>
         {/* <button className="circle transparent">
