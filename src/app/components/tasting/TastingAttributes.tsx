@@ -38,6 +38,8 @@ export const TastingAttributes: React.FC = () => {
     }
   };
 
+  const numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
   return (
     <div className="grid">
       {attributes.map(attr => (
@@ -45,22 +47,34 @@ export const TastingAttributes: React.FC = () => {
           className="l12 s12"
           key={attr}>
           <div className="center middle-align row">{attr}</div>
-          <div className="row">
-            <p>1</p>
-            <label className="max">
-              <input
-                style={{ width: '100%' }}
-                type="range"
-                min="1"
-                max={attr === 'karakter' ? 6 : 12}
-                value={getTastingAttribute(attr)}
-                onChange={e => handleChange(attr, parseInt(e.target.value))}
-              />
-            </label>
-            <p>{attr === 'karakter' ? 6 : 12}</p>
-          </div>
           <div className="center middle-align row">{getTastingAttribute(attr)}</div>
-          <hr />
+          <div className="center middle-align row">
+            <nav
+              className="no-space"
+              style={{ width: '100%' }}>
+              <button
+                className={`border left-round max ${getTastingAttribute(attr) === 1 ? 'fill' : ''}`}
+                onClick={() => handleChange(attr, parseInt(1))}>
+                <span>1</span>
+              </button>
+              {numbers
+                .filter(x => attr !== 'karakter' || (attr === 'karakter' && x < 6))
+                .map((x, i) => (
+                  <button
+                    key={i}
+                    className={`border no-round max ${getTastingAttribute(attr) === x ? 'fill' : ''}`}
+                    onClick={() => handleChange(attr, parseInt(x))}>
+                    {x}
+                  </button>
+                ))}
+              <button
+                className={`border right-round max ${getTastingAttribute(attr) === (attr === 'karakter' ? 6 : 12) ? 'fill' : ''}`}
+                onClick={() => handleChange(attr, parseInt(attr === 'karakter' ? 6 : 12))}>
+                <span>{attr === 'karakter' ? 6 : 12}</span>
+              </button>
+            </nav>
+          </div>
+          <hr style={{ marginTop: '1rem' }} />
         </div>
       ))}
     </div>

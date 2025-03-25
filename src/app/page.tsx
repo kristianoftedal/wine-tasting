@@ -3,7 +3,6 @@
 import { useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
-import BlogList from './components/blog/BlogList';
 import { Progress } from './components/Progress';
 import { Search } from './components/Search';
 import { searchModel } from './models/searchModel';
@@ -47,7 +46,6 @@ export default function Index() {
             </p>
           </div>
           <hr />
-          <BlogList />
         </div>
       )}
     </>

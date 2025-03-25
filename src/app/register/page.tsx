@@ -27,7 +27,7 @@ export default function Register() {
 
   return (
     <section className="center-align middle-align">
-      <article style={{ minWidth: '20vw' }}>
+      <article style={{ minWidth: '24vw' }}>
         <form
           ref={ref}
           action={handleSubmit}
@@ -38,7 +38,6 @@ export default function Register() {
           <div className="field label border">
             <input
               type="text"
-              placeholder="Navn"
               name="name"
             />
             <label>Navn</label>
@@ -46,7 +45,6 @@ export default function Register() {
           <div className="field label border">
             <input
               type="email"
-              placeholder="Email"
               name="email"
             />
             <label>E-post</label>
@@ -55,7 +53,6 @@ export default function Register() {
           <div className="field label border">
             <input
               type="password"
-              placeholder="Password"
               name="password"
             />
             <label>Passord</label>

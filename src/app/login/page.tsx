@@ -1,8 +1,8 @@
 'use client';
-import { FormEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { FormEvent, useState } from 'react';
 
 export default function Login() {
   const [error, setError] = useState('');
@@ -26,7 +26,7 @@ export default function Login() {
 
   return (
     <section className="center-align middle-align">
-      <article style={{ minWidth: '20vw' }}>
+      <article style={{ minWidth: '24vw' }}>
         <form
           className="padding"
           onSubmit={handleSubmit}>
@@ -36,7 +36,6 @@ export default function Login() {
             <div className="field label border">
               <input
                 type="email"
-                placeholder="Email"
                 name="email"
               />
               <label>Email</label>
@@ -44,7 +43,6 @@ export default function Login() {
             <div className="field label border">
               <input
                 type="password"
-                placeholder="Password"
                 name="password"
               />
               <label>Password</label>

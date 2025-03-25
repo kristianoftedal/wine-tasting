@@ -24,8 +24,9 @@ export default function CreateGroupForm({
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const router = useRouter();
 
-  const handleSearch = async () => {
-    if (searchQuery.trim()) {
+  const onSearchChanged = async value => {
+    setSearchQuery(value);
+    if (searchQuery.trim() && searchQuery.length > 2) {
       const results = await searchUsers(searchQuery);
       setSearchResults(results);
     } else {
@@ -56,9 +57,7 @@ export default function CreateGroupForm({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="card">
+    <form onSubmit={handleSubmit}>
       <div className="field label border">
         <input
           type="text"
@@ -72,23 +71,18 @@ export default function CreateGroupForm({
         <input
           type="text"
           value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
+          onChange={e => onSearchChanged(e.target.value)}
           placeholder="Search users..."
         />
-        <button
-          type="button"
-          onClick={handleSearch}
-          className="border">
-          Search
-        </button>
       </div>
       {searchResults.length > 0 && (
-        <div className="field">
-          <ul className="collection">
+        <>
+          <p>Treff: </p>
+          <ul className="list border">
             {searchResults.map(user => (
               <li
                 key={user._id}
-                className="collection-item">
+                className="padding">
                 {user.name} ({user.email})
                 <button
                   type="button"
@@ -99,12 +93,12 @@ export default function CreateGroupForm({
               </li>
             ))}
           </ul>
-        </div>
+        </>
       )}
       {members.length > 0 && (
         <div className="field">
-          <h3>Selected Members:</h3>
-          <ul className="collection">
+          <h5>Valgte medlemmer:</h5>
+          <ul className="list border">
             {members.map(member => (
               <li
                 key={member._id}
@@ -121,11 +115,11 @@ export default function CreateGroupForm({
           </ul>
         </div>
       )}
-      <div className="field">
+      <div className="field padding">
         <button
           type="submit"
           className="primary">
-          Create Group
+          Opprett gruppe
         </button>
       </div>
     </form>

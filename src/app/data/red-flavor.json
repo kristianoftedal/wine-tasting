@@ -1,0 +1,389 @@
+[
+  {
+    "name": "Fruktig",
+    "backgroundColor": "#ED4C67",
+    "description": "Aromaer og smaker som minner om ulike flavors frukt.",
+    "icon": "🍎🍓🍉🍑🍋🥭🍈🫐🍇",
+    "subcategories": [
+      {
+        "name": "Sitrus",
+        "description": "Frisk, syrlig smak fra sitrusfrukter.",
+        "icon": "🍋",
+        "backgroundColor": "#A3CB38",
+        "flavors": [
+          { "name": "Grapefrukt", "icon": "🍊" },
+          { "name": "Appelsin", "icon": "🍊" },
+          { "name": "Blodappelsin", "icon": "🍊" }
+        ]
+      },
+      {
+        "name": "Trefrukt",
+        "description": "Andre fruktflavors som ikke passer i andre nameer.",
+        "icon": "🍏",
+        "backgroundColor": "#FFC312",
+        "flavors": [
+          { "name": "Bakt eple", "icon": "🍏" },
+          { "name": "Pære", "icon": "🍐" },
+          { "name": "Vannmelon", "icon": "🍉" },
+          { "name": "Sharon / kakifrukt", "icon": "🍈" }
+        ]
+      },
+      {
+        "name": "Tropisk frukt",
+        "description": "",
+        "icon": "🥭",
+        "backgroundColor": "#F79F1F",
+        "flavors": [
+          { "name": "Dragefrukt", "icon": "🥭" },
+          { "name": "Banan", "icon": "🍌" }
+        ]
+      },
+      {
+        "name": "Rød frukt",
+        "description": "Søte eller syrlige små frukter.",
+        "icon": "🍓",
+        "backgroundColor": "#EA2027",
+        "flavors": [
+          { "name": "Sure kirsebær", "icon": "🍒" },
+          { "name": "Tranebær", "icon": "🍒" },
+          { "name": "Røde rips", "icon": "🍒" },
+          { "name": "Granateple", "icon": "🍈" },
+          { "name": "Rød plomme", "icon": "🍒" },
+          { "name": "Kirsebær", "icon": "🍒" },
+          { "name": "Jordbær", "icon": "🍓" },
+          { "name": "Bringebær", "icon": "🍇" },
+          { "name": "Frukt pønsj", "icon": "🍇" }
+        ]
+      },
+      {
+        "name": "Mørk frukt",
+        "description": "",
+        "icon": "🫐",
+        "backgroundColor": "#D980FA",
+        "flavors": [
+          { "name": "Boysenbær", "icon": "🍒" },
+          { "name": "Solbær", "icon": "🍇" },
+          { "name": "Blå plomme", "icon": "🍒" },
+          { "name": "Moreller", "icon": "🍒" },
+          { "name": "Blåbær", "icon": "🍒" },
+          { "name": "Bjørnebær", "icon": "🍇" },
+          { "name": "Skogsbær", "icon": "🍒" },
+          { "name": "Sorte oliven", "icon": "🍓" }
+        ]
+      },
+      {
+        "name": "Tørket frukt",
+        "description": "Aromaer og smaker som minner om tørkede frukter.",
+        "icon": "🍇",
+        "backgroundColor": "#B53471",
+        "flavors": [
+          { "name": "Rosiner", "icon": "🍇" },
+          { "name": "Fiken", "icon": "🍒" },
+          { "name": "Svisker", "icon": "🍒" },
+          { "name": "Hoisin", "icon": "🍒" },
+          { "name": "Fruktkake", "icon": "🍒" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Jordaktig",
+    "description": "Aromaer som minner om jord og natur.",
+    "icon": "🪨💦🌍🍄🏺",
+    "backgroundColor": "#6F1E51",
+    "subcategories": [
+      {
+        "name": "Jordsmonn",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Potteplante jord", "icon": "🌱" },
+          { "name": "Rødbet", "icon": "🍄" },
+          { "name": "Keramikk", "icon": "🏺" },
+          { "name": "Støv", "icon": "🏺" }
+        ]
+      },
+      {
+        "name": "Mineral",
+        "description": "Mineralske og steinaktige aromaer.",
+        "icon": "🪨",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Vulkansk stein", "icon": "🪨" },
+          { "name": "Strøsingel / grus", "icon": "💦" },
+          { "name": "Grafitt", "icon": "💦" },
+          { "name": "Petrichoir / lukten etter regn", "icon": "💦" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Urteaktig",
+    "description": "Friske eller krydrede urtearomaer.",
+    "icon": "🌿🍃🌱🪴🍂",
+    "backgroundColor": "#009432",
+    "subcategories": [
+      {
+        "name": "Harpiksholdige urter",
+        "description": "Friske og grønne urteaktige noter.",
+        "icon": "🍃",
+        "flavors": [
+          { "name": "Eukalytus", "icon": "🌱" },
+          { "name": "Rosmarin", "icon": "🍂" },
+          { "name": "Oregano", "icon": "🫑" },
+          { "name": "Sage", "icon": "🫑" }
+        ]
+      },
+      {
+        "name": "Urt",
+        "description": "Varme, krydrede noter.",
+        "icon": "🪴",
+        "backgroundColor": "",
+        "flavors": [{ "name": "Merian", "icon": "🌿" }]
+      },
+      {
+        "name": "Urteaktig / Vegetal (Methoxypyrazines)",
+        "description": "Varme, krydrede noter.",
+        "icon": "🪴",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Tomatplanteblader", "icon": "🌿" },
+          { "name": "Grønne pepperkorn", "icon": "🌿" },
+          { "name": "Paprika", "icon": "🌿" },
+          { "name": "Mentol", "icon": "🌿" },
+          { "name": "Mint", "icon": "🌿" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Søt",
+    "description": "Sødmefull",
+    "icon": "",
+    "backgroundColor": "#FDA7DF",
+    "subcategories": [
+      {
+        "name": "Søt",
+        "description": "Subtile, florale aromaer.",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Tyggegummi", "icon": "" },
+          { "name": "Kokosnøtt", "icon": "" },
+          { "name": "Vanilje", "icon": "" }
+        ]
+      },
+      {
+        "name": "Karamellisert",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Brunt sukker", "icon": "" },
+          { "name": "Brent karamell", "icon": "" },
+          { "name": "Cola", "icon": "" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Krydder",
+    "description": "Sødmefull",
+    "icon": "",
+    "backgroundColor": "#FDA7DF",
+    "subcategories": [
+      {
+        "name": "Brunt krydder",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Bakekrydder", "icon": "" },
+          { "name": "Allehånde", "icon": "" },
+          { "name": "Nellik", "icon": "" },
+          { "name": "Kanel", "icon": "" },
+          { "name": "Kinesisk fem-krydderblanding", "icon": "" },
+          { "name": "Lakris", "icon": "" },
+          { "name": "Anis", "icon": "" }
+        ]
+      },
+      {
+        "name": "Gråskimmel (Botrytis cinerea) ",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Ingefær", "icon": "" },
+          { "name": "Safran", "icon": "" }
+        ]
+      },
+      {
+        "name": "Pepper",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Chili pepper", "icon": "" },
+          { "name": "Sort pepper", "icon": "" },
+          { "name": "Hvitt pepper", "icon": "" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Nøtt / kakao",
+    "description": "Sødmefull",
+    "icon": "",
+    "backgroundColor": "#FDA7DF",
+    "subcategories": [
+      {
+        "name": "Nøtt",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Hvalnøtt", "icon": "" },
+          { "name": "Hasselnøtt", "icon": "" }
+        ]
+      },
+      {
+        "name": "Kakao",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Sjokolade", "icon": "" },
+          { "name": "Kakaopulver", "icon": "" },
+          { "name": "Johannestre pulver / Carob", "icon": "" },
+          { "name": "Espresso", "icon": "" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Ristet",
+    "description": "Sødmefull",
+    "icon": "",
+    "backgroundColor": "#FDA7DF",
+    "subcategories": [
+      {
+        "name": "Te",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [{ "name": "Sort te", "icon": "" }]
+      },
+      {
+        "name": "Tobakk",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Sigareske", "icon": "" },
+          { "name": "Tobakkblad", "icon": "" },
+          { "name": "Søt tobakk", "icon": "" }
+        ]
+      },
+      {
+        "name": "Brent",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Sedertre", "icon": "" },
+          { "name": "Grill", "icon": "" },
+          { "name": "Aske", "icon": "" },
+          { "name": "Røyk", "icon": "" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Floral",
+    "description": "Delikate aromaer av blomster.",
+    "icon": "🌸🌼🌺",
+    "backgroundColor": "#FDA7DF",
+    "subcategories": [
+      {
+        "name": "Floral",
+        "description": "Subtile, florale aromaer.",
+        "icon": "🌼",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Iris", "icon": "🌼" },
+          { "name": "Pion", "icon": "🌸" },
+          { "name": "Syrin", "icon": "🌺" },
+          { "name": "Fiol", "icon": "🌺" },
+          { "name": "Rose", "icon": "🌺" },
+          { "name": "Hibiskus / Hawaiirose", "icon": "🌺" },
+          { "name": "Lavender", "icon": "🌺" },
+          { "name": "Rabarbra", "icon": "🌺" },
+          { "name": "Bergamot", "icon": "🌺" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Andre smaker",
+    "description": "Disse passer ikke inn andre steder",
+    "icon": "",
+    "backgroundColor": "",
+    "subcategories": [
+      {
+        "name": "Stikkende",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Balsmico", "icon": "" },
+          { "name": "Eddik", "icon": "" },
+          { "name": "Krydder", "icon": "" }
+        ]
+      },
+      {
+        "name": "Sur / fermentert",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Krem", "icon": "" },
+          { "name": "Yoghurt", "icon": "" },
+          { "name": "Kjernemelk", "icon": "" }
+        ]
+      },
+      {
+        "name": "Kjemisk",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [{ "name": "Tjære", "icon": "" }]
+      },
+      {
+        "name": "Svovel",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Brent gummi", "icon": "" },
+          { "name": "Hvitløk", "icon": "" },
+          { "name": "Kokt egg", "icon": "" }
+        ]
+      },
+      {
+        "name": "Umami",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [
+          { "name": "Baconfett", "icon": "" },
+          { "name": "Stekt kjøtt", "icon": "" },
+          { "name": "Soyasaus", "icon": "" },
+          { "name": "Pastrami", "icon": "" },
+          { "name": "Trøffel", "icon": "" },
+          { "name": "Lær", "icon": "" }
+        ]
+      }
+    ]
+  }
+]
