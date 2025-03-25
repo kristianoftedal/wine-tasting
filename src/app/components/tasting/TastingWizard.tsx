@@ -6,6 +6,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { Color } from './Color';
 import { FlavorSelection } from './FlavorSelection';
 import { TastingProps } from './props';
@@ -18,16 +19,19 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const tasting = useAtomValue(tastingAtom);
   const router = useRouter();
   const { status, data } = useSession();
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const [index, setIndex] = useState<number>(0);
   const steps = ['Se', 'Aroma', 'Smak', 'Egenskaper', 'Oppsummering'];
 
   const onSave = async () => {
+    setIsSaving(true);
     const userId = data?.user?.id.toString();
     if (!userId) return;
     const productId = wine.code;
     const tastedAt = new Date();
     await addTasting({ ...tasting, userId, productId, tastedAt });
+    toast('Smaksnotat lagret 🥂');
   };
 
   return (
@@ -56,9 +60,11 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
             Lagre smaksnotat
             <button
               className=""
+              disabled={isSaving}
               onClick={async () => await onSave()}>
               <i>add</i>
             </button>
+            <Toaster />
           </div>
         )}
       </main>

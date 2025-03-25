@@ -40,44 +40,41 @@ export default async function Page() {
         </div>
       </header>
 
-      <section className="row">
+      <section className="grid">
         <div className="col s12 m6">
           <div className="card">
             <div className="card-content">
-              <span className="card-title">Previous Tastings</span>
+              <span className="card-title">Tidligere smaksnotater</span>
               {tastings.length === 0 ? (
                 <p>Ingen smaksnotater funnet.</p>
               ) : (
-                <ul className="list bordered">
-                  {tastings.map((tasting: TastingModel, index: number) => (
-                    <li key={index}>
-                      <details>
-                        <summary>
-                          Navn: <strong>{wines.find(x => x.code === tasting.productId)?.name}</strong>,{' '}
-                          {format(tasting.tastedAt, 'Pp')}
-                        </summary>
-                        <div className="max">
-                          <p>Farge: {tasting.farge}</p>
-                          <p>
-                            Lukt:{' '}
-                            {tasting.selectedFlavorsLukt.map((x: SelectedFlavor) => x.flavor.name).join(', ') ||
-                              '&nbsp;'}
-                            , {tasting.lukt}
-                          </p>
-                          <p>
-                            Smak: {tasting.selectedFlavorsSmak.map((x: SelectedFlavor) => x.flavor.name).join(', ')},{' '}
-                            {tasting.smak}
-                          </p>
-                          <p>Friskhet: {tasting.friskhet}</p>
-                          <p>Fylde: {tasting.fylde}</p>
-                          <p>Sødme: {tasting.sødme}</p>
-                          <p>Karakter: {tasting.karakter}</p>
-                          <p>Kommentar: {tasting.egenskaper}</p>
-                        </div>
-                      </details>
-                    </li>
-                  ))}
-                </ul>
+                tastings.map((tasting: TastingModel, index: number) => (
+                  <details key={index}>
+                    <summary>
+                      <article>
+                        <h5>{wines.find(x => x.code === tasting.productId)?.name}</h5>
+                        <p>{format(tasting.tastedAt, 'Pp')}</p>
+                      </article>
+                    </summary>
+                    <div className="max">
+                      <p>Farge: {tasting.farge}</p>
+                      <p>
+                        Lukt:{' '}
+                        {tasting.selectedFlavorsLukt.map((x: SelectedFlavor) => x.flavor.name).join(', ') || '&nbsp;'},{' '}
+                        {tasting.lukt}
+                      </p>
+                      <p>
+                        Smak: {tasting.selectedFlavorsSmak.map((x: SelectedFlavor) => x.flavor.name).join(', ')},{' '}
+                        {tasting.smak}
+                      </p>
+                      <p>Friskhet: {tasting.friskhet}</p>
+                      <p>Fylde: {tasting.fylde}</p>
+                      <p>Sødme: {tasting.sødme}</p>
+                      <p>Karakter: {tasting.karakter}</p>
+                      <p>Kommentar: {tasting.egenskaper}</p>
+                    </div>
+                  </details>
+                ))
               )}
             </div>
           </div>
@@ -99,9 +96,9 @@ export default async function Page() {
             </div>
             <div className="card-action">
               <Link
-                href="/create-group"
-                className="btn">
-                Create Group
+                href="/profil/opprett-gruppe"
+                className="button">
+                Opprett gruppe
               </Link>
             </div>
           </div>

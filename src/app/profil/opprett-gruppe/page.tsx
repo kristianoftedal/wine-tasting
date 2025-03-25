@@ -7,9 +7,10 @@ async function searchUsers(query: string) {
   'use server';
 
   await connectDB();
-  return User.find({
+  const users = await User.find({
     $or: [{ name: { $regex: query, $options: 'i' } }, { email: { $regex: query, $options: 'i' } }]
   }).limit(5);
+  return JSON.parse(JSON.stringify(users.map(x => ({ _id: x._id, name: x._name, email: x.email }))));
 }
 
 async function createGroup(formData: FormData) {
