@@ -23,11 +23,18 @@ export default function AppBar() {
       );
     } else {
       return (
-        <button
-          onClick={() => router.push('/login')}
-          className="border small-round">
-          Logg inn
-        </button>
+        <>
+          <button
+            onClick={() => router.push('/login')}
+            className="border small-round">
+            Logg inn
+          </button>
+          <button
+            onClick={() => router.push('/registrer')}
+            className="border small-round">
+            Registrer deg
+          </button>
+        </>
       );
     }
   };
