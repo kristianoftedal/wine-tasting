@@ -10,7 +10,6 @@ export type TastingModel = {
   snærp: number;
   karakter: number;
   egenskaper: string;
-  syre: string;
   selectedFlavorsLukt: SelectedFlavor[];
   selectedFlavorsSmak: SelectedFlavor[];
   userId: string;
