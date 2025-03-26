@@ -59,9 +59,7 @@ export const Accordion: React.FC<AccordionProps> = ({ category, subcategories, o
                             type="checkbox"
                             onClick={() => onFlavorClick(category, subcategory, flavor)}
                           />
-                          <span style={{ color: '#FFF' }}>
-                            {flavor.name} {flavor.icon}
-                          </span>
+                          <span style={{ color: '#FFF' }}>{flavor.name}</span>
                         </label>
                       </div>
                       <hr />
