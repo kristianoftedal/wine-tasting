@@ -54,7 +54,7 @@ export const TastingAttributes: React.FC = () => {
               style={{ width: '100%' }}>
               <button
                 className={`border left-round max ${getTastingAttribute(attr) === 1 ? 'fill' : ''}`}
-                onClick={() => handleChange(attr, parseInt(1))}>
+                onClick={() => handleChange(attr, 1)}>
                 <span>1</span>
               </button>
               {numbers
@@ -63,13 +63,13 @@ export const TastingAttributes: React.FC = () => {
                   <button
                     key={i}
                     className={`border no-round max ${getTastingAttribute(attr) === x ? 'fill' : ''}`}
-                    onClick={() => handleChange(attr, parseInt(x))}>
+                    onClick={() => handleChange(attr, x)}>
                     {x}
                   </button>
                 ))}
               <button
                 className={`border right-round max ${getTastingAttribute(attr) === (attr === 'karakter' ? 6 : 12) ? 'fill' : ''}`}
-                onClick={() => handleChange(attr, parseInt(attr === 'karakter' ? 6 : 12))}>
+                onClick={() => handleChange(attr, attr === 'karakter' ? 6 : 12)}>
                 <span>{attr === 'karakter' ? 6 : 12}</span>
               </button>
             </nav>
