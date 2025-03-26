@@ -30,7 +30,7 @@ export default function AppBar() {
             Logg inn
           </button>
           <button
-            onClick={() => router.push('/registrer')}
+            onClick={() => router.push('/register')}
             className="border small-round">
             Registrer deg
           </button>
