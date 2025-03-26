@@ -125,3 +125,7 @@ body.light {
   --surface-container-high: #eae7ec;
   --surface-container-highest: #e4e1e6;
 }
+:is(.checkbox, .radio, .switch) > span:before,
+:is(.checkbox, .radio) > span:after {
+  color: #fff !important;
+}

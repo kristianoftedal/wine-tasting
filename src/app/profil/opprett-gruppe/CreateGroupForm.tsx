@@ -24,7 +24,7 @@ export default function CreateGroupForm({
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const router = useRouter();
 
-  const onSearchChanged = async value => {
+  const onSearchChanged = async (value: string) => {
     setSearchQuery(value);
     if (searchQuery.trim() && searchQuery.length > 2) {
       const results = await searchUsers(searchQuery);

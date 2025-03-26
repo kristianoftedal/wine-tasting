@@ -1,7 +1,6 @@
 // Define the Flavor type as a type alias
 export type Flavor = {
   name: string; // Name of the flavor
-  icon: string; // Icon representing the flavor (e.g., emoji)
   description?: string;
   backgroundColor?: string;
 };
