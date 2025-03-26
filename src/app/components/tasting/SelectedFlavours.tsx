@@ -29,7 +29,7 @@ export const SelectedFlavors: React.FC<SelectedFlavorsProps> = ({ selectedFlavor
                   key={y.flavor.name + y.category.name + y.category.name}
                   className="chip"
                   onClick={() => onFlavorClick(y.category, y.subcategory, y.flavor)}>
-                  {y.flavor.icon} {y.flavor.name} ({y.subcategory.name})
+                  {y.flavor.name} ({y.subcategory.name})
                 </button>
               ))}
             </div>
