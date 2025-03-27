@@ -24,15 +24,18 @@ export const Summary: React.FC = () => {
               <p>Farge: {tastingState.farge}</p>
               <p>
                 Lukt: {tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ') || '&nbsp;'},{' '}
-                {tastingState.lukt}
+                {tastingState.lukt} | intensitet: {tastingState.luktIntensitet}
               </p>
               <p>
-                Smak: {tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}, {tastingState.smak}
+                Smak: {tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}, {tastingState.smak} |
+                intensitet: {tastingState.smaksIntensitet}
               </p>
               <p>Friskhet: {tastingState.friskhet}</p>
               <p>Fylde: {tastingState.fylde}</p>
               <p>Sødme: {tastingState.sødme}</p>
               <p>Karakter: {tastingState.karakter}</p>
+              <p>Alkohol: {tastingState.alkohol}</p>
+              <p>Pris: {tastingState.pris}</p>
               <p>Kommentar: {tastingState.egenskaper}</p>
             </div>
           </div>
@@ -61,6 +64,12 @@ export const Summary: React.FC = () => {
             <div className="s2">Farge</div>
             <div className="s5">{tastingState.farge}</div>
             <div className="s5">{wine!.color}</div>
+          </div>
+          <hr className="tasting-hr"></hr>
+          <div className="grid">
+            <div className="s2">Lukt</div>
+            <div className="s5">{tastingState.luktIntensitet}</div>
+            <div className="s5">{wine!.smell}</div>
           </div>
           <hr className="tasting-hr"></hr>
           <div className="grid">
@@ -101,6 +110,18 @@ export const Summary: React.FC = () => {
               <div className="s5">{vmpSødme}</div>
             </div>
           )}
+          <hr className="tasting-hr"></hr>
+          <div className="grid">
+            <div className="s2">Alkohol</div>
+            <div className="s5">{tastingState.alkohol}</div>
+            <div className="s5">{wine?.content.traits[0].readableValue}</div>
+          </div>
+          <hr className="tasting-hr"></hr>
+          <div className="grid">
+            <div className="s2">Pris</div>
+            <div className="s5">{tastingState.pris}</div>
+            <div className="s5">{wine?.price.value}</div>
+          </div>
         </>
       )}
     </article>

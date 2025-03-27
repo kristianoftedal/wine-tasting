@@ -78,6 +78,24 @@ export const TastingAttributes: React.FC = () => {
           <hr style={{ marginTop: '1rem' }} />
         </div>
       ))}
+      <div className="l12 s12">
+        <div className="field border">
+          <input
+            type="text"
+            value={tastingState.alkohol ?? ''}
+            onChange={event => setTastingState((prev: TastingModel) => ({ ...prev, alkohol: event.target.value }))}
+          />
+          <span className="helper">Alkohol</span>
+        </div>
+        <div className="field border">
+          <input
+            type="text"
+            value={tastingState.pris ?? ''}
+            onChange={event => setTastingState((prev: TastingModel) => ({ ...prev, pris: event.target.value }))}
+          />
+          <span className="helper">Pris</span>
+        </div>
+      </div>
     </div>
   );
 };
