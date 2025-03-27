@@ -10,8 +10,8 @@ export type TastingModel = {
   snærp: number;
   karakter: number;
   egenskaper: string;
-  luktIntensitet: 'lav' | 'middels' | 'høy';
-  smaksIntensitet: 'lav' | 'middels' | 'høy';
+  luktIntensitet: 'lav' | 'middels' | 'høy' | '';
+  smaksIntensitet: 'lav' | 'middels' | 'høy' | '';
   alkohol: string;
   pris: number;
   selectedFlavorsLukt: SelectedFlavor[];
