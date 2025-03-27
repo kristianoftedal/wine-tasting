@@ -4,11 +4,12 @@ import { connectDB } from '@/lib/mongoose';
 import { format } from 'date-fns';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
-import { Event, Group } from '../../db-schemas/Group';
+import Group from '../../db-schemas/Group';
 import User from '../../db-schemas/User';
 import { authOptions } from '../../lib/auth';
 import { SelectedFlavor } from '../models/flavorModel';
 import { TastingModel } from '../models/tastingModel';
+import Event from '../../db-schemas/Event';
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -19,10 +20,8 @@ export default async function Page() {
   const users = await User.find();
   const user = await User.findOne({ email: session?.user?.email });
   const groups = await Group.find({ members: user?.id });
-  const events = await Event.find({ group: { $in: groups.map(g => g._id) } })
-    .sort('date')
-    .limit(3)
-    .populate('group');
+  const groupIds = groups.map(x => x._id);
+  const events = await Event.find({ group: { $in: groupIds } });
 
   const userId = user?._id.toString();
 
@@ -84,19 +83,17 @@ export default async function Page() {
           <div className="card">
             <div className="card-content">
               <span className="card-title">Your Groups</span>
-              <ul className="collection">
+              <ul>
                 {groups.map(group => (
-                  <li
-                    key={group._id.toString()}
-                    className="collection-item">
-                    {group.name}
+                  <li key={group._id.toString()}>
+                    <Link href={`/gruppe/${group._id}`}>{group.name}</Link>
                   </li>
                 ))}
               </ul>
             </div>
             <div className="card-action">
               <Link
-                href="/profil/opprett-gruppe"
+                href="/gruppe/opprett-gruppe"
                 className="button">
                 Opprett gruppe
               </Link>
@@ -109,7 +106,7 @@ export default async function Page() {
             <div className="card-content">
               <span className="card-title">Upcoming Group Events</span>
               <ul className="collection">
-                {events.map(event => (
+                {events?.map(event => (
                   <li
                     key={event._id.toString()}
                     className="collection-item avatar">
