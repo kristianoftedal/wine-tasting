@@ -15,7 +15,7 @@ const TastingSchema = new mongoose.Schema(
     selectedFlavorsSmak: Array,
     luktIntensitet: String,
     smaksIntensitet: String,
-    alkohol: Number,
+    alkohol: String,
     pris: Number,
     userId: String,
     productId: String,

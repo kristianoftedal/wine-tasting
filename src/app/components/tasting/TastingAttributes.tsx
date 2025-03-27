@@ -81,7 +81,7 @@ export const TastingAttributes: React.FC = () => {
       <div className="l12 s12">
         <div className="field border">
           <input
-            type="text"
+            type="number"
             value={tastingState.alkohol ?? ''}
             onChange={event => setTastingState((prev: TastingModel) => ({ ...prev, alkohol: event.target.value }))}
           />
@@ -89,9 +89,11 @@ export const TastingAttributes: React.FC = () => {
         </div>
         <div className="field border">
           <input
-            type="text"
+            type="number"
             value={tastingState.pris ?? ''}
-            onChange={event => setTastingState((prev: TastingModel) => ({ ...prev, pris: event.target.value }))}
+            onChange={event =>
+              setTastingState((prev: TastingModel) => ({ ...prev, pris: parseInt(event.target.value) }))
+            }
           />
           <span className="helper">Pris</span>
         </div>
