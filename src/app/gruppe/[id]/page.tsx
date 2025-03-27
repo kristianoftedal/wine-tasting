@@ -1,10 +1,10 @@
 import Event from '@/db-schemas/Event';
 import Group from '@/db-schemas/Group';
-import User from '@/db-schemas/User';
 import { connectDB } from '@/lib/mongoose';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
+import User, { UserDocument } from '../../../db-schemas/User';
 import { authOptions } from '../../../lib/auth';
 import Member from './Member';
 
@@ -14,13 +14,12 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
   await connectDB();
   const session = await getServerSession(authOptions);
 
+  const userId = session?.user?.id.toString();
+  const groupCheck = await Group.findOne({ members: new ObjectId(userId) });
   const group = await Group.findOne({ _id: new ObjectId(id) });
-  const users = await User.find({ _id: { $in: group?.members } });
-  const userIds = users.map(x => x.id.toString());
-  const userId = session?.user?.id;
-  const isMember = userIds.includes(x => x === userId);
-  console.log('userids: ' + userIds[0]);
-  console.log('is equal: ' + userIds[0] === session?.user?.id);
+  const users = (await User.find({ _id: { $in: group?.members } })) as Array<UserDocument>;
+
+  const isMember = groupCheck !== null;
   const events = await Event.find({ group: group._id });
 
   const addUser = async id => {
@@ -33,17 +32,13 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
   return (
     <main className="responsive">
       <header className="large-padding">
-        <h1>{group.name}</h1>
+        <h4>{group.name}</h4>
       </header>
       <section className="small-padding">
         <h4>Medlemmer</h4>
         {users?.map(x => (
           <article key={x._id}>
-            <h5>
-              <Link href={`/klubbkveld/${x._id}`}>
-                {x.name} {x.date}
-              </Link>
-            </h5>
+            <p>{x.name}</p>
           </article>
         ))}
         <Member
@@ -60,7 +55,7 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
         {events?.map(x => (
           <article key={x._id}>
             <h5>
-              <Link href={`/klubbkveld/${x._id}`}>
+              <Link href={`/arrangement/${x._id}`}>
                 {x.name} {x.date}
               </Link>
             </h5>
