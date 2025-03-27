@@ -1,3 +1,4 @@
+import '@radix-ui/themes/styles.css';
 import 'beercss';
 import 'beercss/dist/cdn/beer';
 import 'material-dynamic-colors';
@@ -22,11 +23,7 @@ export default function RootLayout({
       <Provider>
         <body className="light">
           <AppBar />
-          <main
-            style={{ marginTop: '32px' }}
-            className="responsive">
-            {children}
-          </main>
+          <main style={{ marginTop: '32px' }}>{children}</main>
         </body>
       </Provider>
     </html>

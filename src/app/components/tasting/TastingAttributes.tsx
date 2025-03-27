@@ -49,11 +49,10 @@ export const TastingAttributes: React.FC = () => {
           <div className="center middle-align row">{attr}</div>
           <div className="center middle-align row">{getTastingAttribute(attr)}</div>
           <div className="center middle-align row">
-            <nav
-              className="no-space"
-              style={{ width: '100%' }}>
+            <nav className="no-space">
               <button
-                className={`border left-round max ${getTastingAttribute(attr) === 1 ? 'fill' : ''}`}
+                style={{ padding: 0 }}
+                className={`border left-round small ${getTastingAttribute(attr) === 1 ? 'fill' : ''}`}
                 onClick={() => handleChange(attr, 1)}>
                 <span>1</span>
               </button>
@@ -62,13 +61,15 @@ export const TastingAttributes: React.FC = () => {
                 .map((x, i) => (
                   <button
                     key={i}
-                    className={`border no-round max ${getTastingAttribute(attr) === x ? 'fill' : ''}`}
+                    style={{ padding: 0 }}
+                    className={`border no-round small ${getTastingAttribute(attr) === x ? 'fill' : ''}`}
                     onClick={() => handleChange(attr, x)}>
                     {x}
                   </button>
                 ))}
               <button
-                className={`border right-round max ${getTastingAttribute(attr) === (attr === 'karakter' ? 6 : 12) ? 'fill' : ''}`}
+                style={{ padding: 0 }}
+                className={`border right-round small ${getTastingAttribute(attr) === (attr === 'karakter' ? 6 : 12) ? 'fill' : ''}`}
                 onClick={() => handleChange(attr, attr === 'karakter' ? 6 : 12)}>
                 <span>{attr === 'karakter' ? 6 : 12}</span>
               </button>
