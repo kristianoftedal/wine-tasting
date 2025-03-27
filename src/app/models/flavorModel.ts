@@ -11,7 +11,7 @@ export type Subcategory = {
   description?: string; // Description of the subcategory
   flavors: Flavor[]; // List of flavors in this subcategory
   backgroundColor?: string;
-  icon: string;
+  icon?: string;
 };
 
 // Define the Category type as a type alias
