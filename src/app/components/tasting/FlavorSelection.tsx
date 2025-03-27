@@ -15,6 +15,7 @@ interface Props {
 
 export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => {
   const [tastingState, setTastingState] = useAtom(tastingAtom);
+  const [tasting, setTasting] = useAtom(tastingAtom);
 
   let flavorData = wineFlavorsData;
 
@@ -37,8 +38,37 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
     });
   };
 
+  const onChangeIntensity = (value: 'lav' | 'middels' | 'høy') => {
+    setTasting((prev: TastingModel) => {
+      if (type === 'lukt') return { ...prev, luktIntensitet: value };
+      return { ...prev, smaksIntensitet: value };
+    });
+  };
+
   return (
     <div>
+      <div className="center middle-align row">
+        <nav className="no-space">
+          <button
+            style={{ padding: 0 }}
+            className={`border left-round small ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'lav' ? 'fill' : ''}`}
+            onClick={() => onChangeIntensity('lav')}>
+            Lav
+          </button>
+          <button
+            style={{ padding: 0 }}
+            className={`border no-round small ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'middels' ? 'fill' : ''}`}
+            onClick={() => onChangeIntensity('middels')}>
+            Middels
+          </button>
+          <button
+            style={{ padding: 0 }}
+            className={`border right-round small ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'høy' ? 'fill' : ''}`}
+            onClick={() => onChangeIntensity('høy')}>
+            Høy
+          </button>
+        </nav>
+      </div>
       {flavorData.map(categoryItem => (
         <Accordion
           key={categoryItem.name}

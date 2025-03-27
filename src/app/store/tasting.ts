@@ -14,6 +14,8 @@ export const initialTastingValue = {
   egenskaper: '',
   selectedFlavorsLukt: [],
   selectedFlavorsSmak: [],
+  luktIntensitet: '',
+  smaksIntensitet: '',
   userId: '',
   productId: '',
   tastedAt: new Date()
