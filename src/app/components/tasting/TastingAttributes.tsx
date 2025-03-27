@@ -51,7 +51,7 @@ export const TastingAttributes: React.FC = () => {
           <div className="center middle-align row">
             <nav className="no-space">
               <button
-                style={{ padding: 0 }}
+                style={{ padding: 0, minInlineSize: '1.95rem' }}
                 className={`border left-round small ${getTastingAttribute(attr) === 1 ? 'fill' : ''}`}
                 onClick={() => handleChange(attr, 1)}>
                 <span>1</span>
@@ -61,14 +61,14 @@ export const TastingAttributes: React.FC = () => {
                 .map((x, i) => (
                   <button
                     key={i}
-                    style={{ padding: 0 }}
+                    style={{ padding: 0, minInlineSize: '1.95rem' }}
                     className={`border no-round small ${getTastingAttribute(attr) === x ? 'fill' : ''}`}
                     onClick={() => handleChange(attr, x)}>
                     {x}
                   </button>
                 ))}
               <button
-                style={{ padding: 0 }}
+                style={{ padding: 0, minInlineSize: '1.95rem' }}
                 className={`border right-round small ${getTastingAttribute(attr) === (attr === 'karakter' ? 6 : 12) ? 'fill' : ''}`}
                 onClick={() => handleChange(attr, attr === 'karakter' ? 6 : 12)}>
                 <span>{attr === 'karakter' ? 6 : 12}</span>
