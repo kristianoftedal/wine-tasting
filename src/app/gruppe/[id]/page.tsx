@@ -22,7 +22,7 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
   const isMember = groupCheck !== null;
   const events = await Event.find({ group: group._id });
 
-  const addUser = async id => {
+  const addUser = async (id: string) => {
     'use server';
     const group = await Group.findOne({ _id: new ObjectId(id) });
     group.members.push(userId);
