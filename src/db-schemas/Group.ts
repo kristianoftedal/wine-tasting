@@ -1,16 +1,20 @@
 import mongoose from 'mongoose';
 
-const GroupSchema = new mongoose.Schema({
-  name: String,
-  members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
-});
+export interface GroupDocument {
+  _id: string;
+  name: string;
+  description: string;
+  members: [];
+}
 
-const EventSchema = new mongoose.Schema({
-  name: String,
-  date: Date,
-  group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
-  wines: [String]
-});
+const GroupSchema = new mongoose.Schema(
+  {
+    name: String,
+    description: String,
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+  },
+  { collection: 'Groups' }
+);
 
-export const Group = mongoose.models.Group || mongoose.model('Group', GroupSchema);
-export const Event = mongoose.models.Event || mongoose.model('Event', EventSchema);
+const Group = mongoose.models.Group || mongoose.model<GroupDocument>('Group', GroupSchema);
+export default Group;
