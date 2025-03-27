@@ -1,6 +1,5 @@
-import 'beercss';
-import 'beercss/dist/cdn/beer';
-import 'material-dynamic-colors';
+import { Theme } from '@radix-ui/themes';
+import '@radix-ui/themes/styles.css';
 import type { Metadata } from 'next';
 import React from 'react';
 import AppBar from './components/AppBar';
@@ -21,12 +20,18 @@ export default function RootLayout({
     <html lang="en">
       <Provider>
         <body className="light">
-          <AppBar />
-          <main
-            style={{ marginTop: '32px' }}
-            className="responsive">
-            {children}
-          </main>
+          <Theme
+            accentColor="violet"
+            grayColor="sand"
+            radius="large"
+            scaling="95%">
+            <AppBar />
+            <main
+              style={{ marginTop: '32px' }}
+              className="responsive">
+              {children}
+            </main>
+          </Theme>
         </body>
       </Provider>
     </html>
