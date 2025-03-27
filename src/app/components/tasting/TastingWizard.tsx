@@ -40,7 +40,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
       {status === 'loading' && <Progress />}
       {status !== 'loading' && (
         <>
-          <header className="primary-container">
+          <div className="primary-container">
             <nav>
               <button
                 className="circle transparent"
@@ -49,10 +49,9 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
               </button>
               <h5 className="max">{wine.name} </h5>
             </nav>
-          </header>
-          <main
-            className="responsive"
-            key={'unique'}>
+          </div>
+          <div key={'unique'}>
+            <h6 className="center-align padding">{steps[index]}</h6>
             {index === 0 && <Color />}
             {index === 1 && (
               <FlavorSelection
@@ -81,9 +80,11 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
                 <Toaster />
               </div>
             )}
-          </main>
+          </div>
           <footer>
-            <nav className="padding">
+            <nav
+              className="padding"
+              style={{ justifyContent: 'space-between' }}>
               {index > 0 && (
                 <button
                   className="transparent"
@@ -91,12 +92,18 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
                   <i>arrow_back</i>
                 </button>
               )}
-              <h6 className="max center-align">{steps[index]}</h6>
-              {index <= steps.length && (
+              {index < steps.length && (
                 <button
                   className="transparent"
                   onClick={() => setIndex(index + 1 <= steps.length ? index + 1 : index)}>
                   {steps[index + 1]}
+                  <i>arrow_forward</i>
+                </button>
+              )}
+              {index + 1 === steps.length && (
+                <button
+                  className="transparent"
+                  onClick={() => router.push('/')}>
                   <i>arrow_forward</i>
                 </button>
               )}
