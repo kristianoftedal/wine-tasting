@@ -81,15 +81,15 @@
   },
   {
     "name": "Floral",
-    "description": "Delikate aromaer av blomster.",
+    "description": "Subtile eller fremtredende toner av blomster som roser, fioler eller lavendel.",
     "icon": "🌸🌼🌺",
-    "backgroundColor": "#0652DD",
+    "backgroundColor": "#1e90ff",
     "subcategories": [
       {
         "name": "Floral",
         "description": "Subtile, florale aromaer.",
         "icon": "🌼",
-        "backgroundColor": "#0652DD",
+        "backgroundColor": "#1e90ff",
         "flavors": [
           { "name": "Iris" },
           { "name": "Pion" },
@@ -108,26 +108,33 @@
     "name": "Jordaktig",
     "description": "Aromaer som minner om jord og natur.",
     "icon": "🪨💦🌍🍄🏺",
-    "backgroundColor": "#6F1E51",
+    "backgroundColor": "#009432",
     "subcategories": [
       {
         "name": "Jordsmonn",
         "description": "",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#A3CB38",
         "flavors": [{ "name": "Potteplante jord" }, { "name": "Rødbet" }, { "name": "Keramikk" }, { "name": "Støv" }]
       },
       {
-        "name": "Mineral",
+        "name": "Mineralsk",
         "description": "Mineralske og steinaktige aromaer.",
-        "icon": "🪨",
-        "backgroundColor": "",
+        "icon": "",
+        "backgroundColor": "#1289A7",
         "flavors": [
-          { "name": "Vulkansk stein", "icon": "🪨" },
-          { "name": "Strøsingel / grus", "icon": "💦" },
-          { "name": "Grafitt", "icon": "💦" },
-          { "name": "Petrichoir / lukten etter regn", "icon": "💦" }
+          { "name": "Vulkansk stein" },
+          { "name": "Strøsingel / grus" },
+          { "name": "Grafitt" },
+          { "name": "Petrichoir / lukten etter regn" }
         ]
+      },
+      {
+        "name": "Brettanomyces",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "#006266",
+        "flavors": [{ "name": "Plaster" }, { "name": "Stall" }, { "name": "Svart kardemomme" }, { "name": "Hestebæsj" }]
       }
     ]
   },
@@ -135,26 +142,27 @@
     "name": "Urteaktig",
     "description": "Friske eller krydrede urtearomaer.",
     "icon": "🌿🍃🌱🪴🍂",
-    "backgroundColor": "#009432",
+    "backgroundColor": "#079992",
     "subcategories": [
       {
         "name": "Harpiksholdige urter",
         "description": "Friske og grønne urteaktige noter.",
-        "icon": "🍃",
+        "icon": "",
+        "backgroundColor": "#82ccdd",
         "flavors": [{ "name": "Eukalytus" }, { "name": "Rosmarin" }, { "name": "Oregano" }, { "name": "Sage" }]
       },
       {
         "name": "Urt",
-        "description": "Varme, krydrede noter.",
-        "icon": "🪴",
+        "description": "",
+        "icon": "",
         "backgroundColor": "",
-        "flavors": [{ "name": "Merian", "icon": "🌿" }]
+        "flavors": [{ "name": "Merian" }]
       },
       {
         "name": "Urteaktig / Vegetal (Methoxypyrazines)",
-        "description": "Varme, krydrede noter.",
-        "icon": "🪴",
-        "backgroundColor": "",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "#78e08f",
         "flavors": [
           { "name": "Tomatplanteblader" },
           { "name": "Grønne pepperkorn" },
@@ -169,20 +177,20 @@
     "name": "Søt",
     "description": "Sødmefull",
     "icon": "",
-    "backgroundColor": "#FDA7DF",
+    "backgroundColor": "#FC427B",
     "subcategories": [
       {
         "name": "Søt",
         "description": "Subtile, florale aromaer.",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#FD7272",
         "flavors": [{ "name": "Tyggegummi" }, { "name": "Kokosnøtt" }, { "name": "Vanilje" }]
       },
       {
         "name": "Karamellisert",
         "description": "",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#eb3b5a",
         "flavors": [{ "name": "Brunt sukker" }, { "name": "Brent karamell" }, { "name": "Cola" }]
       }
     ]
@@ -191,13 +199,13 @@
     "name": "Krydder",
     "description": "Sødmefull",
     "icon": "",
-    "backgroundColor": "#FDA7DF",
+    "backgroundColor": "#b33939",
     "subcategories": [
       {
         "name": "Brunt krydder",
         "description": "",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#cd6133",
         "flavors": [
           { "name": "Bakekrydder" },
           { "name": "Allehånde" },
@@ -209,17 +217,10 @@
         ]
       },
       {
-        "name": "Gråskimmel (Botrytis cinerea) ",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "",
-        "flavors": [{ "name": "Ingefær" }, { "name": "Safran" }]
-      },
-      {
         "name": "Pepper",
         "description": "",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#84817a",
         "flavors": [{ "name": "Chili pepper" }, { "name": "Sort pepper" }, { "name": "Hvitt pepper" }]
       }
     ]
@@ -228,20 +229,20 @@
     "name": "Nøtt / kakao",
     "description": "Sødmefull",
     "icon": "",
-    "backgroundColor": "#FDA7DF",
+    "backgroundColor": "#ff793f",
     "subcategories": [
       {
         "name": "Nøtt",
         "description": "",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#ffda79",
         "flavors": [{ "name": "Hvalnøtt" }, { "name": "Hasselnøtt" }]
       },
       {
         "name": "Kakao",
         "description": "",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#cc8e35",
         "flavors": [
           { "name": "Sjokolade" },
           { "name": "Kakaopulver" },
@@ -255,27 +256,27 @@
     "name": "Ristet",
     "description": "Sødmefull",
     "icon": "",
-    "backgroundColor": "#FDA7DF",
+    "backgroundColor": "#f6b93b",
     "subcategories": [
       {
         "name": "Te",
         "description": "",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#3c6382",
         "flavors": [{ "name": "Sort te" }]
       },
       {
         "name": "Tobakk",
         "description": "",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#e58e26",
         "flavors": [{ "name": "Sigareske" }, { "name": "Tobakkblad" }, { "name": "Søt tobakk" }]
       },
       {
         "name": "Brent",
         "description": "",
         "icon": "",
-        "backgroundColor": "",
+        "backgroundColor": "#4b4b4b",
         "flavors": [{ "name": "Sedertre" }, { "name": "Grill" }, { "name": "Aske" }, { "name": "Røyk" }]
       }
     ]

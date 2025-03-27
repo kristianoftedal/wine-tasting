@@ -1,6 +1,6 @@
 import { Accordion } from '@/app/components/tasting/FlavorAccordion';
 import { SelectedFlavors } from '@/app/components/tasting/SelectedFlavours';
-import wineFlavorsData from '@/app/data/flavor.json';
+import wineFlavorsData from '@/app/data/red-flavor.json';
 import { Category, Flavor, Subcategory } from '@/app/models/flavorModel';
 import { useAtom } from 'jotai';
 import React from 'react';

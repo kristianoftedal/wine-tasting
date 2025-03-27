@@ -1,0 +1,64 @@
+.combobox {
+  border-radius: 0.25rem;
+  background-color: #fff;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: white;
+  --border-color: rgba(0, 0, 0, 0.8);
+  --border-width: 1px;
+  box-shadow: 0 0 0 var(--border-width) var(--border-color);
+}
+
+.combobox::placeholder {
+  color: rgb(255 255 255 / 0.7);
+}
+
+.combobox *::selection {
+  background-color: hsl(204 100% 80%);
+  color: black;
+}
+
+.combobox::selection {
+  background-color: hsl(204 100% 80%);
+  color: black;
+}
+
+.combobox:hover {
+  --border-color: black;
+}
+
+.combobox:focus {
+  --border-color: black;
+  --border-width: 2px;
+  outline: none;
+}
+
+.listbox {
+  z-index: 50;
+  max-height: 280px;
+  width: var(--radix-popover-trigger-width);
+  overflow-y: auto;
+  border-radius: 0.25rem;
+  background-color: white;
+  padding: 5px;
+  font-size: 15px;
+  color: black;
+  box-shadow:
+    rgba(14, 18, 22, 0.35) 0px 10px 38px -10px,
+    rgba(14, 18, 22, 0.2) 0px 10px 20px -15px;
+}
+
+.option {
+  display: flex;
+  cursor: default;
+  scroll-margin-top: 5px;
+  scroll-margin-bottom: 5px;
+  border-radius: 0.125rem;
+  padding: 5px;
+  color: black;
+}
+
+.option[data-active-item] {
+  background-color: rgb(110, 86, 207);
+  color: white;
+}

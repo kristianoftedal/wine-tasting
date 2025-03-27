@@ -1,5 +1,7 @@
 'use client';
 
+import { Box, Container, Flex, Heading, Section, Separator, Text } from '@radix-ui/themes';
+import '@radix-ui/themes/styles.css';
 import { useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
@@ -16,38 +18,50 @@ export default function Index() {
     setTasting(initialTastingValue);
     redirect(`/smaking/${wine.productId}`);
   };
-  return (
-    <>
-      {status === 'loading' && <Progress />}
-      {status !== 'loading' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          <Search onWineSelected={wine => onWineSelected(wine)} />
 
-          <hr />
-          <div className="">
-            <h5>Velkommen til Smak Vin! 🍷 </h5>
-            <p>
-              Din personlige guide til vinsmaking! Enten du er nybegynner eller vinentusiast, hjelper vi deg med å
-              utforske, vurdere og forstå vin på en enkel og morsom måte.{' '}
-            </p>
-            <p>
-              ✨ Smak og lær! Følg vår steg-for-steg-smaking for å utvikle dine sanser og bli kjent med vinens aromaer,
-              smaker og struktur.
-            </p>
-            <p>
-              📔 Din digitale smakdagbok Lag notater, gi karakterer og bygg din egen samling av favorittviner. Perfekt
-              for å huske hvilke viner du elsker! 🔍 Lær mer om druer og regioner Få innsikt i forskjellige druesorter,
-              vinområder og produsenter. Oppdag hva som gjør hver vin unik.
-            </p>
-            <p>
-              {' '}
-              🎉 Smak med venner! Vin smaker aller best i godt selskap! Inviter venner til vinsmaking, sammenlign
-              vurderinger og finn ut hva dere liker! 🍇
-            </p>
-          </div>
-          <hr />
-        </div>
-      )}
-    </>
+  return (
+    <Box className="p-6 max-w-4xl mx-auto">
+      <Container>
+        {status === 'loading' ? (
+          <Section>
+            <Progress />
+          </Section>
+        ) : (
+          <Flex
+            direction="column"
+            gap="5">
+            <Search onWineSelected={onWineSelected} />
+
+            <Separator />
+
+            <Flex direction="column">
+              <Heading as="h5">Velkommen til Smak Vin! 🍷</Heading>
+              <Text size="3">
+                Din personlige guide til vinsmaking! Enten du er nybegynner eller vinentusiast, hjelper vi deg med å
+                utforske, vurdere og forstå vin på en enkel og morsom måte.
+              </Text>
+              <Text size="3">
+                ✨ Smak og lær! Følg vår steg-for-steg-smaking for å utvikle dine sanser og bli kjent med vinens
+                aromaer, smaker og struktur.
+              </Text>
+              <Text size="3">
+                📔 Din digitale smakdagbok – Lag notater, gi karakterer og bygg din egen samling av favorittviner.
+                Perfekt for å huske hvilke viner du elsker!
+              </Text>
+              <Text size="3">
+                🔍 Lær mer om druer og regioner – Få innsikt i forskjellige druesorter, vinområder og produsenter.
+                Oppdag hva som gjør hver vin unik.
+              </Text>
+              <Text size="3">
+                🎉 Smak med venner! Vin smaker aller best i godt selskap! Inviter venner til vinsmaking, sammenlign
+                vurderinger og finn ut hva dere liker! 🍇
+              </Text>
+            </Flex>
+
+            <Separator />
+          </Flex>
+        )}
+      </Container>
+    </Box>
   );
 }

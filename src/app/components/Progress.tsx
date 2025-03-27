@@ -1,16 +1,8 @@
+import { Box, Progress as RadixProgress } from '@radix-ui/themes';
 import React from 'react';
 
 export const Progress: React.FC = () => (
-  <div
-    style={{
-      width: '100%',
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20%'
-    }}>
-    <progress></progress>
-  </div>
+  <Box maxWidth="100%">
+    <RadixProgress />
+  </Box>
 );
