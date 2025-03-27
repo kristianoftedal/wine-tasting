@@ -50,8 +50,18 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
         className="responsive"
         key={'unique'}>
         {index === 0 && <Color />}
-        {index === 1 && <FlavorSelection type="lukt" />}
-        {index === 2 && <FlavorSelection type="smak" />}
+        {index === 1 && (
+          <FlavorSelection
+            type="lukt"
+            vintype={wine.mainCategory.code}
+          />
+        )}
+        {index === 2 && (
+          <FlavorSelection
+            type="smak"
+            vintype={wine.mainCategory.code}
+          />
+        )}
         {index === 3 && <TastingAttributes />}
         {index === 4 && <Summary />}
 
