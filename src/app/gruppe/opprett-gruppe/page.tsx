@@ -13,7 +13,7 @@ async function searchUsers(query: string) {
   return JSON.parse(JSON.stringify(users.map(x => ({ _id: x._id, name: x._name, email: x.email }))));
 }
 
-async function createGroup(formData: FormData): GroupDocument {
+async function createGroup(formData: FormData): Promise<GroupDocument> {
   'use server';
 
   await connectDB();
