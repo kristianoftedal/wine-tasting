@@ -5,6 +5,7 @@ import type React from 'react';
 import { Flex } from '@radix-ui/themes';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { GroupDocument } from '../../../db-schemas/Group';
 
 interface User {
   _id: string;
@@ -16,7 +17,7 @@ export default function CreateGroupForm({
   createGroup,
   searchUsers
 }: {
-  createGroup: (formData: FormData) => Promise<void>;
+  createGroup: (formData: FormData) => Promise<GroupDocument>;
   searchUsers: (query: string) => Promise<User[]>;
 }) {
   const [groupName, setGroupName] = useState('');
