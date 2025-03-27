@@ -18,6 +18,8 @@ export const initialTastingValue = {
   smaksIntensitet: '',
   userId: '',
   productId: '',
+  alkohol: '',
+  pris: 0,
   tastedAt: new Date()
 } as TastingModel;
 
