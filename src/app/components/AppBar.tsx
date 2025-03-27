@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 export default function AppBar() {
-  const { status, data } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   const loginStatus = () => {
@@ -18,7 +18,7 @@ export default function AppBar() {
               router.push('/');
             });
           }}>
-          Logg ut {data?.user?.name}
+          Logg ut
         </button>
       );
     } else {
