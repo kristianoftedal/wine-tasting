@@ -5,12 +5,13 @@ import whiteWineFlavorsData from '@/app/data/white-flavor.json';
 import { Category, Flavor, Subcategory } from '@/app/models/flavorModel';
 import { useAtom } from 'jotai';
 import React from 'react';
+import { WineType } from '../../models/productModel';
 import { TastingModel } from '../../models/tastingModel';
 import { tastingAtom } from '../../store/tasting';
 
 interface Props {
   type?: 'lukt' | 'smak';
-  vintype: 'rødvin' | 'hvitvin' | 'musserende_vin';
+  vintype: WineType;
 }
 
 export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => {

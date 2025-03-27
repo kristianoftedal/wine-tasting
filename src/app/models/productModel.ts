@@ -57,8 +57,10 @@ export interface Ingredient {
   readableValue: string;
 }
 
+export type WineType = 'rødvin' | 'hvitvin' | 'musserende_vin' | 'rosevin';
+
 export interface MainCategory {
-  code: string;
+  code: WineType;
   name: string;
 }
 

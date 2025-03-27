@@ -1,27 +1,27 @@
 // Define the Flavor type as a type alias
 export type Flavor = {
   name: string; // Name of the flavor
-  description?: string;
+  description?: string | undefined;
   backgroundColor?: string;
 };
 
 // Define the Subcategory type as a type alias
 export type Subcategory = {
   name: string; // Name of the subcategory
-  description?: string; // Description of the subcategory
+  description?: string | undefined; // Description of the subcategory
   flavors: Flavor[]; // List of flavors in this subcategory
-  backgroundColor?: string;
-  icon?: string;
+  backgroundColor?: string | undefined;
+  icon?: string | undefined;
 };
 
 // Define the Category type as a type alias
 export type Category = {
   name: string; // Name of the category
-  description?: string; // Description of the category
+  description?: string | undefined; // Description of the category
   subcategories: Subcategory[]; // List of subcategories in this category
-  backgroundColor?: string;
-  icon?: string;
-  image?: string;
+  backgroundColor?: string | undefined;
+  icon?: string | undefined;
+  image?: string | undefined;
 };
 
 export type SelectedFlavor = {
