@@ -12,7 +12,7 @@ export type TastingModel = {
   egenskaper: string;
   luktIntensitet: 'lav' | 'middels' | 'høy';
   smaksIntensitet: 'lav' | 'middels' | 'høy';
-  alkohol: number;
+  alkohol: string;
   pris: number;
   selectedFlavorsLukt: SelectedFlavor[];
   selectedFlavorsSmak: SelectedFlavor[];
