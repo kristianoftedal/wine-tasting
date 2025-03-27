@@ -1,6 +1,5 @@
 import { Accordion } from '@/app/components/tasting/FlavorAccordion';
 import { SelectedFlavors } from '@/app/components/tasting/SelectedFlavours';
-import wineFlavorsData from '@/app/data/flavor.json';
 import redWineFlavorsData from '@/app/data/red-flavor.json';
 import whiteWineFlavorsData from '@/app/data/white-flavor.json';
 import { Category, Flavor, Subcategory } from '@/app/models/flavorModel';
@@ -18,7 +17,7 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
   const [tastingState, setTastingState] = useAtom(tastingAtom);
   const [tasting, setTasting] = useAtom(tastingAtom);
 
-  let flavorData = wineFlavorsData;
+  let flavorData = redWineFlavorsData;
 
   if (vintype === 'rødvin') {
     flavorData = redWineFlavorsData;
