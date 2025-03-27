@@ -2,6 +2,7 @@ import Event from '@/db-schemas/Event';
 import Group from '@/db-schemas/Group';
 import User from '@/db-schemas/User';
 import { connectDB } from '@/lib/mongoose';
+import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import { authOptions } from '../../../lib/auth';
@@ -13,18 +14,18 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
   await connectDB();
   const session = await getServerSession(authOptions);
 
-  const group = await Group.findOne({ _id: id });
+  const group = await Group.findOne({ _id: new ObjectId(id) });
   const users = await User.find({ _id: { $in: group?.members } });
-  const userIds = users.map(x => x.id);
+  const userIds = users.map(x => x.id.toString());
   const userId = session?.user?.id;
   const isMember = userIds.includes(x => x === userId);
   console.log('userids: ' + userIds[0]);
-  console.log(userIds[0]);
+  console.log('is equal: ' + userIds[0] === session?.user?.id);
   const events = await Event.find({ group: group._id });
 
   const addUser = async id => {
     'use server';
-    const group = await Group.findOne({ _id: id });
+    const group = await Group.findOne({ _id: new ObjectId(id) });
     group.members.push(userId);
     await group.save();
   };
@@ -48,7 +49,7 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
         <Member
           addUser={addUser}
           userIsMember={isMember}
-          groupId={group._id}
+          groupId={group?._id.toString()}
         />
       </section>
       <section className="small-padding">
