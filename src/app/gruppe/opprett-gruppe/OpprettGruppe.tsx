@@ -62,7 +62,7 @@ export default function CreateGroupForm({
     <form onSubmit={handleSubmit}>
       <Flex
         direction="column"
-        gap={2}>
+        gap="2">
         <div className="field label border">
           <input
             type="text"
