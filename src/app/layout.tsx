@@ -23,7 +23,11 @@ export default function RootLayout({
       <Provider>
         <body className="light">
           <AppBar />
-          <main style={{ marginTop: '32px' }}>{children}</main>
+          <main
+            className="responsive"
+            style={{ marginTop: '32px' }}>
+            {children}
+          </main>
         </body>
       </Provider>
     </html>
