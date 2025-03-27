@@ -7,7 +7,7 @@ export default function Member({
   userIsMember,
   groupId
 }: {
-  addUser: () => Promise<void>;
+  addUser: (id: string) => Promise<void>;
   userIsMember: boolean;
   groupId: string;
 }) {
