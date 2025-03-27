@@ -48,22 +48,25 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
   return (
     <div>
       <div className="center middle-align row">
+        <p>Intensitet</p>
+      </div>
+
+      <div
+        className="center middle-align row"
+        style={{ marginBottom: '0.75rem' }}>
         <nav className="no-space">
           <button
-            style={{ padding: 0 }}
-            className={`border left-round small ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'lav' ? 'fill' : ''}`}
+            className={`border left-round  ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'lav' ? 'fill' : ''}`}
             onClick={() => onChangeIntensity('lav')}>
             Lav
           </button>
           <button
-            style={{ padding: 0 }}
-            className={`border no-round small ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'middels' ? 'fill' : ''}`}
+            className={`border no-round  ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'middels' ? 'fill' : ''}`}
             onClick={() => onChangeIntensity('middels')}>
             Middels
           </button>
           <button
-            style={{ padding: 0 }}
-            className={`border right-round small ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'høy' ? 'fill' : ''}`}
+            className={`border right-round  ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'høy' ? 'fill' : ''}`}
             onClick={() => onChangeIntensity('høy')}>
             Høy
           </button>
