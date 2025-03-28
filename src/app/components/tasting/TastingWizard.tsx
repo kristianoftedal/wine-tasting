@@ -14,7 +14,7 @@ import { TastingProps } from './props';
 import { Summary } from './Summary';
 import { TastingAttributes } from './TastingAttributes';
 
-export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
+export const TastingWizard: React.FC<TastingProps> = ({ wine, eventId }) => {
   const setWine = useSetAtom(wineAtom);
   setWine(wine);
   const tasting = useAtomValue(tastingAtom);
@@ -103,7 +103,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
               {index + 1 === steps.length && (
                 <button
                   className="transparent"
-                  onClick={() => router.push('/')}>
+                  onClick={() => router.push(eventId ? `/arrangement/${eventId}` : '/')}>
                   <i>arrow_forward</i>
                 </button>
               )}
