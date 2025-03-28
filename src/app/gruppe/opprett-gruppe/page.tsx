@@ -7,7 +7,6 @@ async function searchUsers(query: string) {
   'use server';
 
   await connectDB();
-  const allUsers = await User.find();
   const users = await User.find({
     $or: [{ name: { $regex: query, $options: 'i' } }, { email: { $regex: query, $options: 'i' } }]
   }).limit(5);
