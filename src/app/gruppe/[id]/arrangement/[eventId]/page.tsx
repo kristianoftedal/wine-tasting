@@ -9,7 +9,6 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
   const { eventId } = await params;
 
   await connectDB();
-  const events = await Event.find();
   const event = await Event.findOne({ _id: new ObjectId(eventId) });
   const wines = await WineDetailed.find({ code: { $in: event.wines } });
 
