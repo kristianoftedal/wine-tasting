@@ -22,6 +22,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
 
   const setWine = useSetAtom(wineAtom);
   setWine(wine);
+
   const tasting = useAtomValue(tastingAtom);
   const router = useRouter();
   const { status, data } = useSession();
