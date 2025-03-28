@@ -1,26 +1,26 @@
-import { Wine } from '@/app/models/productModel';
-import Event from '@/db-schemas/Group';
-import WineDetailed from '@/db-schemas/Wine';
+import Event from '@/db-schemas/Event';
+import Wine as WineCollection from '@/db-schemas/Wine';
 import { connectDB } from '@/lib/mongoose';
-import { Link } from 'lucide-react';
 import { ObjectId } from 'mongodb';
+import Link from 'next/link';
+import Wine as ProductModel from '../../../../models/productModel';
 
 export default async function Arrangement({ params }: { params: Promise<{ eventId: string }> }) {
   const { eventId } = await params;
 
   await connectDB();
   const event = await Event.findOne({ _id: new ObjectId(eventId) });
-  const wines = await WineDetailed.find({ code: { $in: event.wines } });
+  const wines = await WineCollection.find({ code: { $in: event.wines } });
 
   return (
     <div>
       <h1>{event.name}</h1>
       <section className="small-padding">
         <p>{event.description}</p>
-        {wines.map((x: Wine) => (
+        {wines.map((x: ProductModel) => (
           <article key={x.code}>
             <h5>
-              <Link href={``}>{x.name}</Link>
+              <Link href={`/smaking/${x.code}`}>{x.name}</Link>
             </h5>
             <p>{x.description}</p>
           </article>
