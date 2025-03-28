@@ -26,7 +26,7 @@ export default function Login() {
 
   return (
     <section className="center-align middle-align">
-      <article style={{ minWidth: '24vw' }}>
+      <article style={{ minWidth: '40vw' }}>
         <form
           className="padding"
           onSubmit={handleSubmit}>

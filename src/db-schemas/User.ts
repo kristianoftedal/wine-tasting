@@ -30,7 +30,7 @@ const UserSchema = new Schema<UserDocument>(
   },
   {
     timestamps: true,
-    collection: 'users'
+    collection: 'Users'
   }
 );
 

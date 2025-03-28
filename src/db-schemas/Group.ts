@@ -13,7 +13,7 @@ const GroupSchema = new mongoose.Schema(
     description: String,
     members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
   },
-  { collection: 'group' }
+  { collection: 'Groups' }
 );
 
 const Group = mongoose.models.Group || mongoose.model<GroupDocument>('Group', GroupSchema);
