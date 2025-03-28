@@ -1,7 +1,7 @@
 'use client';
 
+import { Wine } from '@/app/models/productModel';
 import { EventDocument } from '@/db-schemas/Event';
-import { Wine } from '@/models/productModel';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ export default function CreateEventForm({
 }) {
   const [groupName, setGroupName] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState('');
   const [wines, setWines] = useState<Wine[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Wine[]>([]);
@@ -53,7 +53,7 @@ export default function CreateEventForm({
     formData.append('groupId', groupId);
     wines.forEach(wine => formData.append('wines', wine.code));
     const event = await createEvent(formData);
-    router.push(`/grupper/${groupId}/arrangement/${event._id}`);
+    router.push(`/gruppe/${groupId}/arrangement/${event._id}`);
     router.refresh();
   };
 
