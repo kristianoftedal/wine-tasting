@@ -3,6 +3,7 @@ import Group from '@/db-schemas/Group';
 import User, { UserDocument } from '@/db-schemas/User';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/mongoose';
+import { format } from 'date-fns';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
@@ -66,7 +67,7 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
           <article key={x._id}>
             <h5>
               <Link href={`/gruppe/${x._id}/arrangement/${x._id}`}>
-                {x.name} {x.date}
+                {x.name} {format(x.date, 'Pp')}
               </Link>
             </h5>
             <p>{x.description}</p>
