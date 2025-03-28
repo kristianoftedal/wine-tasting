@@ -7,9 +7,11 @@ async function searchUsers(query: string) {
   'use server';
 
   await connectDB();
+  const allUsers = await User.find();
   const users = await User.find({
     $or: [{ name: { $regex: query, $options: 'i' } }, { email: { $regex: query, $options: 'i' } }]
   }).limit(5);
+
   return JSON.parse(JSON.stringify(users.map(x => ({ _id: x._id, name: x._name, email: x.email }))));
 }
 
@@ -25,21 +27,19 @@ async function createGroup(formData: FormData): Promise<GroupDocument> {
     members: memberIds
   });
   await group.save();
-  return group;
+  return JSON.parse(JSON.stringify(group));
 }
 
 export default function CreateGroupPage() {
   return (
-    <main className="responsive">
-      <header className="large-padding">
-        <h1>Opprett ny gruppe</h1>
-      </header>
+    <div>
+      <h1>Opprett ny gruppe</h1>
       <section>
         <CreateGroupForm
           createGroup={createGroup}
           searchUsers={searchUsers}
         />
       </section>
-    </main>
+    </div>
   );
 }

@@ -27,7 +27,7 @@ export default function Register() {
 
   return (
     <section className="center-align middle-align">
-      <article style={{ minWidth: '24vw' }}>
+      <article style={{ minWidth: '40vw' }}>
         <form
           ref={ref}
           action={handleSubmit}

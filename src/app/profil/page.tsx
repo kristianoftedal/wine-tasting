@@ -31,18 +31,16 @@ export default async function Page() {
   const wines = await Wine.find({ code: { $in: ids } });
 
   return (
-    <main className="responsive">
-      <header className="large-padding ">
-        <div className="row">
-          <div className="col s12 m9">
-            <h1 className="no-margin">{user.name}</h1>
-          </div>
+    <div className="responsive">
+      <div className="row">
+        <div className="col s12 m9">
+          <h1 className="no-margin">{user.name}</h1>
         </div>
-      </header>
+      </div>
 
       <section className="grid">
         <div className="col s12 m6">
-          <div className="card">
+          <article>
             <div className="card-content">
               <span className="card-title">Tidligere smaksnotater</span>
               {tastings.length === 0 ? (
@@ -77,14 +75,15 @@ export default async function Page() {
                 ))
               )}
             </div>
-          </div>
+          </article>
         </div>
 
         <div className="col s12 m6">
-          <div className="card">
+          <article>
             <div className="card-content">
-              <span className="card-title">Your Groups</span>
+              <span className="card-title">Dine grupper</span>
               <ul>
+                {events.length === 0 && <li>Ingen funnet</li>}
                 {groups.map(group => (
                   <li key={group._id.toString()}>
                     <Link href={`/gruppe/${group._id}`}>{group.name}</Link>
@@ -99,14 +98,15 @@ export default async function Page() {
                 Opprett gruppe
               </Link>
             </div>
-          </div>
+          </article>
         </div>
 
-        <div className="col s12">
-          <div className="card">
+        <div className="col s6">
+          <article>
             <div className="card-content">
-              <span className="card-title">Upcoming Group Events</span>
+              <span className="card-title">Mine arrangement</span>
               <ul className="collection">
+                {events.length === 0 && <p>Ingen funnet</p>}
                 {events?.map(event => (
                   <li
                     key={event._id.toString()}
@@ -122,16 +122,9 @@ export default async function Page() {
                 ))}
               </ul>
             </div>
-            <div className="card-action">
-              <Link
-                href="/create-event"
-                className="btn">
-                Create Event
-              </Link>
-            </div>
-          </div>
+          </article>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

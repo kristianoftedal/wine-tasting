@@ -1,73 +1,72 @@
 'use client';
 
-import type React from 'react';
-
+import { EventDocument } from '@/db-schemas/Event';
+import { Wine } from '@/models/productModel';
 import { useRouter } from 'next/navigation';
+import type React from 'react';
 import { useState } from 'react';
-import { GroupDocument } from '../../../db-schemas/Group';
 
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-}
-
-export default function CreateGroupForm({
-  createGroup,
-  searchUsers
+export default function CreateEventForm({
+  createEvent,
+  searchWines,
+  groupId
 }: {
-  createGroup: (formData: FormData) => Promise<GroupDocument>;
-  searchUsers: (query: string) => Promise<User[]>;
+  createEvent: (formData: FormData) => Promise<EventDocument>;
+  searchWines: (query: string) => Promise<Wine[]>;
+  groupId: string;
 }) {
   const [groupName, setGroupName] = useState('');
   const [description, setDescription] = useState('');
-  const [members, setMembers] = useState<User[]>([]);
+  const [date, setDate] = useState<Date>(new Date());
+  const [wines, setWines] = useState<Wine[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<User[]>([]);
+  const [searchResults, setSearchResults] = useState<Wine[]>([]);
   const router = useRouter();
 
   const onSearchChanged = async (value: string) => {
     setSearchQuery(value);
     if (searchQuery.trim() && searchQuery.length > 2) {
-      const results = await searchUsers(searchQuery);
+      const results = await searchWines(searchQuery);
       setSearchResults(results);
     } else {
       setSearchResults([]);
     }
   };
 
-  const addMember = (user: User) => {
-    if (!members.some(member => member._id === user._id)) {
-      setMembers([...members, user]);
+  const addWine = (wine: Wine) => {
+    if (!wines.some(x => x.code === wine.code)) {
+      setWines([...wines, wine]);
     }
     setSearchQuery('');
     setSearchResults([]);
   };
 
-  const removeMember = (userId: string) => {
-    setMembers(members.filter(member => member._id !== userId));
+  const removeWine = (code: string) => {
+    setWines(wines.filter(x => x.code !== code));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('name', groupName);
-    members.forEach(member => formData.append('members', member._id));
-    const group = await createGroup(formData);
-    router.push(`/gruppe/${group._id}`);
+    formData.append('description', groupName);
+    formData.append('groupId', groupId);
+    wines.forEach(wine => formData.append('wines', wine.code));
+    const event = await createEvent(formData);
+    router.push(`/grupper/${groupId}/arrangement/${event._id}`);
     router.refresh();
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ marginBottom: '1rem', display: 'flex', gap: '4px', flexDirection: 'column' }}>
         <div className="field label border">
           <input
             type="text"
             value={groupName}
             onChange={e => setGroupName(e.target.value)}
+            placeholder="navn"
             required
-            placeholder="Navn"
           />
         </div>
         <div className="field label border">
@@ -75,50 +74,59 @@ export default function CreateGroupForm({
             type="text"
             value={description}
             onChange={e => setDescription(e.target.value)}
-            required
             placeholder="Beskrivelse"
           />
         </div>
-        <div className="field label border">
+        <div className="field label prefix border">
+          <i>today</i>
+          <input
+            type="datetime-local"
+            value={date}
+            onChange={e => setDate(e.target.value)}
+            placeholder="Dato"
+          />
+        </div>
+        <div className="field label prefix border">
+          <i>search</i>
           <input
             type="text"
             value={searchQuery}
             onChange={e => onSearchChanged(e.target.value)}
-            placeholder="Search users..."
+            placeholder="Søk etter vin..."
           />
         </div>
         {searchResults.length > 0 && (
           <>
             <p>Treff: </p>
             <ul className="list border">
-              {searchResults.map(user => (
+              {searchResults.map(x => (
                 <li
-                  key={user._id}
+                  key={x.code}
                   className="padding">
-                  {user.name} ({user.email})
+                  {x.name}
                   <button
                     type="button"
-                    onClick={() => addMember(user)}
+                    onClick={() => addWine(x)}
                     className="secondary small right">
-                    +
+                    Legg til
                   </button>
                 </li>
               ))}
             </ul>
           </>
         )}
-        {members.length > 0 && (
+        {wines.length > 0 && (
           <div>
-            <p>Valgte medlemmer:</p>
+            <p>Valgte viner:</p>
             <ul className="list border">
-              {members.map(member => (
+              {wines.map(x => (
                 <li
-                  key={member._id}
+                  key={x.code}
                   className="padding">
-                  {member.name} ({member.email})
+                  {x.name}
                   <button
                     type="button"
-                    onClick={() => removeMember(member._id)}
+                    onClick={() => removeWine(x.code)}
                     className="error small right">
                     -
                   </button>
@@ -127,16 +135,14 @@ export default function CreateGroupForm({
             </ul>
           </div>
         )}
-      </div>
-      <div
-        className="row"
-        style={{ marginTop: '1rem' }}>
-        <button
-          type="submit"
-          style={{ marginTop: '1rem' }}
-          className="primary">
-          Opprett gruppe
-        </button>
+        <div className="row">
+          <button
+            type="submit"
+            style={{ marginTop: '1rem' }}
+            className="primary">
+            Opprett
+          </button>
+        </div>
       </div>
     </form>
   );
