@@ -1,23 +1,11 @@
 import { TastingWizard } from '@/app/components/tasting/TastingWizard';
 import clientPromise from '@/lib/mongodb';
 
-export default async function Tasting({
-  params,
-  searchParams
-}: {
-  params: Promise<{ id: string }>;
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+export default async function Tasting({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const wine = await getWine(id);
-  const eventId = searchParams?.eventId;
 
-  return (
-    <TastingWizard
-      wine={wine}
-      eventId={eventId}
-    />
-  );
+  return <TastingWizard wine={wine} />;
 }
 
 const getWine = async (id: string) => {

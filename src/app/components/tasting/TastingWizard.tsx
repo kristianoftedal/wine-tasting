@@ -4,7 +4,7 @@ import { addTasting } from '@/actions/tasting';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Progress } from '../Progress';
@@ -14,7 +14,11 @@ import { TastingProps } from './props';
 import { Summary } from './Summary';
 import { TastingAttributes } from './TastingAttributes';
 
-export const TastingWizard: React.FC<TastingProps> = ({ wine, eventId }) => {
+export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
+  const searchParams = useSearchParams();
+
+  const eventId = searchParams.get('eventId');
+
   const setWine = useSetAtom(wineAtom);
   setWine(wine);
   const tasting = useAtomValue(tastingAtom);
