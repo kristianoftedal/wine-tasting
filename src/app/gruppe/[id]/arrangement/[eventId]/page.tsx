@@ -18,11 +18,9 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
       <section className="small-padding">
         <p>{event.description}</p>
         {wines.map((x: Wine) => (
-          <article key={x._id}>
+          <article key={x.code}>
             <h5>
-              <Link href={``}>
-                {x.name} {x.date}
-              </Link>
+              <Link href={``}>{x.name}</Link>
             </h5>
             <p>{x.description}</p>
           </article>
