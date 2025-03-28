@@ -3,7 +3,7 @@ import Wine as WineCollection from '@/db-schemas/Wine';
 import { connectDB } from '@/lib/mongoose';
 import { ObjectId } from 'mongodb';
 import Link from 'next/link';
-import Wine as ProductModel from '../../../../models/productModel';
+import { Wine as ProductModel } from '../../../../models/productModel';
 
 export default async function Arrangement({ params }: { params: Promise<{ eventId: string }> }) {
   const { eventId } = await params;
