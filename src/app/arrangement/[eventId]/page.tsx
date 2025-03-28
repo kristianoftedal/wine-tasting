@@ -1,9 +1,9 @@
+import { Wine as ProductModel } from '@/app/models/productModel';
 import Event from '@/db-schemas/Event';
 import Wine from '@/db-schemas/Wine';
 import { connectDB } from '@/lib/mongoose';
 import { ObjectId } from 'mongodb';
 import Link from 'next/link';
-import { Wine as ProductModel } from '../../../../models/productModel';
 
 export default async function Arrangement({ params }: { params: Promise<{ eventId: string }> }) {
   const { eventId } = await params;
@@ -20,7 +20,7 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
         {wines.map((x: ProductModel) => (
           <article key={x.code}>
             <h5>
-              <Link href={`/smaking/${x.code}?eventId=${x._id}`}>{x.name}</Link>
+              <Link href={`/smaking/${x.code}?eventId=${event._id}`}>{x.name}</Link>
             </h5>
             <p>{x.description}</p>
           </article>
