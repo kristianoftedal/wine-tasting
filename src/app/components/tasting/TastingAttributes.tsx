@@ -46,7 +46,24 @@ export const TastingAttributes: React.FC = () => {
         <div
           className="l12 s12"
           key={attr}>
-          <div className="center middle-align row">{attr}</div>
+          <div className="center middle-align row">
+            {attr === 'frisket' && (
+              <button class="chip round">
+                <span>Friskhet</span>
+                <div class="tooltip max">
+                  <b>Opplevd syre</b>
+                  <p>
+                    Syren stikker/prikker litt i tungen og får munnen til å produsere spytt. Nivået av syre bedømmes ved
+                    å vurdere hvor kraftig og hvor langvarig spyttproduksjonen er. Det er viktig å huske at elementer
+                    som sukker og fruktighet i en vin kan balansere opp smaken/følelsen av syre, men at
+                    spyttproduksjonen ikke påvirkes av dette og at spyttproduksjonen vil gi en god indikasjon på
+                    syrenivå selv i søte viner.
+                  </p>
+                </div>
+              </button>
+            )}
+            {attr !== 'frisket' && <span>{attr}</span>}
+          </div>
           <div className="center middle-align row">{getTastingAttribute(attr)}</div>
           <div className="center middle-align row">
             <nav className="no-space">
