@@ -49,7 +49,8 @@ export default function CreateEventForm({
     e.preventDefault();
     const formData = new FormData();
     formData.append('name', groupName);
-    formData.append('description', groupName);
+    formData.append('description', description);
+    formData.append('date', date);
     formData.append('groupId', groupId);
     wines.forEach(wine => formData.append('wines', wine.code));
     const event = await createEvent(formData);

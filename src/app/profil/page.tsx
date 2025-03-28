@@ -31,7 +31,7 @@ export default async function Page() {
   const wines = await Wine.find({ code: { $in: ids } });
 
   return (
-    <div className="responsive">
+    <div>
       <div className="row">
         <div className="col s12 m9">
           <h1 className="no-margin">{user.name}</h1>
@@ -108,17 +108,18 @@ export default async function Page() {
               <ul className="collection">
                 {events.length === 0 && <p>Ingen funnet</p>}
                 {events?.map(event => (
-                  <li
+                  <Link
                     key={event._id.toString()}
-                    className="collection-item avatar">
-                    <i className="material-icons circle">event</i>
-                    <span className="title">{event.name}</span>
-                    <p>
-                      {new Date(event.date).toLocaleDateString()}
-                      <br />
-                      {event.group.name}
-                    </p>
-                  </li>
+                    href={`/gruppe/${event.group}/arrangement/${event._id}`}>
+                    <li className="collection-item avatar">
+                      <i className="material-icons circle">event</i>
+                      <p>
+                        {new Date(event.date).toLocaleDateString()}
+                        <br />
+                      </p>
+                      <p>Tittel: {event.name}</p>
+                    </li>
+                  </Link>
                 ))}
               </ul>
             </div>

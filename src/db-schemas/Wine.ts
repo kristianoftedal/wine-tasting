@@ -106,6 +106,6 @@ const WineSchema = new mongoose.Schema(
 );
 
 // Ensure the model is registered only once
-const Wine = mongoose.models.Wine || mongoose.model('Wines', WineSchema);
+const Wine = mongoose.models.Wine || mongoose.model('Wine', WineSchema);
 
 export default Wine;

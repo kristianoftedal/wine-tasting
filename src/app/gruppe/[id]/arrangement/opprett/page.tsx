@@ -22,7 +22,7 @@ async function createEvent(formData: FormData): Promise<EventDocument> {
   const description = formData.get('name') as string;
   const date = parseISO(formData.get('date') as string);
   const wines = formData.getAll('wines') as string[];
-  const group = formData.get('group') as string;
+  const group = formData.get('groupId') as string;
 
   const event = new Event({
     name,
