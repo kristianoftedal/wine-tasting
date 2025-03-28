@@ -5,8 +5,8 @@ import { Wine } from '@/models/productModel';
 import { Link } from 'lucide-react';
 import { ObjectId } from 'mongodb';
 
-export default async function Arrangement({ params }: { params: Promise<{ id: string; eventId: string }> }) {
-  const { id, eventId } = await params;
+export default async function Arrangement({ params }: { params: Promise<{ eventId: string }> }) {
+  const { eventId } = await params;
 
   await connectDB();
   const events = await Event.find();
