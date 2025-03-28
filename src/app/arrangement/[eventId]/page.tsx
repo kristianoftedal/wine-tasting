@@ -1,5 +1,5 @@
 import Event from '@/db-schemas/Event';
-import Wine as WineCollection from '@/db-schemas/Wine';
+import Wine from '@/db-schemas/Wine';
 import { connectDB } from '@/lib/mongoose';
 import { ObjectId } from 'mongodb';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
 
   await connectDB();
   const event = await Event.findOne({ _id: new ObjectId(eventId) });
-  const wines = await WineCollection.find({ code: { $in: event.wines } });
+  const wines = await Wine.find({ code: { $in: event.wines } });
 
   return (
     <div>
