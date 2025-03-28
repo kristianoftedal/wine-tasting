@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Progress } from '../Progress';
+import { Aroma } from './Aroma';
 import { Color } from './Color';
 import { FlavorSelection } from './FlavorSelection';
 import { TastingProps } from './props';
@@ -55,7 +56,10 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
             </nav>
           </div>
           <div key={'unique'}>
-            <h6 className="center-align padding">{steps[index]}</h6>
+            <h6 className="center-align padding">
+              {steps[index] === 'Aroma' && <Aroma />}
+              {steps[index] !== 'Aroma' && <span>{steps[index]}</span>}
+            </h6>
             {index === 0 && <Color />}
             {index === 1 && (
               <FlavorSelection

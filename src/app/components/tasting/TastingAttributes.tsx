@@ -48,9 +48,9 @@ export const TastingAttributes: React.FC = () => {
           key={attr}>
           <div className="center middle-align row">
             {attr === 'frisket' && (
-              <button class="chip round">
+              <button className="chip round">
                 <span>Friskhet</span>
-                <div class="tooltip max">
+                <div className="tooltip max">
                   <b>Opplevd syre</b>
                   <p>
                     Syren stikker/prikker litt i tungen og får munnen til å produsere spytt. Nivået av syre bedømmes ved

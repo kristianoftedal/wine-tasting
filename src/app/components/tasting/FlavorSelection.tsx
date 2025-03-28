@@ -51,7 +51,6 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
       <div className="center middle-align row">
         <p>Intensitet</p>
       </div>
-
       <div
         className="center middle-align row"
         style={{ marginBottom: '0.75rem' }}>
