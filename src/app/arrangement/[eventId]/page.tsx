@@ -3,7 +3,7 @@ import Event from '@/db-schemas/Event';
 import Wine from '@/db-schemas/Wine';
 import { connectDB } from '@/lib/mongoose';
 import { ObjectId } from 'mongodb';
-import Link from 'next/link';
+import ResetButton from './button';
 
 export default async function Arrangement({ params }: { params: Promise<{ eventId: string }> }) {
   const { eventId } = await params;
@@ -20,7 +20,11 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
         {wines.map((x: ProductModel) => (
           <article key={x.code}>
             <h5>
-              <Link href={`/smaking/${x.code}?eventId=${event._id}`}>{x.name}</Link>
+              <ResetButton
+                code={x.code.toString()}
+                eventId={eventId}>
+                {x.name.toString()}
+              </ResetButton>
             </h5>
             <p>{x.description}</p>
           </article>
