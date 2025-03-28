@@ -1,7 +1,7 @@
+import { Wine } from '@/app/models/productModel';
 import Event from '@/db-schemas/Group';
 import WineDetailed from '@/db-schemas/Wine';
 import { connectDB } from '@/lib/mongoose';
-import { Wine } from '@/models/productModel';
 import { Link } from 'lucide-react';
 import { ObjectId } from 'mongodb';
 
