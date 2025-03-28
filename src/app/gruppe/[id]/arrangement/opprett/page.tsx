@@ -2,7 +2,6 @@ import Event, { EventDocument } from '@/db-schemas/Event';
 import Wine from '@/db-schemas/Wine';
 import { connectDB } from '@/lib/mongoose';
 import { parseISO } from 'date-fns';
-import { ObjectId } from 'mongoose';
 import CreateEventForm from './CreateEvent';
 
 async function searchWines(query: string) {
@@ -23,7 +22,7 @@ async function createEvent(formData: FormData): Promise<EventDocument> {
   const description = formData.get('name') as string;
   const date = parseISO(formData.get('date') as string);
   const wines = formData.getAll('wines') as string[];
-  const group = formData.get('group') as ObjectId;
+  const group = formData.get('group') as string;
 
   const event = new Event({
     name,
