@@ -2,6 +2,7 @@
 
 import { addTasting } from '@/actions/tasting';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
+import he from 'he';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -53,7 +54,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
                 onClick={() => router.push('/')}>
                 <i>arrow_back</i>
               </button>
-              <h5 className="max">{wine.name} </h5>
+              <h5 className="max">{he.decode(wine.name)} </h5>
             </nav>
           </div>
           <div key={'unique'}>
