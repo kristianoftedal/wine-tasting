@@ -10,7 +10,7 @@
         "description": "Frisk, syrlig smak fra sitrusfrukter.",
         "icon": "🍋",
         "backgroundColor": "#A3CB38",
-        "flavors": [{ "name": "Grapefrukt" }, { "name": "Appelsin" }, { "name": "Blodappelsin" }]
+        "flavors": [{ "name": "Sitrus" }, { "name": "Grapefrukt" }, { "name": "Appelsin" }, { "name": "Blodappelsin" }]
       },
       {
         "name": "Trefrukt",
@@ -18,6 +18,7 @@
         "icon": "🍏",
         "backgroundColor": "#FFC312",
         "flavors": [
+          { "name": "Trefrukt" },
           { "name": "Bakt eple" },
           { "name": "Pære" },
           { "name": "Vannmelon" },
@@ -29,7 +30,7 @@
         "description": "",
         "icon": "🥭",
         "backgroundColor": "#F79F1F",
-        "flavors": [{ "name": "Dragefrukt" }, { "name": "Banan" }]
+        "flavors": [{ "name": "Tropisk frukt" }, { "name": "Dragefrukt" }, { "name": "Banan" }]
       },
       {
         "name": "Rød frukt",
@@ -37,6 +38,7 @@
         "icon": "🍓",
         "backgroundColor": "#ED4C67",
         "flavors": [
+          { "name": "Rød frukt" },
           { "name": "Sure kirsebær" },
           { "name": "Tranebær" },
           { "name": "Røde rips" },

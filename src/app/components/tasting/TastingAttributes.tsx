@@ -1,11 +1,12 @@
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
+import { Wine } from '../../models/productModel';
 import { TastingModel } from '../../models/tastingModel';
 
 export const TastingAttributes: React.FC = () => {
   const [tastingState, setTastingState] = useAtom(tastingAtom);
-  const wine = useAtomValue(wineAtom);
+  const wine = useAtomValue<Wine>(wineAtom);
 
   const handleChange = (key: string, value: number) => {
     setTastingState((prev: TastingModel) => ({ ...prev, [key]: value }));

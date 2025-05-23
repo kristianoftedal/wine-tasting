@@ -1,12 +1,13 @@
 'use client';
 
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import React, { useState } from 'react';
+import { Wine } from '../../models/productModel';
 
 export const Summary: React.FC = () => {
-  const [tastingState] = useAtom(tastingAtom);
-  const [wine] = useAtom(wineAtom);
+  const tastingState = useAtomValue(tastingAtom);
+  const wine = useAtomValue<Wine>(wineAtom);
 
   const [showWine, setShowWine] = useState<boolean>(false);
 

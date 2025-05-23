@@ -23,5 +23,9 @@ export const initialTastingValue = {
   tastedAt: new Date()
 } as TastingModel;
 
-export const wineAtom = atom<Wine | null>(null);
 export const tastingAtom = atom<TastingModel>(initialTastingValue);
+
+export const wineAtom = atom<Wine | null, [Wine], void>(
+  get => get(wineAtom),
+  (get, set, newWine) => set(wineAtom, newWine)
+);
