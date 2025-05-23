@@ -24,8 +24,8 @@ export const Summary: React.FC = () => {
             <div className="max">
               <p>Farge: {tastingState.farge}</p>
               <p>
-                Lukt: {tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ') || '&nbsp;'},{' '}
-                {tastingState.lukt} | intensitet: {tastingState.luktIntensitet}
+                Lukt: {tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')}, {tastingState.lukt} |
+                intensitet: {tastingState.luktIntensitet}
               </p>
               <p>
                 Smak: {tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}, {tastingState.smak} |
