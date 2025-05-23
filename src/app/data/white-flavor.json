@@ -11,6 +11,7 @@
         "icon": "🍋",
         "backgroundColor": "#A3CB38",
         "flavors": [
+          { "name": "Sitrus" },
           { "name": "Lime" },
           { "name": "Limeskall" },
           { "name": "Bakt sitron" },
@@ -27,6 +28,7 @@
         "icon": "🍏",
         "backgroundColor": "#FFC312",
         "flavors": [
+          { "name": "Trefrukt" },
           { "name": "Quince" },
           { "name": "Grønt eple" },
           { "name": "Gult eple" },
@@ -47,6 +49,7 @@
         "icon": "🥭",
         "backgroundColor": "#F79F1F",
         "flavors": [
+          { "name": "Tropisk frukt" },
           { "name": "Stjernefrukt" },
           { "name": "Ananas" },
           { "name": "Mango" },
@@ -61,14 +64,19 @@
         "description": "Søte eller syrlige små frukter.",
         "icon": "🍓",
         "backgroundColor": "#ED4C67",
-        "flavors": [{ "name": "Hvite kirsebær" }, { "name": "Hvite bringegær" }, { "name": "Jordbær" }]
+        "flavors": [
+          { "name": "Rød frukt" },
+          { "name": "Hvite kirsebær" },
+          { "name": "Hvite bringegær" },
+          { "name": "Jordbær" }
+        ]
       },
       {
         "name": "Tørket frukt",
         "description": "Aromaer og smaker som minner om tørkede frukter.",
         "icon": "🍇",
         "backgroundColor": "#833471",
-        "flavors": [{ "name": "Gyldne rosiner" }, { "name": "Fiken" }]
+        "flavors": [{ "name": "Tørket frukt" }, { "name": "Gyldne rosiner" }, { "name": "Fiken" }]
       }
     ]
   },
@@ -84,6 +92,7 @@
         "icon": "🌼",
         "backgroundColor": "#1e90ff",
         "flavors": [
+          { "name": "Floral" },
           { "name": "Kamomille" },
           { "name": "Appelsinblomst" },
           { "name": "Honeysuckle" },
@@ -114,14 +123,14 @@
         "description": "Friske og grønne urteaktige noter.",
         "icon": "",
         "backgroundColor": "#82ccdd",
-        "flavors": [{ "name": "Barnål" }, { "name": "Oregano" }]
+        "flavors": [{ "name": "Urteaktig" }, { "name": "Barnål" }, { "name": "Oregano" }]
       },
       {
         "name": "Urt",
         "description": "",
         "icon": "",
         "backgroundColor": "",
-        "flavors": [{ "name": "Dill" }, { "name": "Tarragon" }, { "name": "Sitrongress" }]
+        "flavors": [{ "name": "Urt" }, { "name": "Dill" }, { "name": "Tarragon" }, { "name": "Sitrongress" }]
       },
       {
         "name": "Urteaktig / Vegetal (Methoxypyrazines)",
@@ -129,6 +138,7 @@
         "icon": "",
         "backgroundColor": "#78e08f",
         "flavors": [
+          { "name": "Urt" },
           { "name": "Selleri" },
           { "name": "Fennikel" },
           { "name": "Erteskudd" },
@@ -151,14 +161,19 @@
         "description": "",
         "icon": "",
         "backgroundColor": "#A3CB38",
-        "flavors": [{ "name": "Støv" }]
+        "flavors": [{ "name": "Jordaktig" }, { "name": "Støv" }]
       },
       {
         "name": "Mineralsk",
         "description": "Mineralske og steinaktige aromaer.",
         "icon": "",
         "backgroundColor": "#1289A7",
-        "flavors": [{ "name": "Skjell" }, { "name": "Våt kalk" }, { "name": "Strågrus / singel" }]
+        "flavors": [
+          { "name": "Jordaktig" },
+          { "name": "Skjell" },
+          { "name": "Våt kalk" },
+          { "name": "Strågrus / singel" }
+        ]
       }
     ]
   },
@@ -173,14 +188,14 @@
         "description": "",
         "icon": "",
         "backgroundColor": "#FD7272",
-        "flavors": [{ "name": "Vanilje" }, { "name": "Bakst" }, { "name": "Bievoks" }]
+        "flavors": [{ "name": "Søt" }, { "name": "Vanilje" }, { "name": "Bakst" }, { "name": "Bievoks" }]
       },
       {
         "name": "Karamellisert",
         "description": "",
         "icon": "",
         "backgroundColor": "#eb3b5a",
-        "flavors": [{ "name": "Honning" }, { "name": "Karamell" }, { "name": "Toffee" }]
+        "flavors": [{ "name": "Karamellisert" }, { "name": "Honning" }, { "name": "Karamell" }, { "name": "Toffee" }]
       }
     ]
   },
@@ -224,7 +239,13 @@
         "description": "",
         "icon": "",
         "backgroundColor": "#ffda79",
-        "flavors": [{ "name": "Hasselnøtt" }, { "name": "Paranøtt" }, { "name": "Mandel" }, { "name": "Marsipan" }]
+        "flavors": [
+          { "name": "Nøtt" },
+          { "name": "Hasselnøtt" },
+          { "name": "Paranøtt" },
+          { "name": "Mandel" },
+          { "name": "Marsipan" }
+        ]
       }
     ]
   },

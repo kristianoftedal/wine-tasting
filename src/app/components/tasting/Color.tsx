@@ -2,12 +2,13 @@
 
 import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
+import { Wine } from '../../models/productModel';
 import { TastingModel } from '../../models/tastingModel';
 import { tastingAtom, wineAtom } from '../../store/tasting';
 
 export const Color: React.FC = () => {
   const [tasting, setTasting] = useAtom(tastingAtom);
-  const wine = useAtomValue(wineAtom);
+  const wine = useAtomValue<Wine>(wineAtom);
 
   const onChange = (value: string) => {
     setTasting((prev: TastingModel) => {
@@ -23,7 +24,10 @@ export const Color: React.FC = () => {
     <article>
       <div className="row">
         <div className="max">
-          <p>Druer: {wine.content.ingredients?.map(x => x.formattedValue).join(', ')}</p>
+          <div>
+            Druer:
+            {wine.content.ingredients?.map(x => <div key={x.code}>{x.formattedValue}</div>)}
+          </div>
           <p>Land: {wine.mainCountry.name}</p>
           {wine.district && <p>Område: {wine.district.name}</p>}
           <p>Årgang: {wine.year}</p>
