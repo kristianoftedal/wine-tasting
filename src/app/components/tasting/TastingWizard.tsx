@@ -102,7 +102,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
                   <i>arrow_back</i>
                 </button>
               )}
-              {index < steps.length && (
+              {index < steps.length && index + 1 !== steps.length && (
                 <button
                   className="transparent"
                   onClick={() => setIndex(index + 1 <= steps.length ? index + 1 : index)}>

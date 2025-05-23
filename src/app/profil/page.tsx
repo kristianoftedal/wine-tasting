@@ -57,8 +57,7 @@ export default async function Page() {
                     <div className="max">
                       <p>Farge: {tasting.farge}</p>
                       <p>
-                        Lukt:{' '}
-                        {tasting.selectedFlavorsLukt.map((x: SelectedFlavor) => x.flavor.name).join(', ') || '&nbsp;'},{' '}
+                        Lukt: {tasting.selectedFlavorsLukt.map((x: SelectedFlavor) => x.flavor.name).join(', ')},{' '}
                         {tasting.lukt}
                       </p>
                       <p>
