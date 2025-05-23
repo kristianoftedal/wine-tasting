@@ -22,7 +22,7 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
 
   if (vintype === 'rødvin') {
     flavorData = redWineFlavorsData;
-  } else if (vintype === 'hvitvin') {
+  } else if (vintype === 'hvitvin' || vintype === 'musserende_vin') {
     flavorData = whiteWineFlavorsData;
   }
 
