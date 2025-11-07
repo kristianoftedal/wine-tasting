@@ -74,10 +74,6 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
               ←
             </button>
             <h1 className={styles.wineTitle}>{he.decode(wine.name)}</h1>
-            <div className={styles.authButtons}>
-              <button className={styles.profileButton}>Profil</button>
-              <button className={styles.logoutButton}>Logg ut</button>
-            </div>
           </header>
 
           <div className={styles.content}>

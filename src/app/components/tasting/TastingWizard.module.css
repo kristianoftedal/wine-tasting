@@ -80,9 +80,9 @@
   color: #1f2937;
 }
 
-/* Updated footer background to use lavender color from design system */
+/* Updated footer background to use blue to purple gradient */
 .footer {
-  background: #e8dff5;
+  background: linear-gradient(to right, #dbeafe, #ede9fe);
   border-top: 1px solid #e5e7eb;
   padding: 16px 24px;
   display: flex;

@@ -95,10 +95,11 @@ export const TastingAttributes: React.FC = () => {
         <div className={styles.inputField}>
           <label className={styles.inputLabel}>Pris (kr)</label>
           <input
+            type="number"
             className={styles.inputBox}
-            value={tastingState.pris ?? ''}
+            value={tastingState.pris ?? '0'}
             onChange={event =>
-              setTastingState((prev: TastingModel) => ({ ...prev, pris: Number.parseInt(event.target.value) }))
+              setTastingState((prev: TastingModel) => ({ ...prev, pris: parseFloat(event.target.value || '0') }))
             }
             placeholder="250"
           />
