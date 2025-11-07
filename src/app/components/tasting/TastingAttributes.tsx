@@ -63,9 +63,12 @@ export const TastingAttributes: React.FC = () => {
                 </div>
               </button>
             )}
-            {attr !== 'frisket' && <span>{attr}</span>}
+            {attr !== 'frisket' && (
+              <span>
+                {attr}: {getTastingAttribute(attr)}
+              </span>
+            )}
           </div>
-          <div className="center middle-align row">{getTastingAttribute(attr)}</div>
           <div className="center middle-align row">
             <nav className="no-space">
               <button
@@ -96,24 +99,30 @@ export const TastingAttributes: React.FC = () => {
           <hr style={{ marginTop: '1rem' }} />
         </div>
       ))}
-      <div className="l12 s12">
-        <div className="field border">
-          <input
-            type="number"
-            value={tastingState.alkohol ?? ''}
-            onChange={event => setTastingState((prev: TastingModel) => ({ ...prev, alkohol: event.target.value }))}
-          />
-          <span className="helper">Alkohol</span>
-        </div>
-        <div className="field border">
-          <input
-            type="number"
-            value={tastingState.pris ?? ''}
-            onChange={event =>
-              setTastingState((prev: TastingModel) => ({ ...prev, pris: parseInt(event.target.value) }))
-            }
-          />
-          <span className="helper">Pris</span>
+      <div className="center middle-align row">
+        <div className="grid">
+          <div className="l6 s6">
+            <div className="field border">
+              <input
+                type="number"
+                value={tastingState.alkohol ?? ''}
+                onChange={event => setTastingState((prev: TastingModel) => ({ ...prev, alkohol: event.target.value }))}
+              />
+              <span className="helper">Alkohol</span>
+            </div>
+          </div>
+          <div className="l6 s6">
+            <div className="field border">
+              <input
+                type="number"
+                value={tastingState.pris ?? ''}
+                onChange={event =>
+                  setTastingState((prev: TastingModel) => ({ ...prev, pris: parseInt(event.target.value) }))
+                }
+              />
+              <span className="helper">Pris</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

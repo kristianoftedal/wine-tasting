@@ -10,10 +10,25 @@ type SearchProperties = {
 export const Search: React.FC<SearchProperties> = ({ onWineSelected }) => {
   const [wines, setWines] = useState(new Array<searchModel>());
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e?.target.value.length < 3) return;
-    const results = keyValues.filter(x =>
-      x.productShortName.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase())
-    );
+    const searchTerm = e?.target.value;
+    if (searchTerm.length < 3) return;
+    const results = keyValues
+      .map(product => {
+        const nameLower = product.productShortName.toLowerCase();
+        const idMatch = product.productId.includes(searchTerm);
+        const nameMatch = nameLower.includes(searchTerm);
+        const startsWithMatch = nameLower.split(' ').some(word => word.startsWith(searchTerm));
+
+        // Calculate relevance score
+        let score = 0;
+        if (idMatch) score += 10;
+        if (startsWithMatch) score += 5;
+        if (nameMatch) score += 1;
+
+        return { ...product, score };
+      })
+      .filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score);
     setWines(results);
   };
 
