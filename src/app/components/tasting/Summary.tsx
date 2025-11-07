@@ -38,7 +38,6 @@ export const Summary: React.FC = () => {
 
   useEffect(() => {
     async function calculateScores() {
-      debugger;
       setIsCalculating(true);
 
       try {
@@ -49,22 +48,16 @@ export const Summary: React.FC = () => {
             : 0; // Default to 0 if sommelier has no color data
 
         // Calculate smell score
-        const smellScore =
-          tastingState.lukt.length > 0
-            ? await semanticSimilarity(
-                `${tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')} ${tastingState.lukt}`,
-                wine.smell!
-              )
-            : 0;
+        const smellScore = await semanticSimilarity(
+          `${tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')} ${tastingState.lukt}`,
+          wine.smell!
+        );
 
         // Calculate taste score
-        const tasteScore =
-          tastingState.smak.length > 0
-            ? await semanticSimilarity(
-                `${tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')} ${tastingState.smak}`,
-                wine.taste!
-              )
-            : 0;
+        const tasteScore = await semanticSimilarity(
+          `${tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')} ${tastingState.smak}`,
+          wine.taste!
+        );
 
         // Calculate alcohol % score (numeric comparison)
         const prosentScore = calculateNumericSimilarity(
