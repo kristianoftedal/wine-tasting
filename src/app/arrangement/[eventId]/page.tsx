@@ -22,7 +22,9 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
     ...dbEvent,
     date: dbEvent.date.toISOString() // plain string safe for Next.js Client Components
   };
-  const wines = await Wine.find({ code: { $in: event.wines } }).lean();
+  let wines = await Wine.find({ code: { $in: event.wines } }).lean();
+
+  wines = wines.sort((a, b) => event.wines.indexOf(a.code) - event.wines.indexOf(b.code));
 
   const formattedDate = format(new Date(event.date), 'EEEE dd. MMMM yyyy', { locale: nb });
 
