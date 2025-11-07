@@ -35,7 +35,7 @@ export const Accordion: React.FC<AccordionProps> = ({
           <div
             key={subcategory.name + index}
             className={styles.flavorSubcategory}>
-            <details>
+            <details open={subcategories.length === 1}>
               <summary className={styles.subcategorySummary}>
                 <div>
                   {subcategory.name}

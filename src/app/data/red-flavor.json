@@ -127,6 +127,95 @@
     ]
   },
   {
+    "name": "Karamellisert",
+    "description": "",
+    "icon": "",
+    "backgroundColor": "#1e90ff",
+    "subcategories": [
+      {
+        "name": "Karamellisert",
+        "description": "Subtile, florale aromaer.",
+        "icon": "🌼",
+        "backgroundColor": "#1e90ff",
+        "flavors": [{ "name": "Sjokolade" }, { "name": "Kaffe" }, { "name": "Lakris" }, { "name": "Soyasaus" }]
+      }
+    ]
+  },
+  {
+    "name": "Animalsk",
+    "description": "",
+    "icon": "",
+    "backgroundColor": "#1e90ff",
+    "subcategories": [
+      {
+        "name": "Animalsk",
+        "description": "Subtile, florale aromaer.",
+        "icon": "🌼",
+        "backgroundColor": "#1e90ff",
+        "flavors": [
+          { "name": "Blod" },
+          { "name": "Kokt skinke" },
+          { "name": "Spekeskinke" },
+          { "name": "Stall" },
+          { "name": "Lær" },
+          { "name": "Fjøs" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Jordaktig",
+    "description": "Aromaer som minner om jord og natur.",
+    "icon": "🪨💦🌍🍄🏺",
+    "backgroundColor": "#009432",
+    "subcategories": [
+      {
+        "name": "Jord",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "#A3CB38",
+        "flavors": [
+          { "name": "Svart oliven" },
+          { "name": "Rå potet" },
+          { "name": "Rødbete" },
+          { "name": "Tørket sopp" },
+          { "name": "Høstløv" },
+          { "name": "Skogbunn" },
+          { "name": "Buljong" },
+          { "name": "Torv" }
+        ]
+      },
+      {
+        "name": "Annet",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "#1289A7",
+        "flavors": [
+          { "name": "Brent fyrstikk" },
+          { "name": "Brent gummi" },
+          { "name": "Neglelakkfjerner" },
+          { "name": "Stein/mineralsk" },
+          { "name": "Mineralsk" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "TCA (kork)",
+    "description": "",
+    "icon": "",
+    "backgroundColor": "#1e90ff",
+    "subcategories": [
+      {
+        "name": "TCA (kork)",
+        "description": "Subtile, florale aromaer.",
+        "icon": "🌼",
+        "backgroundColor": "#1e90ff",
+        "flavors": [{ "name": "Fuktig kjeller" }, { "name": "Papp" }, { "name": "Mugg" }]
+      }
+    ]
+  },
+  {
     "name": "Blomst",
     "description": "Subtile eller fremtredende toner av blomster som roser, fioler eller lavendel.",
     "icon": "🌸🌼🌺",
@@ -142,179 +231,52 @@
     ]
   },
   {
-    "name": "Jordaktig",
-    "description": "Aromaer som minner om jord og natur.",
-    "icon": "🪨💦🌍🍄🏺",
-    "backgroundColor": "#009432",
-    "subcategories": [
-      {
-        "name": "Jordsmonn",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#A3CB38",
-        "flavors": [{ "name": "Potteplante jord" }, { "name": "Rødbet" }, { "name": "Keramikk" }, { "name": "Støv" }]
-      },
-      {
-        "name": "Mineralsk",
-        "description": "Mineralske og steinaktige aromaer.",
-        "icon": "",
-        "backgroundColor": "#1289A7",
-        "flavors": [
-          { "name": "Vulkansk stein" },
-          { "name": "Strøsingel / grus" },
-          { "name": "Grafitt" },
-          { "name": "Petrichoir / lukten etter regn" }
-        ]
-      },
-      {
-        "name": "Brettanomyces",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#006266",
-        "flavors": [{ "name": "Plaster" }, { "name": "Stall" }, { "name": "Svart kardemomme" }, { "name": "Hestebæsj" }]
-      }
-    ]
-  },
-  {
     "name": "Urter",
     "description": "Friske eller krydrede urtearomaer.",
     "icon": "🌿🍃🌱🪴🍂",
     "backgroundColor": "#079992",
     "subcategories": [
       {
-        "name": "Harpiksholdige urter",
+        "name": "Ferske",
         "description": "Friske og grønne urteaktige noter.",
         "icon": "",
         "backgroundColor": "#82ccdd",
-        "flavors": [{ "name": "Eukalytus" }, { "name": "Rosmarin" }, { "name": "Oregano" }, { "name": "Sage" }]
-      },
-      {
-        "name": "Urt",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "",
-        "flavors": [{ "name": "Merian" }]
-      },
-      {
-        "name": "Urteaktig / Vegetal (Methoxypyrazines)",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#78e08f",
         "flavors": [
-          { "name": "Tomatplanteblader" },
-          { "name": "Grønne pepperkorn" },
-          { "name": "Paprika" },
-          { "name": "Mentol" },
-          { "name": "Mint" }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Søt",
-    "description": "Sødmefull",
-    "icon": "",
-    "backgroundColor": "#FC427B",
-    "subcategories": [
-      {
-        "name": "Søt",
-        "description": "Subtile, florale aromaer.",
-        "icon": "",
-        "backgroundColor": "#FD7272",
-        "flavors": [{ "name": "Tyggegummi" }, { "name": "Kokosnøtt" }, { "name": "Vanilje" }]
-      },
-      {
-        "name": "Karamellisert",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#eb3b5a",
-        "flavors": [{ "name": "Brunt sukker" }, { "name": "Brent karamell" }, { "name": "Cola" }]
-      }
-    ]
-  },
-  {
-    "name": "Ristet",
-    "description": "Sødmefull",
-    "icon": "",
-    "backgroundColor": "#f6b93b",
-    "subcategories": [
-      {
-        "name": "Te",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#3c6382",
-        "flavors": [{ "name": "Sort te" }]
-      },
-      {
-        "name": "Tobakk",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#e58e26",
-        "flavors": [{ "name": "Sigareske" }, { "name": "Tobakkblad" }, { "name": "Søt tobakk" }]
-      },
-      {
-        "name": "Brent",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#4b4b4b",
-        "flavors": [{ "name": "Sedertre" }, { "name": "Grill" }, { "name": "Aske" }, { "name": "Røyk" }]
-      }
-    ]
-  },
-  {
-    "name": "Andre smaker",
-    "description": "Disse passer ikke inn andre steder",
-    "icon": "",
-    "backgroundColor": "",
-    "subcategories": [
-      {
-        "name": "Stikkende",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "",
-        "flavors": [{ "name": "Balsmico" }, { "name": "Eddik" }, { "name": "Krydder" }]
-      },
-      {
-        "name": "Sur / fermentert",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "",
-        "flavors": [{ "name": "Krem" }, { "name": "Yoghurt" }, { "name": "Kjernemelk" }]
-      },
-      {
-        "name": "Kjemisk",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "",
-        "flavors": [{ "name": "Tjære" }]
-      },
-      {
-        "name": "Svovel",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "",
-        "flavors": [{ "name": "Brent gummi" }, { "name": "Hvitløk" }, { "name": "Kokt egg" }]
-      },
-      {
-        "name": "Umami",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "",
-        "flavors": [
-          { "name": "Baconfett" },
-          { "name": "Stekt kjøtt" },
-          { "name": "Soyasaus" },
-          { "name": "Pastrami" },
-          { "name": "Trøffel" },
-          { "name": "Lær" }
+          { "name": "Rosmarin" },
+          { "name": "Barnål" },
+          { "name": "Eukalytus" },
+          { "name": "Salvie" },
+          { "name": "Dill" }
         ]
       },
       {
-        "name": "Korkfeil",
+        "name": "Tørket",
         "description": "",
         "icon": "",
         "backgroundColor": "",
-        "flavors": [{ "name": "Våt papp" }]
+        "flavors": [{ "name": "Tobakk" }, { "name": "Te" }]
+      }
+    ]
+  },
+  {
+    "name": "Grønnsaker",
+    "description": "",
+    "icon": "",
+    "backgroundColor": "#079992",
+    "subcategories": [
+      {
+        "name": "Ferske",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "#82ccdd",
+        "flavors": [{ "name": "Rød paprika" }, { "name": "Grønn paprika" }]
+      },
+      {
+        "name": "Kokt/Hermetisk",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "",
+        "flavors": [{ "name": "Kål" }, { "name": "Mais" }]
       }
     ]
   }
