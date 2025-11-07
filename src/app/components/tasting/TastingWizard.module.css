@@ -1,0 +1,163 @@
+.wizardContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+}
+
+.header {
+  background: #000;
+  color: white;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.backButton {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.backButton:hover {
+  opacity: 0.7;
+}
+
+.wineTitle {
+  flex: 1;
+  margin: 0 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.authButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.profileButton,
+.logoutButton {
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.profileButton:hover,
+.logoutButton:hover {
+  background: white;
+  color: black;
+}
+
+.content {
+  flex: 1;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.stepTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+  color: #1f2937;
+}
+
+/* Updated footer background to use lavender color from design system */
+.footer {
+  background: #e8dff5;
+  border-top: 1px solid #e5e7eb;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  bottom: 0;
+  gap: 12px;
+}
+
+/* New button styles matching the reference design */
+.previousButton {
+  background: white;
+  border: 1px solid #000;
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px 32px;
+  border-radius: 24px;
+  transition: all 0.2s;
+}
+
+.previousButton:hover {
+  background: #f3f4f6;
+}
+
+.nextButton {
+  background: #000;
+  border: 1px solid #000;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px 32px;
+  border-radius: 24px;
+  transition: all 0.2s;
+}
+
+.nextButton:hover {
+  background: #1f2937;
+}
+
+.footerButton {
+  display: none;
+}
+
+.saveSection {
+  margin-top: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.saveButton {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 12px;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #7c3aed;
+  transform: translateY(-1px);
+}
+
+.saveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

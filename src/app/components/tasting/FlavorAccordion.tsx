@@ -1,78 +1,62 @@
-import Image from 'next/image';
-import React from 'react';
-import { Category, Flavor, Subcategory } from '../../models/flavorModel';
+'use client';
+
+import type React from 'react';
+import type { Category, Flavor, Subcategory } from '../../models/flavorModel';
+import styles from './FlavorAccordion.module.css';
 
 type AccordionProps = {
   category: Category;
   subcategories: Subcategory[];
   onFlavorClick: (category: Category, subcategory: Subcategory, flavor: Flavor) => void;
+  selectedFlavors?: Flavor[];
 };
 
-export const Accordion: React.FC<AccordionProps> = ({ category, subcategories, onFlavorClick }) => {
+export const Accordion: React.FC<AccordionProps> = ({
+  category,
+  subcategories,
+  onFlavorClick,
+  selectedFlavors = []
+}) => {
+  const isFlavorSelected = (flavor: Flavor) => {
+    return selectedFlavors.some(f => f.name === flavor.name);
+  };
+
   return (
-    <>
-      <details style={{ backgroundColor: category.backgroundColor, color: '#FFF' }}>
-        <summary
-          className="padding"
-          style={{
-            cursor: 'pointer',
-            backgroundColor: category.backgroundColor,
-            color: '#FFF'
-          }}>
-          {category.name} |<label> {category.description}</label>
-          {category.image ? (
-            <Image
-              width={400}
-              height={40}
-              alt="image"
-              src={`/images/${category.image}`}
-            />
-          ) : (
-            category.icon
-          )}
-        </summary>
-        <div
-          key={category.name}
-          style={{ marginLeft: '16px' }}>
-          {subcategories.map((subcategory: Subcategory, index: number) => (
-            <div
-              key={subcategory.name + index * 0.4243}
-              style={{
-                backgroundColor: subcategory.backgroundColor,
-                color: 'white'
-              }}>
-              <details className="padding">
-                <summary>
-                  {subcategory.name} |
-                  <label>
-                    {' '}
-                    {subcategory.description} - {subcategory.icon}
-                  </label>
-                </summary>
-                <div style={{ marginLeft: '16px' }}>
-                  {subcategory.flavors.map((flavor: Flavor) => (
-                    <div key={flavor.name}>
-                      <div className="row padding">
-                        <label className="checkbox">
-                          <input
-                            style={{ color: '#FFF' }}
-                            type="checkbox"
-                            onClick={() => onFlavorClick(category, subcategory, flavor)}
-                          />
-                          <span style={{ color: '#FFF' }}>{flavor.name}</span>
-                        </label>
-                      </div>
-                      <hr />
-                    </div>
-                  ))}
-                </div>
-              </details>
-              <hr />
-            </div>
-          ))}
+    <details className={styles.flavorAccordion}>
+      <summary className={styles.flavorCategorySummary}>
+        <div className={styles.categoryTitle}>
+          <div>{category.name}</div>
+          <div className={styles.categoryDescription}>{category.description}</div>
         </div>
-      </details>
-      <hr />
-    </>
+        <span>{category.icon}</span>
+      </summary>
+      <div className={styles.flavorSubcategories}>
+        {subcategories.map((subcategory: Subcategory, index: number) => (
+          <div
+            key={subcategory.name + index}
+            className={styles.flavorSubcategory}>
+            <details>
+              <summary className={styles.subcategorySummary}>
+                <div>
+                  {subcategory.name}
+                  <span className={styles.subcategoryDescription}>{subcategory.description}</span>
+                </div>
+                <span>{subcategory.icon}</span>
+              </summary>
+              <div className={styles.flavorPills}>
+                {subcategory.flavors.map((flavor: Flavor) => (
+                  <button
+                    key={flavor.name}
+                    className={`${styles.flavorPill} ${isFlavorSelected(flavor) ? styles.selected : ''}`}
+                    onClick={() => onFlavorClick(category, subcategory, flavor)}>
+                    {flavor.name}
+                  </button>
+                ))}
+              </div>
+            </details>
+          </div>
+        ))}
+      </div>
+    </details>
   );
 };

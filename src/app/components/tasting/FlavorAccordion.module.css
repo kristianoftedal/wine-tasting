@@ -1,0 +1,109 @@
+/* Completely redesigned with subtle colors and proper contrast */
+.flavorAccordion {
+  margin-bottom: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: white;
+}
+
+.flavorCategorySummary {
+  padding: 16px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  background: #f9fafb;
+  color: #1f2937;
+  border-left: 4px solid #8b5cf6;
+}
+
+.flavorCategorySummary:hover {
+  background: #f3f4f6;
+}
+
+.categoryTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.categoryDescription {
+  font-size: 12px;
+  font-weight: 400;
+  /* Improved contrast from #6b7280 to #4b5563 for better readability */
+  color: #4b5563;
+}
+
+.flavorSubcategories {
+  padding: 0;
+  background: white;
+}
+
+.flavorSubcategory {
+  border-top: 1px solid #f3f4f6;
+}
+
+.subcategorySummary {
+  padding: 12px 20px 12px 24px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #374151;
+  background: #fafafa;
+  transition: background 0.2s ease;
+}
+
+.subcategorySummary:hover {
+  background: #f3f4f6;
+}
+
+.subcategoryDescription {
+  font-size: 11px;
+  font-weight: 400;
+  /* Improved contrast from #6b7280 to #4b5563 */
+  color: #4b5563;
+  margin-left: 8px;
+}
+
+/* Smaller, neutral pill buttons */
+.flavorPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 20px 16px 24px;
+  background: white;
+}
+
+.flavorPill {
+  padding: 5px 12px;
+  border-radius: 16px;
+  border: 1px solid #d1d5db;
+  background: white;
+  /* Improved contrast from #4b5563 to #374151 for better readability */
+  color: #374151;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.flavorPill:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.flavorPill.selected {
+  background: #8b5cf6;
+  border-color: #8b5cf6;
+  color: white;
+  font-weight: 500;
+}

@@ -1,0 +1,66 @@
+.selectedFlavorsSection {
+  margin: 24px 0;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.selectedFlavorsTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.selectedCategory {
+  margin-bottom: 20px;
+}
+
+.selectedCategory:last-child {
+  margin-bottom: 0;
+}
+
+.selectedCategoryName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.selectedFlavorPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.selectedFlavorPill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #8b5cf6;
+  background: #ede9fe;
+  color: #6b21a8;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.selectedFlavorPill:hover {
+  background: #ddd6fe;
+  transform: translateY(-1px);
+}
+
+.subcategoryLabel {
+  opacity: 0.7;
+  font-size: 12px;
+}
+
+.selectedDivider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 16px 0;
+}

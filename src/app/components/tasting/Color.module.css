@@ -1,0 +1,61 @@
+.colorContainer {
+  padding: 20px;
+}
+
+.wineInfoCard {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.wineInfoRow {
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.wineInfoRow:last-child {
+  margin-bottom: 0;
+}
+
+.wineInfoLabel {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.grapeList {
+  margin-top: 4px;
+  padding-left: 16px;
+}
+
+.grapeItem {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.colorInputField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.colorInputLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.colorInputBox {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.colorInputBox:focus {
+  outline: none;
+  border-color: #8b5cf6;
+}
