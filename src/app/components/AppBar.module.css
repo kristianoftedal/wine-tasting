@@ -1,0 +1,65 @@
+.appBar {
+  background: var(--black);
+  color: var(--white);
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.button {
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.buttonOutline {
+  background: transparent;
+  border: 1px solid var(--white);
+  color: var(--white);
+}
+
+.buttonOutline:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.buttonPrimary {
+  background: var(--purple-primary);
+  color: var(--white);
+}
+
+.buttonPrimary:hover {
+  background: var(--purple-dark);
+}
+
+.userName {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--white);
+  font-weight: 500;
+}

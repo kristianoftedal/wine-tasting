@@ -4,7 +4,7 @@ import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { initialTastingValue, tastingAtom } from '../../store/tasting';
 
-export default function ResetButton({ eventId, code, children }) {
+export default function NavButton({ eventId, code, children }) {
   const setTasting = useSetAtom(tastingAtom);
   const router = useRouter();
 
@@ -12,6 +12,11 @@ export default function ResetButton({ eventId, code, children }) {
     setTasting(initialTastingValue);
     router.push(`/smaking/${code}?eventId=${eventId}`);
   };
-
-  return <button onClick={handleReset}>{children}</button>;
+  return (
+    <button
+      onClick={handleReset}
+      aria-label={`smaking for ${eventId}`}>
+      {children}
+    </button>
+  );
 }

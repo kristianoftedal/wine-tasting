@@ -1,13 +1,16 @@
+'use client';
+
 import { Accordion } from '@/app/components/tasting/FlavorAccordion';
 import { SelectedFlavors } from '@/app/components/tasting/SelectedFlavours';
 import redWineFlavorsData from '@/app/data/red-flavor.json';
 import whiteWineFlavorsData from '@/app/data/white-flavor.json';
-import { Category, Flavor, Subcategory } from '@/app/models/flavorModel';
+import type { Category, Flavor, Subcategory } from '@/app/models/flavorModel';
 import { useAtom } from 'jotai';
-import React from 'react';
-import { WineType } from '../../models/productModel';
-import { TastingModel } from '../../models/tastingModel';
+import type React from 'react';
+import type { WineType } from '../../models/productModel';
+import type { TastingModel } from '../../models/tastingModel';
 import { tastingAtom } from '../../store/tasting';
+import styles from './FlavorSelection.module.css';
 
 interface Props {
   type?: 'lukt' | 'smak';
@@ -46,54 +49,58 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
     });
   };
 
+  const currentIntensity = type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet;
+  const selectedFlavors =
+    tastingState[type === 'lukt' ? 'selectedFlavorsLukt' : 'selectedFlavorsSmak']?.map(x => x.flavor) || [];
+
   return (
-    <div>
-      <div className="center middle-align row">
-        <p>Intensitet</p>
-      </div>
-      <div
-        className="center middle-align row"
-        style={{ marginBottom: '0.75rem' }}>
-        <nav className="no-space">
+    <div className={styles.flavorSelection}>
+      <div className={styles.intensitySection}>
+        <div className={styles.intensityLabel}>Intensitet</div>
+        <div className={styles.intensityButtons}>
           <button
-            className={`border left-round  ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'lav' ? 'fill' : ''}`}
+            className={`${styles.intensityButton} ${currentIntensity === 'lav' ? styles.active : ''}`}
             onClick={() => onChangeIntensity('lav')}>
             Lav
           </button>
           <button
-            className={`border no-round  ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'middels' ? 'fill' : ''}`}
+            className={`${styles.intensityButton} ${currentIntensity === 'middels' ? styles.active : ''}`}
             onClick={() => onChangeIntensity('middels')}>
             Middels
           </button>
           <button
-            className={`border right-round  ${(type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet) === 'høy' ? 'fill' : ''}`}
+            className={`${styles.intensityButton} ${currentIntensity === 'høy' ? styles.active : ''}`}
             onClick={() => onChangeIntensity('høy')}>
             Høy
           </button>
-        </nav>
+        </div>
       </div>
-      {flavorData.map(categoryItem => (
-        <Accordion
-          key={categoryItem.name}
-          category={categoryItem}
-          subcategories={categoryItem.subcategories}
-          onFlavorClick={handleFlavorClick}
+      <div
+        className={styles.commentField}
+        style={{ marginBottom: '1rem' }}>
+        <textarea
+          className={styles.commentTextarea}
+          value={tastingState[type]}
+          onChange={event => setTastingState((prev: TastingModel) => ({ ...prev, [type]: event.target.value }))}
+          placeholder="Legg til dine egne notater her..."
         />
-      ))}
+      </div>
 
       <SelectedFlavors
         selectedFlavors={tastingState[type === 'lukt' ? 'selectedFlavorsLukt' : 'selectedFlavorsSmak']}
         onFlavorClick={handleFlavorClick}
       />
 
-      <div className="field textarea border">
-        <textarea
-          value={tastingState[type]}
-          onChange={event =>
-            setTastingState((prev: TastingModel) => ({ ...prev, [type]: event.target.value }))
-          }></textarea>
-        <span className="helper">Kommentar</span>
-      </div>
+      <h5>Forslag:</h5>
+      {flavorData.map(categoryItem => (
+        <Accordion
+          key={categoryItem.name}
+          category={categoryItem}
+          subcategories={categoryItem.subcategories}
+          onFlavorClick={handleFlavorClick}
+          selectedFlavors={selectedFlavors}
+        />
+      ))}
     </div>
   );
 };

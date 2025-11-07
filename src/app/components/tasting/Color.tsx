@@ -1,10 +1,11 @@
 'use client';
 
 import { useAtom, useAtomValue } from 'jotai';
-import React from 'react';
-import { Wine } from '../../models/productModel';
-import { TastingModel } from '../../models/tastingModel';
+import type React from 'react';
+import type { Wine } from '../../models/productModel';
+import type { TastingModel } from '../../models/tastingModel';
 import { tastingAtom, wineAtom } from '../../store/tasting';
+import styles from './Color.module.css';
 
 export const Color: React.FC = () => {
   const [tasting, setTasting] = useAtom(tastingAtom);
@@ -21,26 +22,43 @@ export const Color: React.FC = () => {
   }
 
   return (
-    <article>
-      <div className="row">
-        <div className="max">
-          <div>
-            Druer:
-            {wine.content.ingredients?.map(x => <div key={x.code}>{x.formattedValue}</div>)}
-          </div>
-          <p>Land: {wine.mainCountry.name}</p>
-          {wine.district && <p>Område: {wine.district.name}</p>}
-          <p>Årgang: {wine.year}</p>
-          <div className="field border">
-            <input
-              type="text"
-              value={tasting.farge ?? ''}
-              onChange={event => onChange(event.target.value)}
-            />
-            <span className="helper">Farge</span>
+    <div className={styles.colorContainer}>
+      <div className={styles.wineInfoCard}>
+        <div className={styles.wineInfoRow}>
+          <span className={styles.wineInfoLabel}>Druer:</span>
+          <div className={styles.grapeList}>
+            {wine.content.ingredients?.map(x => (
+              <div
+                key={x.code}
+                className={styles.grapeItem}>
+                • {x.formattedValue}
+              </div>
+            ))}
           </div>
         </div>
+        <div className={styles.wineInfoRow}>
+          <span className={styles.wineInfoLabel}>Land:</span> {wine.mainCountry.name}
+        </div>
+        {wine.district && (
+          <div className={styles.wineInfoRow}>
+            <span className={styles.wineInfoLabel}>Område:</span> {wine.district.name}
+          </div>
+        )}
+        <div className={styles.wineInfoRow}>
+          <span className={styles.wineInfoLabel}>Årgang:</span> {wine.year}
+        </div>
       </div>
-    </article>
+
+      <div className={styles.colorInputField}>
+        <label className={styles.colorInputLabel}>Farge</label>
+        <input
+          type="text"
+          className={styles.colorInputBox}
+          value={tasting.farge ?? ''}
+          onChange={event => onChange(event.target.value)}
+          placeholder="Beskriv vinens farge..."
+        />
+      </div>
+    </div>
   );
 };

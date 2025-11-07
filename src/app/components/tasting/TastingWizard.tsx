@@ -6,15 +6,25 @@ import he from 'he';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Progress } from '../Progress';
-import { Aroma } from './Aroma';
 import { Color } from './Color';
 import { FlavorSelection } from './FlavorSelection';
-import { TastingProps } from './props';
 import { Summary } from './Summary';
 import { TastingAttributes } from './TastingAttributes';
+import styles from './TastingWizard.module.css';
+
+import type { Wine } from '@/app/models/productModel';
+
+export type TastingProps = {
+  wine: Wine;
+};
+
+export type WizardStep = {
+  title: string;
+};
 
 export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const searchParams = useSearchParams();
@@ -42,26 +52,37 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
     toast('Smaksnotat lagret 🥂');
   };
 
+  const handleNextStep = () => {
+    setIndex(index + 1 <= steps.length ? index + 1 : index);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePreviousStep = () => {
+    setIndex(index > 0 ? index - 1 : 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <>
+    <div className={styles.wizardContainer}>
       {status === 'loading' && <Progress />}
       {status !== 'loading' && (
         <>
-          <div className="primary-container">
-            <nav>
-              <button
-                className="circle transparent"
-                onClick={() => router.push('/')}>
-                <i>arrow_back</i>
-              </button>
-              <h5 className="max">{he.decode(wine.name)} </h5>
-            </nav>
-          </div>
-          <div key={'unique'}>
-            <h6 className="center-align padding">
-              {steps[index] === 'Aroma' && <Aroma />}
-              {steps[index] !== 'Aroma' && <span>{steps[index]}</span>}
-            </h6>
+          <header className={styles.header}>
+            <button
+              className={styles.backButton}
+              onClick={() => router.push('/')}>
+              ←
+            </button>
+            <h1 className={styles.wineTitle}>{he.decode(wine.name)}</h1>
+            <div className={styles.authButtons}>
+              <button className={styles.profileButton}>Profil</button>
+              <button className={styles.logoutButton}>Logg ut</button>
+            </div>
+          </header>
+
+          <div className={styles.content}>
+            <h2 className={styles.stepTitle}>{steps[index]}</h2>
+
             {index === 0 && <Color />}
             {index === 1 && (
               <FlavorSelection
@@ -79,48 +100,45 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
             {index === 4 && <Summary />}
 
             {index === 4 && status === 'authenticated' && (
-              <div style={{ marginTop: '32px' }}>
-                Lagre smaksnotat
+              <div className={styles.saveSection}>
+                <p>Lagre smaksnotat</p>
                 <button
-                  className=""
+                  className={styles.saveButton}
                   disabled={isSaving}
                   onClick={async () => await onSave()}>
-                  <i>add</i>
+                  Lagre
                 </button>
                 <Toaster />
               </div>
             )}
           </div>
-          <footer>
-            <nav
-              className="padding"
-              style={{ justifyContent: 'space-between' }}>
-              {index > 0 && (
-                <button
-                  className="transparent"
-                  onClick={() => setIndex(index > 0 ? index - 1 : 0)}>
-                  <i>arrow_back</i>
-                </button>
-              )}
-              {index < steps.length && index + 1 !== steps.length && (
-                <button
-                  className="transparent"
-                  onClick={() => setIndex(index + 1 <= steps.length ? index + 1 : index)}>
-                  {steps[index + 1]}
-                  <i>arrow_forward</i>
-                </button>
-              )}
-              {index + 1 === steps.length && (
-                <button
-                  className="transparent"
-                  onClick={() => router.push(eventId ? `/arrangement/${eventId}` : '/')}>
-                  <i>arrow_forward</i>
-                </button>
-              )}
-            </nav>
+
+          <footer className={styles.footer}>
+            {index > 0 && (
+              <button
+                className={styles.previousButton}
+                onClick={handlePreviousStep}>
+                Forrige
+              </button>
+            )}
+            {index === 0 && <div />}
+            {index < steps.length && index + 1 !== steps.length && (
+              <button
+                className={styles.nextButton}
+                onClick={handleNextStep}>
+                Neste
+              </button>
+            )}
+            {index + 1 === steps.length && (
+              <button
+                className={styles.nextButton}
+                onClick={() => router.push(eventId ? `/arrangement/${eventId}` : '/')}>
+                Ferdig
+              </button>
+            )}
           </footer>
         </>
       )}
-    </>
+    </div>
   );
 };

@@ -2,9 +2,10 @@
 
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import { useAtomValue } from 'jotai';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { semanticSimilarity } from '../../../lib/semanticSimilarity';
-import { Wine } from '../../models/productModel';
+import type { Wine } from '../../models/productModel';
 import styles from './summary.module.css';
 
 function calculateNumericSimilarity(userValue: string, actualValue: string): number {
@@ -25,7 +26,7 @@ export const Summary: React.FC = () => {
   const tastingState = useAtomValue(tastingAtom);
   const wine = useAtomValue<Wine>(wineAtom);
 
-  const [showWine, setShowWine] = useState<boolean>(false);
+  const [showComparison, setShowComparison] = useState<boolean>(false);
   const [scores, setScores] = useState(initState());
   const [overallScore, setOverallScore] = useState(0);
   const [isCalculating, setIsCalculating] = useState(true);
@@ -102,7 +103,7 @@ export const Summary: React.FC = () => {
 
         const { total, weightSum } = Object.entries(newScores).reduce(
           (acc, [key, value]) => {
-            const weight = halfWeightProps.includes(key) ? 0.5 : 1;
+            const weight = halfWeightProps.includes(key) ? 0.2 : 1;
             return {
               total: acc.total + value * weight,
               weightSum: acc.weightSum + weight
@@ -125,6 +126,11 @@ export const Summary: React.FC = () => {
     calculateScores();
   }, []); // Run once on mount
 
+  // const userLuktWords = tastingState.selectedFlavorsLukt.map(x => x.flavor.name.toLowerCase());
+  // const userSmakWords = tastingState.selectedFlavorsSmak.map(x => x.flavor.name.toLowerCase());
+  const vmpLuktWords = wine.smell?.toLowerCase().split(/[\s,]+/) || [];
+  const vmpSmakWords = wine.taste?.toLowerCase().split(/[\s,]+/) || [];
+
   if (isCalculating)
     return (
       <div className={styles.loadingContainer}>
@@ -134,124 +140,226 @@ export const Summary: React.FC = () => {
     );
 
   return (
-    <article>
-      {!showWine && (
+    <div className={styles.summaryContainer}>
+      {!showComparison && (
         <>
-          <div className="row">
-            <div className="max">
-              <p>Farge: {tastingState.farge}</p>
-              <p>
-                Lukt: {tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')}, {tastingState.lukt}
-              </p>
-              <p>
-                Smak: {tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}, {tastingState.smak}
-              </p>
-              <p>Friskhet: {tastingState.friskhet}</p>
-              <p>Fylde: {tastingState.fylde}</p>
-              <p>Sødme: {tastingState.sødme}</p>
-              <p>Karakter: {tastingState.karakter}</p>
-              <p>Alkohol: {tastingState.alkohol}</p>
-              <p>Pris: {tastingState.pris}</p>
-              <p>Kommentar: {tastingState.egenskaper}</p>
-            </div>
+          <div className={styles.scoreHeader}>
+            <p className={styles.overallScore}>{overallScore}%</p>
+            <p className={styles.scoreLabel}>Din smaksscore</p>
           </div>
-          <div className="row">
-            <div className="max">
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  onChange={() => setShowWine(!showWine)}
-                />
-                <span style={{ paddingLeft: '8px' }}> Sammenlign</span>
-              </label>
+
+          <div className={styles.summaryTable}>
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Farge</div>
+              <div className={styles.summaryValue}>{tastingState.farge}</div>
             </div>
+
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Lukt</div>
+              <div className={styles.summaryValue}>
+                <div className={styles.flavorPills}>
+                  {tastingState.selectedFlavorsLukt.map((x, i) => (
+                    <span
+                      key={i}
+                      className={styles.flavorPill}>
+                      {x.flavor.name}
+                    </span>
+                  ))}
+                </div>
+                {tastingState.lukt && <p className={styles.commentText}>{tastingState.lukt}</p>}
+              </div>
+            </div>
+
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Smak</div>
+              <div className={styles.summaryValue}>
+                <div className={styles.flavorPills}>
+                  {tastingState.selectedFlavorsSmak.map((x, i) => (
+                    <span
+                      key={i}
+                      className={styles.flavorPill}>
+                      {x.flavor.name}
+                    </span>
+                  ))}
+                </div>
+                {tastingState.smak && <p className={styles.commentText}>{tastingState.smak}</p>}
+              </div>
+            </div>
+
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Friskhet</div>
+              <div className={styles.summaryValue}>{tastingState.friskhet}</div>
+            </div>
+
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Fylde</div>
+              <div className={styles.summaryValue}>{tastingState.fylde}</div>
+            </div>
+
+            {wine!.mainCategory.code !== 'rødvin' && (
+              <div className={styles.summaryRow}>
+                <div className={styles.summaryLabel}>Sødme</div>
+                <div className={styles.summaryValue}>{tastingState.sødme}</div>
+              </div>
+            )}
+
+            {wine!.mainCategory.code === 'rødvin' && (
+              <div className={styles.summaryRow}>
+                <div className={styles.summaryLabel}>Snærp</div>
+                <div className={styles.summaryValue}>{tastingState.snærp}</div>
+              </div>
+            )}
+
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Karakter</div>
+              <div className={styles.summaryValue}>{tastingState.karakter}</div>
+            </div>
+
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Alkohol</div>
+              <div className={styles.summaryValue}>{tastingState.alkohol}%</div>
+            </div>
+
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Pris</div>
+              <div className={styles.summaryValue}>{tastingState.pris} kr</div>
+            </div>
+
+            {tastingState.egenskaper && (
+              <div className={styles.summaryRow}>
+                <div className={styles.summaryLabel}>Kommentar</div>
+                <div className={styles.summaryValue}>{tastingState.egenskaper}</div>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.comparisonToggle}>
+            <button
+              className={styles.revealButton}
+              onClick={() => setShowComparison(true)}>
+              Sammenlign med eksperten
+            </button>
           </div>
         </>
       )}
-      {showWine && (
+      {showComparison && (
         <>
-          <h5>Din score: {overallScore}</h5>
-          <div className="grid">
-            <div className="s2"></div>
-            <div className="s4">Deg</div>
-            <div className="s4">VMP</div>
-            <div className="s2">Score</div>
+          <div className={styles.scoreHeader}>
+            <p className={styles.overallScore}>{overallScore}%</p>
+            <p className={styles.scoreLabel}>Din smaksscore</p>
           </div>
-          <hr className="tasting-hr"></hr>
-          <div className="grid">
-            <div className="s2">Farge</div>
-            <div className="s4">{tastingState.farge}</div>
-            <div className="s4">{wine!.color}</div>
-            <div className="s2">{scores.farge}</div>
-          </div>
-          <hr className="tasting-hr"></hr>
-          <div className="grid">
-            <div className="s2">Lukt</div>
-            <div className="s4">
-              {tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')}, {tastingState.lukt}
+
+          <div className={styles.comparisonTable}>
+            <div className={styles.tableHeader}>
+              <div></div>
+              <div>Min score</div>
+              <div>Eksperten</div>
+              <div></div>
             </div>
-            <div className="s4">{wine!.smell}</div>
-            <div className="s2">{scores.lukt}</div>
-          </div>
-          <hr className="tasting-hr"></hr>
-          <div className="grid">
-            <div className="s2">Smak</div>
-            <div className="s4">
-              {tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')}, {tastingState.smak}
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Farge</div>
+              <div className={styles.attributeValue}>{tastingState.farge}</div>
+              <div className={styles.attributeValue}>{wine!.color}</div>
+              <div className={styles.scoreValue}>{scores.farge}%</div>
             </div>
-            <div className="s4">{wine!.taste}</div>
-            <div className="s2">{scores.smak}</div>
-          </div>
-          <hr className="tasting-hr"></hr>
-          <div className="grid">
-            <div className="s2">Friskhet</div>
-            <div className="s4">{tastingState.friskhet}</div>
-            <div className="s4">{vmpFriskhet}</div>
-            <div className="s2">{scores.friskhet}</div>
-          </div>
-          <hr className="tasting-hr"></hr>
-          <div className="grid">
-            <div className="s2">Fylde</div>
-            <div className="s4">{tastingState.fylde}</div>
-            <div className="s4">{vmpFylde}</div>
-            <div className="s2">{scores.fylde}</div>
-          </div>
-          <hr className="tasting-hr"></hr>
-          {wine!.mainCategory.code === 'rødvin' && (
-            <div className="grid">
-              <div className="s2">Snærp</div>
-              <div className="s4">{tastingState.snærp}</div>
-              <div className="s4">{vmpSnærp}</div>
-              <div className="s2">{scores.snærp}</div>
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Lukt</div>
+              <div className={styles.attributeValue}>
+                <div className={styles.flavorPills}>
+                  {tastingState.selectedFlavorsLukt.map((x, i) => (
+                    <span
+                      key={i}
+                      className={`${styles.flavorPill} ${vmpLuktWords.some(w => w.includes(x.flavor.name.toLowerCase()) || x.flavor.name.toLowerCase().includes(w)) ? styles.matched : ''}`}>
+                      {x.flavor.name}
+                    </span>
+                  ))}
+                </div>
+                {tastingState.lukt}
+              </div>
+              <div className={styles.attributeValue}>{wine!.smell}</div>
+              <div className={styles.scoreValue}>{scores.lukt}%</div>
             </div>
-          )}
-          {wine!.mainCategory.code !== 'rødvin' && (
-            <div className="grid">
-              <div className="s2">Sødme</div>
-              <div className="s4">{tastingState.sødme}</div>
-              <div className="s4">{vmpSødme}</div>
-              <div className="s2">{scores.sødme}</div>
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Smak</div>
+              <div className={styles.attributeValue}>
+                <div className={styles.flavorPills}>
+                  {tastingState.selectedFlavorsSmak.map((x, i) => (
+                    <span
+                      key={i}
+                      className={`${styles.flavorPill} ${vmpSmakWords.some(w => w.includes(x.flavor.name.toLowerCase()) || x.flavor.name.toLowerCase().includes(w)) ? styles.matched : ''}`}>
+                      {x.flavor.name}
+                    </span>
+                  ))}
+                </div>
+                {tastingState.smak}
+              </div>
+              <div className={styles.attributeValue}>{wine!.taste}</div>
+              <div className={styles.scoreValue}>{scores.smak}%</div>
             </div>
-          )}
-          <hr className="tasting-hr"></hr>
-          <div className="grid">
-            <div className="s2">Alkohol</div>
-            <div className="s4">{tastingState.alkohol}</div>
-            <div className="s4">{wine?.content.traits[0].readableValue}</div>
-            <div className="s2">{scores.alkoholProsent}</div>
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Friskhet</div>
+              <div className={styles.attributeValue}>{tastingState.friskhet}</div>
+              <div className={styles.attributeValue}>{vmpFriskhet}</div>
+              <div className={styles.scoreValue}>{scores.friskhet}%</div>
+            </div>
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Fylde</div>
+              <div className={styles.attributeValue}>{tastingState.fylde}</div>
+              <div className={styles.attributeValue}>{vmpFylde}</div>
+              <div className={styles.scoreValue}>{scores.fylde}%</div>
+            </div>
+
+            {wine!.mainCategory.code === 'rødvin' && (
+              <div className={styles.tableRow}>
+                <div className={styles.attributeName}>Snærp</div>
+                <div className={styles.attributeValue}>{tastingState.snærp}</div>
+                <div className={styles.attributeValue}>{vmpSnærp}</div>
+                <div className={styles.scoreValue}>{scores.snærp}%</div>
+              </div>
+            )}
+
+            {wine!.mainCategory.code !== 'rødvin' && (
+              <div className={styles.tableRow}>
+                <div className={styles.attributeName}>Sødme</div>
+                <div className={styles.attributeValue}>{tastingState.sødme}</div>
+                <div className={styles.attributeValue}>{vmpSødme}</div>
+                <div className={styles.scoreValue}>{scores.sødme}%</div>
+              </div>
+            )}
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Alkohol</div>
+              <div className={styles.attributeValue}>{tastingState.alkohol}%</div>
+              <div className={styles.attributeValue}>{wine?.content.traits[0].readableValue}</div>
+              <div className={styles.scoreValue}>{scores.alkoholProsent}%</div>
+            </div>
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Pris</div>
+              <div className={styles.attributeValue}>{tastingState.pris} kr</div>
+              <div className={styles.attributeValue}>{wine?.price.value} kr</div>
+              <div className={styles.scoreValue}>{scores.pris}%</div>
+            </div>
           </div>
-          <hr className="tasting-hr"></hr>
-          <div className="grid">
-            <div className="s2">Pris</div>
-            <div className="s4">{tastingState.pris}</div>
-            <div className="s4">{wine?.price.value}</div>
-            <div className="s2">{scores.pris}</div>
+
+          <div className={styles.comparisonToggle}>
+            <button
+              className={styles.reviewButton}
+              onClick={() => setShowComparison(false)}>
+              Gjennomgå notatene mine
+            </button>
           </div>
         </>
       )}
-    </article>
+    </div>
   );
 };
+
 function initState():
   | {
       farge: number;

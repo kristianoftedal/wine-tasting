@@ -1,16 +1,30 @@
-import '@radix-ui/themes/styles.css';
-import 'beercss';
-import 'beercss/dist/cdn/beer';
-import 'material-dynamic-colors';
 import type { Metadata } from 'next';
-import React from 'react';
+import type React from 'react';
 import AppBar from './components/AppBar';
 import './globals.css';
 import { Provider } from './provider';
 
 export const metadata: Metadata = {
-  title: 'Smak på vin',
-  description: 'smak på en vin idag!'
+  title: 'Smak Vin - Din personlige guide til vinsmaking',
+  description: 'Utforsk, vurdere og forstå vin på en enkel og morsom måte',
+  generator: 'v0.app',
+  icons: {
+    icon: [
+      {
+        url: '/icon-light-32x32.png',
+        media: '(prefers-color-scheme: light)'
+      },
+      {
+        url: '/icon-dark-32x32.png',
+        media: '(prefers-color-scheme: dark)'
+      },
+      {
+        url: '/icon.svg',
+        type: 'image/svg+xml'
+      }
+    ],
+    apple: '/apple-icon.png'
+  }
 };
 
 export default function RootLayout({
@@ -19,15 +33,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="no">
       <Provider>
-        <body className="light">
+        <body className={`font-sans antialiased`}>
           <AppBar />
-          <main
-            className="responsive"
-            style={{ marginTop: '32px' }}>
-            {children}
-          </main>
+          {children}
         </body>
       </Provider>
     </html>

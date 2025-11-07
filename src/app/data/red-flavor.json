@@ -1,53 +1,29 @@
 [
   {
-    "name": "Fruktig",
+    "name": "Frukt og bær",
     "backgroundColor": "#EA2027",
-    "description": "Aromaer og smaker som minner om ulike flavors frukt.",
+    "description": "Aromaer og smaker som minner om ulike frukter og bær.",
     "icon": "🍎🍓🍉🍑🍋🥭🍈🫐🍇",
     "subcategories": [
       {
-        "name": "Sitrus",
-        "description": "Frisk, syrlig smak fra sitrusfrukter.",
-        "icon": "🍋",
-        "backgroundColor": "#A3CB38",
-        "flavors": [{ "name": "Sitrus" }, { "name": "Grapefrukt" }, { "name": "Appelsin" }, { "name": "Blodappelsin" }]
-      },
-      {
-        "name": "Trefrukt",
+        "name": "Grønn frukt",
         "description": "Andre fruktflavors som ikke passer i andre nameer.",
         "icon": "🍏",
         "backgroundColor": "#FFC312",
-        "flavors": [
-          { "name": "Trefrukt" },
-          { "name": "Bakt eple" },
-          { "name": "Pære" },
-          { "name": "Vannmelon" },
-          { "name": "Sharon / kakifrukt" }
-        ]
+        "flavors": [{ "name": "Grønt eple" }]
       },
       {
-        "name": "Tropisk frukt",
-        "description": "",
-        "icon": "🥭",
-        "backgroundColor": "#F79F1F",
-        "flavors": [{ "name": "Tropisk frukt" }, { "name": "Dragefrukt" }, { "name": "Banan" }]
-      },
-      {
-        "name": "Rød frukt",
+        "name": "Rød frukt og bær",
         "description": "Søte eller syrlige små frukter.",
         "icon": "🍓",
         "backgroundColor": "#ED4C67",
         "flavors": [
-          { "name": "Rød frukt" },
-          { "name": "Sure kirsebær" },
-          { "name": "Tranebær" },
-          { "name": "Røde rips" },
-          { "name": "Granateple" },
-          { "name": "Rød plomme" },
-          { "name": "Kirsebær" },
+          { "name": "Tyttebær" },
+          { "name": "Rips" },
           { "name": "Jordbær" },
+          { "name": "Kirsebær" },
           { "name": "Bringebær" },
-          { "name": "Frukt pønsj" }
+          { "name": "Nype" }
         ]
       },
       {
@@ -56,33 +32,44 @@
         "icon": "🫐",
         "backgroundColor": "#5758BB",
         "flavors": [
-          { "name": "Boysenbær" },
-          { "name": "Solbær" },
           { "name": "Blå plomme" },
-          { "name": "Moreller" },
+          { "name": "Morell" },
+          { "name": "Solbær" },
           { "name": "Blåbær" },
-          { "name": "Bjørnebær" },
-          { "name": "Skogsbær" },
-          { "name": "Sorte oliven" }
+          { "name": "Krekling" },
+          { "name": "Bjørnebær" }
         ]
       },
       {
-        "name": "Tørket frukt",
-        "description": "Aromaer og smaker som minner om tørkede frukter.",
+        "name": "Syntetisk",
+        "description": "",
+        "icon": "🍇",
+        "backgroundColor": "#833471",
+        "flavors": [{ "name": "Vingummi" }, { "name": "Skumbanan" }]
+      },
+      {
+        "name": "Kokt",
+        "description": "",
         "icon": "🍇",
         "backgroundColor": "#833471",
         "flavors": [
-          { "name": "Rosiner" },
-          { "name": "Fiken" },
-          { "name": "Svisker" },
-          { "name": "Hoisin" },
-          { "name": "Fruktkake" }
+          { "name": "Jordbærsyltetøy" },
+          { "name": "Solbærsyltetøy" },
+          { "name": "Solbærgele" },
+          { "name": "Rognebærgele" }
         ]
+      },
+      {
+        "name": "Tørket",
+        "description": "Aromaer og smaker som minner om tørkede frukter.",
+        "icon": "🍇",
+        "backgroundColor": "#833471",
+        "flavors": [{ "name": "Rosin" }, { "name": "Sviske" }, { "name": "Tørket fiken" }]
       }
     ]
   },
   {
-    "name": "Floral",
+    "name": "Blomst",
     "description": "Subtile eller fremtredende toner av blomster som roser, fioler eller lavendel.",
     "icon": "🌸🌼🌺",
     "backgroundColor": "#1e90ff",
