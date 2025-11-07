@@ -97,9 +97,9 @@ export const TastingAttributes: React.FC = () => {
           <input
             type="number"
             className={styles.inputBox}
-            value={tastingState.pris ?? '0'}
+            value={tastingState.pris || 0}
             onChange={event =>
-              setTastingState((prev: TastingModel) => ({ ...prev, pris: parseFloat(event.target.value || '0') }))
+              setTastingState((prev: TastingModel) => ({ ...prev, pris: parseFloat(event.target.value) }))
             }
             placeholder="250"
           />
