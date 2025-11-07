@@ -1,8 +1,11 @@
 'use client';
+import { useSetAtom } from 'jotai';
+import { redirect } from 'next/navigation';
 import type React from 'react';
 import { useState } from 'react';
 import keyValues from '../data/wines-key-value.json';
 import type { searchModel } from '../models/searchModel';
+import { initialTastingValue, tastingAtom } from '../store/tasting';
 import styles from './Search.module.css';
 
 export const Search: React.FC = () => {
@@ -10,6 +13,7 @@ export const Search: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const setTasting = useSetAtom(tastingAtom);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchTerm = e.target.value.toLowerCase();
@@ -55,7 +59,8 @@ export const Search: React.FC = () => {
     setIsOpen(false);
     setSearchValue('');
     setIsLoading(false);
-    onWineSelected(wine);
+    setTasting(initialTastingValue);
+    redirect(`/smaking/${wine.productId}`);
   };
 
   const handleClear = () => {
