@@ -65,6 +65,64 @@
         "icon": "🍇",
         "backgroundColor": "#833471",
         "flavors": [{ "name": "Rosin" }, { "name": "Sviske" }, { "name": "Tørket fiken" }]
+      },
+      {
+        "name": "Oksidert frukt",
+        "description": "",
+        "icon": "🍇",
+        "backgroundColor": "#833471",
+        "flavors": [{ "name": "Brun banan" }, { "name": "Slått eple" }]
+      }
+    ]
+  },
+  {
+    "name": "Nøtter",
+    "description": "Sødmefull",
+    "icon": "",
+    "backgroundColor": "#ff793f",
+    "subcategories": [
+      {
+        "name": "Nøtter",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "#ffda79",
+        "flavors": [{ "name": "Ristede nøtter" }, { "name": "Harsk nøtt" }, { "name": "Kokos" }]
+      }
+    ]
+  },
+  {
+    "name": "Krydder",
+    "description": "",
+    "icon": "",
+    "backgroundColor": "#b33939",
+    "subcategories": [
+      {
+        "name": "Malt krydder",
+        "description": "",
+        "icon": "",
+        "backgroundColor": "#cd6133",
+        "flavors": [{ "name": "Anis" }, { "name": "Svart pepper" }, { "name": "Nellik" }, { "name": "Vanilje" }]
+      }
+    ]
+  },
+  {
+    "name": "Treverk",
+    "description": "",
+    "icon": "",
+    "backgroundColor": "#1e90ff",
+    "subcategories": [
+      {
+        "name": "Treverk",
+        "description": "Subtile, florale aromaer.",
+        "icon": "🌼",
+        "backgroundColor": "#1e90ff",
+        "flavors": [
+          { "name": "Sevje" },
+          { "name": "Høvelspon" },
+          { "name": "Blyanspiss" },
+          { "name": "Røyk" },
+          { "name": "Tjære" }
+        ]
       }
     ]
   },
@@ -75,21 +133,11 @@
     "backgroundColor": "#1e90ff",
     "subcategories": [
       {
-        "name": "Floral",
+        "name": "Blomst",
         "description": "Subtile, florale aromaer.",
         "icon": "🌼",
         "backgroundColor": "#1e90ff",
-        "flavors": [
-          { "name": "Iris" },
-          { "name": "Pion" },
-          { "name": "Syrin" },
-          { "name": "Fiol" },
-          { "name": "Rose" },
-          { "name": "Hibiskus / Hawaiirose" },
-          { "name": "Lavender" },
-          { "name": "Rabarbra" },
-          { "name": "Bergamot" }
-        ]
+        "flavors": [{ "name": "Fiol" }, { "name": "Rose" }]
       }
     ]
   },
@@ -128,7 +176,7 @@
     ]
   },
   {
-    "name": "Urteaktig",
+    "name": "Urter",
     "description": "Friske eller krydrede urtearomaer.",
     "icon": "🌿🍃🌱🪴🍂",
     "backgroundColor": "#079992",
@@ -181,63 +229,6 @@
         "icon": "",
         "backgroundColor": "#eb3b5a",
         "flavors": [{ "name": "Brunt sukker" }, { "name": "Brent karamell" }, { "name": "Cola" }]
-      }
-    ]
-  },
-  {
-    "name": "Krydder",
-    "description": "Sødmefull",
-    "icon": "",
-    "backgroundColor": "#b33939",
-    "subcategories": [
-      {
-        "name": "Brunt krydder",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#cd6133",
-        "flavors": [
-          { "name": "Bakekrydder" },
-          { "name": "Allehånde" },
-          { "name": "Nellik" },
-          { "name": "Kanel" },
-          { "name": "Kinesisk fem-krydderblanding" },
-          { "name": "Lakris" },
-          { "name": "Anis" }
-        ]
-      },
-      {
-        "name": "Pepper",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#84817a",
-        "flavors": [{ "name": "Chili pepper" }, { "name": "Sort pepper" }, { "name": "Hvitt pepper" }]
-      }
-    ]
-  },
-  {
-    "name": "Nøtt / kakao",
-    "description": "Sødmefull",
-    "icon": "",
-    "backgroundColor": "#ff793f",
-    "subcategories": [
-      {
-        "name": "Nøtt",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#ffda79",
-        "flavors": [{ "name": "Hvalnøtt" }, { "name": "Hasselnøtt" }]
-      },
-      {
-        "name": "Kakao",
-        "description": "",
-        "icon": "",
-        "backgroundColor": "#cc8e35",
-        "flavors": [
-          { "name": "Sjokolade" },
-          { "name": "Kakaopulver" },
-          { "name": "Johannestre pulver / Carob" },
-          { "name": "Espresso" }
-        ]
       }
     ]
   },
