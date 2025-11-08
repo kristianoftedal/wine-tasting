@@ -35,7 +35,8 @@
 }
 
 .attributeButton {
-  padding: 8px 4px;
+  padding: 8px 12px;
+  min-width: 44px;
   background: white;
   border: none;
   border-right: 1px solid #e5e7eb;
