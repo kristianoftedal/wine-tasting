@@ -25,8 +25,8 @@ export async function semanticSimilarity(text1: string, text2: string): Promise<
   const embed = await getEmbedder();
 
   const [out1, out2] = await Promise.all([
-    embed(text1, { pooling: 'mean', normalize: true }),
-    embed(text2, { pooling: 'mean', normalize: true })
+    embed(text1.replace(/,|\.|\bmed\b|\bog\b|\bav\b/g, ' '), { pooling: 'mean', normalize: true }),
+    embed(text2.replace(/,|\.|\bmed\b|\bog\b|\bav\b/g, ' '), { pooling: 'mean', normalize: true })
   ]);
 
   const emb1 = Array.from(out1.data);
