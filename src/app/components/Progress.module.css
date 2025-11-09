@@ -6,16 +6,16 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 90vw;
+  width: 100vw;
   height: 100vh;
   z-index: 9999;
   background: rgba(255, 255, 255, 0.95);
-  padding: 48px 24px;
+  padding: 48px;
   gap: 16px;
 }
 
 .progressContainer.small {
-  padding: 24px 16px;
+  padding: 48px;
   gap: 12px;
 }
 
@@ -127,7 +127,7 @@
 
 /* Bar variant */
 .barWrapper {
-  width: 200px;
+  margin: 48px;
   height: 4px;
   background: #f3f4f6;
   border-radius: 4px;

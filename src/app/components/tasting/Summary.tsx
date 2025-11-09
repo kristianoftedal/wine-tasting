@@ -9,8 +9,8 @@ import type { Wine } from '../../models/productModel';
 import styles from './summary.module.css';
 
 function calculateNumericSimilarity(userValue: string, actualValue: string): number {
-  const userNum = Number.parseFloat(userValue.replace(/[&%]/g, '').replace(/,/g, '.'));
-  const actualNum = Number.parseFloat(actualValue.replace(/[&%]/g, '').replace(/,/g, '.'));
+  const userNum = Number.parseFloat(userValue.replace(/[&%]/g, '').replace(/,/g, '.').replace('prosent', ''));
+  const actualNum = Number.parseFloat(actualValue.replace(/[&%]/g, '').replace(/,/g, '.').replace('prosent', ''));
 
   if (isNaN(userNum) || isNaN(actualNum)) return 0;
 
@@ -39,7 +39,7 @@ export const Summary: React.FC = () => {
   useEffect(() => {
     async function calculateScores() {
       setIsCalculating(true);
-
+      debugger;
       try {
         // Calculate color score
         const colorScore =
@@ -108,7 +108,9 @@ export const Summary: React.FC = () => {
         const averageScore = Math.round(total / weightSum);
 
         setOverallScore(averageScore);
-      } catch {
+      } catch (error) {
+        debugger;
+        console.log(JSON.stringify(error));
         setScores(initState());
         setOverallScore(0);
       } finally {
@@ -117,7 +119,24 @@ export const Summary: React.FC = () => {
     }
 
     calculateScores();
-  }, []); // Run once on mount
+  }, [
+    tastingState.farge,
+    tastingState.alkohol,
+    tastingState.selectedFlavorsLukt,
+    tastingState.lukt,
+    tastingState.selectedFlavorsSmak,
+    tastingState.smak,
+    tastingState.pris,
+    tastingState.snærp,
+    tastingState.sødme,
+    tastingState.fylde,
+    tastingState.friskhet,
+    wine,
+    vmpSnærp,
+    vmpSødme,
+    vmpFylde,
+    vmpFriskhet
+  ]); // Run once on mount
 
   // const userLuktWords = tastingState.selectedFlavorsLukt.map(x => x.flavor.name.toLowerCase());
   // const userSmakWords = tastingState.selectedFlavorsSmak.map(x => x.flavor.name.toLowerCase());

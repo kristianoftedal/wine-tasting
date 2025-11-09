@@ -24,9 +24,11 @@ function cosineSimilarity(a: number[], b: number[]): number {
 export async function semanticSimilarity(text1: string, text2: string): Promise<number> {
   const embed = await getEmbedder();
 
+  const cleanedText1 = text1.replace(/,|\.|\bmed\b|\bog\b|\bav\b/g, ' ').trim();
+  const cleanedText2 = text2.replace(/,|\.|\bmed\b|\bog\b|\bav\b/g, ' ').trim();
   const [out1, out2] = await Promise.all([
-    embed(text1.replace(/,|\.|\bmed\b|\bog\b|\bav\b/g, ' '), { pooling: 'mean', normalize: true }),
-    embed(text2.replace(/,|\.|\bmed\b|\bog\b|\bav\b/g, ' '), { pooling: 'mean', normalize: true })
+    embed(cleanedText1, { pooling: 'mean', normalize: true }),
+    embed(cleanedText2, { pooling: 'mean', normalize: true })
   ]);
 
   const emb1 = Array.from(out1.data);
