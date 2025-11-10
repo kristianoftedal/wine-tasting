@@ -9,8 +9,12 @@ import type { Wine } from '../../models/productModel';
 import styles from './summary.module.css';
 
 function calculateNumericSimilarity(userValue: string, actualValue: string): number {
-  const userNum = Number.parseFloat(userValue.replace(/[&%]/g, '').replace(/,/g, '.').replace('prosent', ''));
-  const actualNum = Number.parseFloat(actualValue.replace(/[&%]/g, '').replace(/,/g, '.').replace('prosent', ''));
+  const normalizeNumber = (str: string) => {
+    const cleaned = str.replace(/[^\d.,]/g, '').replace('prosent', '');
+    return Number.parseFloat(cleaned.replace(',', '.'));
+  };
+  const userNum = normalizeNumber(userValue);
+  const actualNum = normalizeNumber(actualValue);
 
   if (isNaN(userNum) || isNaN(actualNum)) return 0;
 
