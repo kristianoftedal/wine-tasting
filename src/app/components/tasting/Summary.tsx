@@ -6,7 +6,7 @@ import type React from 'react';
 import { useEffect, useState } from 'react';
 import { semanticSimilarity } from '../../../lib/semanticSimilarity';
 import type { Wine } from '../../models/productModel';
-import styles from './summary.module.css';
+import styles from './summary-1.module.css';
 
 function calculateNumericSimilarity(userValue: string, actualValue: string): number {
   const normalizeNumber = (str: string) => {
@@ -43,7 +43,6 @@ export const Summary: React.FC = () => {
   useEffect(() => {
     async function calculateScores() {
       setIsCalculating(true);
-      debugger;
       try {
         // Calculate color score
         const colorScore =
@@ -113,7 +112,6 @@ export const Summary: React.FC = () => {
 
         setOverallScore(averageScore);
       } catch (error) {
-        debugger;
         console.log(JSON.stringify(error));
         setScores(initState());
         setOverallScore(0);

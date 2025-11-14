@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import styles from './Member.module.css';
 
 export default function Member({
   addUser,
@@ -19,9 +20,15 @@ export default function Member({
   };
 
   return (
-    <div className="row">
-      {isMember && <p>Du er medlem ✅</p>}
-      {!isMember && <button onClick={async () => await onClick()}>Legg meg til</button>}
+    <div className={styles.container}>
+      {isMember && <p className={styles.memberStatus}>Du er medlem ✅</p>}
+      {!isMember && (
+        <button
+          onClick={async () => await onClick()}
+          className={styles.button}>
+          Legg meg til
+        </button>
+      )}
     </div>
   );
 }

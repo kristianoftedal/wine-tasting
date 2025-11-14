@@ -4,7 +4,8 @@ import type React from 'react';
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { GroupDocument } from '../../../db-schemas/Group';
+import type { GroupDocument } from '../../../db-schemas/Group';
+import styles from './OpprettGruppe.module.css';
 
 interface User {
   _id: string;
@@ -59,85 +60,91 @@ export default function CreateGroupForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <div className="field label border">
-          <input
-            type="text"
-            value={groupName}
-            onChange={e => setGroupName(e.target.value)}
-            required
-            placeholder="Navn"
-          />
-        </div>
-        <div className="field label border">
-          <input
-            type="text"
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-            required
-            placeholder="Beskrivelse"
-          />
-        </div>
-        <div className="field label border">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => onSearchChanged(e.target.value)}
-            placeholder="Search users..."
-          />
-        </div>
-        {searchResults.length > 0 && (
-          <>
-            <p>Treff: </p>
-            <ul className="list border">
-              {searchResults.map(user => (
-                <li
-                  key={user._id}
-                  className="padding">
-                  {user.name} ({user.email})
-                  <button
-                    type="button"
-                    onClick={() => addMember(user)}
-                    className="secondary small right">
-                    +
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-        {members.length > 0 && (
-          <div>
-            <p>Valgte medlemmer:</p>
-            <ul className="list border">
-              {members.map(member => (
-                <li
-                  key={member._id}
-                  className="padding">
-                  {member.name} ({member.email})
-                  <button
-                    type="button"
-                    onClick={() => removeMember(member._id)}
-                    className="error small right">
-                    -
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+    <form
+      onSubmit={handleSubmit}
+      className={styles.form}>
+      <div className={styles.inputGroup}>
+        <input
+          type="text"
+          value={groupName}
+          onChange={e => setGroupName(e.target.value)}
+          required
+          placeholder="Gruppenavn"
+          className={styles.input}
+        />
       </div>
-      <div
-        className="row"
-        style={{ marginTop: '1rem' }}>
-        <button
-          type="submit"
-          style={{ marginTop: '1rem' }}
-          className="primary">
-          Opprett gruppe
-        </button>
+      <div className={styles.inputGroup}>
+        <input
+          type="text"
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+          required
+          placeholder="Beskrivelse"
+          className={styles.input}
+        />
       </div>
+      <div className={styles.inputGroup}>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={e => onSearchChanged(e.target.value)}
+          placeholder="Søk etter brukere..."
+          className={styles.input}
+        />
+      </div>
+      {searchResults.length > 0 && (
+        <div className={styles.section}>
+          <p className={styles.sectionTitle}>Treff:</p>
+          <ul className={styles.list}>
+            {searchResults.map(user => (
+              <li
+                key={user._id}
+                className={styles.listItem}>
+                <div className={styles.userInfo}>
+                  <span className={styles.userName}>{user.name}</span>
+                  <span className={styles.userEmail}>{user.email}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => addMember(user)}
+                  className={styles.addButton}
+                  aria-label="Legg til medlem">
+                  +
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {members.length > 0 && (
+        <div className={styles.section}>
+          <p className={styles.sectionTitle}>Valgte medlemmer:</p>
+          <ul className={styles.list}>
+            {members.map(member => (
+              <li
+                key={member._id}
+                className={styles.listItem}>
+                <div className={styles.userInfo}>
+                  <span className={styles.userName}>{member.name}</span>
+                  <span className={styles.userEmail}>{member.email}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeMember(member._id)}
+                  className={styles.removeButton}
+                  aria-label="Fjern medlem">
+                  -
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <button
+        type="submit"
+        className={styles.submitButton}>
+        Opprett gruppe
+      </button>
     </form>
   );
 }
