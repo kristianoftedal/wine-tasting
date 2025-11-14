@@ -1,7 +1,8 @@
-import Group, { GroupDocument } from '../../../db-schemas/Group';
+import Group, { type GroupDocument } from '../../../db-schemas/Group';
 import User from '../../../db-schemas/User';
 import { connectDB } from '../../../lib/mongoose';
 import CreateGroupForm from './OpprettGruppe';
+import styles from './page.module.css';
 
 async function searchUsers(query: string) {
   'use server';
@@ -31,14 +32,14 @@ async function createGroup(formData: FormData): Promise<GroupDocument> {
 
 export default function CreateGroupPage() {
   return (
-    <div>
-      <h1>Opprett ny gruppe</h1>
-      <section>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Opprett ny gruppe</h1>
+      <div className={styles.card}>
         <CreateGroupForm
           createGroup={createGroup}
           searchUsers={searchUsers}
         />
-      </section>
+      </div>
     </div>
   );
 }

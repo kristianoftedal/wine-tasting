@@ -17,6 +17,26 @@ function cosineSimilarity(a: number[], b: number[]): number {
   const normB = Math.sqrt(b.reduce((sum, val) => sum + val ** 2, 0));
   return dot / (normA * normB);
 }
+function cosineSimilarity1(vecA: number[], vecB: number[]): number {
+  if (vecA.length !== vecB.length) {
+    throw new Error('Vectors must have the same dimensions');
+  }
+
+  // Calculate dot product: A·B = Σ(A[i] * B[i])
+  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+
+  // Calculate magnitudes using Math.hypot()
+  const magnitudeA = Math.hypot(...vecA);
+  const magnitudeB = Math.hypot(...vecB);
+
+  // Check for zero magnitude
+  if (magnitudeA === 0 || magnitudeB === 0) {
+    return 0;
+  }
+
+  // Calculate cosine similarity: (A·B) / (|A|*|B|)
+  return dotProduct / (magnitudeA * magnitudeB);
+}
 
 /**
  * Compute semantic similarity (0–100) between two phrases.
@@ -34,6 +54,12 @@ export async function semanticSimilarity(text1: string, text2: string): Promise<
   const emb1 = Array.from(out1.data);
   const emb2 = Array.from(out2.data);
 
-  const similarity = cosineSimilarity(emb1 as number[], emb2 as number[]);
-  return Math.round(similarity * 100);
+  const similarity1 = cosineSimilarity(emb1 as number[], emb2 as number[]);
+  const similarity2 = cosineSimilarity1(emb1 as number[], emb2 as number[]);
+  const result = Math.round(similarity1 * 100);
+  const result2 = Math.round(similarity2 * 100);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const diff = result - result2;
+  debugger;
+  return result;
 }

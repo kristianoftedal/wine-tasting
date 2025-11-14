@@ -1,6 +1,6 @@
 import Event from '@/db-schemas/Event';
 import Group from '@/db-schemas/Group';
-import User, { UserDocument } from '@/db-schemas/User';
+import User, { type UserDocument } from '@/db-schemas/User';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/mongoose';
 import { format } from 'date-fns';
@@ -8,6 +8,7 @@ import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import Member from './Member';
+import styles from './page.module.css';
 
 export default async function GroupPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -23,10 +24,10 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
 
   if (group === null) {
     return (
-      <div>
-        <section className="small-padding">
-          <h4>fant ingen gruppe</h4>
-        </section>
+      <div className={styles.container}>
+        <div className={styles.emptyState}>
+          <h4 className={styles.emptyStateTitle}>Fant ingen gruppe</h4>
+        </div>
       </div>
     );
   }
@@ -41,38 +42,54 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
   };
 
   return (
-    <div>
-      <h4>{group.name}</h4>
-      <section className="small-padding">
-        <h4>Medlemmer</h4>
-        {users?.map(x => (
-          <article key={x._id}>
-            <p>{x.name}</p>
-          </article>
-        ))}
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>{group.name}</h1>
+      </header>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Medlemmer</h2>
+        <div className={styles.membersList}>
+          {users?.map(x => (
+            <article
+              key={x._id}
+              className={styles.memberCard}>
+              <p className={styles.memberName}>{x.name}</p>
+            </article>
+          ))}
+        </div>
         <Member
           addUser={addUser}
           userIsMember={isMember}
           groupId={group?._id.toString()}
         />
       </section>
-      <section className="small-padding">
-        <h4>Arrangement</h4>
-        <div className="row">
-          <Link href={`/gruppe/${id}/arrangement/opprett`}>
-            <button>Legg til</button>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Arrangement</h2>
+          <Link
+            href={`/gruppe/${id}/arrangement/opprett`}
+            className={styles.addButton}>
+            Legg til
           </Link>
         </div>
-        {events?.map(x => (
-          <article key={x._id}>
-            <h5>
-              <Link href={`/gruppe/${x._id}/arrangement/${x._id}`}>
-                {x.name} {format(x.date, 'Pp')}
-              </Link>
-            </h5>
-            <p>{x.description}</p>
-          </article>
-        ))}
+        <div className={styles.eventsList}>
+          {events?.map(x => (
+            <article
+              key={x._id}
+              className={styles.eventCard}>
+              <h3 className={styles.eventTitle}>
+                <Link
+                  href={`/gruppe/${x._id}/arrangement/${x._id}`}
+                  className={styles.eventLink}>
+                  {x.name} {format(x.date, 'Pp')}
+                </Link>
+              </h3>
+              <p className={styles.eventDescription}>{x.description}</p>
+            </article>
+          ))}
+        </div>
       </section>
     </div>
   );

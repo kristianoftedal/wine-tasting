@@ -1,0 +1,85 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.wineCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.wineCard:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.wineCard:last-child {
+  margin-bottom: 0;
+}
+
+.wineTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.wineTitle a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.wineTitle a:hover {
+  color: var(--accent-hover);
+}
+
+.wineDescription {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .wineCard {
+    padding: 1rem;
+  }
+}

@@ -9,8 +9,9 @@ import Event from '../../db-schemas/Event';
 import Group from '../../db-schemas/Group';
 import User from '../../db-schemas/User';
 import { authOptions } from '../../lib/auth';
-import { SelectedFlavor } from '../models/flavorModel';
-import { TastingModel } from '../models/tastingModel';
+import type { SelectedFlavor } from '../models/flavorModel';
+import type { TastingModel } from '../models/tastingModel';
+import styles from './page.module.css';
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -31,100 +32,105 @@ export default async function Page() {
   const wines = await Wine.find({ code: { $in: ids } });
 
   return (
-    <div>
-      <div className="row">
-        <div className="col s12 m9">
-          <h1 className="no-margin">{user.name}</h1>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>{user.name}</h1>
       </div>
 
-      <section className="grid">
-        <div className="col s12 m6">
-          <article>
-            <div className="card-content">
-              <span className="card-title">Tidligere smaksnotater</span>
-              {tastings.length === 0 ? (
-                <p>Ingen smaksnotater funnet.</p>
-              ) : (
-                tastings.map((tasting: TastingModel, index: number) => (
-                  <details key={index}>
-                    <summary>
-                      <article>
-                        <h5>{wines.find(x => x.code === tasting.productId)?.name}</h5>
-                        <p>{format(tasting.tastedAt, 'Pp')}</p>
-                      </article>
-                    </summary>
-                    <div className="max">
-                      <p>Farge: {tasting.farge}</p>
-                      <p>
-                        Lukt: {tasting.selectedFlavorsLukt.map((x: SelectedFlavor) => x.flavor.name).join(', ')},{' '}
-                        {tasting.lukt}
-                      </p>
-                      <p>
-                        Smak: {tasting.selectedFlavorsSmak.map((x: SelectedFlavor) => x.flavor.name).join(', ')},{' '}
-                        {tasting.smak}
-                      </p>
-                      <p>Friskhet: {tasting.friskhet}</p>
-                      <p>Fylde: {tasting.fylde}</p>
-                      <p>Sødme: {tasting.sødme}</p>
-                      <p>Karakter: {tasting.karakter}</p>
-                      <p>Kommentar: {tasting.egenskaper}</p>
-                    </div>
-                  </details>
-                ))
-              )}
-            </div>
-          </article>
+      <div className={styles.grid}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>Tidligere smaksnotater</h2>
+          </div>
+          <div className={styles.cardContent}>
+            {tastings.length === 0 ? (
+              <p className={styles.emptyState}>Ingen smaksnotater funnet.</p>
+            ) : (
+              tastings.map((tasting: TastingModel, index: number) => (
+                <details
+                  key={index}
+                  className={styles.details}>
+                  <summary>
+                    <h5 className={styles.tastingTitle}>{wines.find(x => x.code === tasting.productId)?.name}</h5>
+                    <p className={styles.tastingDate}>{format(tasting.tastedAt, 'Pp')}</p>
+                  </summary>
+                  <div className={styles.detailsContent}>
+                    <p className={styles.tastingAttribute}>
+                      <strong>Farge:</strong> {tasting.farge}
+                    </p>
+                    <p className={styles.tastingAttribute}>
+                      <strong>Lukt:</strong>{' '}
+                      {tasting.selectedFlavorsLukt.map((x: SelectedFlavor) => x.flavor.name).join(', ')}, {tasting.lukt}
+                    </p>
+                    <p className={styles.tastingAttribute}>
+                      <strong>Smak:</strong>{' '}
+                      {tasting.selectedFlavorsSmak.map((x: SelectedFlavor) => x.flavor.name).join(', ')}, {tasting.smak}
+                    </p>
+                    <p className={styles.tastingAttribute}>
+                      <strong>Friskhet:</strong> {tasting.friskhet}
+                    </p>
+                    <p className={styles.tastingAttribute}>
+                      <strong>Fylde:</strong> {tasting.fylde}
+                    </p>
+                    <p className={styles.tastingAttribute}>
+                      <strong>Sødme:</strong> {tasting.sødme}
+                    </p>
+                    <p className={styles.tastingAttribute}>
+                      <strong>Karakter:</strong> {tasting.karakter}
+                    </p>
+                    <p className={styles.tastingAttribute}>
+                      <strong>Kommentar:</strong> {tasting.egenskaper}
+                    </p>
+                  </div>
+                </details>
+              ))
+            )}
+          </div>
         </div>
 
-        <div className="col s12 m6">
-          <article>
-            <div className="card-content">
-              <span className="card-title">Dine grupper</span>
-              <ul>
-                {events.length === 0 && <li>Ingen funnet</li>}
-                {groups.map(group => (
-                  <li key={group._id.toString()}>
-                    <Link href={`/gruppe/${group._id}`}>{group.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="card-action">
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>Dine grupper</h2>
+          </div>
+          <div className={styles.cardContent}>
+            <ul className={styles.list}>
+              {groups.length === 0 && <li className={styles.emptyState}>Ingen funnet</li>}
+              {groups.map(group => (
+                <li
+                  key={group._id.toString()}
+                  className={styles.listItem}>
+                  <Link href={`/gruppe/${group._id}`}>{group.name}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className={styles.cardFooter}>
+            <Link
+              href="/gruppe/opprett-gruppe"
+              className={styles.button}>
+              Opprett gruppe
+            </Link>
+          </div>
+        </div>
+
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>Mine arrangement</h2>
+          </div>
+          <div className={styles.cardContent}>
+            {events.length === 0 && <p className={styles.emptyState}>Ingen funnet</p>}
+            {events?.map(event => (
               <Link
-                href="/gruppe/opprett-gruppe"
-                className="button">
-                Opprett gruppe
+                key={event._id.toString()}
+                href={`/gruppe/${event.group}/arrangement/${event._id}`}
+                className={styles.eventItem}>
+                <p className={styles.eventDate}>{new Date(event.date).toLocaleDateString()}</p>
+                <p className={styles.eventTitle}>{event.name}</p>
               </Link>
-            </div>
-          </article>
+            ))}
+          </div>
         </div>
-
-        <div className="col s6">
-          <article>
-            <div className="card-content">
-              <span className="card-title">Mine arrangement</span>
-              <ul className="collection">
-                {events.length === 0 && <p>Ingen funnet</p>}
-                {events?.map(event => (
-                  <Link
-                    key={event._id.toString()}
-                    href={`/gruppe/${event.group}/arrangement/${event._id}`}>
-                    <li className="collection-item avatar">
-                      <i className="material-icons circle">event</i>
-                      <p>
-                        {new Date(event.date).toLocaleDateString()}
-                        <br />
-                      </p>
-                      <p>Tittel: {event.name}</p>
-                    </li>
-                  </Link>
-                ))}
-              </ul>
-            </div>
-          </article>
-        </div>
-      </section>
+      </div>
     </div>
   );
 }

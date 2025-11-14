@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 import { register } from '@/actions/register';
+import styles from './page.module.css';
 
 export default function Register() {
   const [error, setError] = useState<string>();
@@ -26,44 +27,61 @@ export default function Register() {
   };
 
   return (
-    <section className="center-align middle-align">
-      <article style={{ minWidth: '40vw' }}>
+    <div className={styles.container}>
+      <div className={styles.card}>
         <form
           ref={ref}
-          action={handleSubmit}
-          className="padding">
-          {error && <div>{error}</div>}
-          <h3 style={{ marginBottom: '16px' }}>Registrer deg</h3>
+          action={handleSubmit}>
+          {error && <div className={styles.error}>{error}</div>}
+          <h1 className={styles.title}>Registrer deg</h1>
 
-          <div className="field label border">
+          <div className={styles.field}>
+            <label htmlFor="name">Navn</label>
             <input
               type="text"
+              id="name"
               name="name"
+              required
             />
-            <label>Navn</label>
           </div>
-          <div className="field label border">
+
+          <div className={styles.field}>
+            <label htmlFor="email">E-post</label>
             <input
               type="email"
+              id="email"
               name="email"
+              required
             />
-            <label>E-post</label>
           </div>
 
-          <div className="field label border">
+          <div className={styles.field}>
+            <label htmlFor="password">Passord</label>
             <input
               type="password"
+              id="password"
               name="password"
+              required
             />
-            <label>Passord</label>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <button className="primary">Registrer</button>
 
-            <Link href="/login">Har du allerede en konto?</Link>
+          <div className={styles.buttonGroup}>
+            <button
+              type="submit"
+              className={styles.primaryButton}>
+              Registrer
+            </button>
+          </div>
+
+          <div style={{ marginTop: '1rem' }}>
+            <Link
+              href="/login"
+              className={styles.link}>
+              Har du allerede en konto?
+            </Link>
           </div>
         </form>
-      </article>
-    </section>
+      </div>
+    </div>
   );
 }

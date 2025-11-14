@@ -2,7 +2,8 @@
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useState } from 'react';
+import { type FormEvent, useState } from 'react';
+import styles from './page.module.css';
 
 export default function Login() {
   const [error, setError] = useState('');
@@ -25,44 +26,51 @@ export default function Login() {
   };
 
   return (
-    <section className="center-align middle-align">
-      <article style={{ minWidth: '40vw' }}>
-        <form
-          className="padding"
-          onSubmit={handleSubmit}>
-          <div>
-            {error && <div className="text-black">{error}</div>}
-            <h3 style={{ marginBottom: '16px' }}>Logg inn</h3>
-            <div className="field label border">
-              <input
-                type="email"
-                name="email"
-              />
-              <label>Email</label>
-            </div>
-            <div className="field label border">
-              <input
-                type="password"
-                name="password"
-              />
-              <label>Password</label>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <button className="primary">Logg inn</button>
-              <Link
-                href="/register"
-                className="border">
-                Opprett konto
-              </Link>
-              <Link
-                href="/register"
-                className="border">
-                Fortsett uten innlogging
-              </Link>
-            </div>
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <form onSubmit={handleSubmit}>
+          {error && <div className={styles.error}>{error}</div>}
+          <h1 className={styles.title}>Logg inn</h1>
+
+          <div className={styles.field}>
+            <label htmlFor="email">E-post</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="password">Passord</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+            />
+          </div>
+
+          <div className={styles.buttonGroup}>
+            <button
+              type="submit"
+              className={styles.primaryButton}>
+              Logg inn
+            </button>
+            <Link
+              href="/register"
+              className={styles.secondaryButton}>
+              Opprett konto
+            </Link>
+            <Link
+              href="/"
+              className={styles.secondaryButton}>
+              Fortsett uten innlogging
+            </Link>
           </div>
         </form>
-      </article>
-    </section>
+      </div>
+    </div>
   );
 }

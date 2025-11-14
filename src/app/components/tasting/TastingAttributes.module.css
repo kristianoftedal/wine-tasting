@@ -31,7 +31,7 @@
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #e5e7eb;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .attributeButton {
@@ -45,7 +45,8 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  flex: 0 0 auto;
+  flex: 1 1 0; /* Changed from flex: 0 0 auto to make buttons grow equally */
+  text-align: center; /* Center the numbers inside buttons */
 }
 
 .attributeButton:last-child {

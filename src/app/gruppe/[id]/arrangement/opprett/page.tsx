@@ -1,8 +1,9 @@
-import Event, { EventDocument } from '@/db-schemas/Event';
+import Event, { type EventDocument } from '@/db-schemas/Event';
 import Wine from '@/db-schemas/Wine';
 import { connectDB } from '@/lib/mongoose';
 import { parseISO } from 'date-fns';
 import CreateEventForm from './CreateEvent';
+import styles from './page.module.css';
 
 async function searchWines(query: string) {
   'use server';
@@ -38,9 +39,9 @@ async function createEvent(formData: FormData): Promise<EventDocument> {
 export default async function CreateEventPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   return (
-    <div>
-      <h1>Opprett nytt arrangement</h1>
-      <section>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Opprett nytt arrangement</h1>
+      <section className={styles.section}>
         <CreateEventForm
           createEvent={createEvent}
           searchWines={searchWines}
