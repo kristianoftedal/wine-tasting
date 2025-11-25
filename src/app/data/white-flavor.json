@@ -1,8 +1,8 @@
 [
   {
-    "name": "Fruktig",
+    "name": "Frukt og bær",
     "backgroundColor": "#EA2027",
-    "description": "Aromaer og smaker som minner om ulike flavors frukt.",
+    "description": "Aromaer og smaker som minner om ulike frukter eller bær.",
     "icon": "🍎🍓🍉🍑🍋🥭🍈🫐🍇",
     "subcategories": [
       {
@@ -23,7 +23,7 @@
       },
       {
         "name": "Trefrukt",
-        "description": "Andre fruktflavors som ikke passer i andre nameer.",
+        "description": "",
         "icon": "🍏",
         "backgroundColor": "#FFC312",
         "flavors": [
@@ -66,7 +66,7 @@
         "flavors": [
           { "name": "Rød frukt" },
           { "name": "Hvite kirsebær" },
-          { "name": "Hvite bringegær" },
+          { "name": "Bringebær" },
           { "name": "Jordbær" }
         ]
       },
@@ -75,38 +75,28 @@
         "description": "Aromaer og smaker som minner om tørkede frukter.",
         "icon": "🍇",
         "backgroundColor": "#833471",
-        "flavors": [{ "name": "Tørket frukt" }, { "name": "Gyldne rosiner" }, { "name": "Fiken" }]
+        "flavors": [{ "name": "Tørket fiken" }, { "name": "Tørket aprikos" }, { "name": "Rosin" }]
       }
     ]
   },
   {
-    "name": "Floral",
+    "name": "Blomst",
     "description": "Subtile eller fremtredende toner av blomster som roser, fioler eller lavendel.",
     "icon": "🌸🌼🌺",
     "backgroundColor": "#1e90ff",
     "subcategories": [
       {
-        "name": "Floral",
+        "name": "Blomst",
         "description": "Subtile, florale aromaer.",
         "icon": "🌼",
         "backgroundColor": "#1e90ff",
         "flavors": [
-          { "name": "Floral" },
-          { "name": "Kamomille" },
-          { "name": "Appelsinblomst" },
-          { "name": "Honeysuckle" },
+          { "name": "Hylleblomst" },
           { "name": "Jasmin" },
           { "name": "Rose" },
-          { "name": "Potpurri" },
+          { "name": "Syrin" },
           { "name": "Fiol" },
-          { "name": "Lilje" },
-          { "name": "Peon / hawaiiblomst" },
-          { "name": "Daffodil" },
-          { "name": "Acacao blomst" },
-          { "name": "Elderflower" },
-          { "name": "Geranium" },
-          { "name": "Lavendel" },
-          { "name": "Bergamot" }
+          { "name": "Lavendel" }
         ]
       }
     ]

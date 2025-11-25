@@ -1,0 +1,255 @@
+[{
+  "_id": {
+    "$oid": "680b98eeec588d5139074e8e"
+  },
+  "email": "emanuele.tricca@hotmail.it",
+  "password": "$2a$10$4OJhkWnA1j7j71zYbOPth.LzPfY9ET7SoFkv6oE9uteFt7Yaxbk42",
+  "name": "Emanuele ",
+  "createdAt": {
+    "$date": "2025-04-25T14:15:10.862Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-25T14:15:10.862Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680bca3d659fb0bf4e714b82"
+  },
+  "email": "marten.haug@boitano.no",
+  "password": "$2a$10$j5JOlwphw7jnACKQlyBigOKhajvswpvyAAdYsekJTW4dQNTdJt70u",
+  "name": "Mårten Haug",
+  "createdAt": {
+    "$date": "2025-04-25T17:45:33.290Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-25T17:45:33.290Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67e64d704fdddc0f0dc965a6"
+  },
+  "email": "oftedal.kristian@gmail.com",
+  "password": "$2a$10$/3OtpnovRcVNobc.ZPj7wuZxe4eV0tg1JDSFimQbwK8IFVlJx9znO",
+  "name": "Kristian Oftedal",
+  "createdAt": {
+    "$date": "2025-03-28T07:19:12.681Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-28T07:19:12.681Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67dd351b81f13b0a6320a9da"
+  },
+  "email": "e@e.no",
+  "password": "$2a$10$X33q4kZtjzemq1pGI0zNXuTqUDIXc2d6FhlTpQwLt2mC00Ek4HeI6",
+  "name": "e",
+  "createdAt": {
+    "$date": "2025-03-21T09:44:59.737Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-21T09:44:59.737Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67e23dd22f2e8e074276b1f2"
+  },
+  "email": "gaute.riise@gmail.com",
+  "password": "$2a$10$IrgqzpmdU9n99hmPiHqM3OjTUj4DMrNgDPP8W3s5E9XKC19ciiiP2",
+  "name": "Gaute",
+  "createdAt": {
+    "$date": "2025-03-25T05:23:30.191Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-25T05:23:30.191Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67e6ef0427501f98c8c8b859"
+  },
+  "email": "jan.oftedal@gmail.com",
+  "password": "$2a$10$Ul7nosheYiHLgQ6ARKqabuzPcTlvnKypL9dMvCv4e9o8cRb0NTPlG",
+  "name": "Jan Oftedal",
+  "createdAt": {
+    "$date": "2025-03-28T18:48:36.357Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-28T18:48:36.357Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67e6f70a51e7a46e04fe42ce"
+  },
+  "email": "alexceselli@hotmail.com",
+  "password": "$2a$10$fup8sPEFzAT5PE0PAZfjU.TFWMzNOzqrTBlWaX9GqJ8W1X7Jvl59C",
+  "name": "Alex",
+  "createdAt": {
+    "$date": "2025-03-28T19:22:50.131Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-28T19:22:50.131Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a828d26dc70a18cf044275"
+  },
+  "email": "frida.preacher@boitano.no",
+  "password": "$2a$10$aGj4fJUVcfirhLe.ROEQ4urxSaKSNzatOlQgkBjZndfPf4WcmdSAi",
+  "name": "Frida",
+  "createdAt": {
+    "$date": "2025-08-22T08:22:42.408Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-22T08:22:42.408Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68a828dc6dc70a18cf044279"
+  },
+  "email": "kristine.eilertsen@gmail.com",
+  "password": "$2a$10$Nrm2NqxVsTPsEzS9nROe1OEJjoq1bRpvz5qDahm4Gf0wMqAPm.uaS",
+  "name": "Kristine Eilertsen",
+  "createdAt": {
+    "$date": "2025-08-22T08:22:52.728Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-22T08:22:52.728Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67e28160b6a217983ffcce6b"
+  },
+  "email": "bentkris@gmail.com",
+  "password": "$2a$10$Miuwd4C4/x2S4/U1PLveDu2zstR1pF5nOvFd9iZqw/5JJ9Sc9CfSm",
+  "name": "Bent Onshus",
+  "createdAt": {
+    "$date": "2025-03-25T10:11:44.198Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-25T10:11:44.198Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f7842d81b9dfecea691959"
+  },
+  "email": "jonas@galibier.no",
+  "password": "$2a$10$dttH5FfSIlgssKho8HEuFO6b2zLR4idkBawt8vwMpZ25fOVYtKhou",
+  "name": "Jonas",
+  "createdAt": {
+    "$date": "2025-04-10T08:41:17.708Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-10T08:41:17.708Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680b988dec588d5139074e85"
+  },
+  "email": "kristine@boitano.no",
+  "password": "$2a$10$py4N6B7DqXcYwPRet6yVM.KhekmAEYl7H.VMV91zNm3RybqIoeWRG",
+  "name": "Kristine ",
+  "createdAt": {
+    "$date": "2025-04-25T14:13:33.561Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-25T14:13:33.561Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67e159ed9b238a6402129259"
+  },
+  "email": "ceciliesilva@yahoo.no",
+  "password": "$2a$10$FVDFgsu0UuVI0UseSZW6W.QLt4MrTm.A4n815xs5W6r.7qppLGd4e",
+  "name": "Cecilie Kristine Josefsen",
+  "createdAt": {
+    "$date": "2025-03-24T13:11:09.371Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-24T13:11:09.371Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67e6ef6a3df436d731ac9917"
+  },
+  "email": "mrchazzie@hotmail.com",
+  "password": "$2a$10$xwrM3i0VyUnrIVqbII1teuyel2mds2tTWT/Irg44OetP7A97PxDlO",
+  "name": "Carl-Joachim Isachsen",
+  "createdAt": {
+    "$date": "2025-03-28T18:50:18.774Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-28T18:50:18.774Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680b98acec588d5139074e8a"
+  },
+  "email": "christian@rebnord.com",
+  "password": "$2a$10$JviNoqvIdMUItOCq/0l9e.pah0ftS6l17FGSY/HL2aW9J3LJzhqru",
+  "name": "Christian Rebnord",
+  "createdAt": {
+    "$date": "2025-04-25T14:14:04.784Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-25T14:14:04.784Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6830b0c64aac092d0b42ab8d"
+  },
+  "email": "sondre.lauvdal@gmail.com",
+  "password": "$2a$10$cQXxI7vk2.y2Xzeyw17DkOssN0FgoJ9rvbr2P5JuddcY0GoSjZlbO",
+  "name": "Sondre Syversen Lauvdal",
+  "createdAt": {
+    "$date": "2025-05-23T17:30:46.997Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-23T17:30:46.997Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "690e3abf238710ad7c46f27b"
+  },
+  "email": "jantore@hageskal.no",
+  "password": "$2a$10$t1WH22d77JFzuz0949c0GOQVlSn7nbnew.KhKwUV28fT0VQbmpGaC",
+  "name": "Jan Tore",
+  "createdAt": {
+    "$date": "2025-11-07T18:30:23.899Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-07T18:30:23.899Z"
+  },
+  "__v": 0
+}]

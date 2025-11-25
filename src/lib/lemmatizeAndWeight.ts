@@ -273,7 +273,7 @@ const norwegianLemmas: Record<string, LemmaData> = {
   tiltalende: { lemma: 'tiltalende', weight: 0.8, category: 'generell' }
 };
 
-const stopwords = new Set([
+export const stopwords = new Set([
   'og',
   'i',
   'av',
