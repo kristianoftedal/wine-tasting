@@ -1,73 +1,70 @@
-'use client';
+"use client"
 
-import type React from 'react';
-
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import type { GroupDocument } from '../../../db-schemas/Group';
-import styles from './OpprettGruppe.module.css';
+import type { Group } from "@/lib/types"
+import { useRouter } from "next/navigation"
+import type React from "react"
+import { useState } from "react"
+import styles from "./OpprettGruppe.module.css"
 
 interface User {
-  _id: string;
-  name: string;
-  email: string;
+  _id: string
+  name: string
+  email: string
 }
 
 export default function CreateGroupForm({
   createGroup,
-  searchUsers
+  searchUsers,
 }: {
-  createGroup: (formData: FormData) => Promise<GroupDocument>;
-  searchUsers: (query: string) => Promise<User[]>;
+  createGroup: (formData: FormData) => Promise<Group>
+  searchUsers: (query: string) => Promise<User[]>
 }) {
-  const [groupName, setGroupName] = useState('');
-  const [description, setDescription] = useState('');
-  const [members, setMembers] = useState<User[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<User[]>([]);
-  const router = useRouter();
+  const [groupName, setGroupName] = useState("")
+  const [description, setDescription] = useState("")
+  const [members, setMembers] = useState<User[]>([])
+  const [searchQuery, setSearchQuery] = useState("")
+  const [searchResults, setSearchResults] = useState<User[]>([])
+  const router = useRouter()
 
   const onSearchChanged = async (value: string) => {
-    setSearchQuery(value);
-    if (searchQuery.trim() && searchQuery.length > 2) {
-      const results = await searchUsers(searchQuery);
-      setSearchResults(results);
+    setSearchQuery(value)
+    if (value.trim() && value.length > 2) {
+      const results = await searchUsers(value)
+      setSearchResults(results)
     } else {
-      setSearchResults([]);
+      setSearchResults([])
     }
-  };
+  }
 
   const addMember = (user: User) => {
-    if (!members.some(member => member._id === user._id)) {
-      setMembers([...members, user]);
+    if (!members.some((member) => member._id === user._id)) {
+      setMembers([...members, user])
     }
-    setSearchQuery('');
-    setSearchResults([]);
-  };
+    setSearchQuery("")
+    setSearchResults([])
+  }
 
   const removeMember = (userId: string) => {
-    setMembers(members.filter(member => member._id !== userId));
-  };
+    setMembers(members.filter((member) => member._id !== userId))
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('name', groupName);
-    members.forEach(member => formData.append('members', member._id));
-    const group = await createGroup(formData);
-    router.push(`/gruppe/${group._id}`);
-    router.refresh();
-  };
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append("name", groupName)
+    members.forEach((member) => formData.append("members", member._id))
+    const group = await createGroup(formData)
+    router.push(`/gruppe/${group.id}`)
+    router.refresh()
+  }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={styles.form}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.inputGroup}>
         <input
           type="text"
           value={groupName}
-          onChange={e => setGroupName(e.target.value)}
+          onChange={(e) => setGroupName(e.target.value)}
           required
           placeholder="Gruppenavn"
           className={styles.input}
@@ -77,7 +74,7 @@ export default function CreateGroupForm({
         <input
           type="text"
           value={description}
-          onChange={e => setDescription(e.target.value)}
+          onChange={(e) => setDescription(e.target.value)}
           required
           placeholder="Beskrivelse"
           className={styles.input}
@@ -87,7 +84,7 @@ export default function CreateGroupForm({
         <input
           type="text"
           value={searchQuery}
-          onChange={e => onSearchChanged(e.target.value)}
+          onChange={(e) => onSearchChanged(e.target.value)}
           placeholder="Søk etter brukere..."
           className={styles.input}
         />
@@ -96,10 +93,8 @@ export default function CreateGroupForm({
         <div className={styles.section}>
           <p className={styles.sectionTitle}>Treff:</p>
           <ul className={styles.list}>
-            {searchResults.map(user => (
-              <li
-                key={user._id}
-                className={styles.listItem}>
+            {searchResults.map((user) => (
+              <li key={user._id} className={styles.listItem}>
                 <div className={styles.userInfo}>
                   <span className={styles.userName}>{user.name}</span>
                   <span className={styles.userEmail}>{user.email}</span>
@@ -108,7 +103,8 @@ export default function CreateGroupForm({
                   type="button"
                   onClick={() => addMember(user)}
                   className={styles.addButton}
-                  aria-label="Legg til medlem">
+                  aria-label="Legg til medlem"
+                >
                   +
                 </button>
               </li>
@@ -120,10 +116,8 @@ export default function CreateGroupForm({
         <div className={styles.section}>
           <p className={styles.sectionTitle}>Valgte medlemmer:</p>
           <ul className={styles.list}>
-            {members.map(member => (
-              <li
-                key={member._id}
-                className={styles.listItem}>
+            {members.map((member) => (
+              <li key={member._id} className={styles.listItem}>
                 <div className={styles.userInfo}>
                   <span className={styles.userName}>{member.name}</span>
                   <span className={styles.userEmail}>{member.email}</span>
@@ -132,7 +126,8 @@ export default function CreateGroupForm({
                   type="button"
                   onClick={() => removeMember(member._id)}
                   className={styles.removeButton}
-                  aria-label="Fjern medlem">
+                  aria-label="Fjern medlem"
+                >
                   -
                 </button>
               </li>
@@ -140,11 +135,9 @@ export default function CreateGroupForm({
           </ul>
         </div>
       )}
-      <button
-        type="submit"
-        className={styles.submitButton}>
+      <button type="submit" className={styles.submitButton}>
         Opprett gruppe
       </button>
     </form>
-  );
+  )
 }

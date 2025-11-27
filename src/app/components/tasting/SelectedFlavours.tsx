@@ -1,19 +1,19 @@
-'use client';
+"use client"
 
-import type React from 'react';
-import type { Category, Flavor, SelectedFlavor, Subcategory } from '../../models/flavorModel';
-import styles from './SelectedFlavours.module.css';
+import type React from "react"
+import type { Category, Flavor, SelectedFlavor, Subcategory } from "@/lib/types"
+import styles from "./SelectedFlavours.module.css"
 
 type SelectedFlavorsProps = {
-  selectedFlavors: SelectedFlavor[];
-  onFlavorClick: (category: Category, subcategory: Subcategory, flavor: Flavor) => void;
-};
+  selectedFlavors: SelectedFlavor[]
+  onFlavorClick: (category: Category, subcategory: Subcategory, flavor: Flavor) => void
+}
 
 export const SelectedFlavors: React.FC<SelectedFlavorsProps> = ({ selectedFlavors, onFlavorClick }) => {
-  if (!selectedFlavors || selectedFlavors.length === 0) return null;
+  if (!selectedFlavors || selectedFlavors.length === 0) return null
 
-  const categories = Object.groupBy(selectedFlavors, x => x.category.name);
-  const list = Object.entries(categories);
+  const categories = Object.groupBy(selectedFlavors, (x) => x.category.name)
+  const list = Object.entries(categories)
 
   return (
     <div className={styles.selectedFlavorsSection}>
@@ -23,11 +23,12 @@ export const SelectedFlavors: React.FC<SelectedFlavorsProps> = ({ selectedFlavor
           <div className={styles.selectedCategory}>
             <div className={styles.selectedCategoryName}>{categoryName}</div>
             <div className={styles.selectedFlavorPills}>
-              {flavors?.map(y => (
+              {flavors?.map((y) => (
                 <button
                   key={y.flavor.name + y.category.name + y.subcategory.name}
                   className={styles.selectedFlavorPill}
-                  onClick={() => onFlavorClick(y.category, y.subcategory, y.flavor)}>
+                  onClick={() => onFlavorClick(y.category, y.subcategory, y.flavor)}
+                >
                   {y.flavor.name}
                   <span className={styles.subcategoryLabel}>({y.subcategory.name})</span>
                 </button>
@@ -38,5 +39,5 @@ export const SelectedFlavors: React.FC<SelectedFlavorsProps> = ({ selectedFlavor
         </div>
       ))}
     </div>
-  );
-};
+  )
+}

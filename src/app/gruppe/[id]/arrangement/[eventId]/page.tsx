@@ -1,34 +1,44 @@
-import { Wine as ProductModel } from '@/app/models/productModel';
-import Event from '@/db-schemas/Event';
-import Wine from '@/db-schemas/Wine';
-import { connectDB } from '@/lib/mongoose';
-import { ObjectId } from 'mongodb';
-import Link from 'next/link';
-import styles from './page.module.css';
+import { createClient } from "@/lib/supabase/server"
+import type { Event, Wine } from "@/lib/types"
+import Link from "next/link"
+import styles from "./page.module.css"
 
-export default async function Arrangement({ params }: { params: Promise<{ eventId: string }> }) {
-  const { eventId } = await params;
+export default async function Arrangement({ params }: { params: { eventId: string } }) {
+  const { eventId } = params
+  const supabase = await createClient()
 
-  await connectDB();
-  const event = await Event.findOne({ _id: new ObjectId(eventId) });
-  const wines = await Wine.find({ code: { $in: event.wines } });
+  const { data: event } = await supabase.from("events").select("*").eq("id", eventId).single<Event>()
+
+  if (!event) {
+    return (
+      <div className={styles.container}>
+        <p>Arrangement ikke funnet</p>
+      </div>
+    )
+  }
+
+  const { data: wines } = await supabase
+    .from("wines")
+    .select("*")
+    .in("product_id", event.wines.length > 0 ? event.wines : [""])
+
+  // Sort wines by event order
+  const sortedWines = wines?.sort((a, b) => event.wines.indexOf(a.product_id) - event.wines.indexOf(b.product_id)) || []
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{event.name}</h1>
       <section className={styles.section}>
         <p className={styles.description}>{event.description}</p>
-        {wines.map((x: ProductModel) => (
-          <article
-            key={x.code}
-            className={styles.wineCard}>
+        {sortedWines.map((x: Wine) => (
+          <article key={x.product_id} className={styles.wineCard}>
             <h5 className={styles.wineTitle}>
-              <Link href={`/smaking/${x.code}?eventId=${event._id}`}>{x.name}</Link>
+              <Link href={`/smaking/${x.product_id}?eventId=${event.id}`}>{x.name}</Link>
             </h5>
             <p className={styles.wineDescription}>{x.description}</p>
           </article>
         ))}
       </section>
     </div>
-  );
+  )
 }
