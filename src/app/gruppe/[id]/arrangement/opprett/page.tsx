@@ -1,77 +1,53 @@
-import { createClient } from "@/lib/supabase/server"
-import type { Event, Wine } from "@/lib/types"
-import { parseISO } from "date-fns"
-import { redirect } from "next/navigation"
-import CreateEventForm from "./CreateEvent"
-import styles from "./page.module.css"
+import Event, { type EventDocument } from '@/db-schemas/Event';
+import Wine from '@/db-schemas/Wine';
+import { connectDB } from '@/lib/mongoose';
+import { parseISO } from 'date-fns';
+import CreateEventForm from './CreateEvent';
+import styles from './page.module.css';
 
 async function searchWines(query: string) {
-  "use server"
+  'use server';
 
-  const supabase = await createClient()
-  const { data: wines } = await supabase
-    .from("wines")
-    .select("name, product_id")
-    .or(`name.ilike.%${query}%,product_id.ilike.%${query}%`)
-    .limit(10)
-
-  return (wines as Pick<Wine, "name" | "product_id">[]) || []
+  await connectDB();
+  const wines = await Wine.find({
+    $or: [{ name: { $regex: query, $options: 'i' } }, { code: { $regex: query, $options: 'i' } }]
+  }).limit(10);
+  return JSON.parse(JSON.stringify(wines.map(x => ({ name: x.name, code: x.code }))));
 }
 
-async function createEvent(formData: FormData): Promise<Event> {
-  "use server"
+async function createEvent(formData: FormData): Promise<EventDocument> {
+  'use server';
 
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  await connectDB();
+  const name = formData.get('name') as string;
+  const description = formData.get('name') as string;
+  const date = parseISO(formData.get('date') as string);
+  const wines = formData.getAll('wines') as string[];
+  const group = formData.get('groupId') as string;
 
-  if (!user) {
-    redirect("/login")
-  }
-
-  const name = formData.get("name") as string
-  const description = formData.get("description") as string
-  const date = parseISO(formData.get("date") as string)
-  const wines = formData.getAll("wines") as string[]
-  const groupId = formData.get("groupId") as string
-
-  const { data: event, error } = await supabase
-    .from("events")
-    .insert({
-      name,
-      description,
-      date: date.toISOString(),
-      wines,
-      group_id: groupId,
-    })
-    .select()
-    .single<Event>()
-
-  if (error || !event) {
-    throw new Error("Failed to create event")
-  }
-
-  return event
+  const event = new Event({
+    name,
+    description,
+    date,
+    wines,
+    group
+  });
+  await event.save();
+  return JSON.parse(JSON.stringify(event));
 }
 
-export default async function CreateEventPage({ params }: { params: { id: string } }) {
-  const { id } = params
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect("/login")
-  }
-
+export default async function CreateEventPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Opprett nytt arrangement</h1>
       <section className={styles.section}>
-        <CreateEventForm createEvent={createEvent} searchWines={searchWines} groupId={id} />
+        <CreateEventForm
+          createEvent={createEvent}
+          searchWines={searchWines}
+          groupId={id}
+        />
       </section>
     </div>
-  )
+  );
 }

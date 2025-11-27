@@ -1,25 +1,25 @@
-"use client"
+'use client';
 
-import type React from "react"
-import type { Category, Flavor, Subcategory } from "@/lib/types"
-import styles from "./FlavorAccordion.module.css"
+import type React from 'react';
+import type { Category, Flavor, Subcategory } from '../../models/flavorModel';
+import styles from './FlavorAccordion.module.css';
 
 type AccordionProps = {
-  category: Category
-  subcategories: Subcategory[]
-  onFlavorClick: (category: Category, subcategory: Subcategory, flavor: Flavor) => void
-  selectedFlavors?: Flavor[]
-}
+  category: Category;
+  subcategories: Subcategory[];
+  onFlavorClick: (category: Category, subcategory: Subcategory, flavor: Flavor) => void;
+  selectedFlavors?: Flavor[];
+};
 
 export const Accordion: React.FC<AccordionProps> = ({
   category,
   subcategories,
   onFlavorClick,
-  selectedFlavors = [],
+  selectedFlavors = []
 }) => {
   const isFlavorSelected = (flavor: Flavor) => {
-    return selectedFlavors.some((f) => f.name === flavor.name)
-  }
+    return selectedFlavors.some(f => f.name === flavor.name);
+  };
 
   return (
     <details className={styles.flavorAccordion}>
@@ -32,7 +32,9 @@ export const Accordion: React.FC<AccordionProps> = ({
       </summary>
       <div className={styles.flavorSubcategories}>
         {subcategories.map((subcategory: Subcategory, index: number) => (
-          <div key={subcategory.name + index} className={styles.flavorSubcategory}>
+          <div
+            key={subcategory.name + index}
+            className={styles.flavorSubcategory}>
             <details open={subcategories.length === 1}>
               <summary className={styles.subcategorySummary}>
                 <div>
@@ -45,9 +47,8 @@ export const Accordion: React.FC<AccordionProps> = ({
                 {subcategory.flavors.map((flavor: Flavor) => (
                   <button
                     key={flavor.name}
-                    className={`${styles.flavorPill} ${isFlavorSelected(flavor) ? styles.selected : ""}`}
-                    onClick={() => onFlavorClick(category, subcategory, flavor)}
-                  >
+                    className={`${styles.flavorPill} ${isFlavorSelected(flavor) ? styles.selected : ''}`}
+                    onClick={() => onFlavorClick(category, subcategory, flavor)}>
                     {flavor.name}
                   </button>
                 ))}
@@ -57,5 +58,5 @@ export const Accordion: React.FC<AccordionProps> = ({
         ))}
       </div>
     </details>
-  )
-}
+  );
+};

@@ -1,23 +1,24 @@
-"use client"
+'use client';
 
-import { useAtom, useAtomValue } from "jotai"
-import type React from "react"
-import type { Wine, TastingFormData } from "@/lib/types"
-import { tastingAtom, wineAtom } from "../../store/tasting"
-import styles from "./Color.module.css"
+import { useAtom, useAtomValue } from 'jotai';
+import type React from 'react';
+import type { Wine } from '../../models/productModel';
+import type { TastingModel } from '../../models/tastingModel';
+import { tastingAtom, wineAtom } from '../../store/tasting';
+import styles from './Color.module.css';
 
 export const Color: React.FC = () => {
-  const [tasting, setTasting] = useAtom(tastingAtom)
-  const wine = useAtomValue<Wine | null>(wineAtom)
+  const [tasting, setTasting] = useAtom(tastingAtom);
+  const wine = useAtomValue<Wine>(wineAtom);
 
   const onChange = (value: string) => {
-    setTasting((prev: TastingFormData) => {
-      return { ...prev, farge: value }
-    })
-  }
+    setTasting((prev: TastingModel) => {
+      return { ...prev, farge: value };
+    });
+  };
 
   if (!wine) {
-    return <p>Ingen vin valgt</p>
+    return <p>Ingen vin valgt</p>;
   }
 
   return (
@@ -26,15 +27,17 @@ export const Color: React.FC = () => {
         <div className={styles.wineInfoRow}>
           <span className={styles.wineInfoLabel}>Druer:</span>
           <div className={styles.grapeList}>
-            {wine.content?.ingredients?.map((x) => (
-              <div key={x.code} className={styles.grapeItem}>
+            {wine.content.ingredients?.map(x => (
+              <div
+                key={x.code}
+                className={styles.grapeItem}>
                 • {x.formattedValue}
               </div>
             ))}
           </div>
         </div>
         <div className={styles.wineInfoRow}>
-          <span className={styles.wineInfoLabel}>Land:</span> {wine.main_country?.name}
+          <span className={styles.wineInfoLabel}>Land:</span> {wine.mainCountry.name}
         </div>
         {wine.district && (
           <div className={styles.wineInfoRow}>
@@ -51,11 +54,11 @@ export const Color: React.FC = () => {
         <input
           type="text"
           className={styles.colorInputBox}
-          value={tasting.farge ?? ""}
-          onChange={(event) => onChange(event.target.value)}
+          value={tasting.farge ?? ''}
+          onChange={event => onChange(event.target.value)}
           placeholder="Beskriv vinens farge..."
         />
       </div>
     </div>
-  )
-}
+  );
+};

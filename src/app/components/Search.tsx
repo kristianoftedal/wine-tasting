@@ -1,86 +1,89 @@
-"use client"
-import { useSetAtom } from "jotai"
-import { useRouter } from "next/navigation"
-import type React from "react"
-import { useState, useCallback } from "react"
-import { createClient } from "@/lib/supabase/client"
-import type { Wine } from "@/lib/types"
-import { initialTastingForm, tastingAtom } from "../store/tasting"
-import styles from "./Search.module.css"
-
-const getWineImageUrl = (productId: string) => `/api/wine-image/${productId}?size=100x100`
+'use client';
+import { useSetAtom } from 'jotai';
+import { redirect } from 'next/navigation';
+import type React from 'react';
+import { useState } from 'react';
+import keyValues from '../data/wines-key-value.json';
+import type { searchModel } from '../models/searchModel';
+import { initialTastingValue, tastingAtom } from '../store/tasting';
+import styles from './Search.module.css';
 
 export const Search: React.FC = () => {
-  const [wines, setWines] = useState<Wine[]>([])
-  const [isOpen, setIsOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const setTasting = useSetAtom(tastingAtom)
-  const supabase = createClient()
-  const router = useRouter()
-
-  const searchWines = useCallback(
-    async (searchTerm: string) => {
-      if (searchTerm.length < 2) {
-        setWines([])
-        setIsOpen(false)
-        setIsLoading(false)
-        return
-      }
-
-      setIsLoading(true)
-
-      const { data, error } = await supabase
-        .from("wines")
-        .select("id, product_id, name, year")
-        .or(`name.ilike.%${searchTerm}%,product_id.ilike.%${searchTerm}%`)
-        .limit(20)
-
-      if (error) {
-        console.error("Search error:", error)
-        setWines([])
-        setIsOpen(false)
-      } else {
-        setWines(data || [])
-        setIsOpen((data || []).length > 0)
-      }
-      setIsLoading(false)
-    },
-    [supabase],
-  )
+  const [wines, setWines] = useState<searchModel[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const setTasting = useSetAtom(tastingAtom);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = e.target.value
-    setSearchValue(searchTerm)
+    const searchTerm = e.target.value.toLowerCase();
+    setSearchValue(e.target.value);
 
-    const timeoutId = setTimeout(() => {
-      searchWines(searchTerm.toLowerCase())
-    }, 300)
+    if (searchTerm.length < 2) {
+      setWines([]);
+      setIsOpen(false);
+      setIsLoading(false);
+      return;
+    }
 
-    return () => clearTimeout(timeoutId)
-  }
+    setIsLoading(true);
 
-  const handleSelected = (wine: Wine) => {
-    setWines([])
-    setIsOpen(false)
-    setSearchValue("")
-    setIsLoading(false)
-    setTasting(initialTastingForm)
-    router.push(`/smaking/${wine.product_id}`)
-  }
+    // Simulate async search with slight delay to show loading state
+    setTimeout(() => {
+      const results = keyValues
+        .map(product => {
+          const nameLower = product.productShortName.toLowerCase();
+          const idMatch = product.productId.includes(searchTerm);
+          const nameMatch = nameLower.includes(searchTerm);
+          const startsWithMatch = nameLower.split(' ').some(word => word.startsWith(searchTerm));
+
+          // Calculate relevance score
+          let score = 0;
+          if (idMatch) score += 10;
+          if (startsWithMatch) score += 5;
+          if (nameMatch) score += 1;
+
+          return { ...product, score };
+        })
+        .filter(item => item.score && item.score > 0)
+        .sort((a, b) => (b.score || 0) - (a.score || 0));
+
+      setWines(results);
+      setIsOpen(results.length > 0);
+      setIsLoading(false);
+    }, 300);
+  };
+
+  const handleSelected = (wine: searchModel) => {
+    setWines([]);
+    setIsOpen(false);
+    setSearchValue('');
+    setIsLoading(false);
+    setTasting(initialTastingValue);
+    redirect(`/smaking/${wine.productId}`);
+  };
 
   const handleClear = () => {
-    setSearchValue("")
-    setWines([])
-    setIsOpen(false)
-    setIsLoading(false)
-  }
+    setSearchValue('');
+    setWines([]);
+    setIsOpen(false);
+    setIsLoading(false);
+  };
 
   return (
     <div className={styles.search}>
       <div className={styles.inputWrapper}>
-        <svg className={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="11" cy="11" r="8" />
+        <svg
+          className={styles.icon}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2">
+          <circle
+            cx="11"
+            cy="11"
+            r="8"
+          />
           <path d="m21 21-4.35-4.35" />
         </svg>
         <input
@@ -91,10 +94,27 @@ export const Search: React.FC = () => {
           className={styles.input}
         />
         {searchValue && (
-          <button onClick={handleClear} aria-label="Clear search" className={styles.clear}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
+          <button
+            onClick={handleClear}
+            aria-label="Clear search"
+            className={styles.clear}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2">
+              <line
+                x1="18"
+                y1="6"
+                x2="6"
+                y2="18"
+              />
+              <line
+                x1="6"
+                y1="6"
+                x2="18"
+                y2="18"
+              />
             </svg>
           </button>
         )}
@@ -109,27 +129,17 @@ export const Search: React.FC = () => {
 
       {isOpen && wines.length > 0 && !isLoading && (
         <div className={styles.results}>
-          {wines.map((wine) => (
-            <button key={wine.id} onClick={() => handleSelected(wine)} className={styles.resultItem}>
-              <img
-                src={getWineImageUrl(wine.product_id) || "/placeholder.svg"}
-                alt=""
-                className={styles.resultImage}
-                onError={(e) => {
-                  ;(e.target as HTMLImageElement).style.display = "none"
-                }}
-              />
-              <div className={styles.resultContent}>
-                <div className={styles.resultName}>{wine.name}</div>
-                <div className={styles.resultMeta}>
-                  {wine.year && <span className={styles.resultYear}>{wine.year}</span>}
-                  <span className={styles.resultId}>ID: {wine.product_id}</span>
-                </div>
-              </div>
+          {wines.map(wine => (
+            <button
+              key={wine.productId}
+              onClick={() => handleSelected(wine)}
+              className={styles.resultItem}>
+              <div className={styles.resultName}>{wine.productShortName}</div>
+              <div className={styles.resultId}>ID: {wine.productId}</div>
             </button>
           ))}
         </div>
       )}
     </div>
-  )
-}
+  );
+};
