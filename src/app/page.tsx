@@ -37,12 +37,6 @@ export default async function Home() {
         </div>
 
         <div className={styles.featureCard}>
-          <div className={styles.featureIcon}>🔍</div>
-          <h3 className={styles.featureTitle}>Lær mer om druer</h3>
-          <p className={styles.featureDescription}>Få innsikt i forskjellige druesorter, vinområder og produsenter.</p>
-        </div>
-
-        <div className={styles.featureCard}>
           <div className={styles.featureIcon}>🎉</div>
           <h3 className={styles.featureTitle}>Smak med venner</h3>
           <p className={styles.featureDescription}>

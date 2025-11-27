@@ -1,28 +1,9 @@
-import { atom } from 'jotai';
-import { Wine } from '../models/productModel';
-import { TastingModel } from '../models/tastingModel';
+import { atom } from "jotai"
+import { type Wine, type TastingFormData, initialTastingForm } from "@/lib/types"
 
-export const initialTastingValue = {
-  farge: '',
-  lukt: '',
-  smak: '',
-  friskhet: 0,
-  fylde: 0,
-  sødme: 0,
-  snærp: 0,
-  karakter: 0,
-  egenskaper: '',
-  selectedFlavorsLukt: [],
-  selectedFlavorsSmak: [],
-  luktIntensitet: '',
-  smaksIntensitet: '',
-  userId: '',
-  productId: '',
-  alkohol: '',
-  pris: 0,
-  tastedAt: new Date()
-} as TastingModel;
+export { initialTastingForm }
+export const initialTastingValue = initialTastingForm
 
-export const tastingAtom = atom<TastingModel>(initialTastingValue);
+export const tastingAtom = atom<TastingFormData>(initialTastingForm)
 
-export const wineAtom = atom<Wine | null>();
+export const wineAtom = atom<Wine | null>(null)

@@ -1,136 +1,73 @@
-import Tasting from '@/db-schemas/Tasting';
-import Wine from '@/db-schemas/Wine';
-import { connectDB } from '@/lib/mongoose';
-import { format } from 'date-fns';
-import { ObjectId } from 'mongodb';
-import { getServerSession } from 'next-auth';
-import Link from 'next/link';
-import Event from '../../db-schemas/Event';
-import Group from '../../db-schemas/Group';
-import User from '../../db-schemas/User';
-import { authOptions } from '../../lib/auth';
-import type { SelectedFlavor } from '../models/flavorModel';
-import type { TastingModel } from '../models/tastingModel';
-import styles from './page.module.css';
+import { createClient } from "@/lib/supabase/server"
+import type { Event, Group, Profile, Tasting, Wine } from "@/lib/types"
+import { redirect } from "next/navigation"
+import styles from "./page.module.css"
+import { TastingDashboard } from "./tasting-dashboard"
 
 export default async function Page() {
-  const session = await getServerSession(authOptions);
+  const supabase = await createClient()
 
-  await connectDB();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const users = await User.find();
-  const user = await User.findOne({ email: session?.user?.email });
-  const groups = await Group.find({ members: new ObjectId(user?.id) });
-  const groupIds = groups.map(x => x._id);
-  const events = await Event.find({ group: { $in: groupIds } });
+  if (!user) {
+    redirect("/login")
+  }
 
-  const userId = user?._id.toString();
+  // Get user profile
+  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single<Profile>()
 
-  const tastings = await Tasting.find({ userId: userId });
-  const ids = tastings.map(x => x.productId).filter(x => x);
-  const wines = await Wine.find({ code: { $in: ids } });
+  // Get user's groups via group_members junction table
+  const { data: groupMemberships } = await supabase.from("group_members").select("group_id").eq("user_id", user.id)
+
+  const groupIds = groupMemberships?.map((gm) => gm.group_id) || []
+
+  const { data: groups } = await supabase
+    .from("groups")
+    .select("*")
+    .in("id", groupIds.length > 0 ? groupIds : ["00000000-0000-0000-0000-000000000000"])
+
+  // Get events for user's groups
+  const { data: events } = await supabase
+    .from("events")
+    .select("*")
+    .in("group_id", groupIds.length > 0 ? groupIds : ["00000000-0000-0000-0000-000000000000"])
+
+  // Get user's tastings
+  const { data: tastings, error: tastingsError } = await supabase.from("tastings").select("*").eq("user_id", user.id)
+
+  console.log("[v0] Tastings query result:", {
+    count: tastings?.length || 0,
+    error: tastingsError,
+    userId: user.id,
+  })
+
+  // Get wines for tastings
+  const productIds = tastings?.map((t) => t.product_id).filter(Boolean) || []
+  console.log("[v0] Product IDs from tastings:", productIds.length)
+
+  const { data: wines } = await supabase
+    .from("wines")
+    .select("*")
+    .in("product_id", productIds.length > 0 ? productIds : [""])
+
+  const { data: allWines } = await supabase.from("wines").select("*").limit(500)
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{user.name}</h1>
+        <h1 className={styles.title}>{profile?.name || user.email}</h1>
+        <p className={styles.subtitle}>Din personlige vinprofil</p>
       </div>
 
-      <div className={styles.grid}>
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Tidligere smaksnotater</h2>
-          </div>
-          <div className={styles.cardContent}>
-            {tastings.length === 0 ? (
-              <p className={styles.emptyState}>Ingen smaksnotater funnet.</p>
-            ) : (
-              tastings.map((tasting: TastingModel, index: number) => (
-                <details
-                  key={index}
-                  className={styles.details}>
-                  <summary>
-                    <h5 className={styles.tastingTitle}>{wines.find(x => x.code === tasting.productId)?.name}</h5>
-                    <p className={styles.tastingDate}>{format(tasting.tastedAt, 'Pp')}</p>
-                  </summary>
-                  <div className={styles.detailsContent}>
-                    <p className={styles.tastingAttribute}>
-                      <strong>Farge:</strong> {tasting.farge}
-                    </p>
-                    <p className={styles.tastingAttribute}>
-                      <strong>Lukt:</strong>{' '}
-                      {tasting.selectedFlavorsLukt.map((x: SelectedFlavor) => x.flavor.name).join(', ')}, {tasting.lukt}
-                    </p>
-                    <p className={styles.tastingAttribute}>
-                      <strong>Smak:</strong>{' '}
-                      {tasting.selectedFlavorsSmak.map((x: SelectedFlavor) => x.flavor.name).join(', ')}, {tasting.smak}
-                    </p>
-                    <p className={styles.tastingAttribute}>
-                      <strong>Friskhet:</strong> {tasting.friskhet}
-                    </p>
-                    <p className={styles.tastingAttribute}>
-                      <strong>Fylde:</strong> {tasting.fylde}
-                    </p>
-                    <p className={styles.tastingAttribute}>
-                      <strong>Sødme:</strong> {tasting.sødme}
-                    </p>
-                    <p className={styles.tastingAttribute}>
-                      <strong>Karakter:</strong> {tasting.karakter}
-                    </p>
-                    <p className={styles.tastingAttribute}>
-                      <strong>Kommentar:</strong> {tasting.egenskaper}
-                    </p>
-                  </div>
-                </details>
-              ))
-            )}
-          </div>
-        </div>
-
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Dine grupper</h2>
-          </div>
-          <div className={styles.cardContent}>
-            <ul className={styles.list}>
-              {groups.length === 0 && <li className={styles.emptyState}>Ingen funnet</li>}
-              {groups.map(group => (
-                <li
-                  key={group._id.toString()}
-                  className={styles.listItem}>
-                  <Link href={`/gruppe/${group._id}`}>{group.name}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className={styles.cardFooter}>
-            <Link
-              href="/gruppe/opprett-gruppe"
-              className={styles.button}>
-              Opprett gruppe
-            </Link>
-          </div>
-        </div>
-
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Mine arrangement</h2>
-          </div>
-          <div className={styles.cardContent}>
-            {events.length === 0 && <p className={styles.emptyState}>Ingen funnet</p>}
-            {events?.map(event => (
-              <Link
-                key={event._id.toString()}
-                href={`/gruppe/${event.group}/arrangement/${event._id}`}
-                className={styles.eventItem}>
-                <p className={styles.eventDate}>{new Date(event.date).toLocaleDateString()}</p>
-                <p className={styles.eventTitle}>{event.name}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+      <TastingDashboard
+        tastings={(tastings as Tasting[]) || []}
+        wines={(wines as Wine[]) || []}
+        allWines={(allWines as Wine[]) || []}
+        groups={(groups as Group[]) || []}
+        events={(events as Event[]) || []}
+      />
     </div>
-  );
+  )
 }
