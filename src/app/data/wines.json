@@ -1,0 +1,242 @@
+[
+  {
+    "ageLimit": 18,
+    "allergens": "Sulfitt",
+    "bioDynamic": false,
+    "buyable": true,
+    "code": "13769701",
+    "color": "Strågul.",
+    "content": {
+      "characteristics": [
+        { "name": "Fylde", "readableValue": "Fylde, 6 av 12", "value": "6" },
+        { "name": "Friskhet", "readableValue": "Friskhet, 8 av 12", "value": "8" },
+        { "name": "Sødme", "readableValue": "Sødme, 1 av 12", "value": "1" }
+      ],
+      "ingredients": [
+        { "code": "088", "formattedValue": "Chardonnay 100%", "readableValue": "Chardonnay 100 prosent" }
+      ],
+      "isGoodFor": [
+        { "code": "B", "name": "Skalldyr" },
+        { "code": "C", "name": "Fisk" },
+        { "code": "D", "name": "Lyst kjøtt" }
+      ],
+      "storagePotential": { "code": "Y", "formattedValue": "Drikkeklar nå, men kan også lagres" },
+      "style": {
+        "code": "stil005",
+        "description": "God friskhet, smak av sitrus og moden frukt som aprikos, gult eple, gul plomme, evt innslag av urter og blomster. Anvendelig stil, passer til fisk, kylling og svin.",
+        "name": "Saftig og frisk"
+      },
+      "traits": [
+        { "formattedValue": "12%", "name": "Alkohol", "readableValue": "12 prosent" },
+        { "formattedValue": "Under 3 g/l", "name": "Sukker", "readableValue": "Under 3 gram per liter" },
+        { "formattedValue": "6,7 g/l", "name": "Syre", "readableValue": "6,7 gram per liter" }
+      ]
+    },
+    "cork": "Naturkork",
+    "description": "",
+    "distributor": "Vectura AS",
+    "distributorId": 30000,
+    "district": {
+      "code": "frankrike_burgund",
+      "name": "Burgund",
+      "searchQuery": ":relevance:mainDistrict:frankrike_burgund:mainCountry:frankrike",
+      "url": "/search?searchType=product&q=:relevance:mainDistrict:frankrike_burgund:mainCountry:frankrike"
+    },
+    "eco": false,
+    "environmentalPackaging": false,
+    "expired": false,
+    "fairTrade": false,
+    "gluten": false,
+    "images": [
+      {
+        "altText": "La Maison Romane Hautes-Cotes de Nuits Blanc 2019",
+        "format": "superZoom",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/1200x1200-0/13769701-1.jpg"
+      },
+      {
+        "altText": "La Maison Romane Hautes-Cotes de Nuits Blanc 2019",
+        "format": "zoom",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/515x515-0/13769701-1.jpg"
+      },
+      {
+        "altText": "La Maison Romane Hautes-Cotes de Nuits Blanc 2019",
+        "format": "product",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/300x300-0/13769701-1.jpg"
+      },
+      {
+        "altText": "La Maison Romane Hautes-Cotes de Nuits Blanc 2019",
+        "format": "thumbnail",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/96x96-0/13769701-1.jpg"
+      },
+      {
+        "altText": "La Maison Romane Hautes-Cotes de Nuits Blanc 2019",
+        "format": "cartIcon",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/65x65-0/13769701-1.jpg"
+      }
+    ],
+    "kosher": false,
+    "litrePrice": {
+      "formattedValue": "399,87 kr/l",
+      "readableValue": "399 kroner og 87 øre per liter",
+      "value": 399.87
+    },
+    "main_category": { "code": "hvitvin", "name": "Hvitvin" },
+    "main_country": {
+      "code": "frankrike",
+      "name": "Frankrike",
+      "searchQuery": ":relevance:mainCountry:frankrike",
+      "url": "/search?searchType=product&q=:relevance:mainCountry:frankrike"
+    },
+    "main_producer": {
+      "code": "la_maison_romane",
+      "name": "La Maison Romane",
+      "searchQuery": ":name-asc:brand:la_maison_romane",
+      "url": "/search?searchType=product&q=:name-asc:brand:la_maison_romane"
+    },
+    "name": "La Maison Romane Hautes-Cotes de Nuits Blanc 2019",
+    "packageType": "Glass",
+    "price": { "formattedValue": "Kr 299,90", "readableValue": "299 kroner og 90 øre", "value": 299.9 },
+    "product_selection": "Bestillingsutvalget",
+    "releaseMode": false,
+    "similarProducts": true,
+    "smell": "Aroma av mineraler, sitrus, og grønne epler.",
+    "status": "aktiv",
+    "statusNotification": false,
+    "sub_District": {
+      "code": "frankrike_burgund_bourgogne_hautes-côtes_de_nuits",
+      "name": "Bourgogne Hautes-Côtes de Nuits",
+      "searchQuery": ":relevance:mainSubDistrict:frankrike_burgund_bourgogne_hautes-côtes_de_nuits:mainDistrict:frankrike_burgund:mainCountry:frankrike",
+      "url": "/search?searchType=product&q=:relevance:mainSubDistrict:frankrike_burgund_bourgogne_hautes-c%C3%B4tes_de_nuits:mainDistrict:frankrike_burgund:mainCountry:frankrike"
+    },
+    "summary": "",
+    "sustainable": false,
+    "taste": "God balanse med friskhet og tydelig preg av mineral.",
+    "url": "/Land/Frankrike/Burgund/Bourgogne-Hautes-C%C3%B4tes-de-Nuits/La-Maison-Romane-Hautes-Cotes-de-Nuits-Blanc-2019/p/13769701",
+    "volume": { "formattedValue": "75 cl", "readableValue": "75 centiliter", "value": 75 },
+    "wholeSaler": "Winetailor AS",
+    "year": "2019"
+  },
+  {
+    "ageLimit": 18,
+    "allergens": "Sulfitt",
+    "bioDynamic": false,
+    "buyable": true,
+    "code": "8153901",
+    "color": "Klar strågul lys.",
+    "content": {
+      "characteristics": [
+        { "name": "Fylde", "readableValue": "Fylde, 8 av 12", "value": "8" },
+        { "name": "Friskhet", "readableValue": "Friskhet, 7 av 12", "value": "7" },
+        { "name": "Sødme", "readableValue": "Sødme, 1 av 12", "value": "1" }
+      ],
+      "ingredients": [
+        { "code": "088", "formattedValue": "Chardonnay 100%", "readableValue": "Chardonnay 100 prosent" }
+      ],
+      "isGoodFor": [
+        { "code": "B", "name": "Skalldyr" },
+        { "code": "C", "name": "Fisk" },
+        { "code": "D", "name": "Lyst kjøtt" }
+      ],
+      "storagePotential": { "code": "Y", "formattedValue": "Drikkeklar nå, men kan også lagres" },
+      "style": {
+        "code": "stil005",
+        "description": "God friskhet, smak av sitrus og moden frukt som aprikos, gult eple, gul plomme, evt innslag av urter og blomster. Anvendelig stil, passer til fisk, kylling og svin.",
+        "name": "Saftig og frisk"
+      },
+      "traits": [
+        { "formattedValue": "14%", "name": "Alkohol", "readableValue": "14 prosent" },
+        { "formattedValue": "Under 3 g/l", "name": "Sukker", "readableValue": "Under 3 gram per liter" },
+        { "formattedValue": "5,1 g/l", "name": "Syre", "readableValue": "5,1 gram per liter" }
+      ]
+    },
+    "cork": "Naturkork",
+    "description": "",
+    "distributor": "Skanlog AS",
+    "distributorId": 30190,
+    "district": {
+      "code": "frankrike_jura",
+      "name": "Jura",
+      "searchQuery": ":relevance:mainDistrict:frankrike_jura:mainCountry:frankrike",
+      "url": "/search?searchType=product&q=:relevance:mainDistrict:frankrike_jura:mainCountry:frankrike"
+    },
+    "eco": false,
+    "environmentalPackaging": false,
+    "expired": false,
+    "fairTrade": false,
+    "gluten": false,
+    "images": [
+      {
+        "altText": "Rolet Arbois Chardonnay 2023",
+        "format": "superZoom",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/1200x1200-0/8153901-1.jpg"
+      },
+      {
+        "altText": "Rolet Arbois Chardonnay 2023",
+        "format": "zoom",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/515x515-0/8153901-1.jpg"
+      },
+      {
+        "altText": "Rolet Arbois Chardonnay 2023",
+        "format": "product",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/300x300-0/8153901-1.jpg"
+      },
+      {
+        "altText": "Rolet Arbois Chardonnay 2023",
+        "format": "thumbnail",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/96x96-0/8153901-1.jpg"
+      },
+      {
+        "altText": "Rolet Arbois Chardonnay 2023",
+        "format": "cartIcon",
+        "imageType": "PRIMARY",
+        "url": "https://bilder.vinmonopolet.no/cache/65x65-0/8153901-1.jpg"
+      }
+    ],
+    "kosher": false,
+    "litrePrice": { "formattedValue": "420 kr/l", "readableValue": "420 kroner per liter", "value": 420 },
+    "main_category": { "code": "hvitvin", "name": "Hvitvin" },
+    "main_country": {
+      "code": "frankrike",
+      "name": "Frankrike",
+      "searchQuery": ":relevance:mainCountry:frankrike",
+      "url": "/search?searchType=product&q=:relevance:mainCountry:frankrike"
+    },
+    "main_producer": {
+      "code": "rolet_pere_et_fils",
+      "name": "Rolet Pere et Fils",
+      "searchQuery": ":name-asc:brand:rolet_pere_et_fils",
+      "url": "/search?searchType=product&q=:name-asc:brand:rolet_pere_et_fils"
+    },
+    "name": "Rolet Arbois Chardonnay 2023",
+    "packageType": "Glass",
+    "price": { "formattedValue": "Kr 315,00", "readableValue": "315 kroner", "value": 315 },
+    "product_selection": "Bestillingsutvalget",
+    "releaseMode": false,
+    "similarProducts": true,
+    "smell": "Fruktig duft av eple og sitrus.",
+    "status": "aktiv",
+    "statusNotification": false,
+    "sub_District": {
+      "code": "frankrike_jura_arbois",
+      "name": "Arbois",
+      "searchQuery": ":relevance:mainSubDistrict:frankrike_jura_arbois:mainDistrict:frankrike_jura:mainCountry:frankrike",
+      "url": "/search?searchType=product&q=:relevance:mainSubDistrict:frankrike_jura_arbois:mainDistrict:frankrike_jura:mainCountry:frankrike"
+    },
+    "summary": "",
+    "sustainable": false,
+    "taste": "Fruktig vin med sitrus, eple og med rik ettersmak.",
+    "url": "/Land/Frankrike/Jura/Arbois/Rolet-Arbois-Chardonnay-2023/p/8153901",
+    "volume": { "formattedValue": "75 cl", "readableValue": "75 centiliter", "value": 75 },
+    "wholeSaler": "Veritable Nordic AS",
+    "year": "2023"
+  }
+]

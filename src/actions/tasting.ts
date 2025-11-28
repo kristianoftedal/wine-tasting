@@ -13,11 +13,16 @@ export const addTasting = async (tastingModel: TastingFormData) => {
     redirect("/login")
   }
 
+  const smellFlavors = tastingModel.selectedFlavorsLukt.map((f) => f.flavor.name).join(", ")
+  const tasteFlavors = tastingModel.selectedFlavorsSmak.map((f) => f.flavor.name).join(", ")
+
   const { error } = await supabase.from("tastings").insert({
     user_id: user.id,
     product_id: tastingModel.productId,
     event_id: tastingModel.eventId || null,
     farge: tastingModel.farge,
+    smell: smellFlavors,
+    taste: tasteFlavors,
     lukt: tastingModel.lukt,
     smak: tastingModel.smak,
     friskhet: tastingModel.friskhet,
@@ -26,26 +31,21 @@ export const addTasting = async (tastingModel: TastingFormData) => {
     snaerp: tastingModel.snaerp,
     karakter: tastingModel.karakter,
     egenskaper: tastingModel.egenskaper,
-    selected_flavors_lukt: tastingModel.selectedFlavorsLukt,
-    selected_flavors_smak: tastingModel.selectedFlavorsSmak,
     lukt_intensitet: tastingModel.luktIntensitet,
     smaks_intensitet: tastingModel.smaksIntensitet,
     alkohol: tastingModel.alkohol,
     pris: tastingModel.pris,
     tasted_at: tastingModel.tastedAt || new Date().toISOString(),
-    farge_score: tastingModel.scoreFarge,
-    lukt_score: tastingModel.scoreLukt,
-    smak_friskhet_score: tastingModel.scoreSmakFriskhet,
-    smak_sott_score: tastingModel.scoreSmakSott,
-    smak_fylde_score: tastingModel.scoreSmakFylde,
-    smak_score: tastingModel.scoreSmak,
-    finish_score: tastingModel.scoreFinish,
-    balance_score: tastingModel.scoreBalance,
-    overall_score: tastingModel.scoreOverall,
-    vmp_quality_score: tastingModel.scoreVmpQuality,
-    vmp_price_score: tastingModel.scoreVmpPrice,
-    vmp_alcohol_score: tastingModel.scoreVmpAlcohol,
-    vmp_total_score: tastingModel.scoreVmpTotal,
+    color_score: tastingModel.colorScore,
+    smell_score: tastingModel.smellScore,
+    taste_score: tastingModel.tasteScore,
+    percentage_score: tastingModel.percentageScore,
+    price_score: tastingModel.priceScore,
+    snaerp_score: tastingModel.snaerpScore,
+    sodme_score: tastingModel.sodmeScore,
+    fylde_score: tastingModel.fyldeScore,
+    friskhet_score: tastingModel.friskhetScore,
+    overall_score: tastingModel.overallScore,
   })
 
   if (error) {

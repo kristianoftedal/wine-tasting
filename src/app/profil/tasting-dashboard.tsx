@@ -1,11 +1,12 @@
 "use client"
 
 import type React from "react"
-import type { Event, Group, Tasting, Wine, SelectedFlavor } from "@/lib/types"
+import type { Event, Group, Tasting, Wine } from "@/lib/types"
 import { format } from "date-fns"
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import styles from "./page.module.css"
+import { findSimilarWines } from "@/actions/wine-similarity"
 
 interface TastingDashboardProps {
   tastings: Tasting[]
@@ -33,6 +34,8 @@ type StylePreference = {
 
 export function TastingDashboard({ tastings, wines, allWines, groups, events }: TastingDashboardProps) {
   const [activeTab, setActiveTab] = useState<"overview" | "accolades" | "karakter" | "history">("overview")
+  const [similarWineRecommendations, setSimilarWineRecommendations] = useState<Wine[]>([])
+  const [loadingRecommendations, setLoadingRecommendations] = useState(false)
 
   // Calculate average scores
   const avgScores = useMemo(() => {
@@ -40,9 +43,9 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
 
     const totals = {
       overall: 0,
-      farge: 0,
-      lukt: 0,
-      smak: 0,
+      color: 0,
+      smell: 0,
+      taste: 0,
       friskhet: 0,
       fylde: 0,
       sodme: 0,
@@ -54,9 +57,9 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
     tastings.forEach((t) => {
       if (t.overall_score) {
         totals.overall += t.overall_score
-        totals.farge += t.farge_score || 0
-        totals.lukt += t.lukt_score || 0
-        totals.smak += t.smak_score || 0
+        totals.color += t.color_score || 0
+        totals.smell += t.smell_score || 0
+        totals.taste += t.taste_score || 0
         totals.friskhet += t.friskhet || 0
         totals.fylde += t.fylde || 0
         totals.sodme += t.sodme || 0
@@ -70,9 +73,9 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
 
     return {
       overall: totals.overall / count,
-      farge: totals.farge / count,
-      lukt: totals.lukt / count,
-      smak: totals.smak / count,
+      color: totals.color / count,
+      smell: totals.smell / count,
+      taste: totals.taste / count,
       friskhet: totals.friskhet / count,
       fylde: totals.fylde / count,
       sodme: totals.sodme / count,
@@ -84,8 +87,8 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
 
   // Calculate accolades
   const accolades = useMemo<Accolade[]>(() => {
-    const highLuktCount = tastings.filter((t) => (t.lukt_score || 0) >= 8).length
-    const highSmakCount = tastings.filter((t) => (t.smak_score || 0) >= 8).length
+    const highSmellCount = tastings.filter((t) => (t.smell_score || 0) >= 80).length
+    const highTasteCount = tastings.filter((t) => (t.taste_score || 0) >= 80).length
     const highOverallCount = tastings.filter((t) => (t.overall_score || 0) >= 85).length
     const perfectKarakter = tastings.filter((t) => (t.karakter || 0) >= 9).length
     const totalTastings = tastings.length
@@ -94,18 +97,18 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
       {
         id: "nose-master",
         title: "Nesemester",
-        description: "Ga 8+ i lukt til 5 viner",
+        description: "Ga 80+ i lukt til 5 viner",
         icon: "👃",
         color: "#a78bfa",
-        earned: highLuktCount >= 5,
+        earned: highSmellCount >= 5,
       },
       {
         id: "taste-connoisseur",
         title: "Smakskjenner",
-        description: "Ga 8+ i smak til 5 viner",
+        description: "Ga 80+ i smak til 5 viner",
         icon: "👅",
         color: "#f472b6",
-        earned: highSmakCount >= 5,
+        earned: highTasteCount >= 5,
       },
       {
         id: "wine-expert",
@@ -142,11 +145,13 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
     ]
   }, [tastings])
 
-  // Calculate style preferences (karakter)
   const stylePreferences = useMemo<StylePreference[]>(() => {
     const styleMap = new Map<string, { total: number; count: number }>()
 
-    tastings.forEach((t) => {
+    // Only include wines with karakter >= 8
+    const highRatedTastings = tastings.filter((t) => (t.karakter || 0) >= 8)
+
+    highRatedTastings.forEach((t) => {
       const wine = wines.find((w) => w.product_id === t.product_id)
       const styleName = wine?.content?.style?.name || "Ukjent"
 
@@ -164,19 +169,37 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
         style,
         avgScore: data.total / data.count,
         count: data.count,
-        liked: data.total / data.count >= 7,
+        liked: data.total / data.count >= 8,
       }))
       .sort((a, b) => b.avgScore - a.avgScore)
   }, [tastings, wines])
 
-  // Get wine recommendations based on preferences
+  useEffect(() => {
+    if (activeTab === "karakter" && similarWineRecommendations.length === 0 && tastings.length > 0) {
+      setLoadingRecommendations(true)
+      const userId = tastings[0]?.user_id
+      if (userId) {
+        findSimilarWines(userId, 6)
+          .then((wines) => setSimilarWineRecommendations(wines))
+          .catch((error) => console.error("Failed to load recommendations:", error))
+          .finally(() => setLoadingRecommendations(false))
+      }
+    }
+  }, [activeTab, tastings, similarWineRecommendations.length])
+
+  // Get wine recommendations based on preferences (fallback to style-based)
   const recommendations = useMemo(() => {
+    // Use similar wine recommendations if available
+    if (similarWineRecommendations.length > 0) {
+      return similarWineRecommendations
+    }
+
+    // Fallback to style-based recommendations
     if (stylePreferences.length === 0) return []
 
     const likedStyles = stylePreferences.filter((s) => s.liked).map((s) => s.style)
     const tastedCodes = new Set(tastings.map((t) => t.product_id))
 
-    // Filter wines that match liked styles and haven't been tasted
     const recommended = allWines
       .filter((wine) => {
         const wineStyle = wine.content?.style?.name
@@ -184,7 +207,6 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
       })
       .slice(0, 6)
 
-    // If not enough recommendations, add some highly rated wines
     if (recommended.length < 6) {
       const additional = allWines
         .filter((wine) => !tastedCodes.has(wine.product_id) && !recommended.includes(wine))
@@ -193,7 +215,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
     }
 
     return recommended
-  }, [stylePreferences, allWines, tastings])
+  }, [stylePreferences, allWines, tastings, similarWineRecommendations])
 
   const earnedCount = accolades.filter((a) => a.earned).length
 
@@ -255,9 +277,9 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
             <div className={styles.scoreBreakdown}>
               <h3 className={styles.sectionTitle}>Dine gjennomsnittlige vurderinger</h3>
               <div className={styles.scoreGrid}>
-                <ScoreBar label="Farge" value={avgScores.farge} max={10} color="#a78bfa" />
-                <ScoreBar label="Lukt" value={avgScores.lukt} max={10} color="#f472b6" />
-                <ScoreBar label="Smak" value={avgScores.smak} max={10} color="#c084fc" />
+                <ScoreBar label="Farge" value={avgScores.color} max={100} color="#a78bfa" />
+                <ScoreBar label="Lukt" value={avgScores.smell} max={100} color="#f472b6" />
+                <ScoreBar label="Smak" value={avgScores.taste} max={100} color="#c084fc" />
                 <ScoreBar label="Friskhet" value={avgScores.friskhet} max={10} color="#34d399" />
                 <ScoreBar label="Fylde" value={avgScores.fylde} max={10} color="#fbbf24" />
                 <ScoreBar label="Sødme" value={avgScores.sodme} max={10} color="#fb923c" />
@@ -332,10 +354,10 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
         <div className={styles.karakterSection}>
           <div className={styles.preferencesCard}>
             <h3 className={styles.sectionTitle}>Dine stilpreferanser</h3>
-            <p className={styles.sectionDesc}>Basert på karakter-score du har gitt til ulike vinstiler</p>
+            <p className={styles.sectionDesc}>Basert på viner du har gitt 8+ i karakter</p>
 
             {stylePreferences.length === 0 ? (
-              <p className={styles.emptyText}>Smak flere viner for å se dine preferanser</p>
+              <p className={styles.emptyText}>Gi minst én vin 8+ i karakter for å se dine preferanser</p>
             ) : (
               <div className={styles.preferencesList}>
                 {stylePreferences.map((pref) => (
@@ -369,10 +391,14 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
 
           <div className={styles.recommendationsCard}>
             <h3 className={styles.sectionTitle}>Anbefalte viner for deg</h3>
-            <p className={styles.sectionDesc}>Basert på stilene du liker</p>
+            <p className={styles.sectionDesc}>
+              Basert på likhet med viner du har gitt høy karakter (fylde, friskhet, snærp, sødme, smak og lukt)
+            </p>
 
-            {recommendations.length === 0 ? (
-              <p className={styles.emptyText}>Smak flere viner for å få anbefalinger</p>
+            {loadingRecommendations ? (
+              <p className={styles.emptyText}>Laster anbefalinger...</p>
+            ) : recommendations.length === 0 ? (
+              <p className={styles.emptyText}>Gi flere viner 8+ i karakter for å få anbefalinger</p>
             ) : (
               <div className={styles.recommendationsGrid}>
                 {recommendations.map((wine) => (
@@ -444,14 +470,10 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                           <strong>Farge:</strong> {tasting.farge}
                         </p>
                         <p>
-                          <strong>Lukt:</strong>{" "}
-                          {tasting.selected_flavors_lukt?.map((x: SelectedFlavor) => x.flavor.name).join(", ")},{" "}
-                          {tasting.lukt}
+                          <strong>Lukt:</strong> {tasting.smell}, {tasting.lukt}
                         </p>
                         <p>
-                          <strong>Smak:</strong>{" "}
-                          {tasting.selected_flavors_smak?.map((x: SelectedFlavor) => x.flavor.name).join(", ")},{" "}
-                          {tasting.smak}
+                          <strong>Smak:</strong> {tasting.taste}, {tasting.smak}
                         </p>
                         <p>
                           <strong>Friskhet:</strong> {tasting.friskhet}/10
