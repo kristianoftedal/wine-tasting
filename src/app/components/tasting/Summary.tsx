@@ -46,7 +46,7 @@ export const Summary: React.FC = () => {
       try {
         // Calculate color score
         const colorScore =
-          tastingState.farge.length > 0 && wine.color.length > 0
+          tastingState.farge.length > 0 && wine.color && wine.color.length > 0
             ? await semanticSimilarity(tastingState.farge, wine.color!)
             : 0 // Default to 0 if sommelier has no color data
 
@@ -72,11 +72,11 @@ export const Summary: React.FC = () => {
         const priceScore = calculateNumericSimilarity(tastingState.pris.toString()!, wine.price.value!.toString())
 
         const snærpScore =
-          wine!.mainCategory.code === "rødvin"
+          wine!.main_category?.code === "rødvin"
             ? calculateNumericSimilarity(tastingState.snærp.toString(), vmpSnærp.toString())
             : 0
         const sødmeScore =
-          wine!.mainCategory.code !== "rødvin"
+          wine!.main_category?.code !== "rødvin"
             ? calculateNumericSimilarity(tastingState.sødme.toString()!, vmpSødme.toString())
             : 0
         const fyldeScore = calculateNumericSimilarity(tastingState.fylde.toString()!, vmpFylde.toString())
@@ -206,14 +206,14 @@ export const Summary: React.FC = () => {
               <div className={styles.summaryValue}>{tastingState.fylde}</div>
             </div>
 
-            {wine!.mainCategory.code !== "rødvin" && (
+            {wine!.main_category?.code !== "rødvin" && (
               <div className={styles.summaryRow}>
                 <div className={styles.summaryLabel}>Sødme</div>
                 <div className={styles.summaryValue}>{tastingState.sødme}</div>
               </div>
             )}
 
-            {wine!.mainCategory.code === "rødvin" && (
+            {wine!.main_category?.code === "rødvin" && (
               <div className={styles.summaryRow}>
                 <div className={styles.summaryLabel}>Snærp</div>
                 <div className={styles.summaryValue}>{tastingState.snærp}</div>
@@ -324,7 +324,7 @@ export const Summary: React.FC = () => {
               <div className={styles.scoreValue}>{scores.fylde}%</div>
             </div>
 
-            {wine!.mainCategory.code === "rødvin" && (
+            {wine!.main_category?.code === "rødvin" && (
               <div className={styles.tableRow}>
                 <div className={styles.attributeName}>Snærp</div>
                 <div className={styles.attributeValue}>{tastingState.snærp}</div>
@@ -333,7 +333,7 @@ export const Summary: React.FC = () => {
               </div>
             )}
 
-            {wine!.mainCategory.code !== "rødvin" && (
+            {wine!.main_category?.code !== "rødvin" && (
               <div className={styles.tableRow}>
                 <div className={styles.attributeName}>Sødme</div>
                 <div className={styles.attributeValue}>{tastingState.sødme}</div>

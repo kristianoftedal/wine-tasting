@@ -57,7 +57,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const onSave = async () => {
     setIsSaving(true)
     if (!userId) return
-    const productId = wine.code
+    const productId = wine.product_id
     const tastedAt = new Date()
     await addTasting({ ...tasting, userId, productId, tastedAt, eventId: eventId || undefined })
     toast("Smaksnotat lagret 🥂")

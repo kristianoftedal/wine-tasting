@@ -7,6 +7,7 @@ import Link from "next/link"
 import { useMemo, useState, useEffect } from "react"
 import styles from "./page.module.css"
 import { findSimilarWines } from "@/actions/wine-similarity"
+import { WineDetailsModal } from "@/app/components/WineDetailsModal"
 
 interface TastingDashboardProps {
   tastings: Tasting[]
@@ -36,8 +37,9 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
   const [activeTab, setActiveTab] = useState<"overview" | "accolades" | "karakter" | "history">("overview")
   const [similarWineRecommendations, setSimilarWineRecommendations] = useState<Wine[]>([])
   const [loadingRecommendations, setLoadingRecommendations] = useState(false)
+  const [selectedWine, setSelectedWine] = useState<Wine | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Calculate average scores
   const avgScores = useMemo(() => {
     if (tastings.length === 0) return null
 
@@ -85,13 +87,50 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
     }
   }, [tastings])
 
-  // Calculate accolades
   const accolades = useMemo<Accolade[]>(() => {
     const highSmellCount = tastings.filter((t) => (t.smell_score || 0) >= 80).length
     const highTasteCount = tastings.filter((t) => (t.taste_score || 0) >= 80).length
     const highOverallCount = tastings.filter((t) => (t.overall_score || 0) >= 85).length
     const perfectKarakter = tastings.filter((t) => (t.karakter || 0) >= 9).length
     const totalTastings = tastings.length
+
+    const getTopWinesByCategory = (scoreKey: keyof Tasting, wineType: string) => {
+      return tastings
+        .filter((t) => {
+          const wine = wines.find((w) => w.code === t.product_id)
+          const categoryName = wine?.main_category?.name
+          return categoryName === wineType && ((t[scoreKey] as number) || 0) >= 80
+        })
+        .slice(0, 5)
+    }
+
+    const redColorCount = getTopWinesByCategory("color_score", "Rødvin").length
+    const whiteColorCount = getTopWinesByCategory("color_score", "Hvitvin").length
+    const sparklingColorCount = getTopWinesByCategory("color_score", "Musserende vin").length
+
+    const redSmellCount = getTopWinesByCategory("smell_score", "Rødvin").length
+    const whiteSmellCount = getTopWinesByCategory("smell_score", "Hvitvin").length
+    const sparklingSmellCount = getTopWinesByCategory("smell_score", "Musserende vin").length
+
+    const redTasteCount = getTopWinesByCategory("taste_score", "Rødvin").length
+    const whiteTasteCount = getTopWinesByCategory("taste_score", "Hvitvin").length
+    const sparklingTasteCount = getTopWinesByCategory("taste_score", "Musserende vin").length
+
+    // Attributes are based on friskhet, fylde, sodme, snaerp scores
+    const getTopWinesByAttributes = (wineType: string) => {
+      return tastings
+        .filter((t) => {
+          const wine = wines.find((w) => w.code === t.product_id)
+          const categoryName = wine?.main_category?.name
+          const avgAttributeScore = (((t.friskhet || 0) + (t.fylde || 0) + (t.sodme || 0) + (t.snaerp || 0)) / 4) * 10 // Convert to 100 scale
+          return categoryName === wineType && avgAttributeScore >= 80
+        })
+        .slice(0, 5)
+    }
+
+    const redAttributeCount = getTopWinesByAttributes("Rødvin").length
+    const whiteAttributeCount = getTopWinesByAttributes("Hvitvin").length
+    const sparklingAttributeCount = getTopWinesByAttributes("Musserende vin").length
 
     return [
       {
@@ -142,18 +181,116 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
         color: "#f59e0b",
         earned: totalTastings >= 25,
       },
+      {
+        id: "red-color-expert",
+        title: "Rødvinsfarge-ekspert",
+        description: "5 rødviner med 80+ i farge",
+        icon: "🔴",
+        color: "#dc2626",
+        earned: redColorCount >= 5,
+      },
+      {
+        id: "red-smell-expert",
+        title: "Rødvinsduft-ekspert",
+        description: "5 rødviner med 80+ i lukt",
+        icon: "🍷",
+        color: "#dc2626",
+        earned: redSmellCount >= 5,
+      },
+      {
+        id: "red-taste-expert",
+        title: "Rødvinssmak-ekspert",
+        description: "5 rødviner med 80+ i smak",
+        icon: "🍇",
+        color: "#dc2626",
+        earned: redTasteCount >= 5,
+      },
+      {
+        id: "red-attribute-expert",
+        title: "Rødvinskarakter-ekspert",
+        description: "5 rødviner med 80+ i egenskaper",
+        icon: "📊",
+        color: "#dc2626",
+        earned: redAttributeCount >= 5,
+      },
+      {
+        id: "white-color-expert",
+        title: "Hvitvinsfarge-ekspert",
+        description: "5 hvitviner med 80+ i farge",
+        icon: "⚪",
+        color: "#fbbf24",
+        earned: whiteColorCount >= 5,
+      },
+      {
+        id: "white-smell-expert",
+        title: "Hvitvinsduft-ekspert",
+        description: "5 hvitviner med 80+ i lukt",
+        icon: "🥂",
+        color: "#fbbf24",
+        earned: whiteSmellCount >= 5,
+      },
+      {
+        id: "white-taste-expert",
+        title: "Hvitvinssmak-ekspert",
+        description: "5 hvitviner med 80+ i smak",
+        icon: "🍋",
+        color: "#fbbf24",
+        earned: whiteTasteCount >= 5,
+      },
+      {
+        id: "white-attribute-expert",
+        title: "Hvitvinskarakter-ekspert",
+        description: "5 hvitviner med 80+ i egenskaper",
+        icon: "📊",
+        color: "#fbbf24",
+        earned: whiteAttributeCount >= 5,
+      },
+      {
+        id: "sparkling-color-expert",
+        title: "Musserende-farge-ekspert",
+        description: "5 musserende viner med 80+ i farge",
+        icon: "✨",
+        color: "#a78bfa",
+        earned: sparklingColorCount >= 5,
+      },
+      {
+        id: "sparkling-smell-expert",
+        title: "Musserende-duft-ekspert",
+        description: "5 musserende viner med 80+ i lukt",
+        icon: "🍾",
+        color: "#a78bfa",
+        earned: sparklingSmellCount >= 5,
+      },
+      {
+        id: "sparkling-taste-expert",
+        title: "Musserende-smak-ekspert",
+        description: "5 musserende viner med 80+ i smak",
+        icon: "🥂",
+        color: "#a78bfa",
+        earned: sparklingTasteCount >= 5,
+      },
+      {
+        id: "sparkling-attribute-expert",
+        title: "Musserende-karakter-ekspert",
+        description: "5 musserende viner med 80+ i egenskaper",
+        icon: "📊",
+        color: "#a78bfa",
+        earned: sparklingAttributeCount >= 5,
+      },
     ]
-  }, [tastings])
+  }, [tastings, wines])
 
   const stylePreferences = useMemo<StylePreference[]>(() => {
     const styleMap = new Map<string, { total: number; count: number }>()
 
-    // Only include wines with karakter >= 8
     const highRatedTastings = tastings.filter((t) => (t.karakter || 0) >= 8)
 
     highRatedTastings.forEach((t) => {
-      const wine = wines.find((w) => w.product_id === t.product_id)
-      const styleName = wine?.content?.style?.name || "Ukjent"
+      const wine = wines.find((w) => w.code === t.product_id)
+      const styleName = wine?.main_category?.name
+      if (!styleName || styleName === "Ukjent") {
+        return
+      }
 
       if (!styleMap.has(styleName)) {
         styleMap.set(styleName, { total: 0, count: 0 })
@@ -187,14 +324,11 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
     }
   }, [activeTab, tastings, similarWineRecommendations.length])
 
-  // Get wine recommendations based on preferences (fallback to style-based)
   const recommendations = useMemo(() => {
-    // Use similar wine recommendations if available
     if (similarWineRecommendations.length > 0) {
       return similarWineRecommendations
     }
 
-    // Fallback to style-based recommendations
     if (stylePreferences.length === 0) return []
 
     const likedStyles = stylePreferences.filter((s) => s.liked).map((s) => s.style)
@@ -202,7 +336,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
 
     const recommended = allWines
       .filter((wine) => {
-        const wineStyle = wine.content?.style?.name
+        const wineStyle = wine.main_category?.name
         return wineStyle && likedStyles.includes(wineStyle) && !tastedCodes.has(wine.product_id)
       })
       .slice(0, 6)
@@ -219,9 +353,13 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
 
   const earnedCount = accolades.filter((a) => a.earned).length
 
+  const handleWineClick = (wine: Wine) => {
+    setSelectedWine(wine)
+    setIsModalOpen(true)
+  }
+
   return (
     <div className={styles.dashboard}>
-      {/* Tab Navigation */}
       <div className={styles.tabNav}>
         <button
           className={`${styles.tab} ${activeTab === "overview" ? styles.tabActive : ""}`}
@@ -249,10 +387,8 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
         </button>
       </div>
 
-      {/* Overview Tab */}
       {activeTab === "overview" && (
         <div className={styles.overviewGrid}>
-          {/* Stats Cards */}
           <div className={styles.statsRow}>
             <div className={styles.statCard}>
               <div className={styles.statValue}>{tastings.length}</div>
@@ -272,7 +408,6 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
             </div>
           </div>
 
-          {/* Score Breakdown */}
           {avgScores && (
             <div className={styles.scoreBreakdown}>
               <h3 className={styles.sectionTitle}>Dine gjennomsnittlige vurderinger</h3>
@@ -288,7 +423,6 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
             </div>
           )}
 
-          {/* Quick Links */}
           <div className={styles.quickLinks}>
             <div className={styles.linkCard}>
               <h3 className={styles.linkTitle}>Dine grupper</h3>
@@ -331,7 +465,6 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
         </div>
       )}
 
-      {/* Accolades Tab */}
       {activeTab === "accolades" && (
         <div className={styles.accoladesGrid}>
           {accolades.map((accolade) => (
@@ -349,7 +482,6 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
         </div>
       )}
 
-      {/* Karakter Tab */}
       {activeTab === "karakter" && (
         <div className={styles.karakterSection}>
           <div className={styles.preferencesCard}>
@@ -402,7 +534,12 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
             ) : (
               <div className={styles.recommendationsGrid}>
                 {recommendations.map((wine) => (
-                  <div key={wine.id} className={styles.recommendationCard}>
+                  <div
+                    key={wine.id}
+                    className={styles.recommendationCard}
+                    onClick={() => handleWineClick(wine)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <div className={styles.recommendationImage}>
                       <img
                         src={`/api/wine-image/${wine.product_id}?size=100x100`}
@@ -416,8 +553,8 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                       <h4 className={styles.recommendationName}>{wine.name}</h4>
                       <p className={styles.recommendationMeta}>
                         {wine.year && <span>{wine.year}</span>}
-                        {wine.content?.style?.name && (
-                          <span className={styles.recommendationStyle}>{wine.content.style.name}</span>
+                        {wine.main_category?.name && (
+                          <span className={styles.recommendationStyle}>{wine.main_category.name}</span>
                         )}
                       </p>
                       {wine.price && <p className={styles.recommendationPrice}>{wine.price.formattedValue}</p>}
@@ -430,7 +567,6 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
         </div>
       )}
 
-      {/* History Tab */}
       {activeTab === "history" && (
         <div className={styles.historySection}>
           {tastings.length === 0 ? (
@@ -438,7 +574,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
           ) : (
             <div className={styles.historyList}>
               {tastings.map((tasting, index) => {
-                const wine = wines.find((w) => w.product_id === tasting.product_id)
+                const wine = wines.find((w) => w.code === tasting.product_id)
                 return (
                   <details key={index} className={styles.historyItem}>
                     <summary className={styles.historySummary}>
@@ -499,6 +635,8 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
           )}
         </div>
       )}
+
+      <WineDetailsModal wine={selectedWine} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   )
 }

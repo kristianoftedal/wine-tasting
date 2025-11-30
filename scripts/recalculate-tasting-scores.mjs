@@ -98,12 +98,12 @@ async function recalculateTastingScores() {
         : 0
 
       const smellScore = calculateSemanticSimilarity(
-        `${(tasting.selected_flavors_lukt || []).map(f => f.flavor?.name || f).join(', ')} ${tasting.lukt || ''}`,
+        `${tasting.smell || ''} ${tasting.lukt || ''}`,
         wine.smell || ''
       )
 
       const tasteScore = calculateSemanticSimilarity(
-        `${(tasting.selected_flavors_smak || []).map(f => f.flavor?.name || f).join(', ')} ${tasting.smak || ''}`,
+        `${tasting.taste || ''} ${tasting.smak || ''}`,
         wine.taste || ''
       )
 
@@ -114,7 +114,7 @@ async function recalculateTastingScores() {
       const vmpSnaerp = characteristics.find(x => x.name?.toLowerCase() === 'garvestoffer')?.value
       const vmpSodme = characteristics.find(x => x.name?.toLowerCase() === 'sødme')?.value
 
-      const alcoholScore = tasting.alkohol && wine.content?.traits?.[0]?.readableValue
+      const percentageScore = tasting.alkohol && wine.content?.traits?.[0]?.readableValue
         ? calculateNumericSimilarity(tasting.alkohol, wine.content.traits[0].readableValue)
         : 0
 
@@ -138,26 +138,20 @@ async function recalculateTastingScores() {
         ? calculateNumericSimilarity(tasting.friskhet, vmpFriskhet)
         : 0
 
-      // Calculate VMP scores (quality, price, alcohol)
-      const vmpQualityScore = Math.round((colorScore + smellScore + tasteScore) / 3)
-      const vmpPriceScore = priceScore
-      const vmpAlcoholScore = alcoholScore
-      const vmpTotalScore = Math.round((vmpQualityScore + vmpPriceScore * 0.2 + vmpAlcoholScore * 0.2) / 1.4)
-
       // Calculate overall score
       const scores = {
-        farge: colorScore,
-        lukt: smellScore,
-        smak: tasteScore,
+        color: colorScore,
+        smell: smellScore,
+        taste: tasteScore,
         friskhet: friskhetScore,
         fylde: fyldeScore,
         snaerp: snaerpScore,
         sodme: sodmeScore,
-        alkohol: alcoholScore,
-        pris: priceScore
+        percentage: percentageScore,
+        price: priceScore
       }
 
-      const halfWeightProps = ['pris', 'alkohol']
+      const halfWeightProps = ['price', 'percentage']
       
       const { total, weightSum } = Object.entries(scores).reduce(
         (acc, [key, value]) => {
@@ -174,25 +168,22 @@ async function recalculateTastingScores() {
 
       let transformedKarakter = tasting.karakter
       if (transformedKarakter && transformedKarakter <= 6) {
-        transformedKarakter = Math.round((transformedKarakter / 6) * 10)
+        transformedKarakter = Math.round(((transformedKarakter - 1) * 9 / 5) + 1)
       }
 
       const { error: updateError } = await supabase
         .from('tastings')
         .update({
-          farge_score: colorScore,
-          lukt_score: smellScore,
-          smak_score: tasteScore,
-          smak_fylde_score: fyldeScore,
-          smak_friskhet_score: friskhetScore,
-          smak_sott_score: sodmeScore,
-          finish_score: snaerpScore,
-          balance_score: Math.round((fyldeScore + friskhetScore + (wine.main_category?.code === 'rødvin' ? snaerpScore : sodmeScore)) / 3),
+          color_score: colorScore,
+          smell_score: smellScore,
+          taste_score: tasteScore,
+          fylde_score: fyldeScore,
+          friskhet_score: friskhetScore,
+          sodme_score: sodmeScore,
+          snaerp_score: snaerpScore,
+          percentage_score: percentageScore,
+          price_score: priceScore,
           overall_score: overallScore,
-          vmp_quality_score: vmpQualityScore,
-          vmp_price_score: vmpPriceScore,
-          vmp_alcohol_score: vmpAlcoholScore,
-          vmp_total_score: vmpTotalScore,
           karakter: transformedKarakter
         })
         .eq('id', tasting.id)

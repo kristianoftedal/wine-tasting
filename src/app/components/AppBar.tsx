@@ -61,6 +61,12 @@ export default function AppBar() {
     } else {
       return (
         <div className={styles.actions}>
+          <button onClick={() => router.push("/toppliste")} className={`${styles.button} ${styles.buttonOutline}`}>
+            Toppliste
+          </button>
+          <button onClick={() => router.push("/sommailer")} className={`${styles.button} ${styles.buttonOutline}`}>
+            Sommailer
+          </button>
           <button onClick={() => router.push("/login")} className={`${styles.button} ${styles.buttonOutline}`}>
             Logg inn
           </button>

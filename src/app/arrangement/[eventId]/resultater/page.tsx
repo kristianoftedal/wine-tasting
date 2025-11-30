@@ -21,11 +21,11 @@ export default async function EventScoresPage({ params }: { params: Promise<{ ev
   // Fetch wines for the event
   const { data: wines } = await supabase
     .from("wines")
-    .select("product_id, name, year")
-    .in("product_id", event.wines.length > 0 ? event.wines : [""])
+    .select("code, name, year")
+    .in("code", event.wines.length > 0 ? event.wines : [""])
 
   // Sort wines by event order
-  const sortedWines = wines?.sort((a, b) => event.wines.indexOf(a.product_id) - event.wines.indexOf(b.product_id)) || []
+  const sortedWines = wines?.sort((a, b) => event.wines.indexOf(a.code) - event.wines.indexOf(b.code)) || []
 
   // Fetch initial tastings for the event
   const { data: initialTastings } = await supabase

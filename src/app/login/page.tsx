@@ -9,7 +9,19 @@ export default function Login() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const supabase = createClient()
+
+  let supabase
+  try {
+    supabase = createClient()
+  } catch (err) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.card}>
+          <div className={styles.error}>Supabase configuration error. Please check your environment variables.</div>
+        </div>
+      </div>
+    )
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

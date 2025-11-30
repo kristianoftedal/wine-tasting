@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 
-export async function GET(request: NextRequest, { params }: { params: { productId: string } }) {
-  const { productId } = params
+export async function GET(request: NextRequest, { params }: { params: Promise<{ productId: string }> }) {
+  const { productId } = await params
   const size = request.nextUrl.searchParams.get("size") || "100x100"
 
   try {

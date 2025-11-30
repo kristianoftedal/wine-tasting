@@ -20,10 +20,9 @@ export default async function Arrangement({ params }: { params: { eventId: strin
   const { data: wines } = await supabase
     .from("wines")
     .select("*")
-    .in("product_id", event.wines.length > 0 ? event.wines : [""])
+    .in("code", event.wines.length > 0 ? event.wines : [""])
 
-  // Sort wines by event order
-  const sortedWines = wines?.sort((a, b) => event.wines.indexOf(a.product_id) - event.wines.indexOf(b.product_id)) || []
+  const sortedWines = wines?.sort((a, b) => event.wines.indexOf(a.code) - event.wines.indexOf(b.code)) || []
 
   return (
     <div className={styles.container}>
@@ -31,9 +30,9 @@ export default async function Arrangement({ params }: { params: { eventId: strin
       <section className={styles.section}>
         <p className={styles.description}>{event.description}</p>
         {sortedWines.map((x: Wine) => (
-          <article key={x.product_id} className={styles.wineCard}>
+          <article key={x.code} className={styles.wineCard}>
             <h5 className={styles.wineTitle}>
-              <Link href={`/smaking/${x.product_id}?eventId=${event.id}`}>{x.name}</Link>
+              <Link href={`/smaking/${x.code}?eventId=${event.id}`}>{x.name}</Link>
             </h5>
             <p className={styles.wineDescription}>{x.description}</p>
           </article>

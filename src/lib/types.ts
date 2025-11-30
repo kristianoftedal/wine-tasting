@@ -206,7 +206,7 @@ export interface TastingFormData {
   selectedFlavorsLukt: SelectedFlavor[] // Keep for UI, will be transformed to smell
   selectedFlavorsSmak: SelectedFlavor[] // Keep for UI, will be transformed to taste
   userId: string
-  productId: string
+  productCode: string
   tastedAt: Date
 
   colorScore: number
@@ -231,7 +231,7 @@ export function tastingFormToDb(form: TastingFormData): Omit<Tasting, "id" | "cr
 
   return {
     user_id: form.userId,
-    product_id: form.productId,
+    product_id: form.productCode,
     event_id: form.eventId || null,
     farge: form.farge || null,
     smell: smellFlavors || null,
@@ -279,14 +279,10 @@ export function tastingDbToForm(db: Tasting): TastingFormData {
     snaerp: db.snaerp || 0,
     karakter: db.karakter || 0,
     egenskaper: db.egenskaper || "",
-    luktIntensitet: (db.lukt_intensitet as Intensitet) || "",
-    smaksIntensitet: (db.smaks_intensitet as Intensitet) || "",
-    alkohol: db.alkohol || "",
-    pris: db.pris || 0,
     selectedFlavorsLukt,
     selectedFlavorsSmak,
     userId: db.user_id,
-    productId: db.product_id,
+    productCode: db.product_id,
     tastedAt: new Date(db.tasted_at),
     colorScore: db.color_score || 0,
     smellScore: db.smell_score || 0,
@@ -319,7 +315,7 @@ export const initialTastingForm: TastingFormData = {
   luktIntensitet: "",
   smaksIntensitet: "",
   userId: "",
-  productId: "",
+  productCode: "",
   alkohol: "",
   pris: 0,
   tastedAt: new Date(),

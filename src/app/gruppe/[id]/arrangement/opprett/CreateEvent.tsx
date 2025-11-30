@@ -43,8 +43,8 @@ export default function CreateEventForm({
     setSearchResults([])
   }
 
-  const removeWine = (productId: string) => {
-    setWines(wines.filter((x) => x.product_id !== productId))
+  const removeWine = (product_id: string) => {
+    setWines(wines.filter((x) => x.product_id !== product_id))
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
