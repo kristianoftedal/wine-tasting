@@ -1,0 +1,63 @@
+.dialogContent {
+  max-width: 42rem;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.contentGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.wineImage {
+  max-width: 200px;
+  height: auto;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.fullWidth {
+  grid-column: span 2;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin-bottom: 0.25rem;
+}
+
+.descriptionLabel {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin-bottom: 0.5rem;
+}
+
+.descriptionText {
+  font-size: 0.875rem;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.linkButton {
+  flex: 1;
+}
+
+.fullWidthButton {
+  width: 100%;
+}

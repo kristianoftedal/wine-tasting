@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ productId: string }> }) {
   const { productId } = await params
-  const size = request.nextUrl.searchParams.get("size") || "100x100"
+  const size = request?.nextUrl?.searchParams?.get("size") || "100x100"
 
   try {
     const imageUrl = `https://bilder.vinmonopolet.no/cache/${size}-0/${productId}-1.jpg`

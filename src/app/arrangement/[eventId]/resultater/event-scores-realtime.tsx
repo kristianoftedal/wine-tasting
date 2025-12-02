@@ -9,14 +9,16 @@ type TastingScore = {
   id: string
   product_id: string
   user_id: string
-  overall_score: number | null
-  farge_score: number | null
-  lukt_score: number | null
-  smak_score: number | null
-  friskhet: number | null
-  fylde: number | null
-  sodme: number | null
-  snaerp: number | null
+  score_overall: number | null
+  score_farge: number | null
+  score_lukt: number | null
+  score_smak: number | null
+  score_friskhet: number | null
+  score_fylde: number | null
+  score_sodme: number | null
+  score_snaerp: number | null
+  score_alkohol: number | null
+  score_pris: number | null
   karakter: number | null
 }
 
@@ -91,8 +93,15 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
         ...wine,
         avgOverall: null,
         avgKarakter: null,
+        avgFarge: null,
+        avgLukt: null,
+        avgSmak: null,
+        avgFriskhet: null,
+        avgFylde: null,
+        avgSodme: null,
+        avgSnaerp: null,
         count: 0,
-        tastings: [],
+        tastings: [] as Array<TastingScore & { userName: string }>,
       }
     }
 
@@ -100,15 +109,15 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
 
     return {
       ...wine,
-      avgOverall: sum("overall_score") / count,
+      avgOverall: sum("score_overall") / count,
       avgKarakter: sum("karakter") / count,
-      avgFarge: sum("farge_score") / count,
-      avgLukt: sum("lukt_score") / count,
-      avgSmak: sum("smak_score") / count,
-      avgFriskhet: sum("friskhet") / count,
-      avgFylde: sum("fylde") / count,
-      avgSodme: sum("sodme") / count,
-      avgSnaerp: sum("snaerp") / count,
+      avgFarge: sum("score_farge") / count,
+      avgLukt: sum("score_lukt") / count,
+      avgSmak: sum("score_smak") / count,
+      avgFriskhet: sum("score_friskhet") / count,
+      avgFylde: sum("score_fylde") / count,
+      avgSodme: sum("score_sodme") / count,
+      avgSnaerp: sum("score_snaerp") / count,
       count,
       tastings: wineTastings.map((t) => ({
         ...t,
@@ -181,7 +190,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                     {wine.tastings.map((tasting) => (
                       <div key={tasting.id} className={styles.participant}>
                         <span className={styles.participantName}>{tasting.userName}</span>
-                        <span className={styles.participantScore}>{tasting.overall_score?.toFixed(1) || "-"}</span>
+                        <span className={styles.participantScore}>{tasting.score_overall?.toFixed(1) || "-"}</span>
                       </div>
                     ))}
                   </div>

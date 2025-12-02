@@ -3,7 +3,7 @@
 import { addTasting } from "@/actions/tasting"
 import { tastingAtom, wineAtom } from "@/app/store/tasting"
 import he from "he"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useAtomValue, useAtom } from "jotai"
 import { useRouter, useSearchParams } from "next/navigation"
 import type React from "react"
 import { useState } from "react"
@@ -19,7 +19,7 @@ import { createClient } from "@/lib/supabase/client"
 import { useEffect } from "react"
 
 export type TastingProps = {
-  wine: Wine
+  wine: Wine | null
 }
 
 export type WizardStep = {
@@ -29,15 +29,14 @@ export type WizardStep = {
 export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const searchParams = useSearchParams()
   const eventId = searchParams.get("eventId")
-
-  const setWine = useSetAtom(wineAtom)
-  setWine(wine)
-
+  const [, setWine] = useAtom(wineAtom)
   const tasting = useAtomValue(tastingAtom)
   const router = useRouter()
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [userId, setUserId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [index, setIndex] = useState<number>(0)
+  const steps = ["Se", "Aroma", "Smak", "Egenskaper", "Oppsummering"]
 
   useEffect(() => {
     const checkUser = async () => {
@@ -51,8 +50,11 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
     checkUser()
   }, [])
 
-  const [index, setIndex] = useState<number>(0)
-  const steps = ["Se", "Aroma", "Smak", "Egenskaper", "Oppsummering"]
+  useEffect(() => {
+    if (wine) {
+      setWine(wine)
+    }
+  }, [wine, setWine])
 
   const onSave = async () => {
     setIsSaving(true)
@@ -72,6 +74,16 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const handlePreviousStep = () => {
     setIndex(index > 0 ? index - 1 : 0)
     window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  if (!wine) {
+    return (
+      <div className={styles.wizardContainer}>
+        <div className={styles.content}>
+          <p>Wine not found</p>
+        </div>
+      </div>
+    )
   }
 
   return (

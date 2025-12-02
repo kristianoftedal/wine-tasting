@@ -1,15 +1,15 @@
-import type { NextConfig } from 'next';
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true
+    unoptimized: true,
   },
   experimental: {
-    swcPlugins: [['@swc-jotai/react-refresh', {}]]
-  }
-};
+    swcPlugins: [["@swc-jotai/react-refresh", {}]],
+  },
+}
 
-export default nextConfig;
+export default nextConfig

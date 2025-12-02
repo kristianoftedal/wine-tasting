@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import type { Wine } from "@/lib/types"
+import styles from "./WineDetailsModal.module.css"
 
 interface WineDetailsModalProps {
   wine: Wine | null
@@ -11,12 +12,25 @@ interface WineDetailsModalProps {
   onClose: () => void
 }
 
+function getCharacteristic(wine: Wine, name: string): string | null {
+  const char = wine.content?.characteristics?.find((c) => c.name.toLowerCase() === name.toLowerCase())
+  return char?.readableValue || null
+}
+
 export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProps) {
   if (!wine) return null
 
+  const alcohol = getCharacteristic(wine, "Alkohol")
+  const sugar = getCharacteristic(wine, "Sukker")
+  const freshness = getCharacteristic(wine, "Friskhet")
+  const fullness = getCharacteristic(wine, "Fylde")
+  const bitterness = getCharacteristic(wine, "Bitterhet")
+  const sweetness = getCharacteristic(wine, "Sødme")
+  const tannin = getCharacteristic(wine, "Tannin") || getCharacteristic(wine, "Garvestoffer")
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className={styles.dialogContent}>
         <DialogHeader>
           <DialogTitle>{wine.name}</DialogTitle>
           <DialogDescription>
@@ -25,13 +39,13 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-6">
+        <div className={styles.contentGrid}>
           {/* Wine Image */}
-          <div className="flex justify-center">
+          <div className={styles.imageContainer}>
             <img
               src={`/api/wine-image/${wine.product_id}?size=200x200`}
               alt={wine.name}
-              className="max-w-[200px] h-auto"
+              className={styles.wineImage}
               onError={(e) => {
                 e.currentTarget.style.display = "none"
               }}
@@ -39,139 +53,138 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
           </div>
 
           {/* Wine Details Grid */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className={styles.detailsGrid}>
             {wine.main_producer?.name && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Produsent</h4>
+                <h4 className={styles.label}>Produsent</h4>
                 <p>{wine.main_producer.name}</p>
               </div>
             )}
 
             {wine.main_country?.name && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Land</h4>
+                <h4 className={styles.label}>Land</h4>
                 <p>{wine.main_country.name}</p>
               </div>
             )}
 
-            {wine.district && (
+            {wine.district?.name && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Distrikt</h4>
-                <p>{wine.district}</p>
+                <h4 className={styles.label}>Distrikt</h4>
+                <p>{wine.district.name}</p>
               </div>
             )}
 
-            {wine.sub_district && (
+            {wine.sub_district?.name && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Under-distrikt</h4>
-                <p>{wine.sub_district}</p>
+                <h4 className={styles.label}>Under-distrikt</h4>
+                <p>{wine.sub_district.name}</p>
               </div>
             )}
 
-            {wine.grapes && wine.grapes.length > 0 && (
-              <div className="col-span-2">
-                <h4 className="font-semibold text-sm text-muted-foreground">Druer</h4>
-                <p>{wine.grapes.map((g) => g.grape.name).join(", ")}</p>
+            {wine.content?.ingredients && wine.content.ingredients.length > 0 && (
+              <div className={styles.fullWidth}>
+                <h4 className={styles.label}>Ingredienser</h4>
+                <p>{wine.content.ingredients.map((i) => i.formattedValue).join(", ")}</p>
               </div>
             )}
 
             {wine.price && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Pris</h4>
+                <h4 className={styles.label}>Pris</h4>
                 <p>{wine.price.formattedValue}</p>
               </div>
             )}
 
             {wine.volume && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Volum</h4>
+                <h4 className={styles.label}>Volum</h4>
                 <p>{wine.volume.formattedValue}</p>
               </div>
             )}
 
-            {wine.content?.alcohol?.formattedValue && (
+            {alcohol && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Alkohol</h4>
-                <p>{wine.content.alcohol.formattedValue}</p>
+                <h4 className={styles.label}>Alkohol</h4>
+                <p>{alcohol}</p>
               </div>
             )}
 
-            {wine.content?.sugar?.formattedValue && (
+            {sugar && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Sukker</h4>
-                <p>{wine.content.sugar.formattedValue}</p>
+                <h4 className={styles.label}>Sukker</h4>
+                <p>{sugar}</p>
               </div>
             )}
 
-            {wine.content?.color && (
+            {wine.color && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Farge</h4>
-                <p>{wine.content.color}</p>
+                <h4 className={styles.label}>Farge</h4>
+                <p>{wine.color}</p>
               </div>
             )}
 
             {wine.content?.style?.name && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Stil</h4>
+                <h4 className={styles.label}>Stil</h4>
                 <p>{wine.content.style.name}</p>
               </div>
             )}
 
-            {wine.content?.freshness && (
+            {freshness && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Friskhet</h4>
-                <p>{wine.content.freshness}</p>
+                <h4 className={styles.label}>Friskhet</h4>
+                <p>{freshness}</p>
               </div>
             )}
 
-            {wine.content?.fullness && (
+            {fullness && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Fylde</h4>
-                <p>{wine.content.fullness}</p>
+                <h4 className={styles.label}>Fylde</h4>
+                <p>{fullness}</p>
               </div>
             )}
 
-            {wine.content?.bitterness && (
+            {bitterness && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Bitterhet</h4>
-                <p>{wine.content.bitterness}</p>
+                <h4 className={styles.label}>Bitterhet</h4>
+                <p>{bitterness}</p>
               </div>
             )}
 
-            {wine.content?.sweetness && (
+            {sweetness && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Sødme</h4>
-                <p>{wine.content.sweetness}</p>
+                <h4 className={styles.label}>Sødme</h4>
+                <p>{sweetness}</p>
               </div>
             )}
 
-            {wine.content?.tannin && (
+            {tannin && (
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground">Tannin</h4>
-                <p>{wine.content.tannin}</p>
+                <h4 className={styles.label}>Tannin</h4>
+                <p>{tannin}</p>
               </div>
             )}
           </div>
 
-          {/* Descriptions */}
-          {wine.content?.smell && (
+          {wine.smell && (
             <div>
-              <h4 className="font-semibold text-sm text-muted-foreground mb-2">Lukt</h4>
-              <p className="text-sm">{wine.content.smell}</p>
+              <h4 className={styles.descriptionLabel}>Lukt</h4>
+              <p className={styles.descriptionText}>{wine.smell}</p>
             </div>
           )}
 
-          {wine.content?.taste && (
+          {wine.taste && (
             <div>
-              <h4 className="font-semibold text-sm text-muted-foreground mb-2">Smak</h4>
-              <p className="text-sm">{wine.content.taste}</p>
+              <h4 className={styles.descriptionLabel}>Smak</h4>
+              <p className={styles.descriptionText}>{wine.taste}</p>
             </div>
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-4 border-t">
-            <Link href={`/smaking/${wine.product_id}`} className="flex-1">
-              <Button className="w-full">Start smaking</Button>
+          <div className={styles.actionButtons}>
+            <Link href={`/smaking/${wine.product_id}`} className={styles.linkButton}>
+              <Button className={styles.fullWidthButton}>Start smaking</Button>
             </Link>
             <Button variant="outline" onClick={onClose}>
               Lukk

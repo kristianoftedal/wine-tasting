@@ -2,7 +2,7 @@
 // Database Types (from Supabase - snake_case)
 // ============================================
 
-export interface Profile {
+export type Profile = {
   id: string
   email: string
   name: string
@@ -10,21 +10,21 @@ export interface Profile {
   updated_at: string
 }
 
-export interface Group {
+export type Group = {
   id: string
   name: string
   description: string | null
   created_at: string
 }
 
-export interface GroupMember {
+export type GroupMember = {
   id: string
   group_id: string
   user_id: string
   joined_at: string
 }
 
-export interface Wine {
+export type Wine = {
   id: string
   product_id: string
   name: string
@@ -64,27 +64,27 @@ export interface Wine {
   created_at: string
 }
 
-export interface WinePrice {
+export type WinePrice = {
   value: number
   formattedValue: string
   readableValue: string
 }
 
-export interface WineDistrict {
+export type WineDistrict = {
   code: string
   name: string
   searchQuery?: string
   url?: string
 }
 
-export interface WineCategory {
+export type WineCategory = {
   code: WineType
   name: string
 }
 
 export type WineType = "rødvin" | "hvitvin" | "musserende_vin" | "rosevin"
 
-export interface WineContent {
+export type WineContent = {
   characteristics: Array<{ name: string; readableValue: string; value: string }>
   ingredients: Array<{ code: string; formattedValue: string; readableValue: string }>
   isGoodFor: Array<{ code: string; name: string }>
@@ -93,7 +93,7 @@ export interface WineContent {
   traits: Array<{ formattedValue: string; name: string; readableValue: string }>
 }
 
-export interface Event {
+export type Event = {
   id: string
   name: string
   description: string | null
@@ -103,7 +103,7 @@ export interface Event {
   created_at: string
 }
 
-export interface Tasting {
+export type Tasting = {
   id: string
   user_id: string
   product_id: string
@@ -151,13 +151,13 @@ export interface Tasting {
 // Flavor Types (UI/Domain)
 // ============================================
 
-export interface Flavor {
+export type Flavor = {
   name: string
   description?: string
   backgroundColor?: string
 }
 
-export interface Subcategory {
+export type Subcategory = {
   name: string
   description?: string
   flavors: Flavor[]
@@ -165,7 +165,7 @@ export interface Subcategory {
   icon?: string
 }
 
-export interface Category {
+export type Category = {
   name: string
   description?: string
   subcategories: Subcategory[]
@@ -174,7 +174,7 @@ export interface Category {
   image?: string
 }
 
-export interface SelectedFlavor {
+export type SelectedFlavor = {
   category: Category
   subcategory: Subcategory
   flavor: Flavor
@@ -186,7 +186,7 @@ export interface SelectedFlavor {
 
 export type Intensitet = "lav" | "middels" | "høy" | ""
 
-export interface TastingFormData {
+export type TastingFormData = {
   eventId?: string
   farge: string
   smell: string // Transformed from selectedFlavorsLukt
@@ -206,7 +206,7 @@ export interface TastingFormData {
   selectedFlavorsLukt: SelectedFlavor[] // Keep for UI, will be transformed to smell
   selectedFlavorsSmak: SelectedFlavor[] // Keep for UI, will be transformed to taste
   userId: string
-  productCode: string
+  productId: string
   tastedAt: Date
 
   colorScore: number
@@ -231,7 +231,7 @@ export function tastingFormToDb(form: TastingFormData): Omit<Tasting, "id" | "cr
 
   return {
     user_id: form.userId,
-    product_id: form.productCode,
+    product_id: form.productId,
     event_id: form.eventId || null,
     farge: form.farge || null,
     smell: smellFlavors || null,
@@ -282,7 +282,7 @@ export function tastingDbToForm(db: Tasting): TastingFormData {
     selectedFlavorsLukt,
     selectedFlavorsSmak,
     userId: db.user_id,
-    productCode: db.product_id,
+    productId: db.product_id,
     tastedAt: new Date(db.tasted_at),
     colorScore: db.color_score || 0,
     smellScore: db.smell_score || 0,
@@ -294,6 +294,10 @@ export function tastingDbToForm(db: Tasting): TastingFormData {
     fyldeScore: db.fylde_score || 0,
     friskhetScore: db.friskhet_score || 0,
     overallScore: db.overall_score || 0,
+    luktIntensitet: db.lukt_intensitet || "",
+    smaksIntensitet: db.smaks_intensitet || "",
+    alkohol: db.alkohol || "",
+    pris: db.pris || 0,
   }
 }
 
@@ -315,7 +319,7 @@ export const initialTastingForm: TastingFormData = {
   luktIntensitet: "",
   smaksIntensitet: "",
   userId: "",
-  productCode: "",
+  productId: "",
   alkohol: "",
   pris: 0,
   tastedAt: new Date(),

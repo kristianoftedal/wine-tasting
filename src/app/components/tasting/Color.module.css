@@ -35,6 +35,10 @@
   color: #4b5563;
 }
 
+.wineInfoValue {
+  color: #374151;
+}
+
 .colorInputField {
   display: flex;
   flex-direction: column;

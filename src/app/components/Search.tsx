@@ -61,6 +61,7 @@ export const Search: React.FC = () => {
   }
 
   const handleSelected = (wine: Wine) => {
+    console.log("[v0] Search - Navigating to wine:", { product_id: wine.product_id, name: wine.name })
     setWines([])
     setIsOpen(false)
     setSearchValue("")

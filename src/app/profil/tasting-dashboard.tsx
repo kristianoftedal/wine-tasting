@@ -601,28 +601,30 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                       </div>
                     </summary>
                     <div className={styles.historyDetails}>
-                      <div className={styles.historyDetailGrid}>
+                      <div className={styles.historyDetailColumn}>
                         <p>
-                          <strong>Farge:</strong> {tasting.farge}
+                          <strong>Farge:</strong> {tasting.farge || "-"}
                         </p>
                         <p>
-                          <strong>Lukt:</strong> {tasting.smell}, {tasting.lukt}
+                          <strong>Lukt:</strong> {[tasting.smell, tasting.lukt].filter(Boolean).join(", ") || "-"}
                         </p>
                         <p>
-                          <strong>Smak:</strong> {tasting.taste}, {tasting.smak}
+                          <strong>Smak:</strong> {[tasting.taste, tasting.smak].filter(Boolean).join(", ") || "-"}
                         </p>
-                        <p>
-                          <strong>Friskhet:</strong> {tasting.friskhet}/10
-                        </p>
-                        <p>
-                          <strong>Fylde:</strong> {tasting.fylde}/10
-                        </p>
-                        <p>
-                          <strong>Sødme:</strong> {tasting.sodme}/10
-                        </p>
-                        <p>
-                          <strong>Snærp:</strong> {tasting.snaerp}/10
-                        </p>
+                        <div className={styles.historyScoreRow}>
+                          <span>
+                            <strong>Friskhet:</strong> {tasting.friskhet || "-"}/10
+                          </span>
+                          <span>
+                            <strong>Fylde:</strong> {tasting.fylde || "-"}/10
+                          </span>
+                          <span>
+                            <strong>Sødme:</strong> {tasting.sodme || "-"}/10
+                          </span>
+                          <span>
+                            <strong>Snærp:</strong> {tasting.snaerp || "-"}/10
+                          </span>
+                        </div>
                         <p>
                           <strong>Kommentar:</strong> {tasting.egenskaper || "Ingen"}
                         </p>
