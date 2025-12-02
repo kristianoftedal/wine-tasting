@@ -1,126 +1,172 @@
-"use client"
+'use client';
 
-import { tastingAtom, wineAtom } from "@/app/store/tasting"
-import { useAtomValue } from "jotai"
-import type React from "react"
-import { useEffect, useState } from "react"
-import { semanticSimilarity } from "@/actions/similarity"
-import type { Wine } from "@/lib/types"
-import styles from "./summary-1.module.css"
+import { semanticSimilarity } from '@/actions/similarity';
+import { tastingAtom, wineAtom } from '@/app/store/tasting';
+import type { Wine } from '@/lib/types';
+import { useAtomValue } from 'jotai';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import styles from './summary-1.module.css';
 
-function calculateNumericSimilarity(userValue: string, actualValue: string): number {
-  const normalizeNumber = (str: string) => {
-    const cleaned = str.replace(/[^\d.,]/g, "").replace("prosent", "")
-    return Number.parseFloat(cleaned.replace(",", "."))
-  }
-  const userNum = normalizeNumber(userValue)
-  const actualNum = normalizeNumber(actualValue)
+function calculateNumericSimilarity(
+  userValue: string | number | undefined,
+  actualValue: string | number | undefined
+): number {
+  const normalizeNumber = (val: string | number | undefined): number => {
+    if (val === undefined || val === null || val === '' || val === '-') return Number.NaN;
+    const str = String(val);
+    const cleaned = str.replace(/[^\d.,]/g, '').replace('prosent', '');
+    return Number.parseFloat(cleaned.replace(',', '.'));
+  };
 
-  if (isNaN(userNum) || isNaN(actualNum)) return 0
+  const userNum = normalizeNumber(userValue);
+  const actualNum = normalizeNumber(actualValue);
 
-  const difference = Math.abs(userNum - actualNum)
-  const average = (userNum + actualNum) / 2
-  const percentDifference = (difference / average) * 100
+  console.log('[v0] calculateNumericSimilarity:', { userValue, actualValue, userNum, actualNum });
+
+  // If either value is invalid, return 0
+  if (isNaN(userNum) || isNaN(actualNum)) return 0;
+
+  // If both are 0, perfect match
+  if (userNum === 0 && actualNum === 0) return 100;
+
+  // If one is 0, use the non-zero value as the base
+  const maxVal = Math.max(Math.abs(userNum), Math.abs(actualNum));
+  if (maxVal === 0) return 100;
+
+  const difference = Math.abs(userNum - actualNum);
+
+  // Use the max value as the base for percentage calculation
+  // This handles cases where one value is 0 better
+  const percentDifference = (difference / maxVal) * 100;
 
   // Convert to 0-100 score (closer = higher score)
-  return Math.max(0, Math.round(100 - percentDifference))
+  // Cap at 100% difference to avoid negative scores
+  return Math.max(0, Math.round(100 - Math.min(percentDifference, 100)));
 }
 
 export const Summary: React.FC = () => {
-  const tastingState = useAtomValue(tastingAtom)
-  const wine = useAtomValue<Wine>(wineAtom)
+  const tastingState = useAtomValue(tastingAtom);
+  const wine = useAtomValue<Wine>(wineAtom);
 
-  const [showComparison, setShowComparison] = useState<boolean>(false)
-  const [scores, setScores] = useState(initState())
-  const [overallScore, setOverallScore] = useState(0)
-  const [isCalculating, setIsCalculating] = useState(true)
+  const [showComparison, setShowComparison] = useState<boolean>(false);
+  const [scores, setScores] = useState(initState());
+  const [overallScore, setOverallScore] = useState(0);
+  const [isCalculating, setIsCalculating] = useState(true);
 
-  const vmpFylde = wine!.content.characteristics.find((x) => x.name.toLocaleLowerCase() === "fylde")?.value
-  const vmpFriskhet = wine!.content.characteristics.find((x) => x.name.toLocaleLowerCase() === "friskhet")?.value
-  const vmpSnærp = wine!.content.characteristics.find((x) => x.name.toLocaleLowerCase() === "garvestoffer")?.value
-  const vmpSødme = wine!.content.characteristics.find((x) => x.name.toLocaleLowerCase() === "sødme")?.value
+  const vmpFylde = wine?.content?.characteristics?.find(x => x.name.toLocaleLowerCase() === 'fylde')?.value || '0';
+  const vmpFriskhet =
+    wine?.content?.characteristics?.find(x => x.name.toLocaleLowerCase() === 'friskhet')?.value || '0';
+  const vmpSnærp =
+    wine?.content?.characteristics?.find(x => x.name.toLocaleLowerCase() === 'garvestoffer')?.value || '0';
+  const vmpSødme = wine?.content?.characteristics?.find(x => x.name.toLocaleLowerCase() === 'sødme')?.value || '0';
 
   useEffect(() => {
     async function calculateScores() {
-      setIsCalculating(true)
+      setIsCalculating(true);
+      debugger;
       try {
+        console.log('[v0] Starting score calculation...');
+        console.log('[v0] Wine data:', {
+          color: wine?.color,
+          smell: wine?.smell,
+          taste: wine?.taste,
+          price: wine?.price?.value,
+          traits: wine?.content?.traits?.[0]?.readableValue
+        });
+        console.log('[v0] User data:', {
+          farge: tastingState.farge,
+          lukt: tastingState.selectedFlavorsLukt.map(x => x.flavor.name),
+          smak: tastingState.selectedFlavorsSmak.map(x => x.flavor.name),
+          friskhet: tastingState.friskhet,
+          fylde: tastingState.fylde,
+          snærp: tastingState.snaerp,
+          sødme: tastingState.sodme
+        });
+        console.log('[v0] VMP characteristics:', { vmpFylde, vmpFriskhet, vmpSnærp, vmpSødme });
+
         // Calculate color score
         const colorScore =
-          tastingState.farge.length > 0 && wine.color && wine.color.length > 0
+          tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
             ? await semanticSimilarity(tastingState.farge, wine.color!)
-            : 0 // Default to 0 if sommelier has no color data
+            : 0;
+        console.log('[v0] Color score:', colorScore);
 
         // Calculate smell score
-        const smellScore = await semanticSimilarity(
-          `${tastingState.selectedFlavorsLukt.map((x) => x.flavor.name).join(", ")} ${tastingState.lukt}`,
-          wine.smell!,
-        )
+        const userSmellText = `${tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')} ${
+          tastingState.lukt
+        }`;
+        const smellScore = wine?.smell ? await semanticSimilarity(userSmellText, wine.smell!) : 0;
+        console.log('[v0] Smell score:', smellScore, 'userSmell:', userSmellText, 'wineSmell:', wine?.smell);
 
         // Calculate taste score
-        const tasteScore = await semanticSimilarity(
-          `${tastingState.selectedFlavorsSmak.map((x) => x.flavor.name).join(", ")} ${tastingState.smak}`,
-          wine.taste!,
-        )
+        const userTasteText = `${tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')} ${
+          tastingState.smak
+        }`;
+        const tasteScore = wine?.taste ? await semanticSimilarity(userTasteText, wine.taste!) : 0;
+        console.log('[v0] Taste score:', tasteScore, 'userTaste:', userTasteText, 'wineTaste:', wine?.taste);
 
-        // Calculate alcohol % score (numeric comparison)
         const prosentScore = calculateNumericSimilarity(
           tastingState.alkohol,
-          wine?.content.traits[0].readableValue || "0",
-        )
+          wine?.content?.traits?.[0]?.readableValue || '0'
+        );
+        console.log('[v0] Prosent score:', prosentScore);
 
-        // Calculate price score (numeric comparison)
-        const priceScore = calculateNumericSimilarity(tastingState.pris.toString()!, wine.price.value!.toString())
+        const priceScore = calculateNumericSimilarity(tastingState.pris?.toString(), wine?.price?.value?.toString());
+        console.log('[v0] Price score:', priceScore);
 
-        const snærpScore =
-          wine!.main_category?.code === "rødvin"
-            ? calculateNumericSimilarity(tastingState.snærp.toString(), vmpSnærp.toString())
-            : 0
-        const sødmeScore =
-          wine!.main_category?.code !== "rødvin"
-            ? calculateNumericSimilarity(tastingState.sødme.toString()!, vmpSødme.toString())
-            : 0
-        const fyldeScore = calculateNumericSimilarity(tastingState.fylde.toString()!, vmpFylde.toString())
-        const friskhetScore = calculateNumericSimilarity(tastingState.friskhet.toString()!, vmpFriskhet.toString())
+        const snærpScore = calculateNumericSimilarity(tastingState.snaerp, vmpSnærp);
+        console.log('[v0] Snærp score:', snærpScore);
+
+        const sødmeScore = calculateNumericSimilarity(tastingState.sodme, vmpSødme);
+        console.log('[v0] Sødme score:', sødmeScore);
+
+        const fyldeScore = calculateNumericSimilarity(tastingState.fylde, vmpFylde);
+        console.log('[v0] Fylde score:', fyldeScore);
+
+        const friskhetScore = calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet);
+        console.log('[v0] Friskhet score:', friskhetScore);
 
         const newScores = {
           farge: colorScore,
           lukt: smellScore,
           smak: tasteScore,
-          alkoholProsent: prosentScore,
-          pris: priceScore,
+          friskhet: friskhetScore,
+          fylde: fyldeScore,
           snærp: snærpScore,
           sødme: sødmeScore,
-          fylde: fyldeScore,
-          friskhet: friskhetScore,
-        }
+          alkoholProsent: prosentScore,
+          pris: priceScore
+        };
 
-        setScores(newScores)
-        const halfWeightProps = ["pris", "alkoholProsent"]
+        console.log('[v0] All scores:', newScores);
+        setScores(newScores);
+        const halfWeightProps = ['pris', 'alkoholProsent'];
 
         const { total, weightSum } = Object.entries(newScores).reduce(
           (acc, [key, value]) => {
-            const weight = halfWeightProps.includes(key) ? 0.2 : 1
+            const weight = halfWeightProps.includes(key) ? 0.2 : 1;
             return {
               total: acc.total + value * weight,
-              weightSum: acc.weightSum + weight,
-            }
+              weightSum: acc.weightSum + weight
+            };
           },
-          { total: 0, weightSum: 0 },
-        )
+          { total: 0, weightSum: 0 }
+        );
 
-        const averageScore = Math.round(total / weightSum)
+        const averageScore = Math.round(total / weightSum);
 
-        setOverallScore(averageScore)
+        setOverallScore(averageScore);
       } catch (error) {
-        console.log(JSON.stringify(error))
-        setScores(initState())
-        setOverallScore(0)
+        console.log(JSON.stringify(error));
+        setScores(initState());
+        setOverallScore(0);
       } finally {
-        setIsCalculating(false)
+        setIsCalculating(false);
       }
     }
 
-    calculateScores()
+    calculateScores();
   }, [
     tastingState.farge,
     tastingState.alkohol,
@@ -129,21 +175,19 @@ export const Summary: React.FC = () => {
     tastingState.selectedFlavorsSmak,
     tastingState.smak,
     tastingState.pris,
-    tastingState.snærp,
-    tastingState.sødme,
+    tastingState.snaerp,
+    tastingState.sodme,
     tastingState.fylde,
     tastingState.friskhet,
     wine,
     vmpSnærp,
     vmpSødme,
     vmpFylde,
-    vmpFriskhet,
-  ]) // Run once on mount
+    vmpFriskhet
+  ]);
 
-  // const userLuktWords = tastingState.selectedFlavorsLukt.map(x => x.flavor.name.toLowerCase());
-  // const userSmakWords = tastingState.selectedFlavorsSmak.map(x => x.flavor.name.toLowerCase());
-  const vmpLuktWords = wine.smell?.toLowerCase().split(/[\s,]+/) || []
-  const vmpSmakWords = wine.taste?.toLowerCase().split(/[\s,]+/) || []
+  const vmpLuktWords = wine.smell?.toLowerCase().split(/[\s,]+/) || [];
+  const vmpSmakWords = wine.taste?.toLowerCase().split(/[\s,]+/) || [];
 
   if (isCalculating)
     return (
@@ -151,7 +195,7 @@ export const Summary: React.FC = () => {
         <div className={styles.spinner} />
         <p className={styles.loadingText}>Beregner din smaksscore...</p>
       </div>
-    )
+    );
 
   return (
     <div className={styles.summaryContainer}>
@@ -173,7 +217,9 @@ export const Summary: React.FC = () => {
               <div className={styles.summaryValue}>
                 <div className={styles.flavorPills}>
                   {tastingState.selectedFlavorsLukt.map((x, i) => (
-                    <span key={i} className={styles.flavorPill}>
+                    <span
+                      key={i}
+                      className={styles.flavorPill}>
                       {x.flavor.name}
                     </span>
                   ))}
@@ -187,7 +233,9 @@ export const Summary: React.FC = () => {
               <div className={styles.summaryValue}>
                 <div className={styles.flavorPills}>
                   {tastingState.selectedFlavorsSmak.map((x, i) => (
-                    <span key={i} className={styles.flavorPill}>
+                    <span
+                      key={i}
+                      className={styles.flavorPill}>
                       {x.flavor.name}
                     </span>
                   ))}
@@ -206,19 +254,15 @@ export const Summary: React.FC = () => {
               <div className={styles.summaryValue}>{tastingState.fylde}</div>
             </div>
 
-            {wine!.main_category?.code !== "rødvin" && (
-              <div className={styles.summaryRow}>
-                <div className={styles.summaryLabel}>Sødme</div>
-                <div className={styles.summaryValue}>{tastingState.sødme}</div>
-              </div>
-            )}
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Snærp</div>
+              <div className={styles.summaryValue}>{tastingState.snaerp || '-'}</div>
+            </div>
 
-            {wine!.main_category?.code === "rødvin" && (
-              <div className={styles.summaryRow}>
-                <div className={styles.summaryLabel}>Snærp</div>
-                <div className={styles.summaryValue}>{tastingState.snærp}</div>
-              </div>
-            )}
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Sødme</div>
+              <div className={styles.summaryValue}>{tastingState.sodme || '-'}</div>
+            </div>
 
             <div className={styles.summaryRow}>
               <div className={styles.summaryLabel}>Karakter</div>
@@ -244,7 +288,9 @@ export const Summary: React.FC = () => {
           </div>
 
           <div className={styles.comparisonToggle}>
-            <button className={styles.revealButton} onClick={() => setShowComparison(true)}>
+            <button
+              className={styles.revealButton}
+              onClick={() => setShowComparison(true)}>
               Sammenlign med eksperten
             </button>
           </div>
@@ -279,8 +325,13 @@ export const Summary: React.FC = () => {
                   {tastingState.selectedFlavorsLukt.map((x, i) => (
                     <span
                       key={i}
-                      className={`${styles.flavorPill} ${vmpLuktWords.some((w) => w.includes(x.flavor.name.toLowerCase()) || x.flavor.name.toLowerCase().includes(w)) ? styles.matched : ""}`}
-                    >
+                      className={`${styles.flavorPill} ${
+                        vmpLuktWords.some(
+                          w => w.includes(x.flavor.name.toLowerCase()) || x.flavor.name.toLowerCase().includes(w)
+                        )
+                          ? styles.matched
+                          : ''
+                      }`}>
                       {x.flavor.name}
                     </span>
                   ))}
@@ -298,8 +349,13 @@ export const Summary: React.FC = () => {
                   {tastingState.selectedFlavorsSmak.map((x, i) => (
                     <span
                       key={i}
-                      className={`${styles.flavorPill} ${vmpSmakWords.some((w) => w.includes(x.flavor.name.toLowerCase()) || x.flavor.name.toLowerCase().includes(w)) ? styles.matched : ""}`}
-                    >
+                      className={`${styles.flavorPill} ${
+                        vmpSmakWords.some(
+                          w => w.includes(x.flavor.name.toLowerCase()) || x.flavor.name.toLowerCase().includes(w)
+                        )
+                          ? styles.matched
+                          : ''
+                      }`}>
                       {x.flavor.name}
                     </span>
                   ))}
@@ -324,73 +380,56 @@ export const Summary: React.FC = () => {
               <div className={styles.scoreValue}>{scores.fylde}%</div>
             </div>
 
-            {wine!.main_category?.code === "rødvin" && (
-              <div className={styles.tableRow}>
-                <div className={styles.attributeName}>Snærp</div>
-                <div className={styles.attributeValue}>{tastingState.snærp}</div>
-                <div className={styles.attributeValue}>{vmpSnærp}</div>
-                <div className={styles.scoreValue}>{scores.snærp}%</div>
-              </div>
-            )}
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Snærp</div>
+              <div className={styles.attributeValue}>{tastingState.snaerp || '-'}</div>
+              <div className={styles.attributeValue}>{vmpSnærp || '-'}</div>
+              <div className={styles.scoreValue}>{scores.snærp}%</div>
+            </div>
 
-            {wine!.main_category?.code !== "rødvin" && (
-              <div className={styles.tableRow}>
-                <div className={styles.attributeName}>Sødme</div>
-                <div className={styles.attributeValue}>{tastingState.sødme}</div>
-                <div className={styles.attributeValue}>{vmpSødme}</div>
-                <div className={styles.scoreValue}>{scores.sødme}%</div>
-              </div>
-            )}
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Sødme</div>
+              <div className={styles.attributeValue}>{tastingState.sodme || '-'}</div>
+              <div className={styles.attributeValue}>{vmpSødme || '-'}</div>
+              <div className={styles.scoreValue}>{scores.sødme}%</div>
+            </div>
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Karakter</div>
+              <div className={styles.attributeValue}>{tastingState.karakter}</div>
+              <div className={styles.attributeValue}>-</div>
+              <div className={styles.scoreValue}>-</div>
+            </div>
 
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Alkohol</div>
               <div className={styles.attributeValue}>{tastingState.alkohol}%</div>
-              <div className={styles.attributeValue}>{wine?.content.traits[0].readableValue}</div>
+              <div className={styles.attributeValue}>{wine?.content?.traits?.[0]?.readableValue}</div>
               <div className={styles.scoreValue}>{scores.alkoholProsent}%</div>
             </div>
 
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Pris</div>
               <div className={styles.attributeValue}>{tastingState.pris} kr</div>
-              <div className={styles.attributeValue}>{wine?.price.value} kr</div>
+              <div className={styles.attributeValue}>{wine?.price?.value} kr</div>
               <div className={styles.scoreValue}>{scores.pris}%</div>
             </div>
           </div>
 
           <div className={styles.comparisonToggle}>
-            <button className={styles.reviewButton} onClick={() => setShowComparison(false)}>
+            <button
+              className={styles.reviewButton}
+              onClick={() => setShowComparison(false)}>
               Gjennomgå notatene mine
             </button>
           </div>
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-function initState():
-  | {
-      farge: number
-      lukt: number
-      smak: number
-      friskhet: number
-      fylde: number
-      snærp: number
-      sødme: number
-      alkoholProsent: number
-      pris: number
-    }
-  | (() => {
-      farge: number
-      lukt: number
-      smak: number
-      friskhet: number
-      fylde: number
-      snærp: number
-      sødme: number
-      alkoholProsent: number
-      pris: number
-    }) {
+function initState() {
   return {
     farge: 0,
     lukt: 0,
@@ -400,6 +439,6 @@ function initState():
     snærp: 0,
     sødme: 0,
     alkoholProsent: 0,
-    pris: 0,
-  }
+    pris: 0
+  };
 }

@@ -42,8 +42,10 @@
 .tab {
   padding: 0.75rem 1.25rem;
   border: none;
-  background: transparent;
-  color: var(--text-secondary);
+  /* Improved contrast - use white background with border for inactive tabs */
+  background: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
   font-weight: 500;
   font-size: 0.9375rem;
   border-radius: 0.5rem;
@@ -53,18 +55,23 @@
 }
 
 .tab:hover {
-  background: var(--gray-100);
-  color: var(--text-primary);
+  /* Darker hover state for better visibility */
+  background: #f3f4f6;
+  color: #111827;
+  border-color: #9ca3af;
 }
 
+/* Fix active tab contrast - use explicit dark background color */
 .tabActive {
-  background: var(--accent);
+  background: #1f2937;
   color: white;
+  border-color: #1f2937;
 }
 
 .tabActive:hover {
-  background: var(--accent-hover);
+  background: #111827;
   color: white;
+  border-color: #111827;
 }
 
 /* Overview Tab */
@@ -552,19 +559,36 @@
   background: var(--gray-50);
 }
 
-.historyDetailGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+/* Replace grid with column layout for better readability */
+.historyDetailColumn {
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
 }
 
-.historyDetailGrid p {
+.historyDetailColumn p {
   margin: 0;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.historyDetailColumn strong {
+  color: var(--text-secondary);
+  font-weight: 600;
+  min-width: 80px;
+  display: inline-block;
+}
+
+.historyScoreRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   font-size: 0.9375rem;
   color: var(--text-primary);
 }
 
-.historyDetailGrid strong {
+.historyScoreRow strong {
   color: var(--text-secondary);
 }
 

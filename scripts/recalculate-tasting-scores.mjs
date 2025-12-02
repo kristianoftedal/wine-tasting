@@ -1,215 +1,166 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Check for required environment variables
-const requiredEnvVars = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY']
-const missingEnvVars = requiredEnvVars.filter((varName) => !process.env[varName])
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-if (missingEnvVars.length > 0) {
-  console.error('Missing required environment variables:')
-  missingEnvVars.forEach((varName) => console.error(`- ${varName}`))
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Missing required environment variables')
   process.exit(1)
 }
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+const supabase = createClient(supabaseUrl, supabaseKey)
 
-// Semantic similarity calculation (simplified - using keyword matching as proxy)
-function calculateSemanticSimilarity(userText, expertText) {
-  if (!userText || !expertText) return 0
-  
-  const userWords = userText.toLowerCase().split(/[\s,]+/).filter(w => w.length > 2)
-  const expertWords = expertText.toLowerCase().split(/[\s,]+/).filter(w => w.length > 2)
-  
-  if (userWords.length === 0 || expertWords.length === 0) return 0
-  
-  let matches = 0
-  for (const userWord of userWords) {
-    if (expertWords.some(expertWord => 
-      expertWord.includes(userWord) || userWord.includes(expertWord)
-    )) {
-      matches++
+const BATCH_SIZE = 500
+
+function generateSearchText(wine) {
+  const parts = [
+    wine.name,
+    wine.description || '',
+    wine.summary || '',
+    wine.color || '',
+    wine.smell || '',
+    wine.taste || '',
+    wine.main_category?.name || '',
+    wine.main_country?.name || '',
+    wine.main_producer?.name || '',
+    wine.district?.name || '',
+    wine.sub_district?.name || ''
+  ]
+
+  // Add ingredients (grape varieties)
+  if (wine.content?.ingredients) {
+    for (const ingredient of wine.content.ingredients) {
+      parts.push(ingredient.readableValue || '')
     }
   }
-  
-  return Math.round((matches / Math.max(userWords.length, expertWords.length)) * 100)
-}
 
-// Numeric similarity calculation
-function calculateNumericSimilarity(userValue, actualValue) {
-  const normalizeNumber = (str) => {
-    if (typeof str === 'number') return str
-    const cleaned = String(str).replace(/[^\d.,]/g, '').replace('prosent', '')
-    return parseFloat(cleaned.replace(',', '.'))
+  // Add food pairings
+  if (wine.content?.isGoodFor) {
+    for (const goodFor of wine.content.isGoodFor) {
+      parts.push(goodFor.name || '')
+    }
   }
-  
-  const userNum = normalizeNumber(userValue)
-  const actualNum = normalizeNumber(actualValue)
 
-  if (isNaN(userNum) || isNaN(actualNum)) return 0
+  // Add traits
+  if (wine.content?.traits) {
+    for (const trait of wine.content.traits) {
+      parts.push(trait.readableValue || '')
+    }
+  }
 
-  const difference = Math.abs(userNum - actualNum)
-  const average = (userNum + actualNum) / 2
-  const percentDifference = (difference / average) * 100
+  // Add style description
+  if (wine.content?.style?.description) {
+    parts.push(wine.content.style.description)
+  }
 
-  return Math.max(0, Math.round(100 - percentDifference))
+  return parts.filter(Boolean).join(' ').trim()
 }
 
-async function recalculateTastingScores() {
-  console.log('Starting tasting score recalculation...\n')
+async function generateEmbedding(text, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await fetch('http://localhost:3000/api/embeddings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      })
 
-  // Fetch all tastings
-  const { data: tastings, error: tastingsError } = await supabase
-    .from('tastings')
-    .select('*')
-    .order('created_at', { ascending: true })
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(`Failed to generate embedding: ${response.statusText} - ${errorData.message || ''}`)
+      }
 
-  if (tastingsError) {
-    console.error('Error fetching tastings:', tastingsError)
+      const { embedding } = await response.json()
+      return embedding
+    } catch (error) {
+      console.error(`Attempt ${attempt}/${maxRetries} failed for embedding:`, error.message)
+      if (attempt === maxRetries) throw error
+      // Exponential backoff: 2s, 4s, 8s
+      const waitTime = Math.pow(2, attempt) * 1000
+      console.log(`Waiting ${waitTime / 1000}s before retry...`)
+      await new Promise(resolve => setTimeout(resolve, waitTime))
+    }
+  }
+  throw new Error('Max retries exceeded')
+}
+
+async function processWines() {
+  console.log('Fetching wines from database...')
+
+  const { data: wines, error, count } = await supabase
+    .from('wines')
+    .select('id, product_id, name, description, summary, color, smell, taste, main_category, main_country, main_producer, district, sub_district, content, search_text', { count: 'exact' })
+    .is('embedding', null)
+    .limit(BATCH_SIZE)
+
+  if (error) {
+    console.error('Error fetching wines:', error)
     return
   }
 
-  console.log(`Found ${tastings.length} tastings to process\n`)
+  if (!wines || wines.length === 0) {
+    console.log('No wines to process!')
+    return
+  }
 
-  let updated = 0
-  let skipped = 0
+  console.log(`Processing ${wines.length} wines (${count} total remaining)...`)
+
+  let processed = 0
   let errors = 0
 
-  for (let i = 0; i < tastings.length; i++) {
-    const tasting = tastings[i]
-    
-    if (i % 100 === 0 && i > 0) {
-      console.log(`Progress: ${i}/${tastings.length} (${updated} updated, ${skipped} skipped, ${errors} errors)`)
-    }
-
+  for (const wine of wines) {
     try {
-      // Fetch the wine data for this tasting
-      const { data: wine, error: wineError } = await supabase
-        .from('wines')
-        .select('*')
-        .eq('product_id', tasting.product_id)
-        .single()
-
-      if (wineError || !wine) {
-        skipped++
-        continue
+      let searchText = wine.search_text
+      if (!searchText) {
+        searchText = generateSearchText(wine)
+        if (!searchText || searchText.length < 5) {
+          console.log(`Skipping ${wine.name} (no usable data)`)
+          continue
+        }
       }
 
-      const colorScore = tasting.farge && wine.color
-        ? calculateSemanticSimilarity(tasting.farge, wine.color)
-        : 0
-
-      const smellScore = calculateSemanticSimilarity(
-        `${tasting.smell || ''} ${tasting.lukt || ''}`,
-        wine.smell || ''
-      )
-
-      const tasteScore = calculateSemanticSimilarity(
-        `${tasting.taste || ''} ${tasting.smak || ''}`,
-        wine.taste || ''
-      )
-
-      // Get wine characteristics
-      const characteristics = wine.content?.characteristics || []
-      const vmpFylde = characteristics.find(x => x.name?.toLowerCase() === 'fylde')?.value
-      const vmpFriskhet = characteristics.find(x => x.name?.toLowerCase() === 'friskhet')?.value
-      const vmpSnaerp = characteristics.find(x => x.name?.toLowerCase() === 'garvestoffer')?.value
-      const vmpSodme = characteristics.find(x => x.name?.toLowerCase() === 'sødme')?.value
-
-      const percentageScore = tasting.alkohol && wine.content?.traits?.[0]?.readableValue
-        ? calculateNumericSimilarity(tasting.alkohol, wine.content.traits[0].readableValue)
-        : 0
-
-      const priceScore = tasting.pris && wine.price?.value
-        ? calculateNumericSimilarity(tasting.pris, wine.price.value)
-        : 0
-
-      const snaerpScore = wine.main_category?.code === 'rødvin' && tasting.snaerp && vmpSnaerp
-        ? calculateNumericSimilarity(tasting.snaerp, vmpSnaerp)
-        : 0
-
-      const sodmeScore = wine.main_category?.code !== 'rødvin' && tasting.sodme && vmpSodme
-        ? calculateNumericSimilarity(tasting.sodme, vmpSodme)
-        : 0
-
-      const fyldeScore = tasting.fylde && vmpFylde
-        ? calculateNumericSimilarity(tasting.fylde, vmpFylde)
-        : 0
-
-      const friskhetScore = tasting.friskhet && vmpFriskhet
-        ? calculateNumericSimilarity(tasting.friskhet, vmpFriskhet)
-        : 0
-
-      // Calculate overall score
-      const scores = {
-        color: colorScore,
-        smell: smellScore,
-        taste: tasteScore,
-        friskhet: friskhetScore,
-        fylde: fyldeScore,
-        snaerp: snaerpScore,
-        sodme: sodmeScore,
-        percentage: percentageScore,
-        price: priceScore
-      }
-
-      const halfWeightProps = ['price', 'percentage']
-      
-      const { total, weightSum } = Object.entries(scores).reduce(
-        (acc, [key, value]) => {
-          const weight = halfWeightProps.includes(key) ? 0.2 : 1
-          return {
-            total: acc.total + value * weight,
-            weightSum: acc.weightSum + weight
-          }
-        },
-        { total: 0, weightSum: 0 }
-      )
-
-      const overallScore = Math.round(total / weightSum)
-
-      let transformedKarakter = tasting.karakter
-      if (transformedKarakter && transformedKarakter <= 6) {
-        transformedKarakter = Math.round(((transformedKarakter - 1) * 9 / 5) + 1)
-      }
+      const embedding = await generateEmbedding(searchText)
 
       const { error: updateError } = await supabase
-        .from('tastings')
+        .from('wines')
         .update({
-          color_score: colorScore,
-          smell_score: smellScore,
-          taste_score: tasteScore,
-          fylde_score: fyldeScore,
-          friskhet_score: friskhetScore,
-          sodme_score: sodmeScore,
-          snaerp_score: snaerpScore,
-          percentage_score: percentageScore,
-          price_score: priceScore,
-          overall_score: overallScore,
-          karakter: transformedKarakter
+          search_text: searchText,
+          embedding
         })
-        .eq('id', tasting.id)
+        .eq('id', wine.id)
 
       if (updateError) {
-        console.error(`Error updating tasting ${tasting.id}:`, updateError.message)
+        console.error(`Error updating wine ${wine.name}:`, updateError)
         errors++
       } else {
-        updated++
+        processed++
+        if (processed % 50 === 0 || processed === wines.length) {
+          console.log(`✓ ${processed}/${wines.length} wines processed`)
+        }
       }
 
-      // Small delay to avoid rate limiting
-      if (i % 10 === 0) {
-        await new Promise(resolve => setTimeout(resolve, 100))
-      }
-
+      await new Promise(resolve => setTimeout(resolve, 100))
     } catch (error) {
-      console.error(`Error processing tasting ${tasting.id}:`, error.message)
+      console.error(`Error processing wine ${wine.name}:`, error.message)
       errors++
+      await new Promise(resolve => setTimeout(resolve, 2000))
     }
   }
 
-  console.log(`\n✅ Recalculation complete!`)
-  console.log(`Updated: ${updated}`)
-  console.log(`Skipped: ${skipped}`)
-  console.log(`Errors: ${errors}`)
+  console.log(`\nComplete! Processed: ${processed}, Errors: ${errors}`)
+
+  const { count: remainingCount } = await supabase
+    .from('wines')
+    .select('id', { count: 'exact', head: true })
+    .is('embedding', null)
+
+  if (remainingCount > 0) {
+    console.log(`\n${remainingCount} wines remaining. Run this script again to continue.`)
+  } else {
+    console.log('\nAll wines have embeddings!')
+  }
 }
 
-recalculateTastingScores()
+processWines()
