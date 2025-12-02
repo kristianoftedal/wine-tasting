@@ -1,6 +1,6 @@
-import { clsx, type ClassValue } from "clsx"
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
-// <CHANGE> Removed tailwind-merge, now using clsx only
 export function cn(...inputs: ClassValue[]) {
-  return clsx(inputs)
+  return twMerge(clsx(inputs))
 }
