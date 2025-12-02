@@ -4,4 +4,4 @@ node_modules
 # contentlayer
 .contentlayer
 
-Wines.WinesDetailed.json
+scripts/wines.json
