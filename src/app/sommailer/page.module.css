@@ -1,34 +1,21 @@
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  /* Adjust height to account for AppBar */
+  min-height: calc(100vh - 60px);
   max-width: 1200px;
   margin: 0 auto;
   background: linear-gradient(to bottom, #fafafa, #ffffff);
 }
 
 .header {
-  background: linear-gradient(135deg, #6b1b4d 0%, #8b2c5f 100%);
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
   color: white;
   padding: 1.5rem 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.backButton {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  margin-bottom: 1rem;
-  transition: all 0.2s;
-}
-
-.backButton:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
+/* Remove backButton styles since AppBar handles navigation */
 
 .headerContent {
   display: flex;
@@ -73,7 +60,7 @@
 }
 
 .welcomeMessage h2 {
-  color: #6b1b4d;
+  color: #8b5cf6;
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
 }
@@ -96,7 +83,7 @@
 }
 
 .welcomeMessage li::before {
-  content: "🍇 ";
+  content: '🍇 ';
   margin-right: 0.5rem;
 }
 
@@ -104,6 +91,22 @@
   font-style: italic;
   color: #888;
   margin-top: 1.5rem !important;
+}
+
+/* Added error message styling */
+.errorMessage {
+  max-width: 600px;
+  margin: 1rem auto;
+  padding: 1rem 1.5rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  color: #dc2626;
+  text-align: center;
+}
+
+.errorMessage p {
+  margin: 0;
 }
 
 .message {
@@ -127,7 +130,7 @@
 }
 
 .userMessage .messageContent {
-  background: linear-gradient(135deg, #6b1b4d 0%, #8b2c5f 100%);
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
   color: white;
   border-bottom-right-radius: 4px;
 }
@@ -141,8 +144,78 @@
 
 .messageText {
   line-height: 1.6;
-  white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+/* Add markdown styling for assistant messages */
+.messageText h1,
+.messageText h2,
+.messageText h3 {
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 600;
+  color: #8b5cf6;
+}
+
+.messageText h1 {
+  font-size: 1.25rem;
+}
+
+.messageText h2 {
+  font-size: 1.125rem;
+}
+
+.messageText h3 {
+  font-size: 1rem;
+}
+
+.messageText p {
+  margin: 0.5rem 0;
+}
+
+.messageText ul,
+.messageText ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.messageText li {
+  margin: 0.25rem 0;
+}
+
+.messageText a {
+  color: #8b5cf6;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.messageText a:hover {
+  color: #7c3aed;
+}
+
+.messageText strong {
+  font-weight: 600;
+  color: #333;
+}
+
+.messageText code {
+  background: #f3f4f6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.875em;
+}
+
+.messageText blockquote {
+  border-left: 3px solid #8b5cf6;
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  color: #666;
+  font-style: italic;
+}
+
+.messageText hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 1rem 0;
 }
 
 .typing {
@@ -200,8 +273,8 @@
 }
 
 .input:focus {
-  border-color: #6b1b4d;
-  box-shadow: 0 0 0 3px rgba(107, 27, 77, 0.1);
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
 .input:disabled {
@@ -211,7 +284,7 @@
 
 .sendButton {
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #6b1b4d 0%, #8b2c5f 100%);
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -219,12 +292,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(107, 27, 77, 0.3);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
 }
 
 .sendButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(107, 27, 77, 0.4);
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
 }
 
 .sendButton:disabled {
