@@ -40,6 +40,8 @@
     "url": "0.11.4"
   },
   "devDependencies": {
+    "@swc-jotai/debug-label": "^0.4.0",
+    "@swc-jotai/react-refresh": "^0.4.0",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
