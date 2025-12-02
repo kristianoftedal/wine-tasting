@@ -18,6 +18,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 // Helper function to get value from either camelCase or PascalCase
 function getField(obj, fieldName) {
+  if (!obj) return undefined
   // Try camelCase first (e.g., 'code')
   if (obj[fieldName] !== undefined) {
     return obj[fieldName]
@@ -25,6 +26,32 @@ function getField(obj, fieldName) {
   // Try PascalCase (e.g., 'Code')
   const pascalCase = fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
   return obj[pascalCase]
+}
+
+function normalizeToCamelCase(obj) {
+  if (!obj || typeof obj !== 'object') return obj
+  if (Array.isArray(obj)) {
+    return obj.map(normalizeToCamelCase)
+  }
+  
+  const normalized = {}
+  for (const key of Object.keys(obj)) {
+    // Convert first character to lowercase for camelCase
+    const camelKey = key.charAt(0).toLowerCase() + key.slice(1)
+    const value = obj[key]
+    
+    // Recursively normalize nested objects
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      normalized[camelKey] = normalizeToCamelCase(value)
+    } else if (Array.isArray(value)) {
+      normalized[camelKey] = value.map(item => 
+        typeof item === 'object' ? normalizeToCamelCase(item) : item
+      )
+    } else {
+      normalized[camelKey] = value
+    }
+  }
+  return normalized
 }
 
 // Read JSON file
@@ -40,7 +67,7 @@ function transformWine(wine) {
   if (!code) {
     return null
   }
-
+  
   return {
     product_id: code,
     name: getField(wine, 'name'),
@@ -48,40 +75,16 @@ function transformWine(wine) {
     summary: getField(wine, 'summary') || null,
     url: getField(wine, 'url') || null,
     year: getField(wine, 'year') || null,
-
-    // JSONB fields - store as objects
-    price: (() => {
-      const price = getField(wine, 'price')
-      return price ? {
-        value: price.value || price.Value,
-        formattedValue: price.formattedValue || price.FormattedValue,
-        readableValue: price.readableValue || price.ReadableValue
-      } : null
-    })(),
-
-    volume: (() => {
-      const volume = getField(wine, 'volume')
-      return volume ? {
-        value: volume.value || volume.Value,
-        formattedValue: volume.formattedValue || volume.FormattedValue,
-        readableValue: volume.readableValue || volume.ReadableValue
-      } : null
-    })(),
-
-    litre_price: (() => {
-      const litrePrice = getField(wine, 'litrePrice')
-      return litrePrice ? {
-        value: litrePrice.value || litrePrice.Value,
-        formattedValue: litrePrice.formattedValue || litrePrice.FormattedValue,
-        readableValue: litrePrice.readableValue || litrePrice.ReadableValue
-      } : null
-    })(),
-
+    
+    price: normalizeToCamelCase(getField(wine, 'price')),
+    volume: normalizeToCamelCase(getField(wine, 'volume')),
+    litre_price: normalizeToCamelCase(getField(wine, 'litrePrice')),
+    
     // Tasting notes
     color: getField(wine, 'color') || null,
     smell: getField(wine, 'smell') || null,
     taste: getField(wine, 'taste') || null,
-
+    
     // Product attributes
     age_limit: getField(wine, 'ageLimit') || null,
     allergens: getField(wine, 'allergens') || null,
@@ -100,74 +103,103 @@ function transformWine(wine) {
     status: getField(wine, 'status') || null,
     status_notification: getField(wine, 'statusNotification') || false,
     sustainable: getField(wine, 'sustainable') || false,
-
+    
     // Distributor info
     distributor: getField(wine, 'distributor') || null,
     distributor_id: getField(wine, 'distributorId') || null,
     whole_saler: getField(wine, 'wholeSaler') || null,
-
-    // Location JSONB objects
-    district: getField(wine, 'district') || null,
-    main_country: getField(wine, 'mainCountry') || null,
-    main_producer: getField(wine, 'mainProducer') || null,
-    sub_district: getField(wine, 'sub_District') || getField(wine, 'subDistrict') || null,
-
-    // Category
-    main_category: getField(wine, 'mainCategory') || null,
-
-    // Complex content object
-    content: getField(wine, 'content') || null
+    
+    district: normalizeToCamelCase(getField(wine, 'district')),
+    main_country: normalizeToCamelCase(getField(wine, 'mainCountry')),
+    main_producer: normalizeToCamelCase(getField(wine, 'mainProducer')),
+    sub_district: normalizeToCamelCase(getField(wine, 'sub_District') || getField(wine, 'subDistrict')),
+    
+    // Category - normalize to camelCase
+    main_category: normalizeToCamelCase(getField(wine, 'mainCategory')),
+    
+    // Complex content object - normalize to camelCase
+    content: normalizeToCamelCase(getField(wine, 'content'))
   }
 }
 
 async function importWines() {
   console.log('Reading wines from JSON file...')
   const wines = readJsonFile('wines.json')
-
+  
   console.log(`Found ${wines.length} wines to import`)
-
+  
+  console.log('Checking for existing wines in database...')
+  const { data: existingWines, error: checkError } = await supabase
+    .from('wines')
+    .select('product_id, year')
+  
+  if (checkError) {
+    console.error('Error checking existing wines:', checkError.message)
+    process.exit(1)
+  }
+  
+  const existingKeys = new Set(existingWines.map(w => `${w.product_id}_${w.year}`))
+  console.log(`Found ${existingKeys.size} unique product_id + year combinations in database`)
+  
   let imported = 0
   let skipped = 0
+  let alreadyExists = 0
   let errors = 0
-
+  
   const batchSize = 100
-
+  
   for (let i = 0; i < wines.length; i += batchSize) {
     const batch = wines.slice(i, i + batchSize)
+    
+    const seenKeysInBatch = new Set()
+    
     const transformedBatch = batch
       .map(transformWine)
       .filter(wine => wine !== null)
-
-    const skippedInBatch = batch.length - transformedBatch.length
-    skipped += skippedInBatch
-
-    if (skippedInBatch > 0) {
-      console.log(`⚠️  Skipped ${skippedInBatch} wines without product_id in batch ${i / batchSize + 1}`)
-    }
-
+      .filter(wine => {
+        const key = `${wine.product_id}_${wine.year}`
+        
+        if (existingKeys.has(key)) {
+          alreadyExists++
+          return false
+        }
+        
+        if (seenKeysInBatch.has(key)) {
+          skipped++
+          return false
+        }
+        
+        seenKeysInBatch.add(key)
+        
+        return true
+      })
+    
     if (transformedBatch.length === 0) {
+      console.log(`Batch ${i / batchSize + 1}: All wines already exist or are duplicates, skipping...`)
       continue
     }
-
+    
     const { data, error } = await supabase
       .from('wines')
-      .upsert(transformedBatch, {
-        onConflict: 'product_id',
-        ignoreDuplicates: false
-      })
-
+      .insert(transformedBatch)
+    
     if (error) {
       console.error(`Error importing batch ${i / batchSize + 1}:`, error.message)
       errors += transformedBatch.length
     } else {
       imported += transformedBatch.length
-      console.log(`Imported batch ${i / batchSize + 1}: ${imported}/${wines.length - skipped} wines`)
+      transformedBatch.forEach(wine => {
+        const key = `${wine.product_id}_${wine.year}`
+        existingKeys.add(key)
+      })
+      console.log(`Imported batch ${i / batchSize + 1}: ${imported} new wines (${alreadyExists} already existed, ${skipped} duplicates in file)`)
     }
   }
-
+  
   console.log('\n✅ Wine import complete!')
   console.log(`Imported: ${imported}`)
-  console.log(`Skipped: ${skipped} (missing product_id)`)
+  console.log(`Already existed: ${alreadyExists}`)
+  console.log(`Skipped: ${skipped} (duplicates in JSON file)`)
   console.log(`Errors: ${errors}`)
 }
 

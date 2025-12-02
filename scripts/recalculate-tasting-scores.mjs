@@ -70,75 +70,85 @@ async function recalculateTastingScores() {
   console.log(`Found ${tastings.length} tastings to process\n`)
 
   let updated = 0
-  let skipped = 0
+  let noWine = 0
   let errors = 0
 
   for (let i = 0; i < tastings.length; i++) {
     const tasting = tastings[i]
     
     if (i % 100 === 0 && i > 0) {
-      console.log(`Progress: ${i}/${tastings.length} (${updated} updated, ${skipped} skipped, ${errors} errors)`)
+      console.log(`Progress: ${i}/${tastings.length} (${updated} updated, ${noWine} no wine data, ${errors} errors)`)
     }
 
     try {
       // Fetch the wine data for this tasting
-      const { data: wine, error: wineError } = await supabase
+      const { data: wines, error: wineError } = await supabase
         .from('wines')
         .select('*')
         .eq('product_id', tasting.product_id)
-        .single()
+        .limit(1)
+
+      const wine = wines?.[0]
+
+      let colorScore = 0
+      let smellScore = 0
+      let tasteScore = 0
+      let fyldeScore = 0
+      let friskhetScore = 0
+      let snaerpScore = 0
+      let sodmeScore = 0
+      let percentageScore = 0
+      let priceScore = 0
 
       if (wineError || !wine) {
-        skipped++
-        continue
+        noWine++
+      } else {
+        colorScore = tasting.farge && wine.color
+          ? calculateSemanticSimilarity(tasting.farge, wine.color)
+          : 0
+
+        smellScore = calculateSemanticSimilarity(
+          `${tasting.smell || ''} ${tasting.lukt || ''}`,
+          wine.smell || ''
+        )
+
+        tasteScore = calculateSemanticSimilarity(
+          `${tasting.taste || ''} ${tasting.smak || ''}`,
+          wine.taste || ''
+        )
+
+        // Get wine characteristics
+        const characteristics = wine.content?.characteristics || []
+        const vmpFylde = characteristics.find(x => x.name?.toLowerCase() === 'fylde')?.value
+        const vmpFriskhet = characteristics.find(x => x.name?.toLowerCase() === 'friskhet')?.value
+        const vmpSnaerp = characteristics.find(x => x.name?.toLowerCase() === 'garvestoffer')?.value
+        const vmpSodme = characteristics.find(x => x.name?.toLowerCase() === 'sødme')?.value
+
+        percentageScore = tasting.alkohol && wine.content?.traits?.[0]?.readableValue
+          ? calculateNumericSimilarity(tasting.alkohol, wine.content.traits[0].readableValue)
+          : 0
+
+        priceScore = tasting.pris && wine.price?.value
+          ? calculateNumericSimilarity(tasting.pris, wine.price.value)
+          : 0
+
+        snaerpScore = tasting.snaerp && vmpSnaerp
+          ? calculateNumericSimilarity(tasting.snaerp, vmpSnaerp)
+          : 0
+
+        sodmeScore = tasting.sodme && vmpSodme
+          ? calculateNumericSimilarity(tasting.sodme, vmpSodme)
+          : 0
+
+        fyldeScore = tasting.fylde && vmpFylde
+          ? calculateNumericSimilarity(tasting.fylde, vmpFylde)
+          : 0
+
+        friskhetScore = tasting.friskhet && vmpFriskhet
+          ? calculateNumericSimilarity(tasting.friskhet, vmpFriskhet)
+          : 0
       }
 
-      const colorScore = tasting.farge && wine.color
-        ? calculateSemanticSimilarity(tasting.farge, wine.color)
-        : 0
-
-      const smellScore = calculateSemanticSimilarity(
-        `${tasting.smell || ''} ${tasting.lukt || ''}`,
-        wine.smell || ''
-      )
-
-      const tasteScore = calculateSemanticSimilarity(
-        `${tasting.taste || ''} ${tasting.smak || ''}`,
-        wine.taste || ''
-      )
-
-      // Get wine characteristics
-      const characteristics = wine.content?.characteristics || []
-      const vmpFylde = characteristics.find(x => x.name?.toLowerCase() === 'fylde')?.value
-      const vmpFriskhet = characteristics.find(x => x.name?.toLowerCase() === 'friskhet')?.value
-      const vmpSnaerp = characteristics.find(x => x.name?.toLowerCase() === 'garvestoffer')?.value
-      const vmpSodme = characteristics.find(x => x.name?.toLowerCase() === 'sødme')?.value
-
-      const percentageScore = tasting.alkohol && wine.content?.traits?.[0]?.readableValue
-        ? calculateNumericSimilarity(tasting.alkohol, wine.content.traits[0].readableValue)
-        : 0
-
-      const priceScore = tasting.pris && wine.price?.value
-        ? calculateNumericSimilarity(tasting.pris, wine.price.value)
-        : 0
-
-      const snaerpScore = wine.main_category?.code === 'rødvin' && tasting.snaerp && vmpSnaerp
-        ? calculateNumericSimilarity(tasting.snaerp, vmpSnaerp)
-        : 0
-
-      const sodmeScore = wine.main_category?.code !== 'rødvin' && tasting.sodme && vmpSodme
-        ? calculateNumericSimilarity(tasting.sodme, vmpSodme)
-        : 0
-
-      const fyldeScore = tasting.fylde && vmpFylde
-        ? calculateNumericSimilarity(tasting.fylde, vmpFylde)
-        : 0
-
-      const friskhetScore = tasting.friskhet && vmpFriskhet
-        ? calculateNumericSimilarity(tasting.friskhet, vmpFriskhet)
-        : 0
-
-      // Calculate overall score
       const scores = {
         color: colorScore,
         smell: smellScore,
@@ -155,6 +165,7 @@ async function recalculateTastingScores() {
       
       const { total, weightSum } = Object.entries(scores).reduce(
         (acc, [key, value]) => {
+          if (value === 0) return acc // Skip scores with 0 value
           const weight = halfWeightProps.includes(key) ? 0.2 : 1
           return {
             total: acc.total + value * weight,
@@ -164,7 +175,7 @@ async function recalculateTastingScores() {
         { total: 0, weightSum: 0 }
       )
 
-      const overallScore = Math.round(total / weightSum)
+      const overallScore = weightSum > 0 ? Math.round(total / weightSum) : 0
 
       let transformedKarakter = tasting.karakter
       if (transformedKarakter && transformedKarakter <= 6) {
@@ -208,7 +219,7 @@ async function recalculateTastingScores() {
 
   console.log(`\n✅ Recalculation complete!`)
   console.log(`Updated: ${updated}`)
-  console.log(`Skipped: ${skipped}`)
+  console.log(`No wine data: ${noWine}`)
   console.log(`Errors: ${errors}`)
 }
 
