@@ -52,7 +52,7 @@ export default function SommailerPage() {
         <div className={styles.headerContent}>
           <div className={styles.icon}>🍷</div>
           <div>
-            <h1 className={styles.title}>SommelAIer</h1>
+            <h1 className={styles.title}>SommelAier</h1>
             <p className={styles.subtitle}>Din personlige vin-assistent</p>
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function SommailerPage() {
       <div className={styles.chatContainer}>
         {messages.length === 0 && (
           <div className={styles.welcomeMessage}>
-            <h2>Velkommen til SommelAIer!</h2>
+            <h2>Velkommen til SommelAier!</h2>
             <p>Jeg kan hjelpe deg med:</p>
             <ul>
               <li>Vinparing til mat</li>

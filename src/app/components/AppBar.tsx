@@ -113,7 +113,7 @@ export default function AppBar() {
           <button
             onClick={() => router.push('/sommailer')}
             className={`${styles.button} ${styles.buttonOutline}`}>
-            SommelAIer
+            SommelAier
           </button>
           {authButtons()}
         </div>

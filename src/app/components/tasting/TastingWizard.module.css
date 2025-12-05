@@ -6,7 +6,7 @@
 }
 
 .header {
-  background: #000;
+  background: #8b5cf6;
   color: white;
   display: flex;
   align-items: center;
@@ -138,6 +138,14 @@
   text-align: center;
 }
 
+/* Add save prompt styling */
+.savePrompt {
+  font-size: 16px;
+  font-weight: 500;
+  color: #374151;
+  margin: 0 0 12px 0;
+}
+
 .saveButton {
   background: #8b5cf6;
   color: white;
@@ -148,7 +156,6 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 12px;
 }
 
 .saveButton:hover:not(:disabled) {
@@ -157,6 +164,81 @@
 }
 
 .saveButton:disabled {
-  opacity: 0.5;
+  opacity: 0.7;
   cursor: not-allowed;
+}
+
+/* Add saved confirmation styles */
+.savedConfirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.checkmarkCircle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.checkmark {
+  width: 32px;
+  height: 32px;
+  color: white;
+  animation: drawCheck 0.4s ease-out 0.2s both;
+}
+
+.savedText {
+  font-size: 20px;
+  font-weight: 600;
+  color: #8b5cf6;
+  margin: 0;
+  animation: fadeInUp 0.3s ease-out 0.3s both;
+}
+
+.savedSubtext {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  animation: fadeInUp 0.3s ease-out 0.4s both;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes drawCheck {
+  from {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

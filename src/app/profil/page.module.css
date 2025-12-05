@@ -558,43 +558,142 @@
   font-weight: 700;
 }
 
+/* Redesigned history details with column layout and lavender theme */
 .historyDetails {
-  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   border-top: 1px solid var(--border);
-  background: var(--gray-50);
+  background: white;
 }
 
-/* Replace grid with column layout for better readability */
-.historyDetailColumn {
+.historyNotesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 1rem 1.5rem;
+}
+
+.historyNoteItem {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.historyNoteItem:last-child {
+  border-bottom: none;
+}
+
+.historyNoteLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8b5cf6;
+  margin-bottom: 0.25rem;
+}
+
+.historyNoteValue {
+  font-size: 0.9375rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+/* Scores section with lavender bars */
+.historyScoresSection {
+  background: linear-gradient(to right, #ede9fe, #ddd6fe);
+  padding: 1.25rem 1.5rem;
+}
+
+.historyScoresTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6d28d9;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.historyScoresList {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.historyDetailColumn p {
-  margin: 0;
-  font-size: 0.9375rem;
-  color: var(--text-primary);
-  line-height: 1.5;
+.historyScoreItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.historyDetailColumn strong {
-  color: var(--text-secondary);
+.historyScoreLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4c1d95;
+  min-width: 70px;
+}
+
+.historyScoreBarTrack {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.historyScoreBarFill {
+  height: 100%;
+  background: linear-gradient(to right, #8b5cf6, #a78bfa);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.historyScoreNumber {
+  font-size: 0.875rem;
   font-weight: 600;
-  min-width: 80px;
-  display: inline-block;
+  color: #5b21b6;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Footer with overall scores - styled like wizard footer */
+.historyFooter {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(to right, #dbeafe, #ede9fe);
+  border-top: 1px solid #c4b5fd;
+}
+
+.historyFooterScore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.historyFooterLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.historyFooterValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+/* Remove old history detail styles */
+.historyDetailColumn {
+  display: none;
 }
 
 .historyScoreRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  font-size: 0.9375rem;
-  color: var(--text-primary);
-}
-
-.historyScoreRow strong {
-  color: var(--text-secondary);
+  display: none;
 }
 
 /* Responsive */
