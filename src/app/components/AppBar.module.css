@@ -1,5 +1,5 @@
 .appBar {
-  background: var(--black);
+  background: #8b5cf6;
   color: var(--white);
   padding: 1rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -44,16 +44,16 @@
 }
 
 .buttonOutline:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .buttonPrimary {
-  background: var(--purple-primary);
-  color: var(--white);
+  background: var(--white);
+  color: #7c3aed;
 }
 
 .buttonPrimary:hover {
-  background: var(--purple-dark);
+  background: #f5f3ff;
 }
 
 .userName {

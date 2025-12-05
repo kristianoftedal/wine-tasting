@@ -98,7 +98,8 @@
 .statValue {
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--accent);
+  /* Use darker lavender for better contrast */
+  color: #7c3aed;
   line-height: 1;
 }
 
@@ -150,7 +151,8 @@
 
 .scoreBarValue {
   font-weight: 600;
-  color: var(--accent);
+  /* Use darker color for score values */
+  color: #374151;
 }
 
 .scoreBarTrack {
@@ -215,7 +217,8 @@
 .linkButton {
   display: inline-block;
   padding: 0.75rem 1.25rem;
-  background: var(--accent);
+  /* Use lavender background with white text */
+  background: #8b5cf6;
   color: white;
   text-decoration: none;
   border-radius: 0.5rem;
@@ -225,7 +228,7 @@
 }
 
 .linkButton:hover {
-  background: var(--accent-hover);
+  background: #7c3aed;
 }
 
 .eventDate {
@@ -542,15 +545,17 @@
   gap: 0.25rem;
 }
 
+/* Fix history score values contrast */
 .historyScore,
 .historyKarakter {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: #374151;
 }
 
 .historyScore strong,
 .historyKarakter strong {
-  color: var(--accent);
+  color: #7c3aed;
+  font-weight: 700;
 }
 
 .historyDetails {
