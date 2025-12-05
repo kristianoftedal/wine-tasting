@@ -97,7 +97,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
     const getTopWinesByCategory = (scoreKey: keyof Tasting, wineType: string) => {
       return tastings
         .filter(t => {
-          const wine = wines.find(w => w.code === t.product_id);
+          const wine = wines.find(w => w.product_id === t.product_id);
           const categoryName = wine?.main_category?.name;
           return categoryName === wineType && ((t[scoreKey] as number) || 0) >= 80;
         })
@@ -120,7 +120,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
     const getTopWinesByAttributes = (wineType: string) => {
       return tastings
         .filter(t => {
-          const wine = wines.find(w => w.code === t.product_id);
+          const wine = wines.find(w => w.product_id === t.product_id);
           const categoryName = wine?.main_category?.name;
           const avgAttributeScore = (((t.friskhet || 0) + (t.fylde || 0) + (t.sodme || 0) + (t.snaerp || 0)) / 4) * 10; // Convert to 100 scale
           return categoryName === wineType && avgAttributeScore >= 80;
@@ -286,7 +286,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
     const highRatedTastings = tastings.filter(t => (t.karakter || 0) >= 8);
 
     highRatedTastings.forEach(t => {
-      const wine = wines.find(w => w.code === t.product_id);
+      const wine = wines.find(w => w.product_id === t.product_id);
       const styleName = wine?.main_category?.name;
       if (!styleName || styleName === 'Ukjent') {
         return;
@@ -374,7 +374,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
         <button
           className={`${styles.tab} ${activeTab === 'karakter' ? styles.tabActive : ''}`}
           onClick={() => setActiveTab('karakter')}>
-          Din Karakter
+          Din smaksprofil
         </button>
         <button
           className={`${styles.tab} ${activeTab === 'history' ? styles.tabActive : ''}`}
@@ -609,7 +609,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
           ) : (
             <div className={styles.historyList}>
               {tastings.map((tasting, index) => {
-                const wine = wines.find(w => w.code === tasting.product_id);
+                const wine = wines.find(w => w.product_id === tasting.product_id);
                 return (
                   <details
                     key={index}
@@ -669,44 +669,100 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                         <h6 className={styles.historyScoresTitle}>Dine vurderinger</h6>
                         <div className={styles.historyScoresList}>
                           <div className={styles.historyScoreItem}>
+                            <span className={styles.historyScoreLabel}>Farge</span>
+                            <div className={styles.historyScoreBarTrack}>
+                              <div
+                                className={styles.historyScoreBarFill}
+                                style={{ width: `${tasting.color_score || 0}%` }}
+                              />
+                            </div>
+                            <span className={styles.historyScoreNumber}>{tasting.color_score?.toFixed(0) || '-'}%</span>
+                          </div>
+                          <div className={styles.historyScoreItem}>
+                            <span className={styles.historyScoreLabel}>Lukt</span>
+                            <div className={styles.historyScoreBarTrack}>
+                              <div
+                                className={styles.historyScoreBarFill}
+                                style={{ width: `${tasting.smell_score || 0}%` }}
+                              />
+                            </div>
+                            <span className={styles.historyScoreNumber}>{tasting.smell_score?.toFixed(0) || '-'}%</span>
+                          </div>
+                          <div className={styles.historyScoreItem}>
+                            <span className={styles.historyScoreLabel}>Smak</span>
+                            <div className={styles.historyScoreBarTrack}>
+                              <div
+                                className={styles.historyScoreBarFill}
+                                style={{ width: `${tasting.taste_score || 0}%` }}
+                              />
+                            </div>
+                            <span className={styles.historyScoreNumber}>{tasting.taste_score?.toFixed(0) || '-'}%</span>
+                          </div>
+                          <div className={styles.historyScoreItem}>
                             <span className={styles.historyScoreLabel}>Friskhet</span>
                             <div className={styles.historyScoreBarTrack}>
                               <div
                                 className={styles.historyScoreBarFill}
-                                style={{ width: `${((tasting.friskhet || 0) / 10) * 100}%` }}
+                                style={{ width: `${tasting.friskhet_score || 0}%` }}
                               />
                             </div>
-                            <span className={styles.historyScoreNumber}>{tasting.friskhet || '-'}/10</span>
+                            <span className={styles.historyScoreNumber}>
+                              {tasting.friskhet_score?.toFixed(0) || '-'}%
+                            </span>
                           </div>
                           <div className={styles.historyScoreItem}>
                             <span className={styles.historyScoreLabel}>Fylde</span>
                             <div className={styles.historyScoreBarTrack}>
                               <div
                                 className={styles.historyScoreBarFill}
-                                style={{ width: `${((tasting.fylde || 0) / 10) * 100}%` }}
+                                style={{ width: `${tasting.fylde_score || 0}%` }}
                               />
                             </div>
-                            <span className={styles.historyScoreNumber}>{tasting.fylde || '-'}/10</span>
+                            <span className={styles.historyScoreNumber}>{tasting.fylde_score?.toFixed(0) || '-'}%</span>
                           </div>
                           <div className={styles.historyScoreItem}>
                             <span className={styles.historyScoreLabel}>Sødme</span>
                             <div className={styles.historyScoreBarTrack}>
                               <div
                                 className={styles.historyScoreBarFill}
-                                style={{ width: `${((tasting.sodme || 0) / 10) * 100}%` }}
+                                style={{ width: `${tasting.sodme_score || 0}%` }}
                               />
                             </div>
-                            <span className={styles.historyScoreNumber}>{tasting.sodme || '-'}/10</span>
+                            <span className={styles.historyScoreNumber}>{tasting.sodme_score?.toFixed(0) || '-'}%</span>
                           </div>
                           <div className={styles.historyScoreItem}>
                             <span className={styles.historyScoreLabel}>Snærp</span>
                             <div className={styles.historyScoreBarTrack}>
                               <div
                                 className={styles.historyScoreBarFill}
-                                style={{ width: `${((tasting.snaerp || 0) / 10) * 100}%` }}
+                                style={{ width: `${tasting.snaerp_score || 0}%` }}
                               />
                             </div>
-                            <span className={styles.historyScoreNumber}>{tasting.snaerp || '-'}/10</span>
+                            <span className={styles.historyScoreNumber}>
+                              {tasting.snaerp_score?.toFixed(0) || '-'}%
+                            </span>
+                          </div>
+                          <div className={styles.historyScoreItem}>
+                            <span className={styles.historyScoreLabel}>Alkohol</span>
+                            <div className={styles.historyScoreBarTrack}>
+                              <div
+                                className={styles.historyScoreBarFill}
+                                style={{ width: `${tasting.percentage_score || 0}%` }}
+                              />
+                            </div>
+                            <span className={styles.historyScoreNumber}>
+                              {tasting.percentage_score?.toFixed(0) || '-'}%
+                            </span>
+                          </div>
+                          <div className={styles.historyScoreItem}>
+                            <span className={styles.historyScoreLabel}>Pris</span>
+                            <div className={styles.historyScoreBarTrack}>
+                              <div
+                                className={styles.historyScoreBarFill}
+                                style={{ width: `${tasting.price_score || 0}%` }}
+                              />
+                            </div>
+                            <span className={styles.historyScoreNumber}>{tasting.price_score?.toFixed(0) || '-'}%</span>
                           </div>
                         </div>
                       </div>

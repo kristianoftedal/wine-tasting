@@ -57,12 +57,28 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
 
   const onSave = async () => {
     setIsSaving(true);
-    if (!userId) return;
+
+    if (!userId) {
+      setIsSaving(false);
+      return;
+    }
+
+    if (!wine?.product_id) {
+      setIsSaving(false);
+      return;
+    }
+
     const productId = wine.product_id;
     const tastedAt = new Date();
-    await addTasting({ ...tasting, userId, productId, tastedAt, eventId: eventId || undefined });
-    setIsSaved(true);
-    setIsSaving(false);
+
+    try {
+      await addTasting({ ...tasting, userId, productId, tastedAt, eventId: eventId || undefined });
+      setIsSaved(true);
+    } catch (error) {
+      console.error('Error saving tasting:', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleNextStep = () => {

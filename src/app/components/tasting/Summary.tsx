@@ -3,7 +3,7 @@
 import { semanticSimilarity } from '@/actions/similarity';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import type { Wine } from '@/lib/types';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import styles from './summary-1.module.css';
@@ -25,7 +25,9 @@ function calculateNumericSimilarity(
   const actualNum = normalizeNumber(actualValue);
 
   // If either value is invalid, return 0
-  if (isNaN(userNum) || isNaN(actualNum)) return 0;
+  if (isNaN(userNum) || isNaN(actualNum)) {
+    return 0;
+  }
 
   // Normalize both values to percentage (0-1 scale)
   const userNormalized = userNum / userScale;
@@ -35,8 +37,9 @@ function calculateNumericSimilarity(
   const difference = Math.abs(userNormalized - expertNormalized);
 
   // Convert to 0-100 score (closer = higher score)
-  // Max difference is 1.0, so multiply by 100 to get percentage
-  return Math.max(0, Math.round((1 - difference) * 100));
+  const score = Math.max(0, Math.round((1 - difference) * 100));
+
+  return score;
 }
 
 function calculateDirectSimilarity(
@@ -67,6 +70,7 @@ function calculateDirectSimilarity(
 
 export const Summary: React.FC = () => {
   const tastingState = useAtomValue(tastingAtom);
+  const setTastingState = useSetAtom(tastingAtom);
   const wine = useAtomValue<Wine>(wineAtom);
 
   const [showComparison, setShowComparison] = useState<boolean>(false);
@@ -153,6 +157,20 @@ export const Summary: React.FC = () => {
         const averageScore = weightSum > 0 ? Math.round(total / weightSum) : 0;
 
         setOverallScore(averageScore);
+
+        setTastingState(prev => ({
+          ...prev,
+          colorScore: colorScore,
+          smellScore: smellScore,
+          tasteScore: tasteScore,
+          percentageScore: prosentScore,
+          priceScore: priceScore,
+          snaerpScore: snærpScore,
+          sodmeScore: sødmeScore,
+          fyldeScore: fyldeScore,
+          friskhetScore: friskhetScore,
+          overallScore: averageScore
+        }));
       } catch (error) {
         console.log(JSON.stringify(error));
         setScores(initState());
@@ -179,7 +197,8 @@ export const Summary: React.FC = () => {
     vmpSnærp,
     vmpSødme,
     vmpFylde,
-    vmpFriskhet
+    vmpFriskhet,
+    setTastingState
   ]);
 
   const vmpLuktWords = wine?.smell?.toLowerCase().split(/[\s,]+/) || [];
