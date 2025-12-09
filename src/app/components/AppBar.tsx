@@ -7,6 +7,7 @@ import styles from './AppBar.module.css';
 export default function AppBar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const supabase = createClient();
 
@@ -38,8 +39,14 @@ export default function AppBar() {
   const handleSignOut = async () => {
     if (!supabase) return;
     await supabase.auth.signOut();
+    setIsMenuOpen(false);
     router.push('/');
     router.refresh();
+  };
+
+  const navigateTo = (path: string) => {
+    setIsMenuOpen(false);
+    router.push(path);
   };
 
   const authButtons = () => {
@@ -51,7 +58,7 @@ export default function AppBar() {
       return (
         <>
           <button
-            onClick={() => router.push('/profil')}
+            onClick={() => navigateTo('/profil')}
             className={`${styles.button} ${styles.buttonOutline}`}>
             Profil
           </button>
@@ -66,12 +73,12 @@ export default function AppBar() {
       return (
         <>
           <button
-            onClick={() => router.push('/login')}
+            onClick={() => navigateTo('/login')}
             className={`${styles.button} ${styles.buttonOutline}`}>
             Logg inn
           </button>
           <button
-            onClick={() => router.push('/register')}
+            onClick={() => navigateTo('/register')}
             className={`${styles.button} ${styles.buttonPrimary}`}>
             Registrer deg
           </button>
@@ -85,7 +92,7 @@ export default function AppBar() {
       <div className={styles.container}>
         <div
           className={styles.logo}
-          onClick={() => router.push('/')}
+          onClick={() => navigateTo('/')}
           style={{ cursor: 'pointer' }}>
           <svg
             width="24"
@@ -104,6 +111,17 @@ export default function AppBar() {
           </svg>
           <span>Smak Vin!</span>
         </div>
+
+        <button
+          className={styles.hamburger}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}>
+          <span className={`${styles.hamburgerLine} ${isMenuOpen ? styles.hamburgerLineOpen : ''}`}></span>
+          <span className={`${styles.hamburgerLine} ${isMenuOpen ? styles.hamburgerLineOpen : ''}`}></span>
+          <span className={`${styles.hamburgerLine} ${isMenuOpen ? styles.hamburgerLineOpen : ''}`}></span>
+        </button>
+
         <div className={styles.actions}>
           <button
             onClick={() => router.push('/toppliste')}
@@ -113,9 +131,52 @@ export default function AppBar() {
           <button
             onClick={() => router.push('/sommailer')}
             className={`${styles.button} ${styles.buttonOutline}`}>
-            SommelAier
+            Sommailer
           </button>
           {authButtons()}
+        </div>
+
+        <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ''}`}>
+          <nav className={styles.mobileNav}>
+            <button
+              onClick={() => navigateTo('/toppliste')}
+              className={styles.mobileNavItem}>
+              Toppliste
+            </button>
+            <button
+              onClick={() => navigateTo('/sommailer')}
+              className={styles.mobileNavItem}>
+              Sommailer
+            </button>
+            {!loading && isAuthenticated && (
+              <>
+                <button
+                  onClick={() => navigateTo('/profil')}
+                  className={styles.mobileNavItem}>
+                  Profil
+                </button>
+                <button
+                  onClick={handleSignOut}
+                  className={styles.mobileNavItem}>
+                  Logg ut
+                </button>
+              </>
+            )}
+            {!loading && !isAuthenticated && (
+              <>
+                <button
+                  onClick={() => navigateTo('/login')}
+                  className={styles.mobileNavItem}>
+                  Logg inn
+                </button>
+                <button
+                  onClick={() => navigateTo('/register')}
+                  className={`${styles.mobileNavItem} ${styles.mobileNavItemPrimary}`}>
+                  Registrer deg
+                </button>
+              </>
+            )}
+          </nav>
         </div>
       </div>
     </header>

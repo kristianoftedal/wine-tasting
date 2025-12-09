@@ -1,38 +1,41 @@
-"use client"
+'use client';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import type { Wine } from "@/lib/types"
-import styles from "./WineDetailsModal.module.css"
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import type { Wine } from '@/lib/types';
+import he from 'he';
+import Link from 'next/link';
+import styles from './WineDetailsModal.module.css';
 
 interface WineDetailsModalProps {
-  wine: Wine | null
-  isOpen: boolean
-  onClose: () => void
+  wine: Wine | null;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 function getCharacteristic(wine: Wine, name: string): string | null {
-  const char = wine.content?.characteristics?.find((c) => c.name.toLowerCase() === name.toLowerCase())
-  return char?.readableValue || null
+  const char = wine.content?.characteristics?.find(c => c.name.toLowerCase() === name.toLowerCase());
+  return char?.readableValue || null;
 }
 
 export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProps) {
-  if (!wine) return null
+  if (!wine) return null;
 
-  const alcohol = getCharacteristic(wine, "Alkohol")
-  const sugar = getCharacteristic(wine, "Sukker")
-  const freshness = getCharacteristic(wine, "Friskhet")
-  const fullness = getCharacteristic(wine, "Fylde")
-  const bitterness = getCharacteristic(wine, "Bitterhet")
-  const sweetness = getCharacteristic(wine, "Sødme")
-  const tannin = getCharacteristic(wine, "Tannin") || getCharacteristic(wine, "Garvestoffer")
+  const alcohol = getCharacteristic(wine, 'Alkohol');
+  const sugar = getCharacteristic(wine, 'Sukker');
+  const freshness = getCharacteristic(wine, 'Friskhet');
+  const fullness = getCharacteristic(wine, 'Fylde');
+  const bitterness = getCharacteristic(wine, 'Bitterhet');
+  const sweetness = getCharacteristic(wine, 'Sødme');
+  const tannin = getCharacteristic(wine, 'Tannin') || getCharacteristic(wine, 'Garvestoffer');
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={onClose}>
       <DialogContent className={styles.dialogContent}>
         <DialogHeader>
-          <DialogTitle>{wine.name}</DialogTitle>
+          <DialogTitle>{he.decode(wine.name)}</DialogTitle>
           <DialogDescription>
             {wine.year && <span>{wine.year} • </span>}
             {wine.main_category?.name}
@@ -44,10 +47,10 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
           <div className={styles.imageContainer}>
             <img
               src={`/api/wine-image/${wine.product_id}?size=200x200`}
-              alt={wine.name}
+              alt={he.decode(wine.name)}
               className={styles.wineImage}
-              onError={(e) => {
-                e.currentTarget.style.display = "none"
+              onError={e => {
+                e.currentTarget.style.display = 'none';
               }}
             />
           </div>
@@ -85,7 +88,7 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
             {wine.content?.ingredients && wine.content.ingredients.length > 0 && (
               <div className={styles.fullWidth}>
                 <h4 className={styles.label}>Ingredienser</h4>
-                <p>{wine.content.ingredients.map((i) => i.formattedValue).join(", ")}</p>
+                <p>{wine.content.ingredients.map(i => i.formattedValue).join(', ')}</p>
               </div>
             )}
 
@@ -183,15 +186,19 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
 
           {/* Action Buttons */}
           <div className={styles.actionButtons}>
-            <Link href={`/smaking/${wine.product_id}`} className={styles.linkButton}>
+            <Link
+              href={`/smaking/${wine.product_id}${wine.year ? `?year=${wine.year}` : ''}`}
+              className={styles.linkButton}>
               <Button className={styles.fullWidthButton}>Start smaking</Button>
             </Link>
-            <Button variant="outline" onClick={onClose}>
+            <Button
+              variant="outline"
+              onClick={onClose}>
               Lukk
             </Button>
           </div>
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

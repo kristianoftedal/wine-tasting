@@ -18,6 +18,7 @@ function cosineSimilarity(a: number[], b: number[]): number {
   const normB = Math.sqrt(b.reduce((sum, val) => sum + val ** 2, 0));
   return dot / (normA * normB);
 }
+
 function cosineSimilarity1(vecA: number[], vecB: number[]): number {
   if (vecA.length !== vecB.length) {
     throw new Error('Vectors must have the same dimensions');
@@ -70,6 +71,5 @@ export async function semanticSimilarity(text1: string, text2: string): Promise<
   const result2 = Math.round(similarity2 * 100);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const diff = result - result2;
-  debugger;
   return result;
 }

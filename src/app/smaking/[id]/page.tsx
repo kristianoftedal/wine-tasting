@@ -1,16 +1,25 @@
-import { TastingWizard } from "@/app/components/tasting/TastingWizard"
-import { createClient } from "@/lib/supabase/server"
-import type { Wine } from "@/lib/types"
+import { TastingWizard } from '@/app/components/tasting/TastingWizard';
+import { createClient } from '@/lib/supabase/server';
+import type { Wine } from '@/lib/types';
 
-export default async function Tasting({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  const supabase = await createClient()
+export default async function Tasting({
+  params,
+  searchParams
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ year?: string }>;
+}) {
+  const { id } = await params;
+  const { year } = await searchParams;
+  const supabase = await createClient();
 
-  console.log("[v0] Smaking page - Looking for wine with product_id:", id)
+  let query = supabase.from('wines').select('*').eq('product_id', id);
 
-  const { data: wine, error } = await supabase.from("wines").select("*").eq("product_id", id).single<Wine>()
+  if (year) {
+    query = query.eq('year', year);
+  }
 
-  console.log("[v0] Smaking page - Query result:", { wine: wine?.name, error })
+  const { data: wine } = await query.single<Wine>();
 
-  return <TastingWizard wine={wine} />
+  return <TastingWizard wine={wine} />;
 }

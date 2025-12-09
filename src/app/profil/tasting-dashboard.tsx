@@ -4,6 +4,7 @@ import { findSimilarWines } from '@/actions/wine-similarity';
 import { WineDetailsModal } from '@/app/components/WineDetailsModal';
 import type { Event, Group, Tasting, Wine } from '@/lib/types';
 import { format } from 'date-fns';
+import he from 'he'; // Import he for HTML entity decoding
 import Link from 'next/link';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
@@ -374,7 +375,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
         <button
           className={`${styles.tab} ${activeTab === 'karakter' ? styles.tabActive : ''}`}
           onClick={() => setActiveTab('karakter')}>
-          Din smaksprofil
+          Din Karakter
         </button>
         <button
           className={`${styles.tab} ${activeTab === 'history' ? styles.tabActive : ''}`}
@@ -466,7 +467,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                       key={group.id}
                       href={`/gruppe/${group.id}`}
                       className={styles.linkItem}>
-                      {group.name}
+                      {he.decode(group.name)} {/* Decode HTML entities */}
                     </Link>
                   ))
                 )}
@@ -490,7 +491,7 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                       href={`/gruppe/${event.group_id}/arrangement/${event.id}`}
                       className={styles.linkItem}>
                       <span className={styles.eventDate}>{new Date(event.date).toLocaleDateString()}</span>
-                      <span>{event.name}</span>
+                      <span>{he.decode(event.name)}</span> {/* Decode HTML entities */}
                     </Link>
                   ))
                 )}
@@ -508,8 +509,8 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
               className={`${styles.accoladeCard} ${accolade.earned ? styles.accoladeEarned : styles.accoladeLocked}`}
               style={{ '--accolade-color': accolade.color } as React.CSSProperties}>
               <div className={styles.accoladeIcon}>{accolade.icon}</div>
-              <h4 className={styles.accoladeTitle}>{accolade.title}</h4>
-              <p className={styles.accoladeDesc}>{accolade.description}</p>
+              <h4 className={styles.accoladeTitle}>{he.decode(accolade.title)}</h4> {/* Decode HTML entities */}
+              <p className={styles.accoladeDesc}>{he.decode(accolade.description)}</p> {/* Decode HTML entities */}
               {accolade.earned && <div className={styles.accoladeBadge}>Oppnådd!</div>}
             </div>
           ))}
@@ -531,7 +532,8 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                     key={pref.style}
                     className={styles.preferenceItem}>
                     <div className={styles.preferenceHeader}>
-                      <span className={styles.preferenceName}>{pref.style}</span>
+                      <span className={styles.preferenceName}>{he.decode(pref.style)}</span>{' '}
+                      {/* Decode HTML entities */}
                       <span className={styles.preferenceCount}>({pref.count} viner)</span>
                     </div>
                     <div className={styles.preferenceBar}>
@@ -578,18 +580,18 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                     <div className={styles.recommendationImage}>
                       <img
                         src={`/api/wine-image/${wine.product_id}?size=100x100`}
-                        alt={wine.name}
+                        alt={he.decode(wine.name)}
                         onError={e => {
                           e.currentTarget.style.display = 'none';
                         }}
                       />
                     </div>
                     <div className={styles.recommendationInfo}>
-                      <h4 className={styles.recommendationName}>{wine.name}</h4>
+                      <h4 className={styles.recommendationName}>{he.decode(wine.name)}</h4>
                       <p className={styles.recommendationMeta}>
                         {wine.year && <span>{wine.year}</span>}
                         {wine.main_category?.name && (
-                          <span className={styles.recommendationStyle}>{wine.main_category.name}</span>
+                          <span className={styles.recommendationStyle}>{he.decode(wine.main_category.name)}</span>
                         )}
                       </p>
                       {wine.price && <p className={styles.recommendationPrice}>{wine.price.formattedValue}</p>}
@@ -625,7 +627,8 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                         />
                       </div>
                       <div className={styles.historyInfo}>
-                        <h5 className={styles.historyName}>{wine?.name || tasting.product_id}</h5>
+                        <h5 className={styles.historyName}>{wine?.name ? he.decode(wine.name) : tasting.product_id}</h5>{' '}
+                        {/* Decode HTML entities */}
                         <p className={styles.historyDate}>{format(new Date(tasting.tasted_at), 'PPP')}</p>
                       </div>
                       <div className={styles.historyScores}>
@@ -642,24 +645,34 @@ export function TastingDashboard({ tastings, wines, allWines, groups, events }: 
                       <div className={styles.historyNotesSection}>
                         <div className={styles.historyNoteItem}>
                           <span className={styles.historyNoteLabel}>Farge</span>
-                          <span className={styles.historyNoteValue}>{tasting.farge || '-'}</span>
+                          <span className={styles.historyNoteValue}>{he.decode(tasting.farge || '-')}</span>{' '}
+                          {/* Decode HTML entities */}
                         </div>
                         <div className={styles.historyNoteItem}>
                           <span className={styles.historyNoteLabel}>Lukt</span>
                           <span className={styles.historyNoteValue}>
-                            {[tasting.smell, tasting.lukt].filter(Boolean).join(', ') || '-'}
+                            {[tasting.smell, tasting.lukt]
+                              .filter(Boolean)
+                              .map(score => he.decode(score))
+                              .join(', ') || '-'}{' '}
+                            {/* Decode HTML entities */}
                           </span>
                         </div>
                         <div className={styles.historyNoteItem}>
                           <span className={styles.historyNoteLabel}>Smak</span>
                           <span className={styles.historyNoteValue}>
-                            {[tasting.taste, tasting.smak].filter(Boolean).join(', ') || '-'}
+                            {[tasting.taste, tasting.smak]
+                              .filter(Boolean)
+                              .map(score => he.decode(score))
+                              .join(', ') || '-'}{' '}
+                            {/* Decode HTML entities */}
                           </span>
                         </div>
                         {tasting.egenskaper && (
                           <div className={styles.historyNoteItem}>
                             <span className={styles.historyNoteLabel}>Kommentar</span>
-                            <span className={styles.historyNoteValue}>{tasting.egenskaper}</span>
+                            <span className={styles.historyNoteValue}>{he.decode(tasting.egenskaper)}</span>{' '}
+                            {/* Decode HTML entities */}
                           </div>
                         )}
                       </div>
@@ -801,7 +814,7 @@ function ScoreBar({ label, value, max, color }: { label: string; value: number; 
   return (
     <div className={styles.scoreBarContainer}>
       <div className={styles.scoreBarLabel}>
-        <span>{label}</span>
+        <span>{he.decode(label)}</span>
         <span className={styles.scoreBarValue}>{value.toFixed(1)}</span>
       </div>
       <div className={styles.scoreBarTrack}>

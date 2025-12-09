@@ -87,6 +87,7 @@ export const Summary: React.FC = () => {
 
   useEffect(() => {
     async function calculateScores() {
+      debugger;
       setIsCalculating(true);
       try {
         // Calculate color score
