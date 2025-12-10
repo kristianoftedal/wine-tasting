@@ -6,7 +6,7 @@
 }
 
 .header {
-  background: #8b5cf6;
+  background: var(--gradient-primary);
   color: white;
   display: flex;
   align-items: center;
@@ -147,7 +147,7 @@
 }
 
 .saveButton {
-  background: #8b5cf6;
+  background: var(--gradient-primary);
   color: white;
   border: none;
   padding: 12px 32px;
@@ -159,7 +159,7 @@
 }
 
 .saveButton:hover:not(:disabled) {
-  background: #7c3aed;
+  background: var(--gradient-primary-hover);
   transform: translateY(-1px);
 }
 
@@ -181,7 +181,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  background: var(--gradient-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,7 +198,7 @@
 .savedText {
   font-size: 20px;
   font-weight: 600;
-  color: #8b5cf6;
+  color: var(--accent);
   margin: 0;
   animation: fadeInUp 0.3s ease-out 0.3s both;
 }

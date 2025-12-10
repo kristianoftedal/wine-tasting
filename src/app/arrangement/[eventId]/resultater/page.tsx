@@ -1,53 +1,61 @@
-import { createClient } from "@/lib/supabase/server"
-import type { Event } from "@/lib/types"
-import Link from "next/link"
-import { EventScoresRealtime } from "./event-scores-realtime"
-import styles from "./page.module.css"
+import { createClient } from '@/lib/supabase/server';
+import type { Event } from '@/lib/types';
+import Link from 'next/link';
+import { EventScoresRealtime } from './event-scores-realtime';
+import styles from './page.module.css';
 
 export default async function EventScoresPage({ params }: { params: Promise<{ eventId: string }> }) {
-  const { eventId } = await params
-  const supabase = await createClient()
+  const { eventId } = await params;
+  const supabase = await createClient();
 
-  const { data: event } = await supabase.from("events").select("*").eq("id", eventId).single<Event>()
+  const { data: event } = await supabase.from('events').select('*').eq('id', eventId).single<Event>();
 
   if (!event) {
     return (
       <div className={styles.container}>
         <p>Arrangement ikke funnet</p>
       </div>
-    )
+    );
   }
 
   // Fetch wines for the event
   const { data: wines } = await supabase
-    .from("wines")
-    .select("product_id, name, year")
-    .in("product_id", event.wines.length > 0 ? event.wines : [""])
+    .from('wines')
+    .select('product_id, name, year, color, smell, taste, content')
+    .in('product_id', event.wines.length > 0 ? event.wines : ['']);
 
   // Sort wines by event order
-  const sortedWines = wines?.sort((a, b) => event.wines.indexOf(a.product_id) - event.wines.indexOf(b.product_id)) || []
+  const sortedWines =
+    wines?.sort((a, b) => event.wines.indexOf(a.product_id) - event.wines.indexOf(b.product_id)) || [];
 
-  // Fetch initial tastings for the event
   const { data: initialTastings } = await supabase
-    .from("tastings")
+    .from('tastings')
     .select(
-      "id, product_id, user_id, score_overall, score_farge, score_lukt, score_smak, score_friskhet, score_fylde, score_sodme, score_snaerp, score_alkohol, score_pris, karakter",
+      'id, product_id, user_id, overall_score, color_score, smell_score, taste_score, friskhet_score, fylde_score, sodme_score, snaerp_score, karakter, farge, lukt, smak, friskhet, fylde, sodme, snaerp'
     )
-    .eq("event_id", eventId)
+    .eq('event_id', eventId);
 
   // Fetch user profiles for the tastings
-  const userIds = [...new Set(initialTastings?.map((t) => t.user_id) || [])]
+  const userIds = [...new Set(initialTastings?.map(t => t.user_id) || [])];
   const { data: profiles } = await supabase
-    .from("profiles")
-    .select("id, name")
-    .in("id", userIds.length > 0 ? userIds : [""])
+    .from('profiles')
+    .select('id, name')
+    .in('id', userIds.length > 0 ? userIds : ['']);
 
-  const profileMap = new Map(profiles?.map((p) => [p.id, p.name]) || [])
+  const profileMap = new Map(profiles?.map(p => [p.id, p.name]) || []);
 
   return (
     <div className={styles.container}>
-      <Link href={`/arrangement/${eventId}`} className={styles.backButton}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <Link
+        href={`/arrangement/${eventId}`}
+        className={styles.backButton}>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2">
           <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
         Tilbake til arrangement
@@ -69,5 +77,5 @@ export default async function EventScoresPage({ params }: { params: Promise<{ ev
         initialProfileMap={Object.fromEntries(profileMap)}
       />
     </div>
-  )
+  );
 }

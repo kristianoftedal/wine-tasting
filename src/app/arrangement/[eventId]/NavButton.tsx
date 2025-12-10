@@ -30,7 +30,16 @@ export default function NavButton({
   return (
     <button
       onClick={handleReset}
-      aria-label={`smaking for ${eventId}`}>
+      aria-label={`smaking for ${eventId}`}
+      style={{
+        background: 'none',
+        border: 'none',
+        padding: 0,
+        margin: 0,
+        cursor: 'pointer',
+        font: 'inherit',
+        color: 'inherit'
+      }}>
       {children}
     </button>
   );

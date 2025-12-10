@@ -59,7 +59,7 @@
 .field input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(139, 125, 212, 0.1);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .buttonGroup {
@@ -69,10 +69,11 @@
   margin-top: 1.5rem;
 }
 
+/* Updated to use gradient background */
 .primaryButton {
   width: 100%;
   padding: 0.75rem;
-  background: #8b5cf6; /* Use lavender background with white text for good contrast */
+  background: var(--gradient-primary);
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -83,13 +84,13 @@
 }
 
 .primaryButton:hover {
-  background: #7c3aed; /* Darker hover state */
+  background: var(--gradient-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .primaryButton:disabled {
-  background: #c4b5fd; /* Disabled state with visible text */
+  background: #c4b5fd;
   color: white;
   cursor: not-allowed;
   transform: none;
@@ -100,7 +101,7 @@
   width: 100%;
   padding: 0.75rem;
   background: transparent;
-  color: #6d28d9; /* Use dark text color for contrast */
+  color: #667eea;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   font-size: 1rem;
@@ -113,9 +114,9 @@
 }
 
 .secondaryButton:hover {
-  background: #f5f3ff;
-  border-color: #8b5cf6;
-  color: #5b21b6;
+  background: #f0f4ff;
+  border-color: #667eea;
+  color: #5a6fd6;
 }
 
 @media (max-width: 640px) {
