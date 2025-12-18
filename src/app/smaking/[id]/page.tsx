@@ -7,10 +7,10 @@ export default async function Tasting({
   searchParams
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ year?: string }>;
+  searchParams: Promise<{ year?: string; eventId?: string }>;
 }) {
   const { id } = await params;
-  const { year } = await searchParams;
+  const { year, eventId } = await searchParams;
   const supabase = await createClient();
 
   let query = supabase.from('wines').select('*').eq('product_id', id);
@@ -21,5 +21,10 @@ export default async function Tasting({
 
   const { data: wine } = await query.single<Wine>();
 
-  return <TastingWizard wine={wine} />;
+  return (
+    <TastingWizard
+      wine={wine}
+      eventId={eventId}
+    />
+  );
 }

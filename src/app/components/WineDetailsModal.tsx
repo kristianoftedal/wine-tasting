@@ -38,7 +38,7 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
           <DialogTitle>{he.decode(wine.name)}</DialogTitle>
           <DialogDescription>
             {wine.year && <span>{wine.year} • </span>}
-            {wine.main_category?.name}
+            {wine.main_category}
           </DialogDescription>
         </DialogHeader>
 
@@ -57,31 +57,31 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
 
           {/* Wine Details Grid */}
           <div className={styles.detailsGrid}>
-            {wine.main_producer?.name && (
+            {wine.main_producer && (
               <div>
                 <h4 className={styles.label}>Produsent</h4>
-                <p>{wine.main_producer.name}</p>
+                <p>{wine.main_producer}</p>
               </div>
             )}
 
-            {wine.main_country?.name && (
+            {wine.main_country && (
               <div>
                 <h4 className={styles.label}>Land</h4>
-                <p>{wine.main_country.name}</p>
+                <p>{wine.main_country}</p>
               </div>
             )}
 
-            {wine.district?.name && (
+            {wine.district && (
               <div>
                 <h4 className={styles.label}>Distrikt</h4>
-                <p>{wine.district.name}</p>
+                <p>{wine.district}</p>
               </div>
             )}
 
-            {wine.sub_district?.name && (
+            {wine.sub_district && (
               <div>
                 <h4 className={styles.label}>Under-distrikt</h4>
-                <p>{wine.sub_district.name}</p>
+                <p>{wine.sub_district}</p>
               </div>
             )}
 
@@ -95,28 +95,14 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
             {wine.price && (
               <div>
                 <h4 className={styles.label}>Pris</h4>
-                <p>{wine.price.formattedValue}</p>
+                <p>Kr {wine.price}</p>
               </div>
             )}
 
             {wine.volume && (
               <div>
                 <h4 className={styles.label}>Volum</h4>
-                <p>{wine.volume.formattedValue}</p>
-              </div>
-            )}
-
-            {alcohol && (
-              <div>
-                <h4 className={styles.label}>Alkohol</h4>
-                <p>{alcohol}</p>
-              </div>
-            )}
-
-            {sugar && (
-              <div>
-                <h4 className={styles.label}>Sukker</h4>
-                <p>{sugar}</p>
+                <p>{wine.volume} cl</p>
               </div>
             )}
 
@@ -202,3 +188,5 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
     </Dialog>
   );
 }
+
+export default WineDetailsModal;

@@ -214,6 +214,38 @@
   color: var(--accent);
 }
 
+/* Add styles for event item wrapper with edit button */
+.eventItemWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.eventItemWrapper .linkItem {
+  flex: 1;
+}
+
+.editButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #e0e7ff;
+  color: #667eea;
+  border: 1px solid #a5b4fc;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.editButton:hover {
+  background: #c7d2fe;
+  color: #4f46e5;
+  border-color: #818cf8;
+}
+
 /* Updated link button to use gradient */
 .linkButton {
   display: inline-block;

@@ -2,24 +2,26 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 24px 16px;
+  min-height: 100vh;
 }
 
 .backButton {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  color: #6b46c1;
+  padding: 10px 16px;
+  color: #667eea;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: all 0.2s ease;
   margin-bottom: 24px;
+  background: rgba(102, 126, 234, 0.08);
 }
 
 .backButton:hover {
-  background: #f7f5ff;
+  background: rgba(102, 126, 234, 0.15);
 }
 
 .backButton svg {
@@ -27,108 +29,126 @@
 }
 
 .backButton:hover svg {
-  transform: translateX(-2px);
+  transform: translateX(-3px);
 }
 
+/* Redesigned header with gradient accent bar */
 .header {
   background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 32px;
-  margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  position: relative;
+}
+
+.headerAccent {
+  height: 6px;
+  background: var(--gradient-primary);
 }
 
 .headerContent {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  padding: 28px;
 }
 
 .title {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
   color: #1f2937;
-  margin: 0;
+  margin: 0 0 16px 0;
   line-height: 1.2;
 }
 
 .meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 20px;
 }
 
 .metaItem {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #4b5563; /* Updated from #6b7280 */
-  font-size: 15px;
+  color: #6b7280;
+  font-size: 14px;
 }
 
 .metaItem svg {
-  color: #6b7280; /* Updated from #9ca3af */
+  color: #9ca3af;
   flex-shrink: 0;
 }
 
 .description {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 32px;
-}
-
-.description p {
-  margin: 0;
-  color: #4b5563;
+  margin: 16px 0 0 0;
+  padding-top: 16px;
+  border-top: 1px solid #f3f4f6;
+  color: #6b7280;
   font-size: 15px;
   line-height: 1.6;
 }
 
-/* Added styles for live results link */
+/* Redesigned results link */
 .resultsLink {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px 20px;
-  background: linear-gradient(135deg, #6b46c1, #9333ea);
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: var(--gradient-primary);
   color: white;
   text-decoration: none;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 12px;
-  transition: all 0.2s ease;
-  margin-bottom: 32px;
-  box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
 }
 
 .resultsLink:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(107, 70, 193, 0.4);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
 }
 
-.resultsLink svg {
-  flex-shrink: 0;
+.resultsLinkContent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.resultsLinkContent svg {
+  opacity: 0.9;
+}
+
+.resultsLinkText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.resultsLinkTitle {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.resultsLinkSubtitle {
+  font-size: 13px;
+  opacity: 0.85;
 }
 
 .liveBadge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-left: auto;
-  padding: 4px 10px;
+  padding: 6px 12px;
   background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
   border-radius: 9999px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .liveDot {
-  width: 6px;
-  height: 6px;
-  background: #10b981;
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
   border-radius: 50%;
   animation: pulse 2s ease-in-out infinite;
 }
@@ -137,23 +157,76 @@
   0%,
   100% {
     opacity: 1;
-    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
   }
   50% {
-    opacity: 0.5;
-    transform: scale(1.2);
+    opacity: 0.8;
+    box-shadow: 0 0 0 8px rgba(74, 222, 128, 0);
   }
 }
 
+/* Improved progress section */
+.progressSection {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.progressLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.progressCount {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.progressCount strong {
+  color: #374151;
+}
+
+.progressBar {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 9999px;
+  transition: width 0.5s ease;
+}
+
+/* Redesigned wines section */
 .winesSection {
-  margin-top: 32px;
+  margin-top: 8px;
 }
 
 .sectionTitle {
-  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
   font-weight: 600;
   color: #1f2937;
   margin: 0 0 20px 0;
+}
+
+.sectionTitle svg {
+  color: #667eea;
 }
 
 .winesList {
@@ -162,88 +235,312 @@
   gap: 16px;
 }
 
+/* Completely redesigned wine cards */
 .wineCard {
   background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .wineCard:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-color: #d1d5db;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
-.wineHeader {
+.wineCardTasted {
+  background: linear-gradient(135deg, #f0fdf4 0%, #f9fafb 100%);
+}
+
+.wineCardSuggested {
+  box-shadow: 0 0 0 2px #667eea, 0 4px 20px rgba(102, 126, 234, 0.2);
+}
+
+.wineCardSuggested:hover {
+  box-shadow: 0 0 0 2px #667eea, 0 8px 30px rgba(102, 126, 234, 0.25);
+}
+
+/* Wine number badge */
+.wineNumberBadge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 32px;
+  height: 32px;
+  background: var(--gradient-primary);
+  color: white;
+  border-radius: 10px;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 12px;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* Status badges */
+.statusBadge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.statusBadge[data-status="tasted"] {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.statusBadge[data-status="next"] {
+  background: var(--gradient-primary);
+  color: white;
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(102, 126, 234, 0);
+  }
+}
+
+/* Wine card inner layout */
+.wineCardInner {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  padding-left: 60px;
+  gap: 20px;
+}
+
+/* Wine image section */
+.wineImageSection {
+  flex-shrink: 0;
+  width: 80px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wineImage {
+  max-height: 120px;
+  max-width: 80px;
+  height: auto;
+  width: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+.wineImagePlaceholder {
+  width: 70px;
+  height: 100px;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+/* Wine info section */
+.wineInfoSection {
+  flex: 1;
+  min-width: 0;
 }
 
 .wineName {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   color: #1f2937;
-  margin: 0;
-  flex: 1;
+  margin: 0 0 10px 0;
+  line-height: 1.35;
+}
+
+.wineMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.wineYear {
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.wineCategory {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.wineDetailsRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.wineCountry {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.wineCountry svg {
+  color: #9ca3af;
+}
+
+.winePrice {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Action section */
+.wineActionSection {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.tastedIndicator {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tasteButton {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: #6b46c1;
+  gap: 8px;
+  padding: 14px 20px;
+  background: var(--gradient-primary);
   color: white;
-  text-decoration: none;
+  border-radius: 12px;
   font-size: 14px;
-  font-weight: 500;
-  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   transition: all 0.2s ease;
-  flex-shrink: 0;
 }
 
-.tasteButton:hover {
-  background: #553399;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(107, 70, 193, 0.2);
+.wineCard:hover .tasteButton {
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  transform: scale(1.02);
 }
 
-.tasteButton svg {
-  flex-shrink: 0;
-}
-
-.wineDescription {
-  margin: 0;
-  color: #4b5563; /* Updated from #6b7280 */
-  font-size: 14px;
-  line-height: 1.6;
-}
-
+/* Responsive */
 @media (max-width: 640px) {
   .container {
     padding: 16px 12px;
   }
 
-  .header {
+  .headerContent {
     padding: 20px;
   }
 
   .title {
-    font-size: 24px;
+    font-size: 22px;
   }
 
-  .wineHeader {
+  .meta {
     flex-direction: column;
-    align-items: stretch;
+    gap: 10px;
+  }
+
+  .resultsLink {
+    padding: 16px 20px;
+  }
+
+  .resultsLinkContent {
+    gap: 12px;
+  }
+
+  .resultsLinkContent svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .wineCardInner {
+    flex-wrap: wrap;
+    padding: 16px;
+    padding-top: 50px;
+  }
+
+  .wineNumberBadge {
+    top: 12px;
+    left: 12px;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .statusBadge {
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .wineImageSection {
+    width: 60px;
+    height: 90px;
+  }
+
+  .wineImage {
+    max-height: 90px;
+    max-width: 60px;
+  }
+
+  .wineImagePlaceholder {
+    width: 55px;
+    height: 80px;
+  }
+
+  .wineName {
+    font-size: 15px;
+  }
+
+  .wineActionSection {
+    width: 100%;
+    margin-top: 12px;
+    margin-left: 0;
   }
 
   .tasteButton {
     width: 100%;
     justify-content: center;
+    padding: 12px 16px;
+  }
+
+  .tastedIndicator {
+    width: 100%;
+    height: 44px;
+    border-radius: 12px;
   }
 }

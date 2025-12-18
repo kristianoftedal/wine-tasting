@@ -53,9 +53,9 @@ export type AnalysisResult = {
   similarity: number;
   commonLemmas: CommonLemma[];
 };
-// Norwegian wine vocabulary based on Vinmonopolet's actual usage
+
 const norwegianLemmas: Record<string, LemmaData> = {
-  // STRUKTUR OG KVALITET (høyest vekt - 2.5x)
+  // STRUKTUR OG KVALITET (høyest vekt - 2.5x) - Vinmonopolets nøkkelbeskrivelser
   balansert: { lemma: 'balanse', weight: 2.5, category: 'struktur' },
   balanserte: { lemma: 'balanse', weight: 2.5, category: 'struktur' },
   balanse: { lemma: 'balanse', weight: 2.5, category: 'struktur' },
@@ -72,7 +72,7 @@ const norwegianLemmas: Record<string, LemmaData> = {
   konsentrasjon: { lemma: 'konsentrasjon', weight: 2.5, category: 'kvalitet' },
   konsentrert: { lemma: 'konsentrasjon', weight: 2.5, category: 'kvalitet' },
   dybde: { lemma: 'dybde', weight: 2.5, category: 'kvalitet' },
-  dyp: { lemma: 'dybde', weight: 2.5, category: 'kvalitet' },
+  dyp: { lemma: 'dyp', weight: 2.5, category: 'kvalitet' },
   kompleks: { lemma: 'kompleks', weight: 2.5, category: 'kvalitet' },
   komplekse: { lemma: 'kompleks', weight: 2.5, category: 'kvalitet' },
   kompleksitet: { lemma: 'kompleks', weight: 2.5, category: 'kvalitet' },
@@ -89,7 +89,7 @@ const norwegianLemmas: Record<string, LemmaData> = {
   lange: { lemma: 'lang', weight: 2.3, category: 'ettersmak' },
   lengde: { lemma: 'lengde', weight: 2.3, category: 'ettersmak' },
 
-  // FYLDE (høy vekt - 2.0x)
+  // FYLDE (høy vekt - 2.0x) - Vinmonopolets klokkeindikator
   fylde: { lemma: 'fylde', weight: 2.0, category: 'fylde' },
   fyldig: { lemma: 'fyldig', weight: 2.0, category: 'fylde' },
   fyldige: { lemma: 'fyldig', weight: 2.0, category: 'fylde' },
@@ -103,7 +103,7 @@ const norwegianLemmas: Record<string, LemmaData> = {
   intens: { lemma: 'intens', weight: 2.0, category: 'fylde' },
   intense: { lemma: 'intens', weight: 2.0, category: 'fylde' },
 
-  // FRISKHET/SYRE (høy vekt - 2.0x)
+  // FRISKHET/SYRE (høy vekt - 2.0x) - Vinmonopolets klokkeindikator
   friskhet: { lemma: 'frisk', weight: 2.0, category: 'friskhet' },
   frisk: { lemma: 'frisk', weight: 2.0, category: 'friskhet' },
   friskt: { lemma: 'frisk', weight: 2.0, category: 'friskhet' },

@@ -152,7 +152,7 @@ export async function POST(req: Request) {
       const winesWithPrice = relevantWines
         .map((wine: any) => ({
           ...wine,
-          priceValue: wine.price?.value || 0
+          priceValue: wine.price ? Number.parseFloat(wine.price) : 0
         }))
         .sort((a: any, b: any) => a.priceValue - b.priceValue);
 
@@ -161,15 +161,14 @@ export async function POST(req: Request) {
         'Bruk disse vinene for å gi konkrete anbefalinger. Prisene varierer fra rimelig til eksklusiv.\n\n';
 
       winesWithPrice.forEach((wine: any, index: number) => {
-        const price =
-          wine.price?.formattedValue || wine.price?.value ? `${wine.price.value} kr` : 'Pris ikke tilgjengelig';
-        const category = wine.main_category?.name || '';
-        const country = wine.main_country?.name || '';
+        const price = wine.price ? `${wine.price} kr` : 'Pris ikke tilgjengelig';
+        const category = wine.main_category || '';
+        const country = wine.main_country || '';
         const foodPairings = wine.content?.isGoodFor?.map((item: any) => item.name).join(', ') || '';
         const grapes = wine.content?.ingredients?.map((item: any) => item.readableValue).join(', ') || '';
         const characteristics =
           wine.content?.characteristics?.map((item: any) => `${item.name}: ${item.readableValue}`).join(', ') || '';
-        const vinmonopoletUrl = wine.url || `https://www.vinmonopolet.no/p/${wine.product_id}`;
+        const vinmonopoletUrl = wine.url || `https://www.vinmonopolet.no/vmp/p/productId/${wine.product_id}`;
 
         winesContext += `**Vin ${index + 1}: ${wine.name}**\n`;
         winesContext += `- Type: ${category}${country ? ` fra ${country}` : ''}\n`;

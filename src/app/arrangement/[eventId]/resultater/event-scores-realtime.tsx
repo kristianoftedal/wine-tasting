@@ -36,13 +36,13 @@ type WineInfo = {
   smell: string | null;
   taste: string | null;
   content: {
-    characteristics?: {
-      friskhet?: { value?: string };
-      fylde?: { value?: string };
-      sodme?: { value?: string };
-      garvestoffer?: { value?: string };
-    };
+    characteristics?: Array<{
+      name: string;
+      value: string;
+      readableValue: string;
+    }>;
   } | null;
+  main_category?: string;
 };
 
 type Props = {
@@ -164,9 +164,9 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
   const getActiveTab = (productId: string) => activeTab[productId] || 'overall';
 
   const getCharacteristic = (content: WineInfo['content'], key: string): string | null => {
-    if (!content?.characteristics) return null;
-    const char = content.characteristics[key as keyof typeof content.characteristics];
-    return char?.value || null;
+    if (!content?.characteristics || !Array.isArray(content.characteristics)) return null;
+    const char = content.characteristics.find(c => c.name.toLowerCase() === key.toLowerCase());
+    return char?.readableValue || char?.value || null;
   };
 
   return (
@@ -268,32 +268,21 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                       <span className={styles.winePropertyValue}>{wine.taste}</span>
                     </div>
                   )}
-                  {getCharacteristic(wine.content, 'friskhet') && (
-                    <div className={styles.winePropertyItem}>
-                      <span className={styles.winePropertyLabel}>Friskhet</span>
-                      <span className={styles.winePropertyValue}>{getCharacteristic(wine.content, 'friskhet')}</span>
-                    </div>
-                  )}
-                  {getCharacteristic(wine.content, 'fylde') && (
-                    <div className={styles.winePropertyItem}>
-                      <span className={styles.winePropertyLabel}>Fylde</span>
-                      <span className={styles.winePropertyValue}>{getCharacteristic(wine.content, 'fylde')}</span>
-                    </div>
-                  )}
-                  {getCharacteristic(wine.content, 'sodme') && (
+                  {!wine.main_category?.toLowerCase().includes('rød') && getCharacteristic(wine.content, 'sodme') && (
                     <div className={styles.winePropertyItem}>
                       <span className={styles.winePropertyLabel}>Sødme</span>
                       <span className={styles.winePropertyValue}>{getCharacteristic(wine.content, 'sodme')}</span>
                     </div>
                   )}
-                  {getCharacteristic(wine.content, 'garvestoffer') && (
-                    <div className={styles.winePropertyItem}>
-                      <span className={styles.winePropertyLabel}>Garvestoffer</span>
-                      <span className={styles.winePropertyValue}>
-                        {getCharacteristic(wine.content, 'garvestoffer')}
-                      </span>
-                    </div>
-                  )}
+                  {wine.main_category?.toLowerCase().includes('rød') &&
+                    getCharacteristic(wine.content, 'garvestoffer') && (
+                      <div className={styles.winePropertyItem}>
+                        <span className={styles.winePropertyLabel}>Garvestoffer</span>
+                        <span className={styles.winePropertyValue}>
+                          {getCharacteristic(wine.content, 'garvestoffer')}
+                        </span>
+                      </div>
+                    )}
                 </div>
               </div>
 
@@ -521,18 +510,22 @@ function ParticipantAccordionList({
                           {tasting.fylde || '-'}/12 → {tasting.fylde_score?.toFixed(0) || '-'}/100
                         </span>
                       </div>
-                      <div className={styles.tastingNoteField}>
-                        <span className={styles.tastingNoteLabel}>Sødme:</span>
-                        <span className={styles.tastingNoteValue}>
-                          {tasting.sodme || '-'}/12 → {tasting.sodme_score?.toFixed(0) || '-'}/100
-                        </span>
-                      </div>
-                      <div className={styles.tastingNoteField}>
-                        <span className={styles.tastingNoteLabel}>Snærp:</span>
-                        <span className={styles.tastingNoteValue}>
-                          {tasting.snaerp || '-'}/12 → {tasting.snaerp_score?.toFixed(0) || '-'}/100
-                        </span>
-                      </div>
+                      {!tasting.wine.main_category?.toLowerCase().includes('rød') && (
+                        <div className={styles.tastingNoteField}>
+                          <span className={styles.tastingNoteLabel}>Sødme:</span>
+                          <span className={styles.tastingNoteValue}>
+                            {tasting.sodme || '-'}/12 → {tasting.sodme_score?.toFixed(0) || '-'}/100
+                          </span>
+                        </div>
+                      )}
+                      {tasting.wine.main_category?.toLowerCase().includes('rød') && (
+                        <div className={styles.tastingNoteField}>
+                          <span className={styles.tastingNoteLabel}>Snærp:</span>
+                          <span className={styles.tastingNoteValue}>
+                            {tasting.snaerp || '-'}/12 → {tasting.snaerp_score?.toFixed(0) || '-'}/100
+                          </span>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

@@ -60,9 +60,9 @@ export default async function TopRatedWinesPage() {
             <div className={styles.wineDetails}>
               <h2 className={styles.wineName}>{he.decode(item.wine.name)}</h2>
               <p className={styles.wineInfo}>
-                {item.wine.main_country?.name} • {item.wine.main_category?.name}
+                {item.wine.main_country} • {item.wine.main_category}
               </p>
-              {item.wine.volume && <p className={styles.wineVolume}>{item.wine.volume.formattedValue}</p>}
+              {item.wine.volume && <p className={styles.wineVolume}>{item.wine.volume} cl</p>}
             </div>
 
             <div className={styles.wineScore}>
@@ -183,9 +183,9 @@ async function TopRatedWinesFallback() {
             <div className={styles.wineDetails}>
               <h2 className={styles.wineName}>{he.decode(item.wine.name)}</h2>
               <p className={styles.wineInfo}>
-                {item.wine.main_country?.name} • {item.wine.main_category?.name}
+                {item.wine.main_country} • {item.wine.main_category}
               </p>
-              {item.wine.volume && <p className={styles.wineVolume}>{item.wine.volume.formattedValue}</p>}
+              {item.wine.volume && <p className={styles.wineVolume}>{item.wine.volume} cl</p>}
             </div>
 
             <div className={styles.wineScore}>

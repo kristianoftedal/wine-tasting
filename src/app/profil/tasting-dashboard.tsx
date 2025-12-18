@@ -131,7 +131,7 @@ function TastingDashboard({ user, tastings, wines, groups, events }: TastingDash
       return sortedTastings
         .filter(t => {
           const wine = wines.find(w => w.product_id === t.product_id);
-          const categoryName = wine?.main_category?.name;
+          const categoryName = wine?.main_category;
           return categoryName === wineType && ((t[scoreKey] as number) || 0) >= 70;
         })
         .slice(0, 5);
@@ -154,7 +154,7 @@ function TastingDashboard({ user, tastings, wines, groups, events }: TastingDash
       return sortedTastings
         .filter(t => {
           const wine = wines.find(w => w.product_id === t.product_id);
-          const categoryName = wine?.main_category?.name;
+          const categoryName = wine?.main_category;
           const avgAttributeScore = (((t.friskhet || 0) + (t.fylde || 0) + (t.sodme || 0) + (t.snaerp || 0)) / 4) * 10; // Convert to 100 scale
           return categoryName === wineType && avgAttributeScore >= 70;
         })
@@ -320,7 +320,7 @@ function TastingDashboard({ user, tastings, wines, groups, events }: TastingDash
 
     highRatedTastings.forEach(t => {
       const wine = wines.find(w => w.product_id === t.product_id);
-      const styleName = wine?.main_category?.name;
+      const styleName = wine?.main_category;
       if (!styleName || styleName === 'Ukjent') {
         return;
       }
@@ -390,7 +390,7 @@ function TastingDashboard({ user, tastings, wines, groups, events }: TastingDash
 
     const recommended = allWines
       .filter(wine => {
-        const wineStyle = wine.main_category?.name;
+        const wineStyle = wine.main_category;
         return wineStyle && likedStyles.includes(wineStyle) && !tastedCodes.has(wine.product_id);
       })
       .slice(0, 6);
@@ -778,11 +778,9 @@ function TastingDashboard({ user, tastings, wines, groups, events }: TastingDash
                         <span className={styles.recommendationName}>{decode(wine.name || '')}</span>
                         <span className={styles.recommendationMeta}>
                           {wine.year}
-                          {wine.main_category?.name && (
-                            <span className={styles.categoryBadge}>{wine.main_category.name}</span>
-                          )}
+                          {wine.main_category && <span className={styles.categoryBadge}>{wine.main_category}</span>}
                         </span>
-                        <span className={styles.recommendationPrice}>Kr {wine.price?.toFixed(2)}</span>
+                        <span className={styles.recommendationPrice}>Kr {wine.price}</span>
                         {score && (
                           <div className={styles.similarityScore}>
                             <span className={styles.scoreLabel}>Match:</span>

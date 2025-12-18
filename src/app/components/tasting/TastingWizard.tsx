@@ -122,13 +122,13 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
             {index === 1 && (
               <FlavorSelection
                 type="lukt"
-                vintype={wine.main_category?.code || 'rødvin'}
+                vintype={wine.main_category?.toLowerCase().includes('rød') ? 'rødvin' : 'hvitvin'}
               />
             )}
             {index === 2 && (
               <FlavorSelection
                 type="smak"
-                vintype={wine.main_category?.code || 'rødvin'}
+                vintype={wine.main_category?.toLowerCase().includes('rød') ? 'rødvin' : 'hvitvin'}
               />
             )}
             {index === 3 && <TastingAttributes />}

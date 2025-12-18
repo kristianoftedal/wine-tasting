@@ -1,6 +1,6 @@
 'use client';
 
-import { semanticSimilarity } from '@/actions/similarity';
+import { comprehensiveSimilarity } from '@/actions/similarity';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import type { Wine } from '@/lib/types';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -78,7 +78,7 @@ export const Summary: React.FC = () => {
   const [overallScore, setOverallScore] = useState(0);
   const [isCalculating, setIsCalculating] = useState(true);
 
-  const isRedWine = wine?.main_category?.code === 'rødvin';
+  const isRedWine = wine?.main_category?.toLowerCase().includes('rød');
 
   const vmpFylde = wine?.content?.characteristics?.find(x => x.name.toLowerCase() === 'fylde')?.value;
   const vmpFriskhet = wine?.content?.characteristics?.find(x => x.name.toLowerCase() === 'friskhet')?.value;
@@ -87,33 +87,29 @@ export const Summary: React.FC = () => {
 
   useEffect(() => {
     async function calculateScores() {
-      debugger;
       setIsCalculating(true);
       try {
-        // Calculate color score
         const colorScore =
           tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
-            ? await semanticSimilarity(tastingState.farge, wine.color!)
+            ? await comprehensiveSimilarity(tastingState.farge, wine.color!)
             : 0;
 
-        // Calculate smell score
         const userSmellText = `${tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')} ${
           tastingState.lukt
         }`;
-        const smellScore = wine?.smell ? await semanticSimilarity(userSmellText, wine.smell!) : 0;
+        const smellScore = wine?.smell ? await comprehensiveSimilarity(userSmellText, wine.smell!) : 0;
 
-        // Calculate taste score
         const userTasteText = `${tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')} ${
           tastingState.smak
         }`;
-        const tasteScore = wine?.taste ? await semanticSimilarity(userTasteText, wine.taste!) : 0;
+        const tasteScore = wine?.taste ? await comprehensiveSimilarity(userTasteText, wine.taste!) : 0;
 
         const prosentScore = calculateDirectSimilarity(
           tastingState.alkohol,
           wine?.content?.traits?.[0]?.readableValue || '0'
         );
 
-        const priceScore = calculateDirectSimilarity(tastingState.pris?.toString(), wine?.price?.value?.toString());
+        const priceScore = calculateDirectSimilarity(tastingState.pris?.toString(), wine?.price);
 
         const snærpScore = vmpSnærp ? calculateNumericSimilarity(tastingState.snaerp, vmpSnærp, 10, 12) : 0;
         const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme, 10, 12) : 0;
@@ -423,7 +419,7 @@ export const Summary: React.FC = () => {
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Pris</div>
               <div className={styles.attributeValue}>{tastingState.pris} kr</div>
-              <div className={styles.attributeValue}>{wine?.price?.value} kr</div>
+              <div className={styles.attributeValue}>{wine?.price} kr</div>
               <div className={styles.scoreValue}>{scores.pris}%</div>
             </div>
           </div>
