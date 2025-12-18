@@ -42,7 +42,7 @@ export default async function TopRatedWinesPage() {
       <div className={styles.list}>
         {topRatedWines.map((item, index) => (
           <Link
-            key={item.wine.product_id}
+            key={`${item.wine.product_id}-${item.wine.year || 'no-year'}-${index}`}
             href={`/smaking/${item.wine.product_id}${item.wine.year ? `?year=${item.wine.year}` : ''}`}
             className={styles.wineCard}>
             <div className={styles.rank}>#{index + 1}</div>
@@ -165,7 +165,7 @@ async function TopRatedWinesFallback() {
       <div className={styles.list}>
         {topRatedWines.map((item, index) => (
           <Link
-            key={item.wine.product_id}
+            key={`${item.wine.product_id}-${item.wine.year || 'no-year'}-${index}`}
             href={`/smaking/${item.wine.product_id}${item.wine.year ? `?year=${item.wine.year}` : ''}`}
             className={styles.wineCard}>
             <div className={styles.rank}>#{index + 1}</div>

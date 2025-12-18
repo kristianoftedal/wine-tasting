@@ -28,58 +28,21 @@ export type Wine = {
   id: string;
   product_id: string;
   name: string;
-  description: string | null;
-  summary: string | null;
   color: string | null;
   smell: string | null;
   taste: string | null;
   year: string | null;
-  price: WinePrice | null;
-  volume: WinePrice | null;
-  litre_price: WinePrice | null;
-  age_limit: number | null;
-  allergens: string | null;
-  bio_dynamic: boolean;
-  buyable: boolean;
-  cork: string | null;
-  distributor: string | null;
-  distributor_id: number | null;
-  district: WineDistrict | null;
-  eco: boolean;
-  environmental_packaging: boolean;
-  expired: boolean;
-  main_category: WineCategory | null;
-  main_country: WineDistrict | null;
-  main_producer: WineDistrict | null;
-  sub_district: WineDistrict | null;
-  package_type: string | null;
-  release_mode: boolean;
-  similar_products: boolean;
-  status: string | null;
-  status_notification: boolean;
-  sustainable: boolean;
+  price: string | null;
+  volume: string | null;
+  district: string | null;
+  main_category: string | null;
+  main_country: string | null;
+  main_producer: string | null;
+  sub_district: string | null;
   url: string | null;
   whole_saler: string | null;
   content: WineContent | null;
   created_at: string;
-};
-
-export type WinePrice = {
-  value: number;
-  formattedValue: string;
-  readableValue: string;
-};
-
-export type WineDistrict = {
-  code: string;
-  name: string;
-  searchQuery?: string;
-  url?: string;
-};
-
-export type WineCategory = {
-  code: WineType;
-  name: string;
 };
 
 export type WineType = 'rødvin' | 'hvitvin' | 'musserende_vin' | 'rosevin';
