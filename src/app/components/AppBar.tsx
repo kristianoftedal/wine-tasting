@@ -138,11 +138,6 @@ export default function AppBar() {
               className={styles.mobileNavItem}>
               Toppliste
             </button>
-            <button
-              onClick={() => navigateTo('/sommailer')}
-              className={styles.mobileNavItem}>
-              Sommailer
-            </button>
             {!loading && isAuthenticated && (
               <>
                 <button
