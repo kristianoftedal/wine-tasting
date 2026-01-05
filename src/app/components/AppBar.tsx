@@ -128,11 +128,6 @@ export default function AppBar() {
             className={`${styles.button} ${styles.buttonOutline}`}>
             Toppliste
           </button>
-          <button
-            onClick={() => router.push('/sommailer')}
-            className={`${styles.button} ${styles.buttonOutline}`}>
-            Sommailer
-          </button>
           {authButtons()}
         </div>
 
