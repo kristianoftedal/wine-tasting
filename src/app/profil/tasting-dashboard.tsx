@@ -10,7 +10,7 @@ import {
   type RecommendationWeights,
   type WineSimilarityScore
 } from '@/lib/recommendation-types';
-import type { Group, Tasting, User, Wine, WineEvent } from '@/lib/types';
+import type { Event, Group, Tasting, Wine } from '@/lib/types';
 import { decode } from 'he';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
@@ -20,11 +20,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './page.module.css';
 
 interface TastingDashboardProps {
-  user: User;
   tastings: Tasting[];
   wines: Wine[];
+  allWines: Wine[];
   groups: Group[];
-  events: WineEvent[];
+  events: Event[];
 }
 
 type Accolade = {
@@ -51,8 +51,9 @@ function formatDate(dateString: string): string {
   return `${day}.${month}.${year}`;
 }
 
-function TastingDashboard({ user, tastings, wines, groups, events }: TastingDashboardProps) {
-  const [allWines] = useAtom(wineAtom);
+function TastingDashboard({ tastings, wines, allWines: allWinesProp, groups, events }: TastingDashboardProps) {
+  const [allWinesFromAtom] = useAtom(wineAtom);
+  const allWines = allWinesProp.length > 0 ? allWinesProp : allWinesFromAtom;
   const [activeTab, setActiveTab] = useState<'overview' | 'awards' | 'karakter' | 'history'>('overview');
   const [expandedTastingId, setExpandedTastingId] = useState<number | null>(null);
   const [similarWineRecommendations, setSimilarWineRecommendations] = useState<Wine[]>([]);
