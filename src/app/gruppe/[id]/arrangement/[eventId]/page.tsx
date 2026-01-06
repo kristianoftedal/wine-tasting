@@ -48,7 +48,9 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
           const { data: wineData } = await supabase.from('wines').select('*').in('code', eventData.wines);
 
           if (wineData) {
-            const sorted = wineData.sort((a, b) => eventData.wines.indexOf(a.code) - eventData.wines.indexOf(b.code));
+            const sorted = wineData.sort(
+              (a, b) => eventData.wines.indexOf(a.product_id) - eventData.wines.indexOf(b.product_id)
+            );
             setWines(sorted);
           }
         }
@@ -95,7 +97,7 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
 
           if (wineData) {
             const sorted = wineData.sort(
-              (a, b) => updatedEvent.wines.indexOf(a.code) - updatedEvent.wines.indexOf(b.code)
+              (a, b) => updatedEvent.wines.indexOf(a.product_id) - updatedEvent.wines.indexOf(b.product_id)
             );
             setWines(sorted);
           }
@@ -147,7 +149,8 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
     searchQuery.length > 1
       ? allWines
           .filter(
-            w => decode(w.name).toLowerCase().includes(searchQuery.toLowerCase()) && !selectedWines.includes(w.code)
+            w =>
+              decode(w.name).toLowerCase().includes(searchQuery.toLowerCase()) && !selectedWines.includes(w.product_id)
           )
           .slice(0, 10)
       : [];
@@ -284,8 +287,8 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
               <div className={styles.searchResults}>
                 {filteredWines.map(wine => (
                   <button
-                    key={wine.code}
-                    onClick={() => addWine(wine.code)}
+                    key={wine.product_id}
+                    onClick={() => addWine(wine.product_id)}
                     className={styles.searchResultItem}>
                     {decode(wine.name)}
                   </button>
@@ -298,7 +301,7 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
         {isEditing ? (
           <div className={styles.selectedWines}>
             {selectedWines.map((code, index) => {
-              const wine = allWines.find(w => w.code === code);
+              const wine = allWines.find(w => w.product_id === code);
               return (
                 <div
                   key={code}
@@ -336,12 +339,15 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
             ) : (
               wines.map((wine, index) => (
                 <article
-                  key={wine.code}
+                  key={wine.product_id}
                   className={styles.wineCard}>
                   <span className={styles.wineNumber}>{index + 1}</span>
                   <div className={styles.wineInfo}>
                     <h5 className={styles.wineTitle}>
-                      <Link href={`/smaking/${wine.code}?eventId=${event.id}${wine.year ? `&year=${wine.year}` : ''}`}>
+                      <Link
+                        href={`/smaking/${wine.product_id}?eventId=${event.id}${
+                          wine.year ? `&year=${wine.year}` : ''
+                        }`}>
                         {decode(wine.name)}
                       </Link>
                     </h5>

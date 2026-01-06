@@ -38,7 +38,7 @@ export const Color: React.FC = () => {
             <div className={styles.grapeList}>
               {wine.content.ingredients.map(x => (
                 <div
-                  key={x.code}
+                  key={x.product_id}
                   className={styles.grapeItem}>
                   • {x.formattedValue}
                 </div>
