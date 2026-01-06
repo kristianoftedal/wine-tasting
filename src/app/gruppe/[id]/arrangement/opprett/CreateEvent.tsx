@@ -56,8 +56,8 @@ export default function CreateEventForm({
     formData.append('groupId', groupId);
     wines.forEach(wine => formData.append('wines', wine.product_id));
     const event = await createEvent(formData);
+    debugger;
     router.push(`/gruppe/${groupId}/arrangement/${event.id}`);
-    router.refresh();
   };
 
   return (
@@ -85,7 +85,7 @@ export default function CreateEventForm({
       </div>
       <div className={styles.field}>
         <input
-          type="datetime-local"
+          type="date"
           value={date}
           onChange={e => setDate(e.target.value)}
           placeholder="Dato"
