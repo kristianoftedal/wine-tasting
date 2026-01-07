@@ -1,18 +1,10 @@
 'use server';
 
-import {
-  type RecommendationThresholds,
-  type RecommendationWeights,
-  type WineSimilarityScore,
-  DEFAULT_THRESHOLDS,
-  DEFAULT_WEIGHTS
-} from '@/lib/recommendation-types';
+import type { RecommendationThresholds, RecommendationWeights, WineSimilarityScore } from '@/lib/recommendation-types';
 import { createClient } from '@/lib/supabase/server';
 import type { Wine } from '@/lib/types';
 import { semanticSimilarity } from './similarity';
 
-// Re-export for convenience
-export { DEFAULT_THRESHOLDS, DEFAULT_WEIGHTS };
 export type { RecommendationThresholds, RecommendationWeights, WineSimilarityScore };
 
 /**
@@ -23,8 +15,8 @@ export type { RecommendationThresholds, RecommendationWeights, WineSimilaritySco
 export async function findSimilarWines(
   userId: string,
   limit = 10,
-  weights: RecommendationWeights = DEFAULT_WEIGHTS,
-  thresholds: RecommendationThresholds = DEFAULT_THRESHOLDS
+  weights: RecommendationWeights = { fylde: 1, friskhet: 1, snaerp: 1, sodme: 1, smell: 1, taste: 1 },
+  thresholds: RecommendationThresholds = { minKarakter: 70, candidateLimit: 100 }
 ): Promise<{ wines: Wine[]; scores: WineSimilarityScore[] }> {
   const supabase = await createClient();
 
