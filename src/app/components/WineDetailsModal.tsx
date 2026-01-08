@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import type { Wine } from '@/lib/types';
+import * as Dialog from '@radix-ui/react-dialog';
 import he from 'he';
+import { X } from 'lucide-react';
 import Link from 'next/link';
 import styles from './WineDetailsModal.module.css';
 
@@ -23,169 +23,226 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
 
   const alcohol = getCharacteristic(wine, 'Alkohol');
   const sugar = getCharacteristic(wine, 'Sukker');
-  const freshness = getCharacteristic(wine, 'Friskhet');
-  const fullness = getCharacteristic(wine, 'Fylde');
   const bitterness = getCharacteristic(wine, 'Bitterhet');
-  const sweetness = getCharacteristic(wine, 'Sødme');
-  const tannin = getCharacteristic(wine, 'Tannin') || getCharacteristic(wine, 'Garvestoffer');
+  const tannin = getCharacteristic(wine, 'Tannin');
 
   return (
-    <Dialog
+    <Dialog.Root
       open={isOpen}
       onOpenChange={onClose}>
-      <DialogContent className={styles.dialogContent}>
-        <DialogHeader>
-          <DialogTitle>{he.decode(wine.name)}</DialogTitle>
-          <DialogDescription>
-            {wine.year && <span>{wine.year} • </span>}
-            {wine.main_category}
-          </DialogDescription>
-        </DialogHeader>
+      <Dialog.Portal>
+        <Dialog.Overlay className={styles.overlay} />
+        <Dialog.Content className={styles.content}>
+          {/* Close Button */}
+          <Dialog.Close className={styles.closeButton}>
+            <X size={20} />
+          </Dialog.Close>
 
-        <div className={styles.contentGrid}>
-          {/* Wine Image */}
-          <div className={styles.imageContainer}>
-            <img
-              src={`/api/wine-image/${wine.product_id}?size=200x200`}
-              alt={he.decode(wine.name)}
-              className={styles.wineImage}
-              onError={e => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
+          {/* Header */}
+          <div className={styles.header}>
+            <Dialog.Title className={styles.title}>{he.decode(wine.name)}</Dialog.Title>
+            <Dialog.Description className={styles.subtitle}>
+              {wine.year && <span className={styles.year}>{wine.year}</span>}
+              {wine.main_category && <span className={styles.categoryBadge}>{wine.main_category}</span>}
+            </Dialog.Description>
           </div>
 
-          {/* Wine Details Grid */}
-          <div className={styles.detailsGrid}>
-            {wine.main_producer && (
-              <div>
-                <h4 className={styles.label}>Produsent</h4>
-                <p>{wine.main_producer}</p>
+          <div className={styles.modalBody}>
+            {/* Wine Image */}
+            {wine.product_id && (
+              <div className={styles.imageSection}>
+                <img
+                  src={`/api/wine-image/${wine.product_id}?size=250x250`}
+                  alt={he.decode(wine.name)}
+                  className={styles.wineImage}
+                  onError={e => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
               </div>
             )}
 
-            {wine.main_country && (
-              <div>
-                <h4 className={styles.label}>Land</h4>
-                <p>{wine.main_country}</p>
-              </div>
-            )}
+            {/* Basic Info Section */}
+            <div className={styles.infoSection}>
+              <h3 className={styles.sectionTitle}>Grunnleggende informasjon</h3>
+              <div className={styles.infoGrid}>
+                {wine.main_producer && (
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Produsent</span>
+                    <span className={styles.infoValue}>{wine.main_producer}</span>
+                  </div>
+                )}
 
-            {wine.district && (
-              <div>
-                <h4 className={styles.label}>Distrikt</h4>
-                <p>{wine.district}</p>
-              </div>
-            )}
+                {wine.main_country && (
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Land</span>
+                    <span className={styles.infoValue}>{wine.main_country}</span>
+                  </div>
+                )}
 
-            {wine.sub_district && (
-              <div>
-                <h4 className={styles.label}>Under-distrikt</h4>
-                <p>{wine.sub_district}</p>
-              </div>
-            )}
+                {wine.district && (
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Distrikt</span>
+                    <span className={styles.infoValue}>{wine.district}</span>
+                  </div>
+                )}
 
+                {wine.sub_district && (
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Under-distrikt</span>
+                    <span className={styles.infoValue}>{wine.sub_district}</span>
+                  </div>
+                )}
+
+                {wine.price && (
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Pris</span>
+                    <span className={styles.infoValue}>Kr {wine.price}</span>
+                  </div>
+                )}
+
+                {wine.volume && (
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Volum</span>
+                    <span className={styles.infoValue}>{wine.volume} cl</span>
+                  </div>
+                )}
+
+                {wine.color && (
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Farge</span>
+                    <span className={styles.infoValue}>{wine.color}</span>
+                  </div>
+                )}
+
+                {wine.content?.style?.name && (
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Stil</span>
+                    <span className={styles.infoValue}>{wine.content.style.name}</span>
+                  </div>
+                )}
+
+                {alcohol && (
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Alkohol</span>
+                    <span className={styles.infoValue}>{alcohol}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Ingredients */}
             {wine.content?.ingredients && wine.content.ingredients.length > 0 && (
-              <div className={styles.fullWidth}>
-                <h4 className={styles.label}>Ingredienser</h4>
-                <p>{wine.content.ingredients.map(i => i.formattedValue).join(', ')}</p>
-              </div>
+              <>
+                <div className={styles.separator} />
+                <div className={styles.infoSection}>
+                  <h3 className={styles.sectionTitle}>Ingredienser</h3>
+                  <p className={styles.ingredientsList}>
+                    {wine.content.ingredients.map(i => i.formattedValue).join(', ')}
+                  </p>
+                </div>
+              </>
             )}
 
-            {wine.price && (
-              <div>
-                <h4 className={styles.label}>Pris</h4>
-                <p>Kr {wine.price}</p>
-              </div>
+            {/* Characteristics Section */}
+            {(wine.friskhet !== null ||
+              wine.fylde !== null ||
+              wine.sodme !== null ||
+              wine.garvestoff !== null ||
+              bitterness) && (
+              <>
+                <div className={styles.separator} />
+                <div className={styles.infoSection}>
+                  <h3 className={styles.sectionTitle}>Karakteristikker</h3>
+                  <div className={styles.characteristicsGrid}>
+                    {wine.friskhet !== null && (
+                      <div className={styles.characteristic}>
+                        <span className={styles.characteristicLabel}>Friskhet</span>
+                        <span className={styles.characteristicValue}>{wine.friskhet}</span>
+                      </div>
+                    )}
+
+                    {wine.fylde !== null && (
+                      <div className={styles.characteristic}>
+                        <span className={styles.characteristicLabel}>Fylde</span>
+                        <span className={styles.characteristicValue}>{wine.fylde}</span>
+                      </div>
+                    )}
+
+                    {wine.sodme !== null && (
+                      <div className={styles.characteristic}>
+                        <span className={styles.characteristicLabel}>Sødme</span>
+                        <span className={styles.characteristicValue}>{wine.sodme}</span>
+                      </div>
+                    )}
+
+                    {(wine.garvestoff !== null || tannin) && (
+                      <div className={styles.characteristic}>
+                        <span className={styles.characteristicLabel}>Garvestoff</span>
+                        <span className={styles.characteristicValue}>
+                          {wine.garvestoff !== null ? wine.garvestoff : tannin}
+                        </span>
+                      </div>
+                    )}
+
+                    {bitterness && (
+                      <div className={styles.characteristic}>
+                        <span className={styles.characteristicLabel}>Bitterhet</span>
+                        <span className={styles.characteristicValue}>{bitterness}</span>
+                      </div>
+                    )}
+
+                    {sugar && (
+                      <div className={styles.characteristic}>
+                        <span className={styles.characteristicLabel}>Sukker</span>
+                        <span className={styles.characteristicValue}>{sugar}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
             )}
 
-            {wine.volume && (
-              <div>
-                <h4 className={styles.label}>Volum</h4>
-                <p>{wine.volume} cl</p>
-              </div>
+            {/* Smell & Taste Descriptions */}
+            {(wine.smell || wine.taste) && (
+              <>
+                <div className={styles.separator} />
+                <div className={styles.infoSection}>
+                  {wine.smell && (
+                    <div className={styles.descriptionBlock}>
+                      <h3 className={styles.sectionTitle}>Lukt</h3>
+                      <p className={styles.descriptionText}>{wine.smell}</p>
+                    </div>
+                  )}
+
+                  {wine.taste && (
+                    <div className={styles.descriptionBlock}>
+                      <h3 className={styles.sectionTitle}>Smak</h3>
+                      <p className={styles.descriptionText}>{wine.taste}</p>
+                    </div>
+                  )}
+                </div>
+              </>
             )}
 
-            {wine.color && (
-              <div>
-                <h4 className={styles.label}>Farge</h4>
-                <p>{wine.color}</p>
-              </div>
-            )}
-
-            {wine.content?.style?.name && (
-              <div>
-                <h4 className={styles.label}>Stil</h4>
-                <p>{wine.content.style.name}</p>
-              </div>
-            )}
-
-            {freshness && (
-              <div>
-                <h4 className={styles.label}>Friskhet</h4>
-                <p>{freshness}</p>
-              </div>
-            )}
-
-            {fullness && (
-              <div>
-                <h4 className={styles.label}>Fylde</h4>
-                <p>{fullness}</p>
-              </div>
-            )}
-
-            {bitterness && (
-              <div>
-                <h4 className={styles.label}>Bitterhet</h4>
-                <p>{bitterness}</p>
-              </div>
-            )}
-
-            {sweetness && (
-              <div>
-                <h4 className={styles.label}>Sødme</h4>
-                <p>{sweetness}</p>
-              </div>
-            )}
-
-            {tannin && (
-              <div>
-                <h4 className={styles.label}>Tannin</h4>
-                <p>{tannin}</p>
-              </div>
-            )}
-          </div>
-
-          {wine.smell && (
-            <div>
-              <h4 className={styles.descriptionLabel}>Lukt</h4>
-              <p className={styles.descriptionText}>{wine.smell}</p>
+            {/* Action Buttons */}
+            <div className={styles.separator} />
+            <div className={styles.actionButtons}>
+              <Link
+                href={`/smaking/${wine.product_id}${wine.year ? `?year=${wine.year}` : ''}`}
+                className={styles.linkButton}>
+                <button className={styles.primaryButton}>Start smaking</button>
+              </Link>
+              <button
+                onClick={onClose}
+                className={styles.secondaryButton}>
+                Lukk
+              </button>
             </div>
-          )}
-
-          {wine.taste && (
-            <div>
-              <h4 className={styles.descriptionLabel}>Smak</h4>
-              <p className={styles.descriptionText}>{wine.taste}</p>
-            </div>
-          )}
-
-          {/* Action Buttons */}
-          <div className={styles.actionButtons}>
-            <Link
-              href={`/smaking/${wine.product_id}${wine.year ? `?year=${wine.year}` : ''}`}
-              className={styles.linkButton}>
-              <Button className={styles.fullWidthButton}>Start smaking</Button>
-            </Link>
-            <Button
-              variant="outline"
-              onClick={onClose}>
-              Lukk
-            </Button>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
 

@@ -35,6 +35,10 @@ type WineInfo = {
   color: string | null;
   smell: string | null;
   taste: string | null;
+  fylde: number | null;
+  friskhet: number | null;
+  garvestoff: number | null;
+  sodme: number | null;
   content: {
     characteristics?: Array<{
       name: string;
@@ -268,21 +272,18 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                       <span className={styles.winePropertyValue}>{wine.taste}</span>
                     </div>
                   )}
-                  {!wine.main_category?.toLowerCase().includes('rød') && getCharacteristic(wine.content, 'sodme') && (
+                  {!wine.main_category?.toLowerCase().includes('rød') && wine.sodme !== null && (
                     <div className={styles.winePropertyItem}>
                       <span className={styles.winePropertyLabel}>Sødme</span>
-                      <span className={styles.winePropertyValue}>{getCharacteristic(wine.content, 'sodme')}</span>
+                      <span className={styles.winePropertyValue}>{wine.sodme}</span>
                     </div>
                   )}
-                  {wine.main_category?.toLowerCase().includes('rød') &&
-                    getCharacteristic(wine.content, 'garvestoffer') && (
-                      <div className={styles.winePropertyItem}>
-                        <span className={styles.winePropertyLabel}>Garvestoffer</span>
-                        <span className={styles.winePropertyValue}>
-                          {getCharacteristic(wine.content, 'garvestoffer')}
-                        </span>
-                      </div>
-                    )}
+                  {wine.main_category?.toLowerCase().includes('rød') && wine.garvestoff !== null && (
+                    <div className={styles.winePropertyItem}>
+                      <span className={styles.winePropertyLabel}>Garvestoffer</span>
+                      <span className={styles.winePropertyValue}>{wine.garvestoff}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 

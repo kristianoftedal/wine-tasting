@@ -42,6 +42,10 @@ export type Wine = {
   url: string | null;
   whole_saler: string | null;
   content: WineContent | null;
+  fylde: number | null;
+  friskhet: number | null;
+  garvestoff: number | null;
+  sodme: number | null;
   created_at: string;
 };
 

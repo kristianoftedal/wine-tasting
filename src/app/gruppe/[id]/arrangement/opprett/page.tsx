@@ -36,30 +36,17 @@ async function createEvent(formData: FormData): Promise<Event> {
   const wines = formData.getAll('wines') as string[];
   const groupId = formData.get('groupId') as string;
 
-  console.log('[v0] Creating event with:', {
-    name,
-    description,
-    date: date.toISOString(),
-    wines,
-    groupId,
-    userId: user.id
-  });
-
   // First, check all memberships for this user
   const { data: allMemberships, error: allMembershipsError } = await supabase
     .from('group_members')
     .select('*')
     .eq('user_id', user.id);
 
-  console.log('[v0] All memberships for user:', allMemberships, allMembershipsError?.message);
-
   // Check all members of this group
   const { data: groupMembers, error: groupMembersError } = await supabase
     .from('group_members')
     .select('*')
     .eq('group_id', groupId);
-
-  console.log('[v0] All members of group:', groupMembers, groupMembersError?.message);
 
   // Now check the specific membership
   const { data: membership, error: membershipError } = await supabase
@@ -69,15 +56,11 @@ async function createEvent(formData: FormData): Promise<Event> {
     .eq('user_id', user.id)
     .maybeSingle();
 
-  console.log('[v0] Membership check result:', { membership, error: membershipError?.message });
-
   if (membershipError) {
-    console.log('[v0] Membership query error:', membershipError.message);
     throw new Error(`Membership check failed: ${membershipError.message}`);
   }
 
   if (!membership) {
-    console.log('[v0] User is not a member of this group');
     throw new Error('You must be a member of this group to create events');
   }
 
@@ -94,7 +77,6 @@ async function createEvent(formData: FormData): Promise<Event> {
     .single<Event>();
 
   if (error) {
-    console.log('[v0] Supabase error creating event:', error.message, error.details, error.hint);
     throw new Error(`Failed to create event: ${error.message}`);
   }
 

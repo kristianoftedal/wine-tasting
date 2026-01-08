@@ -19,12 +19,6 @@ export default function SommailerPage() {
   const isLoading = status === 'streaming' || status === 'submitted';
 
   useEffect(() => {
-    console.log('[v0] Input value:', input, 'Length:', input.length);
-    console.log('[v0] Status:', status, 'isLoading:', isLoading);
-  }, [input, status, isLoading]);
-
-  useEffect(() => {
-    console.log('[v0] Messages:', messages);
     if (error) {
       console.error('[v0] Chat error:', error);
     }

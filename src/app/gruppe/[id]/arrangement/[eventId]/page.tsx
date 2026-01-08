@@ -109,8 +109,6 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
     setIsDeleting(true);
     const supabase = createClient();
 
-    console.log('[v0] Attempting to delete event:', eventId);
-
     const { data: existingEvent, error: fetchError } = await supabase
       .from('events')
       .select('id, group_id')
@@ -130,8 +128,6 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
       return;
     }
 
-    console.log('[v0] Event exists, proceeding with deletion');
-
     const { error, data } = await supabase.from('events').delete().eq('id', eventId).select();
 
     if (error) {
@@ -139,7 +135,6 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
       alert(`Kunne ikke slette arrangement: ${error.message}\nDetaljer: ${JSON.stringify(error)}`);
       setIsDeleting(false);
     } else {
-      console.log('[v0] Event deleted successfully:', data);
       window.location.href = `/gruppe/${groupId}`;
     }
   };

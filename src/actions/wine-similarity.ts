@@ -85,32 +85,10 @@ export async function findSimilarWines(
       continue;
     }
 
-    const wineCharacteristics = wine.content?.characteristics || [];
-
-    const getFylde = () => {
-      const trait = wineCharacteristics.find((c: { name: string }) => c.name.toLowerCase().includes('fylde'));
-      return trait ? Number.parseFloat(trait.value) || 0 : 0;
-    };
-
-    const getFriskhet = () => {
-      const trait = wineCharacteristics.find((c: { name: string }) => c.name.toLowerCase().includes('friskhet'));
-      return trait ? Number.parseFloat(trait.value) || 0 : 0;
-    };
-
-    const getSnaerp = () => {
-      const trait = wineCharacteristics.find((c: { name: string }) => c.name.toLowerCase().includes('garvestoffer'));
-      return trait ? Number.parseFloat(trait.value) || 0 : 0;
-    };
-
-    const getSodme = () => {
-      const trait = wineCharacteristics.find((c: { name: string }) => c.name.toLowerCase().includes('sødme'));
-      return trait ? Number.parseFloat(trait.value) || 0 : 0;
-    };
-
-    const wineFylde = getFylde();
-    const wineFriskhet = getFriskhet();
-    const wineSnaerp = getSnaerp();
-    const wineSodme = getSodme();
+    const wineFylde = wine.fylde || 0;
+    const wineFriskhet = wine.friskhet || 0;
+    const wineSnaerp = wine.garvestoff || 0;
+    const wineSodme = wine.sodme || 0;
 
     const fyldeSimilarity = wineFylde ? 100 - Math.abs(avgAttributes.fylde - wineFylde) * 20 : 50;
     const friskhetSimilarity = wineFriskhet ? 100 - Math.abs(avgAttributes.friskhet - wineFriskhet) * 20 : 50;
@@ -128,32 +106,10 @@ export async function findSimilarWines(
   const scoredWines: WineSimilarityScore[] = [];
 
   for (const { wine } of topCandidates) {
-    const wineCharacteristics = wine.content?.characteristics || [];
-
-    const getFylde = () => {
-      const trait = wineCharacteristics.find((c: { name: string }) => c.name.toLowerCase().includes('fylde'));
-      return trait ? Number.parseFloat(trait.value) || 0 : 0;
-    };
-
-    const getFriskhet = () => {
-      const trait = wineCharacteristics.find((c: { name: string }) => c.name.toLowerCase().includes('friskhet'));
-      return trait ? Number.parseFloat(trait.value) || 0 : 0;
-    };
-
-    const getSnaerp = () => {
-      const trait = wineCharacteristics.find((c: { name: string }) => c.name.toLowerCase().includes('garvestoffer'));
-      return trait ? Number.parseFloat(trait.value) || 0 : 0;
-    };
-
-    const getSodme = () => {
-      const trait = wineCharacteristics.find((c: { name: string }) => c.name.toLowerCase().includes('sødme'));
-      return trait ? Number.parseFloat(trait.value) || 0 : 0;
-    };
-
-    const wineFylde = getFylde();
-    const wineFriskhet = getFriskhet();
-    const wineSnaerp = getSnaerp();
-    const wineSodme = getSodme();
+    const wineFylde = wine.fylde || 0;
+    const wineFriskhet = wine.friskhet || 0;
+    const wineSnaerp = wine.garvestoff || 0;
+    const wineSodme = wine.sodme || 0;
 
     const fyldeSimilarity = wineFylde ? 100 - Math.abs(avgAttributes.fylde - wineFylde) * 20 : 50;
     const friskhetSimilarity = wineFriskhet ? 100 - Math.abs(avgAttributes.friskhet - wineFriskhet) * 20 : 50;

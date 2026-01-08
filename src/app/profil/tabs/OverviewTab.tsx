@@ -45,10 +45,10 @@ export default function OverviewTab({ tastings, wines, groups, events }: Overvie
         totals.color += t.color_score || 0;
         totals.smell += t.smell_score || 0;
         totals.taste += t.taste_score || 0;
-        totals.friskhet += t.friskhet || 0;
-        totals.fylde += t.fylde || 0;
-        totals.sodme += t.sodme || 0;
-        totals.snaerp += t.snaerp || 0;
+        totals.friskhet += t.friskhet_score || 0;
+        totals.fylde += t.fylde_score || 0;
+        totals.sodme += t.sodme_score || 0;
+        totals.snaerp += t.snaerp_score || 0;
         totals.karakter += t.karakter || 0;
         count++;
       }
@@ -134,25 +134,25 @@ export default function OverviewTab({ tastings, wines, groups, events }: Overvie
             <ScoreBar
               label="Friskhet"
               value={avgScores.friskhet}
-              max={10}
+              max={100}
               color="#34d399"
             />
             <ScoreBar
               label="Fylde"
               value={avgScores.fylde}
-              max={10}
+              max={100}
               color="#fbbf24"
             />
             <ScoreBar
               label="Sødme"
               value={avgScores.sodme}
-              max={10}
+              max={100}
               color="#fb923c"
             />
             <ScoreBar
               label="Snærp"
               value={avgScores.snaerp}
-              max={10}
+              max={100}
               color="#f87171"
             />
           </div>

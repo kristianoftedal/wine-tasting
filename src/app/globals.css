@@ -171,6 +171,10 @@ body {
   padding: 0;
   background-color: var(--background);
   color: var(--foreground);
+  /* Ensure body is scrollable on mobile */
+  min-height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 h1,
@@ -181,4 +185,13 @@ h5,
 h6 {
   font-weight: 600;
   line-height: 1.3;
+}
+
+/* Ensure proper stacking for Dialog components using correct selectors */
+[data-slot='dialog-overlay'] {
+  z-index: 9998 !important;
+}
+
+[data-slot='dialog-content'] {
+  z-index: 9999 !important;
 }

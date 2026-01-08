@@ -125,7 +125,7 @@ export default function AwardsTab({ tastings, wines }: AwardsTabProps) {
       {
         id: 'red-smell-expert',
         title: 'Rødvinsduft-ekspert',
-        description: '5 rødviner med 70+ i lukt',
+        description: '5 r��dviner med 70+ i lukt',
         icon: '🍷',
         color: '#dc2626',
         earned: redSmellCount >= 5

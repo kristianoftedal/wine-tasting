@@ -1,9 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import type { Wine } from '@/lib/types';
-import he from 'he';
-import Image from 'next/image';
-import Link from 'next/link';
 import styles from './page.module.css';
+import TopRatedWinesList from './TopRatedWinesList';
 
 interface TopRatedWine {
   wine: Wine;
@@ -39,42 +37,7 @@ export default async function TopRatedWinesPage() {
         <p className={styles.subtitle}>De 20 best vurderte vinene basert på brukernes smakingsnotater</p>
       </div>
 
-      <div className={styles.list}>
-        {topRatedWines.map((item, index) => (
-          <Link
-            key={`${item.wine.product_id}-${item.wine.year || 'no-year'}-${index}`}
-            href={`/smaking/${item.wine.product_id}${item.wine.year ? `?year=${item.wine.year}` : ''}`}
-            className={styles.wineCard}>
-            <div className={styles.rank}>#{index + 1}</div>
-
-            <div className={styles.wineImage}>
-              <Image
-                src={`/api/wine-image/${item.wine.product_id}`}
-                alt={he.decode(item.wine.name)}
-                width={80}
-                height={120}
-                className={styles.image}
-              />
-            </div>
-
-            <div className={styles.wineDetails}>
-              <h2 className={styles.wineName}>{he.decode(item.wine.name)}</h2>
-              <p className={styles.wineInfo}>
-                {item.wine.main_country} • {item.wine.main_category}
-              </p>
-              {item.wine.volume && <p className={styles.wineVolume}>{item.wine.volume} cl</p>}
-            </div>
-
-            <div className={styles.wineScore}>
-              <div className={styles.scoreValue}>{item.average_karakter.toFixed(1)}</div>
-              <div className={styles.scoreSuffix}>/10</div>
-              <div className={styles.tastingCount}>
-                {item.tasting_count} {item.tasting_count === 1 ? 'vurdering' : 'vurderinger'}
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <TopRatedWinesList topRatedWines={topRatedWines} />
     </main>
   );
 }
@@ -162,42 +125,7 @@ async function TopRatedWinesFallback() {
         <p className={styles.subtitle}>De 20 best vurderte vinene basert på brukernes smakingsnotater</p>
       </div>
 
-      <div className={styles.list}>
-        {topRatedWines.map((item, index) => (
-          <Link
-            key={`${item.wine.product_id}-${item.wine.year || 'no-year'}-${index}`}
-            href={`/smaking/${item.wine.product_id}${item.wine.year ? `?year=${item.wine.year}` : ''}`}
-            className={styles.wineCard}>
-            <div className={styles.rank}>#{index + 1}</div>
-
-            <div className={styles.wineImage}>
-              <Image
-                src={`/api/wine-image/${item.wine.product_id}`}
-                alt={he.decode(item.wine.name)}
-                width={80}
-                height={120}
-                className={styles.image}
-              />
-            </div>
-
-            <div className={styles.wineDetails}>
-              <h2 className={styles.wineName}>{he.decode(item.wine.name)}</h2>
-              <p className={styles.wineInfo}>
-                {item.wine.main_country} • {item.wine.main_category}
-              </p>
-              {item.wine.volume && <p className={styles.wineVolume}>{item.wine.volume} cl</p>}
-            </div>
-
-            <div className={styles.wineScore}>
-              <div className={styles.scoreValue}>{item.average_karakter.toFixed(1)}</div>
-              <div className={styles.scoreSuffix}>/10</div>
-              <div className={styles.tastingCount}>
-                {item.tasting_count} {item.tasting_count === 1 ? 'vurdering' : 'vurderinger'}
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <TopRatedWinesList topRatedWines={topRatedWines} />
     </main>
   );
 }
