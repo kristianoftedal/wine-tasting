@@ -18,20 +18,19 @@ export default async function EventScoresPage({ params }: { params: Promise<{ ev
     );
   }
 
-  // Fetch wines for the event
   const { data: wines } = await supabase
     .from('wines')
-    .select('product_id, name, year, color, smell, taste, content')
-    .in('product_id', event.wines.length > 0 ? event.wines : ['']);
+    .select(
+      'id, product_id, name, year, color, smell, taste, fylde, friskhet, garvestoff, sodme, content, main_category'
+    )
+    .in('id', event.wines.length > 0 ? event.wines : ['']);
 
-  // Sort wines by event order
-  const sortedWines =
-    wines?.sort((a, b) => event.wines.indexOf(a.product_id) - event.wines.indexOf(b.product_id)) || [];
+  const sortedWines = wines?.sort((a, b) => event.wines.indexOf(a.id) - event.wines.indexOf(b.id)) || [];
 
   const { data: initialTastings } = await supabase
     .from('tastings')
     .select(
-      'id, product_id, user_id, overall_score, color_score, smell_score, taste_score, friskhet_score, fylde_score, sodme_score, snaerp_score, karakter, farge, lukt, smak, friskhet, fylde, sodme, snaerp'
+      'id, wine_id, user_id, overall_score, color_score, smell_score, taste_score, friskhet_score, fylde_score, sodme_score, snaerp_score, karakter, farge, lukt, smak, friskhet, fylde, sodme, snaerp'
     )
     .eq('event_id', eventId);
 

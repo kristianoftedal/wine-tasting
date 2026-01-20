@@ -6,7 +6,7 @@ import type React from 'react';
 import { useState } from 'react';
 import styles from './CreateEvent.module.css';
 
-type WineSelection = Pick<Wine, 'name' | 'product_id'>;
+type WineSelection = Pick<Wine, 'name' | 'id'>;
 
 export default function CreateEventForm({
   createEvent,
@@ -36,15 +36,15 @@ export default function CreateEventForm({
   };
 
   const addWine = (wine: WineSelection) => {
-    if (!wines.some(x => x.product_id === wine.product_id)) {
+    if (!wines.some(x => x.id === wine.id)) {
       setWines([...wines, wine]);
     }
     setSearchQuery('');
     setSearchResults([]);
   };
 
-  const removeWine = (product_id: string) => {
-    setWines(wines.filter(x => x.product_id !== product_id));
+  const removeWine = (wineId: string) => {
+    setWines(wines.filter(x => x.id !== wineId));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -54,10 +54,10 @@ export default function CreateEventForm({
     formData.append('description', description);
     formData.append('date', date);
     formData.append('groupId', groupId);
-    wines.forEach(wine => formData.append('wines', wine.product_id));
+    wines.forEach(wine => formData.append('wines', wine.id));
     const event = await createEvent(formData);
-    debugger;
     router.push(`/gruppe/${groupId}/arrangement/${event.id}`);
+    router.refresh();
   };
 
   return (
@@ -85,7 +85,7 @@ export default function CreateEventForm({
       </div>
       <div className={styles.field}>
         <input
-          type="date"
+          type="datetime-local"
           value={date}
           onChange={e => setDate(e.target.value)}
           placeholder="Dato"
@@ -107,7 +107,7 @@ export default function CreateEventForm({
           <ul className={styles.list}>
             {searchResults.map(x => (
               <li
-                key={x.product_id}
+                key={x.id}
                 className={styles.listItem}>
                 <span>{x.name}</span>
                 <button
@@ -127,12 +127,12 @@ export default function CreateEventForm({
           <ul className={styles.list}>
             {wines.map(x => (
               <li
-                key={x.product_id}
+                key={x.id}
                 className={styles.listItem}>
                 <span>{x.name}</span>
                 <button
                   type="button"
-                  onClick={() => removeWine(x.product_id)}
+                  onClick={() => removeWine(x.id)}
                   className={`${styles.button} ${styles.removeButton}`}>
                   Fjern
                 </button>

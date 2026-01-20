@@ -6,7 +6,7 @@ import type { Wine } from '@/lib/types';
 import { semanticSimilarity } from './similarity';
 
 function getCategoryAttributes(category: string) {
-  if (category === 'Rödvin') {
+  if (category === 'Rødvin') {
     return {
       useGarvestoff: true,
       useSodme: false
@@ -45,29 +45,21 @@ export async function findSimilarWinesSQL(
     return { wines: [], scores: [] };
   }
 
-  // Get all product_ids from tastings to fetch wine data
-  const productIds = allTastings.map(t => t.product_id);
+  const wineIds = allTastings.map(t => t.wine_id).filter(Boolean);
 
-  // Fetch wines data for these product_ids
-  const { data: winesData } = await supabase
-    .from('wines')
-    .select('product_id, main_category')
-    .in('product_id', productIds);
+  const { data: winesData } = await supabase.from('wines').select('id, main_category').in('id', wineIds);
 
-  // Create a map for quick lookup
-  const wineMap = new Map(winesData?.map(w => [w.product_id, w]) || []);
+  const wineMap = new Map(winesData?.map(w => [w.id, w]) || []);
 
-  // Enrich tastings with wine data
   const enrichedTastings = allTastings
     .map(t => ({
       ...t,
-      wine: wineMap.get(t.product_id)
+      wine: wineMap.get(t.wine_id)
     }))
     .filter(t => t.wine); // Only keep tastings where we found the wine
 
   let highRatedTastings = enrichedTastings;
 
-  // Filter by category if specified
   if (category && highRatedTastings.length > 0) {
     highRatedTastings = highRatedTastings.filter((t: any) => {
       return t.wine?.main_category === category;
@@ -81,7 +73,6 @@ export async function findSimilarWinesSQL(
     return { wines: [], scores: [] };
   }
 
-  // This ensures each section queries wines of the correct type
   const targetCategory = category || null;
 
   const avgAttributes = {
@@ -107,21 +98,25 @@ export async function findSimilarWinesSQL(
     avgAttributes.sodme /= count;
   }
 
-  const { data: allUserTastings } = await supabase.from('tastings').select('product_id').eq('user_id', userId);
-  const tastedCodes = allUserTastings?.map(t => t.product_id) || [];
+  const { data: allUserTastings } = await supabase.from('tastings').select('wine_id').eq('user_id', userId);
+  const tastedWineIds = allUserTastings?.map(t => t.wine_id).filter(Boolean) || [];
 
   const { data: candidateWines, error } = await supabase.rpc('find_similar_wines_weighted', {
     p_avg_fylde: avgAttributes.fylde,
     p_avg_friskhet: avgAttributes.friskhet,
-    p_avg_snaerp: avgAttributes.snaerp,
+    p_avg_garvestoff: avgAttributes.snaerp,
     p_avg_sodme: avgAttributes.sodme,
     p_weight_fylde: weights.fylde,
     p_weight_friskhet: weights.friskhet,
-    p_weight_snaerp: weights.snaerp,
+    p_weight_garvestoff: weights.snaerp,
     p_weight_sodme: weights.sodme,
-    p_excluded_codes: tastedCodes,
-    p_main_category: targetCategory, // This will filter wines by category in SQL
-    p_limit: thresholds.candidateLimit
+    p_smell_similarity: 0.5,
+    p_taste_similarity: 0.5,
+    p_alcohol_similarity: 0.5,
+    p_price_similarity: 0.5,
+    p_excluded_wine_ids: tastedWineIds,
+    p_main_category: targetCategory,
+    p_limit: thresholds.candidateLimit || limit * 2
   });
 
   if (error) {
@@ -133,8 +128,8 @@ export async function findSimilarWinesSQL(
     return { wines: [], scores: [] };
   }
 
-  const highRatedCodes = highRatedTastings.map(t => t.product_id);
-  const { data: highRatedWines } = await supabase.from('wines').select('*').in('product_id', highRatedCodes);
+  const highRatedWineIds = highRatedTastings.map(t => t.wine_id).filter(Boolean);
+  const { data: highRatedWines } = await supabase.from('wines').select('*').in('id', highRatedWineIds);
 
   const highRatedSmells = highRatedWines?.map(w => w.smell || '').filter(Boolean) || [];
   const highRatedTastes = highRatedWines?.map(w => w.taste || '').filter(Boolean) || [];

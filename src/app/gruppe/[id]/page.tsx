@@ -100,7 +100,7 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
                 <Link
                   href={`/gruppe/${id}/arrangement/${x.id}`}
                   className={styles.eventLink}>
-                  {x.name} {format(new Date(x.date), 'P')}
+                  {x.name} {format(new Date(x.date), 'Pp')}
                 </Link>
               </h3>
               <p className={styles.eventDescription}>{x.description}</p>

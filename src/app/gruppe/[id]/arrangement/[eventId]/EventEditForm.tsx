@@ -5,6 +5,7 @@ import { useState } from 'react';
 import styles from './page.module.css';
 
 interface EventEditFormProps {
+  eventId: string;
   initialName: string;
   initialDescription: string;
   initialDate: string;
@@ -15,6 +16,7 @@ interface EventEditFormProps {
 }
 
 export default function EventEditForm({
+  eventId,
   initialName,
   initialDescription,
   initialDate,
@@ -39,15 +41,15 @@ export default function EventEditForm({
     }
   };
 
-  const addWine = (wineCode: string) => {
-    if (!selectedWines.includes(wineCode)) {
-      setSelectedWines([...selectedWines, wineCode]);
+  const addWine = (wineId: string) => {
+    if (!selectedWines.includes(wineId)) {
+      setSelectedWines([...selectedWines, wineId]);
     }
     setSearchQuery('');
   };
 
-  const removeWine = (wineCode: string) => {
-    setSelectedWines(selectedWines.filter(c => c !== wineCode));
+  const removeWine = (wineId: string) => {
+    setSelectedWines(selectedWines.filter(c => c !== wineId));
   };
 
   const moveWine = (index: number, direction: 'up' | 'down') => {
@@ -62,8 +64,7 @@ export default function EventEditForm({
     searchQuery.length > 1
       ? allWines
           .filter(
-            w =>
-              decode(w.name).toLowerCase().includes(searchQuery.toLowerCase()) && !selectedWines.includes(w.product_id)
+            w => decode(w.name).toLowerCase().includes(searchQuery.toLowerCase()) && !selectedWines.includes(w.id)
           )
           .slice(0, 10)
       : [];
@@ -133,8 +134,8 @@ export default function EventEditForm({
             <div className={styles.searchResults}>
               {filteredWines.map(wine => (
                 <button
-                  key={wine.product_id}
-                  onClick={() => addWine(wine.product_id)}
+                  key={wine.id}
+                  onClick={() => addWine(wine.id)}
                   className={styles.searchResultItem}>
                   {decode(wine.name)}
                 </button>
@@ -144,14 +145,14 @@ export default function EventEditForm({
         </div>
 
         <div className={styles.selectedWines}>
-          {selectedWines.map((code, index) => {
-            const wine = allWines.find(w => w.product_id === code);
+          {selectedWines.map((wineId, index) => {
+            const wine = allWines.find(w => w.id === wineId);
             return (
               <div
-                key={code}
+                key={wineId}
                 className={styles.selectedWineItem}>
                 <span className={styles.wineNumber}>{index + 1}</span>
-                <span className={styles.selectedWineName}>{wine ? decode(wine.name) : code}</span>
+                <span className={styles.selectedWineName}>{wine ? decode(wine.name) : wineId}</span>
                 <div className={styles.wineActions}>
                   <button
                     onClick={() => moveWine(index, 'up')}
@@ -166,7 +167,7 @@ export default function EventEditForm({
                     ↓
                   </button>
                   <button
-                    onClick={() => removeWine(code)}
+                    onClick={() => removeWine(wineId)}
                     className={styles.removeButton}>
                     ×
                   </button>

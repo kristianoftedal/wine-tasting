@@ -1,34 +1,34 @@
-import { createClient } from '@/lib/supabase/server';
-import type { Wine } from '@/lib/types';
-import styles from './page.module.css';
-import TopRatedWinesList from './TopRatedWinesList';
+import { createClient } from "@/lib/supabase/server"
+import type { Wine } from "@/lib/types"
+import styles from "./page.module.css"
+import TopRatedWinesList from "./TopRatedWinesList"
 
 interface TopRatedWine {
-  wine: Wine;
-  average_karakter: number;
-  tasting_count: number;
+  wine: Wine
+  average_karakter: number
+  tasting_count: number
 }
 
 export default async function TopRatedWinesPage() {
-  const supabase = await createClient();
+  const supabase = await createClient()
 
   // This avoids fetching all tastings and doing aggregation in JS
-  const { data: topWinesData, error } = await supabase.rpc('get_top_rated_wines', {
-    limit_count: 20
-  });
+  const { data: topWinesData, error } = await supabase.rpc("get_top_rated_wines", {
+    limit_count: 20,
+  })
 
   if (error || !topWinesData || topWinesData.length === 0) {
     // Fallback to original approach if RPC doesn't exist
-    return <TopRatedWinesFallback />;
+    return <TopRatedWinesFallback />
   }
 
   const topRatedWines: TopRatedWine[] = topWinesData.map(
     (item: { wine: Wine; avg_karakter: number; rating_count: number }) => ({
       wine: item.wine,
       average_karakter: item.avg_karakter,
-      tasting_count: item.rating_count
-    })
-  );
+      tasting_count: item.rating_count,
+    }),
+  )
 
   return (
     <main className={styles.container}>
@@ -39,15 +39,15 @@ export default async function TopRatedWinesPage() {
 
       <TopRatedWinesList topRatedWines={topRatedWines} />
     </main>
-  );
+  )
 }
 
 async function TopRatedWinesFallback() {
-  const supabase = await createClient();
+  const supabase = await createClient()
 
-  // Get aggregated ratings joined with wines in a single efficient query
-  // Only fetch wines that exist in the wines table
-  const { data: wines } = await supabase.from('wines').select('product_id, name, main_country, main_category, volume');
+  const { data: wines } = await supabase
+    .from("wines")
+    .select("id, product_id, name, main_country, main_category, volume")
 
   if (!wines || wines.length === 0) {
     return (
@@ -55,17 +55,15 @@ async function TopRatedWinesFallback() {
         <h1 className={styles.title}>Toppliste</h1>
         <p className={styles.error}>Kunne ikke laste toppliste</p>
       </main>
-    );
+    )
   }
 
-  // Create a set of valid wine product_ids for fast lookup
-  const validWineIds = new Set(wines.map(w => w.product_id));
+  const validWineIds = new Set(wines.map((w) => w.id))
 
-  // Fetch only tastings for wines that exist
   const { data: topRatedData, error } = await supabase
-    .from('tastings')
-    .select('product_id, karakter')
-    .not('karakter', 'is', null);
+    .from("tastings")
+    .select("wine_id, karakter")
+    .not("karakter", "is", null)
 
   if (error || !topRatedData) {
     return (
@@ -73,50 +71,51 @@ async function TopRatedWinesFallback() {
         <h1 className={styles.title}>Toppliste</h1>
         <p className={styles.error}>Kunne ikke laste toppliste</p>
       </main>
-    );
+    )
   }
 
-  // Filter to only include tastings for wines that exist, then aggregate
   const wineScores = topRatedData
-    .filter(t => validWineIds.has(t.product_id))
-    .reduce((acc, tasting) => {
-      const productId = tasting.product_id;
-      if (!acc[productId]) {
-        acc[productId] = { sum: 0, count: 0 };
-      }
-      acc[productId].sum += tasting.karakter!;
-      acc[productId].count += 1;
-      return acc;
-    }, {} as Record<string, { sum: number; count: number }>);
+    .filter((t) => validWineIds.has(t.wine_id))
+    .reduce(
+      (acc, tasting) => {
+        const wineId = tasting.wine_id
+        if (!acc[wineId]) {
+          acc[wineId] = { sum: 0, count: 0 }
+        }
+        acc[wineId].sum += tasting.karakter!
+        acc[wineId].count += 1
+        return acc
+      },
+      {} as Record<string, { sum: number; count: number }>,
+    )
 
   // Calculate averages and sort by rating first, then count
   const sortedWines = Object.entries(wineScores)
-    .map(([productId, { sum, count }]) => ({
-      productId,
+    .map(([wineId, { sum, count }]) => ({
+      wineId,
       average: sum / count,
-      count
+      count,
     }))
     .sort((a, b) => {
       if (b.average !== a.average) {
-        return b.average - a.average;
+        return b.average - a.average
       }
-      return b.count - a.count;
+      return b.count - a.count
     })
-    .slice(0, 20);
+    .slice(0, 20)
 
-  // Map to final structure
-  const wineMap = new Map(wines.map(w => [w.product_id, w]));
+  const wineMap = new Map(wines.map((w) => [w.id, w]))
   const topRatedWines: TopRatedWine[] = sortedWines
-    .map(({ productId, average, count }) => {
-      const wine = wineMap.get(productId);
-      if (!wine) return null;
+    .map(({ wineId, average, count }) => {
+      const wine = wineMap.get(wineId)
+      if (!wine) return null
       return {
         wine: wine as Wine,
         average_karakter: average,
-        tasting_count: count
-      };
+        tasting_count: count,
+      }
     })
-    .filter(Boolean) as TopRatedWine[];
+    .filter(Boolean) as TopRatedWine[]
 
   return (
     <main className={styles.container}>
@@ -127,5 +126,5 @@ async function TopRatedWinesFallback() {
 
       <TopRatedWinesList topRatedWines={topRatedWines} />
     </main>
-  );
+  )
 }

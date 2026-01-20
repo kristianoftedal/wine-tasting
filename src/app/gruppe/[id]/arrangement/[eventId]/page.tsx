@@ -4,13 +4,11 @@ import { createClient } from '@/lib/supabase/client';
 import type { Event, Wine } from '@/lib/types';
 import { decode } from 'he';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import EventEditForm from './EventEditForm';
 import styles from './page.module.css';
 
 export default function EditArrangement({ params }: { params: Promise<{ id: string; eventId: string }> }) {
-  const router = useRouter();
   const [event, setEvent] = useState<Event | null>(null);
   const [wines, setWines] = useState<Wine[]>([]);
   const [allWines, setAllWines] = useState<Wine[]>([]);
@@ -41,13 +39,10 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
       setEvent(eventData);
 
       if (eventData.wines?.length > 0) {
-        const { data: winesData } = await supabase.from('wines').select('*').in('product_id', eventData.wines);
+        const { data: winesData } = await supabase.from('wines').select('*').in('id', eventData.wines);
 
         if (winesData) {
-          // Sort wines according to the order in event.wines array
-          const sorted = winesData.sort(
-            (a, b) => eventData.wines.indexOf(a.product_id) - eventData.wines.indexOf(b.product_id)
-          );
+          const sorted = winesData.sort((a, b) => eventData.wines.indexOf(a.id) - eventData.wines.indexOf(b.id));
           setWines(sorted);
           setAllWines(winesData);
         }
@@ -85,12 +80,10 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
       setEvent(updatedEvent);
 
       if (updatedEvent.wines?.length > 0) {
-        const { data: winesData } = await supabase.from('wines').select('*').in('product_id', updatedEvent.wines);
+        const { data: winesData } = await supabase.from('wines').select('*').in('id', updatedEvent.wines);
 
         if (winesData) {
-          const sorted = winesData.sort(
-            (a, b) => updatedEvent.wines.indexOf(a.product_id) - updatedEvent.wines.indexOf(b.product_id)
-          );
+          const sorted = winesData.sort((a, b) => updatedEvent.wines.indexOf(a.id) - updatedEvent.wines.indexOf(b.id));
           setWines(sorted);
           setAllWines(winesData);
         }
@@ -108,6 +101,8 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
 
     setIsDeleting(true);
     const supabase = createClient();
+
+    console.log('[v0] Attempting to delete event:', eventId);
 
     const { data: existingEvent, error: fetchError } = await supabase
       .from('events')
@@ -128,6 +123,8 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
       return;
     }
 
+    console.log('[v0] Event exists, proceeding with deletion');
+
     const { error, data } = await supabase.from('events').delete().eq('id', eventId).select();
 
     if (error) {
@@ -135,6 +132,7 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
       alert(`Kunne ikke slette arrangement: ${error.message}\nDetaljer: ${JSON.stringify(error)}`);
       setIsDeleting(false);
     } else {
+      console.log('[v0] Event deleted successfully:', data);
       window.location.href = `/gruppe/${groupId}`;
     }
   };
@@ -232,17 +230,13 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
           ) : (
             wines.map((wine, index) => (
               <article
-                key={wine.product_id}
+                key={wine.id}
                 className={styles.wineCard}>
                 <span className={styles.wineNumber}>{index + 1}</span>
                 <div className={styles.wineInfo}>
                   <h5 className={styles.wineTitle}>
-                    <Link
-                      href={`/smaking/${wine.product_id}?eventId=${event.id}${wine.year ? `&year=${wine.year}` : ''}`}>
-                      {decode(wine.name)}
-                    </Link>
+                    <Link href={`/smaking/${wine.id}?eventId=${event.id}`}>{decode(wine.name)}</Link>
                   </h5>
-                  {wine.description && <p className={styles.wineDescription}>{wine.description}</p>}
                 </div>
               </article>
             ))

@@ -67,8 +67,7 @@ export const Search: React.FC = () => {
     setSearchValue('');
     setIsLoading(false);
     setTasting(initialTastingForm);
-    const yearParam = wine.year ? `?year=${wine.year}` : '';
-    router.push(`/smaking/${wine.product_id}${yearParam}`);
+    router.push(`/smaking/${wine.id}`);
   };
 
   const handleClear = () => {

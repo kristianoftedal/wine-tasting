@@ -8,7 +8,7 @@ import styles from './page.module.css';
 
 type TastingScore = {
   id: string;
-  product_id: string;
+  wine_id: string; // Changed from product_id to wine_id
   user_id: string;
   overall_score: number | null;
   color_score: number | null;
@@ -29,6 +29,7 @@ type TastingScore = {
 };
 
 type WineInfo = {
+  id: string; // Added wine UUID id
   product_id: string;
   name: string;
   year: string | null;
@@ -107,7 +108,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
   }, [eventId, supabase, profileMap]);
 
   const wineScores = wines.map(wine => {
-    const wineTastings = tastings.filter(t => t.product_id === wine.product_id);
+    const wineTastings = tastings.filter(t => t.wine_id === wine.id);
     const count = wineTastings.length;
 
     if (count === 0) {
@@ -154,10 +155,10 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
     return b.avgOverall - a.avgOverall;
   });
 
-  const toggleWine = (productId: string) => {
-    setExpandedWine(expandedWine === productId ? null : productId);
-    if (!activeTab[productId]) {
-      setActiveTab(prev => ({ ...prev, [productId]: 'overall' }));
+  const toggleWine = (wineId: string) => {
+    setExpandedWine(expandedWine === wineId ? null : wineId);
+    if (!activeTab[wineId]) {
+      setActiveTab(prev => ({ ...prev, [wineId]: 'overall' }));
     }
   };
 
@@ -165,7 +166,8 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
     setExpandedParticipant(expandedParticipant === tastingId ? null : tastingId);
   };
 
-  const getActiveTab = (productId: string) => activeTab[productId] || 'overall';
+  // getActiveTab now uses wine UUID id
+  const getActiveTab = (wineId: string) => activeTab[wineId] || 'overall';
 
   const getCharacteristic = (content: WineInfo['content'], key: string): string | null => {
     if (!content?.characteristics || !Array.isArray(content.characteristics)) return null;
@@ -177,13 +179,13 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
     <div className={styles.scoresContainer}>
       {sortedWineScores.map((wine, index) => (
         <div
-          key={wine.product_id}
-          className={`${styles.wineAccordion} ${expandedWine === wine.product_id ? styles.wineAccordionExpanded : ''}`}>
+          key={wine.id}
+          className={`${styles.wineAccordion} ${expandedWine === wine.id ? styles.wineAccordionExpanded : ''}`}>
           {/* Wine Accordion Header */}
           <button
             className={styles.wineAccordionTrigger}
-            onClick={() => toggleWine(wine.product_id)}
-            aria-expanded={expandedWine === wine.product_id}>
+            onClick={() => toggleWine(wine.id)}
+            aria-expanded={expandedWine === wine.id}>
             <div className={styles.wineAccordionHeader}>
               <div className={styles.wineImageWrapper}>
                 {wine.avgOverall !== null && (
@@ -228,7 +230,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2.5"
-                    className={expandedWine === wine.product_id ? styles.chevronRotated : ''}>
+                    className={expandedWine === wine.id ? styles.chevronRotated : ''}>
                     <path d="M6 9l6 6 6-6" />
                   </svg>
                 </div>
@@ -237,7 +239,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
           </button>
 
           {/* Wine Accordion Content */}
-          {expandedWine === wine.product_id && wine.count > 0 && (
+          {expandedWine === wine.id && wine.count > 0 && (
             <div className={styles.wineAccordionContent}>
               {/* Wine Properties Section */}
               <div className={styles.winePropertiesSection}>
@@ -300,9 +302,9 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                     <button
                       key={tab.id}
                       className={`${styles.tabButton} ${
-                        getActiveTab(wine.product_id) === tab.id ? styles.tabButtonActive : ''
+                        getActiveTab(wine.id) === tab.id ? styles.tabButtonActive : ''
                       }`}
-                      onClick={() => setActiveTab(prev => ({ ...prev, [wine.product_id]: tab.id }))}>
+                      onClick={() => setActiveTab(prev => ({ ...prev, [wine.id]: tab.id }))}>
                       {tab.label}
                     </button>
                   ))}
@@ -311,7 +313,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
 
               {/* Tab Content */}
               <div className={styles.tabContent}>
-                {getActiveTab(wine.product_id) === 'overall' && (
+                {getActiveTab(wine.id) === 'overall' && (
                   <ParticipantAccordionList
                     tastings={wine.tastings}
                     scoreKey="overall_score"
@@ -322,7 +324,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                   />
                 )}
 
-                {getActiveTab(wine.product_id) === 'farge' && (
+                {getActiveTab(wine.id) === 'farge' && (
                   <ParticipantAccordionList
                     tastings={wine.tastings}
                     scoreKey="color_score"
@@ -333,7 +335,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                   />
                 )}
 
-                {getActiveTab(wine.product_id) === 'lukt' && (
+                {getActiveTab(wine.id) === 'lukt' && (
                   <ParticipantAccordionList
                     tastings={wine.tastings}
                     scoreKey="smell_score"
@@ -344,7 +346,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                   />
                 )}
 
-                {getActiveTab(wine.product_id) === 'smak' && (
+                {getActiveTab(wine.id) === 'smak' && (
                   <ParticipantAccordionList
                     tastings={wine.tastings}
                     scoreKey="taste_score"
@@ -355,7 +357,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                   />
                 )}
 
-                {getActiveTab(wine.product_id) === 'attributter' && (
+                {getActiveTab(wine.id) === 'attributter' && (
                   <ParticipantAccordionList
                     tastings={wine.tastings}
                     scoreKey="overall_score"
@@ -369,7 +371,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
             </div>
           )}
 
-          {expandedWine === wine.product_id && wine.count === 0 && (
+          {expandedWine === wine.id && wine.count === 0 && (
             <div className={styles.wineAccordionContent}>
               <p className={styles.noTastingsExpanded}>Ingen har smakt denne vinen ennå.</p>
             </div>

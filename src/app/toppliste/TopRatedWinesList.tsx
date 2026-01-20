@@ -1,40 +1,41 @@
-'use client';
+"use client"
 
-import WineDetailsModal from '@/app/components/WineDetailsModal';
-import type { Wine } from '@/lib/types';
-import he from 'he';
-import Image from 'next/image';
-import { useState } from 'react';
-import styles from './page.module.css';
+import { useState } from "react"
+import type { Wine } from "@/lib/types"
+import Image from "next/image"
+import he from "he"
+import WineDetailsModal from "@/app/components/WineDetailsModal"
+import styles from "./page.module.css"
 
 interface TopRatedWine {
-  wine: Wine;
-  average_karakter: number;
-  tasting_count: number;
+  wine: Wine
+  average_karakter: number
+  tasting_count: number
 }
 
 interface TopRatedWinesListProps {
-  topRatedWines: TopRatedWine[];
+  topRatedWines: TopRatedWine[]
 }
 
 export default function TopRatedWinesList({ topRatedWines }: TopRatedWinesListProps) {
-  const [selectedWine, setSelectedWine] = useState<Wine | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedWine, setSelectedWine] = useState<Wine | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleWineClick = (wine: Wine) => {
-    setSelectedWine(wine);
-    setIsModalOpen(true);
-  };
+    setSelectedWine(wine)
+    setIsModalOpen(true)
+  }
 
   return (
     <>
       <div className={styles.list}>
         {topRatedWines.map((item, index) => (
           <div
-            key={`${item.wine.product_id}-${item.wine.year || 'no-year'}-${index}`}
+            key={`${item.wine.product_id}-${item.wine.year || "no-year"}-${index}`}
             className={styles.wineCard}
             onClick={() => handleWineClick(item.wine)}
-            style={{ cursor: 'pointer' }}>
+            style={{ cursor: "pointer" }}
+          >
             <div className={styles.rank}>#{index + 1}</div>
 
             <div className={styles.wineImage}>
@@ -59,7 +60,7 @@ export default function TopRatedWinesList({ topRatedWines }: TopRatedWinesListPr
               <div className={styles.scoreValue}>{item.average_karakter.toFixed(1)}</div>
               <div className={styles.scoreSuffix}>/10</div>
               <div className={styles.tastingCount}>
-                {item.tasting_count} {item.tasting_count === 1 ? 'vurdering' : 'vurderinger'}
+                {item.tasting_count} {item.tasting_count === 1 ? "vurdering" : "vurderinger"}
               </div>
             </div>
           </div>
@@ -70,10 +71,10 @@ export default function TopRatedWinesList({ topRatedWines }: TopRatedWinesListPr
         wine={selectedWine}
         isOpen={isModalOpen}
         onClose={() => {
-          setIsModalOpen(false);
-          setSelectedWine(null);
+          setIsModalOpen(false)
+          setSelectedWine(null)
         }}
       />
     </>
-  );
+  )
 }

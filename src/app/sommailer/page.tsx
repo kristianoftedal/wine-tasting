@@ -1,54 +1,57 @@
-'use client';
-import AppBar from '@/app/components/AppBar';
-import type React from 'react';
+"use client"
+import AppBar from "@/app/components/AppBar"
+import type React from "react"
 
-import { useChat } from '@ai-sdk/react';
-import { DefaultChatTransport } from 'ai';
-import { useEffect, useRef, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import styles from './page.module.css';
+import { useChat } from "@ai-sdk/react"
+import { DefaultChatTransport } from "ai"
+import { useEffect, useRef, useState } from "react"
+import ReactMarkdown from "react-markdown"
+import styles from "./page.module.css"
 
 export default function SommailerPage() {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [input, setInput] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [input, setInput] = useState("")
 
   const { messages, sendMessage, status, error } = useChat({
-    transport: new DefaultChatTransport({ api: '/api/sommailer' })
-  });
+    transport: new DefaultChatTransport({ api: "/api/sommailer" }),
+  })
 
-  const isLoading = status === 'streaming' || status === 'submitted';
+  const isLoading = status === "streaming" || status === "submitted"
 
   useEffect(() => {
+    console.log("[v0] Input value:", input, "Length:", input.length)
+    console.log("[v0] Status:", status, "isLoading:", isLoading)
+  }, [input, status, isLoading])
+
+  useEffect(() => {
+    console.log("[v0] Messages:", messages)
     if (error) {
-      console.error('[v0] Chat error:', error);
+      console.error("[v0] Chat error:", error)
     }
-  }, [messages, error]);
+  }, [messages, error])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages])
 
   const handleSend = () => {
-    if (!input.trim() || isLoading) return;
-    sendMessage({ text: input });
-    setInput('');
-  };
+    if (!input.trim() || isLoading) return
+    sendMessage({ text: input })
+    setInput("")
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault()
+      handleSend()
     }
-  };
+  }
 
   const MarkdownLink = ({ href, children }: { href?: string; children?: React.ReactNode }) => (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer">
+    <a href={href} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
-  );
+  )
 
   return (
     <>
@@ -86,13 +89,14 @@ export default function SommailerPage() {
             </div>
           )}
 
-          {messages.map(message => (
+          {messages.map((message) => (
             <div
               key={message.id}
-              className={`${styles.message} ${message.role === 'user' ? styles.userMessage : styles.assistantMessage}`}>
+              className={`${styles.message} ${message.role === "user" ? styles.userMessage : styles.assistantMessage}`}
+            >
               <div className={styles.messageContent}>
-                {typeof message.content === 'string' ? (
-                  message.role === 'assistant' ? (
+                {typeof message.content === "string" ? (
+                  message.role === "assistant" ? (
                     <div className={styles.messageText}>
                       <ReactMarkdown components={{ a: MarkdownLink }}>{message.content}</ReactMarkdown>
                     </div>
@@ -101,22 +105,18 @@ export default function SommailerPage() {
                   )
                 ) : (
                   message.parts?.map((part, index) => {
-                    if (part.type === 'text') {
-                      return message.role === 'assistant' ? (
-                        <div
-                          key={index}
-                          className={styles.messageText}>
+                    if (part.type === "text") {
+                      return message.role === "assistant" ? (
+                        <div key={index} className={styles.messageText}>
                           <ReactMarkdown components={{ a: MarkdownLink }}>{part.text}</ReactMarkdown>
                         </div>
                       ) : (
-                        <div
-                          key={index}
-                          className={styles.messageText}>
+                        <div key={index} className={styles.messageText}>
                           {part.text}
                         </div>
-                      );
+                      )
                     }
-                    return null;
+                    return null
                   })
                 )}
               </div>
@@ -142,7 +142,7 @@ export default function SommailerPage() {
           <input
             type="text"
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Still et spørsmål om vin..."
             className={styles.input}
@@ -152,11 +152,12 @@ export default function SommailerPage() {
             type="button"
             onClick={handleSend}
             className={styles.sendButton}
-            disabled={isLoading || input.length === 0}>
+            disabled={isLoading || input.length === 0}
+          >
             Send
           </button>
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -63,16 +63,16 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
       return;
     }
 
-    if (!wine?.product_id) {
+    if (!wine?.id) {
       setIsSaving(false);
       return;
     }
 
-    const productId = wine.product_id;
+    const wineId = wine.id;
     const tastedAt = new Date();
 
     try {
-      await addTasting({ ...tasting, userId, productId, tastedAt, eventId: eventId || undefined });
+      await addTasting({ ...tasting, userId, wineId: wineId, tastedAt, eventId: eventId || undefined });
       setIsSaved(true);
     } catch (error) {
       console.error('Error saving tasting:', error);
@@ -122,13 +122,13 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
             {index === 1 && (
               <FlavorSelection
                 type="lukt"
-                vintype={wine.main_category?.toLowerCase().includes('rød') ? 'rødvin' : 'hvitvin'}
+                vintype={wine.main_category}
               />
             )}
             {index === 2 && (
               <FlavorSelection
                 type="smak"
-                vintype={wine.main_category?.toLowerCase().includes('rød') ? 'rødvin' : 'hvitvin'}
+                vintype={wine.main_category}
               />
             )}
             {index === 3 && <TastingAttributes />}

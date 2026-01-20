@@ -1,32 +1,32 @@
-'use client';
+"use client"
 
-import type { Tasting, Wine } from '@/lib/types';
-import { decode } from 'he';
-import Image from 'next/image';
-import { useMemo } from 'react';
-import styles from '../page.module.css';
+import type { Tasting, Wine } from "@/lib/types"
+import { useMemo } from "react"
+import Image from "next/image"
+import { decode } from "he"
+import styles from "../page.module.css"
 
 interface HistoryTabProps {
-  tastings: Tasting[];
-  wines: Wine[];
+  tastings: Tasting[]
+  wines: Wine[]
 }
 
 function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
+  const date = new Date(dateString)
+  const day = date.getDate().toString().padStart(2, "0")
+  const month = (date.getMonth() + 1).toString().padStart(2, "0")
+  const year = date.getFullYear()
+  return `${day}.${month}.${year}`
 }
 
 export default function HistoryTab({ tastings, wines }: HistoryTabProps) {
   const sortedTastings = useMemo(() => {
     return [...tastings].sort((a, b) => {
-      const dateA = new Date(a.tasted_at).getTime();
-      const dateB = new Date(b.tasted_at).getTime();
-      return dateB - dateA;
-    });
-  }, [tastings]);
+      const dateA = new Date(a.tasted_at).getTime()
+      const dateB = new Date(b.tasted_at).getTime()
+      return dateB - dateA
+    })
+  }, [tastings])
 
   return (
     <div className={styles.historySection}>
@@ -36,28 +36,21 @@ export default function HistoryTab({ tastings, wines }: HistoryTabProps) {
         </div>
       ) : (
         <div className={styles.historyList}>
-          {sortedTastings.map(tasting => {
-            const wine = wines.find(w => w.product_id === tasting.product_id);
-            if (!wine) return null;
+          {sortedTastings.map((tasting) => {
+            const wine = wines.find((w) => w.id === tasting.wine_id)
+            if (!wine) return null
 
-            const overallScore = tasting.overall_score || 0;
-            const karakter = tasting.karakter || 0;
+            const overallScore = tasting.overall_score || 0
+            const karakter = tasting.karakter || 0
 
             return (
-              <details
-                key={tasting.id}
-                className={styles.historyItem}>
+              <details key={tasting.id} className={styles.historyItem}>
                 <summary className={styles.historySummary}>
                   <div className={styles.historyThumb}>
                     {wine.image_url ? (
-                      <Image
-                        src={wine.image_url || '/placeholder.svg'}
-                        alt={wine.name}
-                        width={50}
-                        height={70}
-                      />
+                      <Image src={wine.image_url || "/placeholder.svg"} alt={wine.name} width={50} height={70} />
                     ) : (
-                      <div style={{ fontSize: '1.5rem' }}>🍷</div>
+                      <div style={{ fontSize: "1.5rem" }}>🍷</div>
                     )}
                   </div>
                   <div className={styles.historyInfo}>
@@ -195,7 +188,9 @@ export default function HistoryTab({ tastings, wines }: HistoryTabProps) {
                       )}
                       {tasting.karakter !== null && (
                         <div className={styles.historyScoreItem}>
-                          <span className={styles.historyScoreLabel}>Karakter</span>
+                          <span className={styles.historyScoreLabel}>
+                            Karakter {tasting.karakter_score && <span>({tasting.karakter_score})</span>}
+                          </span>
                           <div className={styles.historyScoreBarTrack}>
                             <div
                               className={styles.historyScoreBarFill}
@@ -231,10 +226,10 @@ export default function HistoryTab({ tastings, wines }: HistoryTabProps) {
                   </div>
                 </div>
               </details>
-            );
+            )
           })}
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -13,18 +13,8 @@ interface WineDetailsModalProps {
   onClose: () => void;
 }
 
-function getCharacteristic(wine: Wine, name: string): string | null {
-  const char = wine.content?.characteristics?.find(c => c.name.toLowerCase() === name.toLowerCase());
-  return char?.readableValue || null;
-}
-
 export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProps) {
   if (!wine) return null;
-
-  const alcohol = getCharacteristic(wine, 'Alkohol');
-  const sugar = getCharacteristic(wine, 'Sukker');
-  const bitterness = getCharacteristic(wine, 'Bitterhet');
-  const tannin = getCharacteristic(wine, 'Tannin');
 
   return (
     <Dialog.Root
@@ -115,41 +105,26 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
                   </div>
                 )}
 
-                {wine.content?.style?.name && (
-                  <div className={styles.infoItem}>
-                    <span className={styles.infoLabel}>Stil</span>
-                    <span className={styles.infoValue}>{wine.content.style.name}</span>
-                  </div>
-                )}
-
-                {alcohol && (
-                  <div className={styles.infoItem}>
-                    <span className={styles.infoLabel}>Alkohol</span>
-                    <span className={styles.infoValue}>{alcohol}</span>
-                  </div>
-                )}
+                <div className={styles.infoItem}>
+                  <span className={styles.infoLabel}>Alkohol</span>
+                  <span className={styles.infoValue}>{wine.alcohol}</span>
+                </div>
               </div>
             </div>
 
             {/* Ingredients */}
-            {wine.content?.ingredients && wine.content.ingredients.length > 0 && (
+            {wine.grapes && wine.grapes.length > 0 && (
               <>
                 <div className={styles.separator} />
                 <div className={styles.infoSection}>
-                  <h3 className={styles.sectionTitle}>Ingredienser</h3>
-                  <p className={styles.ingredientsList}>
-                    {wine.content.ingredients.map(i => i.formattedValue).join(', ')}
-                  </p>
+                  <h3 className={styles.sectionTitle}>Druer</h3>
+                  <p className={styles.ingredientsList}>{wine.grapes.join(', ')}</p>
                 </div>
               </>
             )}
 
             {/* Characteristics Section */}
-            {(wine.friskhet !== null ||
-              wine.fylde !== null ||
-              wine.sodme !== null ||
-              wine.garvestoff !== null ||
-              bitterness) && (
+            {(wine.friskhet !== null || wine.fylde !== null || wine.sodme !== null || wine.garvestoff !== null) && (
               <>
                 <div className={styles.separator} />
                 <div className={styles.infoSection}>
@@ -176,28 +151,20 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
                       </div>
                     )}
 
-                    {(wine.garvestoff !== null || tannin) && (
-                      <div className={styles.characteristic}>
-                        <span className={styles.characteristicLabel}>Garvestoff</span>
-                        <span className={styles.characteristicValue}>
-                          {wine.garvestoff !== null ? wine.garvestoff : tannin}
-                        </span>
-                      </div>
-                    )}
+                    <div className={styles.characteristic}>
+                      <span className={styles.characteristicLabel}>Garvestoff</span>
+                      <span className={styles.characteristicValue}>{wine.garvestoff}</span>
+                    </div>
 
-                    {bitterness && (
-                      <div className={styles.characteristic}>
-                        <span className={styles.characteristicLabel}>Bitterhet</span>
-                        <span className={styles.characteristicValue}>{bitterness}</span>
-                      </div>
-                    )}
+                    <div className={styles.characteristic}>
+                      <span className={styles.characteristicLabel}>Syre</span>
+                      <span className={styles.characteristicValue}>{wine.acidity}</span>
+                    </div>
 
-                    {sugar && (
-                      <div className={styles.characteristic}>
-                        <span className={styles.characteristicLabel}>Sukker</span>
-                        <span className={styles.characteristicValue}>{sugar}</span>
-                      </div>
-                    )}
+                    <div className={styles.characteristic}>
+                      <span className={styles.characteristicLabel}>Sukker</span>
+                      <span className={styles.characteristicValue}>{wine.sugar}</span>
+                    </div>
                   </div>
                 </div>
               </>

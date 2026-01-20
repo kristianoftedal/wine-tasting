@@ -35,30 +35,23 @@ export type Wine = {
   price: string | null;
   volume: string | null;
   district: string | null;
-  main_category: string | null;
+  main_category: WineType | null;
   main_country: string | null;
   main_producer: string | null;
   sub_district: string | null;
-  url: string | null;
   whole_saler: string | null;
-  content: WineContent | null;
   fylde: number | null;
   friskhet: number | null;
   garvestoff: number | null;
   sodme: number | null;
-  created_at: string;
+  alcohol: string;
+  grapes: string[];
+  sugar: string;
+  acidity: string;
+  is_good_for: string[];
 };
 
-export type WineType = 'rødvin' | 'hvitvin' | 'musserende_vin' | 'rosevin';
-
-export type WineContent = {
-  characteristics: Array<{ name: string; readableValue: string; value: string }>;
-  ingredients: Array<{ code: string; formattedValue: string; readableValue: string }>;
-  isGoodFor: Array<{ code: string; name: string }>;
-  storagePotential: { code: string; formattedValue: string };
-  style: { code: string; description: string; name: string };
-  traits: Array<{ formattedValue: string; name: string; readableValue: string }>;
-};
+export type WineType = 'Rødvin' | 'Hvitvin' | 'Musserende vin' | 'Rosévin';
 
 export type Event = {
   id: string;
@@ -173,9 +166,8 @@ export type TastingFormData = {
   selectedFlavorsLukt: SelectedFlavor[]; // Keep for UI, will be transformed to smell
   selectedFlavorsSmak: SelectedFlavor[]; // Keep for UI, will be transformed to taste
   userId: string;
-  productId: string;
+  wineId: string;
   tastedAt: Date;
-
   colorScore: number;
   smellScore: number;
   tasteScore: number;
@@ -198,7 +190,7 @@ export function tastingFormToDb(form: TastingFormData): Omit<Tasting, 'id' | 'cr
 
   return {
     user_id: form.userId,
-    product_id: form.productId,
+    product_id: form.wineId,
     event_id: form.eventId || null,
     farge: form.farge || null,
     smell: smellFlavors || null,
@@ -249,7 +241,7 @@ export function tastingDbToForm(db: Tasting): TastingFormData {
     selectedFlavorsLukt,
     selectedFlavorsSmak,
     userId: db.user_id,
-    productId: db.product_id,
+    wineId: db.product_id,
     tastedAt: new Date(db.tasted_at),
     colorScore: db.color_score || 0,
     smellScore: db.smell_score || 0,
@@ -286,7 +278,7 @@ export const initialTastingForm: TastingFormData = {
   luktIntensitet: '',
   smaksIntensitet: '',
   userId: '',
-  productId: '',
+  wineId: '',
   alkohol: '',
   pris: 0,
   tastedAt: new Date(),

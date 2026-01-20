@@ -27,7 +27,7 @@ export const Color: React.FC = () => {
     return null;
   };
 
-  const hasGrapes = wine.content?.ingredients && wine.content.ingredients.length > 0;
+  const hasGrapes = wine.grapes && wine.grapes.length > 0;
 
   return (
     <div className={styles.colorContainer}>
@@ -36,11 +36,11 @@ export const Color: React.FC = () => {
           <span className={styles.wineInfoLabel}>Druer:</span>
           {hasGrapes ? (
             <div className={styles.grapeList}>
-              {wine.content.ingredients.map(x => (
+              {wine.grapes.map((x, index) => (
                 <div
-                  key={x.product_id}
+                  key={x || `grape-${index}`}
                   className={styles.grapeItem}>
-                  • {x.formattedValue}
+                  • {x}
                 </div>
               ))}
             </div>

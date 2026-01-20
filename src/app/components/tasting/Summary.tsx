@@ -80,10 +80,23 @@ export const Summary: React.FC = () => {
 
   const isRedWine = wine?.main_category?.toLowerCase().includes('rød');
 
-  const vmpFylde = wine?.content?.characteristics?.find(x => x.name.toLowerCase() === 'fylde')?.value;
-  const vmpFriskhet = wine?.content?.characteristics?.find(x => x.name.toLowerCase() === 'friskhet')?.value;
-  const vmpSnærp = wine?.content?.characteristics?.find(x => x.name.toLowerCase() === 'garvestoffer')?.value;
-  const vmpSødme = wine?.content?.characteristics?.find(x => x.name.toLowerCase() === 'sødme')?.value;
+  const getCharacteristicValue = (
+    columnValue: number | null | undefined,
+    characteristicName: string
+  ): number | null => {
+    // First try to use the column value
+    if (columnValue != null) {
+      return columnValue;
+    }
+
+    return null;
+  };
+
+  const vmpFylde = getCharacteristicValue(wine?.fylde, 'fylde');
+  const vmpFriskhet = getCharacteristicValue(wine?.friskhet, 'friskhet');
+  const vmpSnærp = getCharacteristicValue(wine?.garvestoff, 'garvestoffer');
+  const vmpSødme = getCharacteristicValue(wine?.sodme, 'sødme');
+  // </CHANGE>
 
   useEffect(() => {
     async function calculateScores() {
@@ -104,10 +117,7 @@ export const Summary: React.FC = () => {
         }`;
         const tasteScore = wine?.taste ? await comprehensiveSimilarity(userTasteText, wine.taste!) : 0;
 
-        const prosentScore = calculateDirectSimilarity(
-          tastingState.alkohol,
-          wine?.content?.traits?.[0]?.readableValue || '0'
-        );
+        const prosentScore = calculateDirectSimilarity(tastingState.alkohol, wine?.alcohol);
 
         const priceScore = calculateDirectSimilarity(tastingState.pris?.toString(), wine?.price);
 
@@ -133,10 +143,10 @@ export const Summary: React.FC = () => {
         const halfWeightProps = ['pris', 'alkoholProsent'];
         const scoreEntries = Object.entries(newScores).filter(([key, value]) => {
           // Skip characteristics that don't have expert data
-          if (key === 'friskhet' && !vmpFriskhet) return false;
-          if (key === 'fylde' && !vmpFylde) return false;
-          if (key === 'snaerp' && !vmpSnærp) return false;
-          if (key === 'sodme' && !vmpSødme) return false;
+          if (key === 'friskhet' && vmpFriskhet === null) return false;
+          if (key === 'fylde' && vmpFylde === null) return false;
+          if (key === 'snaerp' && vmpSnærp === null) return false;
+          if (key === 'sodme' && vmpSødme === null) return false;
           return true;
         });
 
@@ -373,23 +383,29 @@ export const Summary: React.FC = () => {
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Friskhet</div>
               <div className={styles.attributeValue}>{tastingState.friskhet}</div>
-              <div className={styles.attributeValue}>{vmpFriskhet || 'Ikke tilgjengelig'}</div>
-              <div className={styles.scoreValue}>{vmpFriskhet ? `${scores.friskhet}%` : '-'}</div>
+              <div className={styles.attributeValue}>
+                {vmpFriskhet != null ? vmpFriskhet.toString() : 'Ikke tilgjengelig'}
+              </div>
+              <div className={styles.scoreValue}>{vmpFriskhet != null ? `${scores.friskhet}%` : '-'}</div>
             </div>
 
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Fylde</div>
               <div className={styles.attributeValue}>{tastingState.fylde}</div>
-              <div className={styles.attributeValue}>{vmpFylde || 'Ikke tilgjengelig'}</div>
-              <div className={styles.scoreValue}>{vmpFylde ? `${scores.fylde}%` : '-'}</div>
+              <div className={styles.attributeValue}>
+                {vmpFylde != null ? vmpFylde.toString() : 'Ikke tilgjengelig'}
+              </div>
+              <div className={styles.scoreValue}>{vmpFylde != null ? `${scores.fylde}%` : '-'}</div>
             </div>
 
             {isRedWine && (
               <div className={styles.tableRow}>
                 <div className={styles.attributeName}>Snærp</div>
                 <div className={styles.attributeValue}>{tastingState.snaerp || '-'}</div>
-                <div className={styles.attributeValue}>{vmpSnærp || 'Ikke tilgjengelig'}</div>
-                <div className={styles.scoreValue}>{vmpSnærp ? `${scores.snaerp}%` : '-'}</div>
+                <div className={styles.attributeValue}>
+                  {vmpSnærp != null ? vmpSnærp.toString() : 'Ikke tilgjengelig'}
+                </div>
+                <div className={styles.scoreValue}>{vmpSnærp != null ? `${scores.snaerp}%` : '-'}</div>
               </div>
             )}
 
@@ -397,8 +413,10 @@ export const Summary: React.FC = () => {
               <div className={styles.tableRow}>
                 <div className={styles.attributeName}>Sødme</div>
                 <div className={styles.attributeValue}>{tastingState.sodme || '-'}</div>
-                <div className={styles.attributeValue}>{vmpSødme || 'Ikke tilgjengelig'}</div>
-                <div className={styles.scoreValue}>{vmpSødme ? `${scores.sodme}%` : '-'}</div>
+                <div className={styles.attributeValue}>
+                  {vmpSødme != null ? vmpSødme.toString() : 'Ikke tilgjengelig'}
+                </div>
+                <div className={styles.scoreValue}>{vmpSødme != null ? `${scores.sodme}%` : '-'}</div>
               </div>
             )}
 
@@ -412,7 +430,7 @@ export const Summary: React.FC = () => {
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Alkohol</div>
               <div className={styles.attributeValue}>{tastingState.alkohol}%</div>
-              <div className={styles.attributeValue}>{wine?.content?.traits?.[0]?.readableValue}</div>
+              <div className={styles.attributeValue}>{wine?.alcohol}</div>
               <div className={styles.scoreValue}>{scores.alkoholProsent}%</div>
             </div>
 

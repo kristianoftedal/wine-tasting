@@ -8,12 +8,12 @@ import { initialTastingValue, tastingAtom } from '../../store/tasting';
 
 export default function NavButton({
   eventId,
-  code: productId,
+  wineId,
   year,
   children
 }: {
   eventId: string;
-  code: string;
+  wineId: string;
   year?: string;
   children: React.ReactNode;
 }) {
@@ -25,7 +25,7 @@ export default function NavButton({
     const params = new URLSearchParams();
     params.set('eventId', eventId);
     if (year) params.set('year', year);
-    router.push(`/smaking/${productId}?${params.toString()}`);
+    router.push(`/smaking/${wineId}?${params.toString()}`);
   };
   return (
     <button
