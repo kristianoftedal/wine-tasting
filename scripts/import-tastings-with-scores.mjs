@@ -173,7 +173,7 @@ async function importTastings() {
       const { data: wine } = await supabase
         .from('wines')
         .select('*')
-        .eq('code', tasting.productId)
+        .eq('product_id', tasting.productId)
         .single()
       
       // Calculate scores

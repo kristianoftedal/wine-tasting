@@ -401,9 +401,9 @@ async function comprehensiveSimilarity(text1, text2) {
     ])
 
     const validScores = [standardScore, lemmaScore, categoryScore].filter(s => !isNaN(s) && s !== null)
-
+    
     if (validScores.length === 0) return 0
-
+    
     const averageScore = Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length)
     return isNaN(averageScore) ? 0 : averageScore
   } catch (error) {

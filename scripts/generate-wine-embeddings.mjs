@@ -10,7 +10,7 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-const BATCH_SIZE = 1000
+const BATCH_SIZE = 500
 
 function generateSearchText(wine) {
   const parts = [
@@ -79,7 +79,7 @@ async function generateEmbedding(text, maxRetries = 3) {
       if (attempt === maxRetries) throw error
       // Exponential backoff: 2s, 4s, 8s
       const waitTime = Math.pow(2, attempt) * 1000
-      console.log(`Waiting ${waitTime / 1000}s before retry...`)
+      console.log(`Waiting ${waitTime/1000}s before retry...`)
       await new Promise(resolve => setTimeout(resolve, waitTime))
     }
   }
@@ -88,7 +88,7 @@ async function generateEmbedding(text, maxRetries = 3) {
 
 async function processWines() {
   console.log('Fetching wines from database...')
-
+  
   const { data: wines, error, count } = await supabase
     .from('wines')
     .select('id, product_id, name, description, summary, color, smell, taste, main_category, main_country, main_producer, district, sub_district, content, search_text', { count: 'exact' })
@@ -125,9 +125,9 @@ async function processWines() {
 
       const { error: updateError } = await supabase
         .from('wines')
-        .update({
+        .update({ 
           search_text: searchText,
-          embedding
+          embedding 
         })
         .eq('id', wine.id)
 
@@ -150,7 +150,7 @@ async function processWines() {
   }
 
   console.log(`\nComplete! Processed: ${processed}, Errors: ${errors}`)
-
+  
   const { count: remainingCount } = await supabase
     .from('wines')
     .select('id', { count: 'exact', head: true })

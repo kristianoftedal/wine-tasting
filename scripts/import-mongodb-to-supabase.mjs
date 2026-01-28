@@ -212,12 +212,12 @@ async function importWines() {
     const newId = generateUUID();
     
     const productId = 
+      wine.product_id ||
+      wine.Product_id ||
       wine.code || 
       wine.Code ||
       wine.productId || 
       wine.ProductId ||
-      wine.product_id ||
-      wine.Product_id ||
       wine.varenummer ||
       wine.Varenummer ||
       wine.sku ||
