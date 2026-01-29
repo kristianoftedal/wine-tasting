@@ -30,10 +30,31 @@ export default function EventEditForm({
   const [description, setDescription] = useState(initialDescription)
   const [date, setDate] = useState(initialDate)
   const [selectedWines, setSelectedWines] = useState<string[]>(initialWines)
+  const [selectedWineNames, setSelectedWineNames] = useState<Map<string, string>>(new Map())
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState<Wine[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+
+  // Load wine names for selected wines on mount
+  useEffect(() => {
+    const loadWineNames = async () => {
+      if (initialWines.length === 0) return
+      
+      const supabase = createClient()
+      const { data } = await supabase
+        .from("wines")
+        .select("id, name")
+        .in("id", initialWines)
+      
+      if (data) {
+        const namesMap = new Map<string, string>()
+        data.forEach(w => namesMap.set(w.id, w.name))
+        setSelectedWineNames(namesMap)
+      }
+    }
+    loadWineNames()
+  }, [initialWines])
 
   // Server-side search for wines
   const searchWines = useCallback(async (query: string) => {
@@ -79,11 +100,13 @@ export default function EventEditForm({
     }
   }
 
-  const addWine = (wineId: string) => {
-    if (!selectedWines.includes(wineId)) {
-      setSelectedWines([...selectedWines, wineId])
+  const addWine = (wine: Wine) => {
+    if (!selectedWines.includes(wine.id)) {
+      setSelectedWines([...selectedWines, wine.id])
+      setSelectedWineNames(prev => new Map(prev).set(wine.id, wine.name))
     }
     setSearchQuery("")
+    setSearchResults([])
   }
 
   const removeWine = (wineId: string) => {
@@ -101,6 +124,15 @@ export default function EventEditForm({
   // Use server-side search results instead of client-side filtering
   const filteredWines = searchResults
 
+  // Get wine name from either the names map or allWines
+  const getWineName = (wineId: string) => {
+    const fromMap = selectedWineNames.get(wineId)
+    if (fromMap) return decode(fromMap)
+    const fromAll = allWines.find(w => w.id === wineId)
+    if (fromAll) return decode(fromAll.name)
+    return wineId
+  }
+
   return (
     <div className={styles.editForm}>
       <div className={styles.header}>
@@ -111,15 +143,6 @@ export default function EventEditForm({
           className={styles.titleInput}
           placeholder="Navn på arrangement"
         />
-
-        <div className={styles.headerActions}>
-          <button onClick={onCancel} className={styles.cancelButton} disabled={isSaving}>
-            Avbryt
-          </button>
-          <button onClick={handleSubmit} className={styles.saveButton} disabled={isSaving}>
-            {isSaving ? "Lagrer..." : "Lagre"}
-          </button>
-        </div>
       </div>
 
       <section className={styles.section}>
@@ -154,7 +177,7 @@ export default function EventEditForm({
           {filteredWines.length > 0 && (
             <div className={styles.searchResults}>
               {filteredWines.map((wine) => (
-                <button key={wine.id} onClick={() => addWine(wine.id)} className={styles.searchResultItem}>
+                <button key={wine.id} onClick={() => addWine(wine)} className={styles.searchResultItem}>
                   {decode(wine.name)}
                 </button>
               ))}
@@ -163,33 +186,39 @@ export default function EventEditForm({
         </div>
 
         <div className={styles.selectedWines}>
-          {selectedWines.map((wineId, index) => {
-            const wine = allWines.find((w) => w.id === wineId)
-            return (
-              <div key={wineId} className={styles.selectedWineItem}>
-                <span className={styles.wineNumber}>{index + 1}</span>
-                <span className={styles.selectedWineName}>{wine ? decode(wine.name) : wineId}</span>
-                <div className={styles.wineActions}>
-                  <button onClick={() => moveWine(index, "up")} disabled={index === 0} className={styles.moveButton}>
-                    ↑
-                  </button>
-                  <button
-                    onClick={() => moveWine(index, "down")}
-                    disabled={index === selectedWines.length - 1}
-                    className={styles.moveButton}
-                  >
-                    ↓
-                  </button>
-                  <button onClick={() => removeWine(wineId)} className={styles.removeButton}>
-                    ×
-                  </button>
-                </div>
+          {selectedWines.map((wineId, index) => (
+            <div key={wineId} className={styles.selectedWineItem}>
+              <span className={styles.wineNumber}>{index + 1}</span>
+              <span className={styles.selectedWineName}>{getWineName(wineId)}</span>
+              <div className={styles.wineActions}>
+                <button onClick={() => moveWine(index, "up")} disabled={index === 0} className={styles.moveButton}>
+                  ↑
+                </button>
+                <button
+                  onClick={() => moveWine(index, "down")}
+                  disabled={index === selectedWines.length - 1}
+                  className={styles.moveButton}
+                >
+                  ↓
+                </button>
+                <button onClick={() => removeWine(wineId)} className={styles.removeButton}>
+                  ×
+                </button>
               </div>
-            )
-          })}
+            </div>
+          ))}
           {selectedWines.length === 0 && <p className={styles.emptyWines}>Ingen viner valgt</p>}
         </div>
       </section>
+
+      <div className={styles.formActions}>
+        <button onClick={onCancel} className={styles.cancelButton} disabled={isSaving}>
+          Avbryt
+        </button>
+        <button onClick={handleSubmit} className={styles.saveButton} disabled={isSaving}>
+          {isSaving ? "Lagrer..." : "Lagre"}
+        </button>
+      </div>
     </div>
   )
 }
