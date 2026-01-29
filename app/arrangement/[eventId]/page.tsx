@@ -157,12 +157,9 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
             return (
               <NavButton wineId={wine.id} eventId={eventId} year={wine.year} key={`${wine.id}-${wine.year || index}`}>
                 <article className={`${styles.wineCard} ${isTasted ? styles.wineCardTasted : ""} ${isNextSuggested ? styles.wineCardSuggested : ""}`}>
-                  {/* Header row: number, title, status badge */}
-                  <div className={styles.wineCardHeader}>
+                  {/* Row 1: Number badge + Status indicator */}
+                  <div className={styles.wineCardRow1}>
                     <div className={styles.wineNumberBadge}>{index + 1}</div>
-                    <h3 className={styles.wineName}>
-                      {he.decode(wine.name)} {wine.year && `${wine.year}`}
-                    </h3>
                     {isTasted && (
                       <div className={styles.statusBadgeTasted}>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
@@ -181,56 +178,34 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
                     )}
                   </div>
 
-                  {/* Content area: image (desktop only) + details */}
-                  <div className={styles.wineCardContent}>
-                    {/* Wine image - hidden on mobile */}
-                    <div className={styles.wineImageWrapper}>
-                      {wineImage ? (
-                        <Image
-                          src={wineImage || "/placeholder.svg"}
-                          alt={he.decode(wine.name)}
-                          width={80}
-                          height={120}
-                          className={styles.wineImage}
-                        />
-                      ) : (
-                        <div className={styles.wineImagePlaceholder}>
-                          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            <path d="M8 22h8M12 22v-7M12 15a7 7 0 0 0 7-7V2H5v6a7 7 0 0 0 7 7z" />
-                          </svg>
-                        </div>
-                      )}
-                    </div>
+                  {/* Row 2: Wine name with vintage */}
+                  <h3 className={styles.wineName}>
+                    {he.decode(wine.name)} {wine.year && `${wine.year}`}
+                  </h3>
 
-                    {/* Wine details */}
-                    <div className={styles.wineDetails}>
-                      <div className={styles.wineMetaRow}>
-                        {wine.main_category && (
-                          <span
-                            className={styles.wineCategory}
-                            style={{ backgroundColor: categoryColors.bg, color: categoryColors.text }}
-                          >
-                            {wine.main_category}
-                          </span>
-                        )}
-                        {wine.main_country && (
-                          <span className={styles.wineCountry}>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <circle cx="12" cy="12" r="10" />
-                              <line x1="2" y1="12" x2="22" y2="12" />
-                              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                            </svg>
-                            {wine.main_country}
-                          </span>
-                        )}
-                        {formattedPrice && (
-                          <span className={styles.winePrice}>Kr {formattedPrice}</span>
-                        )}
-                      </div>
-                    </div>
+                  {/* Row 3: Wine metadata (category, country, price) */}
+                  <div className={styles.wineMetaRow}>
+                    {wine.main_category && (
+                      <span
+                        className={styles.wineCategory}
+                        style={{ backgroundColor: categoryColors.bg, color: categoryColors.text }}
+                      >
+                        {wine.main_category}
+                      </span>
+                    )}
+                    {wine.main_country && (
+                      <span className={styles.wineCountry}>
+                        {wine.main_country}
+                      </span>
+                    )}
+                    {wine.district && (
+                      <span className={styles.wineDistrict}>
+                        {wine.district}
+                      </span>
+                    )}
                   </div>
 
-                  {/* Action button - always at bottom */}
+                  {/* Row 4: Action button at the bottom */}
                   <div className={styles.wineCardAction}>
                     {isTasted ? (
                       <div className={styles.tastedButton}>

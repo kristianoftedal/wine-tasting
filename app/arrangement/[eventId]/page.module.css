@@ -267,13 +267,13 @@
   box-shadow: 0 0 0 2px #667eea, 0 8px 30px rgba(102, 126, 234, 0.25);
 }
 
-/* Wine card header: number + title + status badge in one row */
-.wineCardHeader {
+/* Row 1: Number badge + Status indicator */
+.wineCardRow1 {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  width: 100%;
 }
 
 .wineNumberBadge {
@@ -289,18 +289,6 @@
   font-size: 14px;
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-.wineName {
-  flex: 1;
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0;
-  line-height: 1.4;
-  min-width: 0;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 
 .statusBadgeTasted,
@@ -326,45 +314,16 @@
   color: white;
 }
 
-/* Wine card content: image + details */
-.wineCardContent {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+/* Row 2: Wine name */
+.wineName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.4;
 }
 
-.wineImageWrapper {
-  flex-shrink: 0;
-  width: 70px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.wineImage {
-  object-fit: contain;
-  max-height: 100px;
-  max-width: 70px;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
-}
-
-.wineImagePlaceholder {
-  width: 60px;
-  height: 85px;
-  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9ca3af;
-}
-
-.wineDetails {
-  flex: 1;
-  min-width: 0;
-}
-
+/* Row 3: Metadata row */
 .wineMetaRow {
   display: flex;
   flex-wrap: wrap;
@@ -380,14 +339,12 @@
 }
 
 .wineCountry {
-  display: flex;
-  align-items: center;
-  gap: 5px;
   font-size: 13px;
   color: #6b7280;
 }
 
-.wineCountry svg {
+.wineDistrict {
+  font-size: 13px;
   color: #9ca3af;
 }
 
@@ -561,37 +518,23 @@
     gap: 10px;
   }
 
-  /* Header row: compact on mobile */
-  .wineCardHeader {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
+  /* Row 1: Number + status badge */
+  .wineCardRow1 {
     gap: 8px;
-    width: 100%;
   }
 
   .wineNumberBadge {
-    flex-shrink: 0;
     width: 28px;
     height: 28px;
     font-size: 12px;
     border-radius: 8px;
   }
 
-  .wineName {
-    flex: 1;
-    font-size: 14px;
-    line-height: 1.35;
-    min-width: 0;
-  }
-
   .statusBadgeTasted,
   .statusBadgeNext {
-    flex-shrink: 0;
     padding: 4px 8px;
     font-size: 10px;
     gap: 4px;
-    white-space: nowrap;
   }
 
   .statusBadgeTasted svg,
@@ -600,21 +543,13 @@
     height: 10px;
   }
 
-  /* Hide wine image on mobile */
-  .wineImageWrapper {
-    display: none !important;
+  /* Row 2: Wine name */
+  .wineName {
+    font-size: 14px;
+    line-height: 1.35;
   }
 
-  /* Wine details take full width on mobile */
-  .wineDetails {
-    width: 100%;
-  }
-
-  .wineMetaRow {
-    gap: 6px;
-  }
-
-  /* Compact wine details */
+  /* Row 3: Metadata */
   .wineMetaRow {
     gap: 6px;
   }
@@ -624,17 +559,9 @@
     padding: 3px 8px;
   }
 
-  .wineCountry {
+  .wineCountry,
+  .wineDistrict {
     font-size: 12px;
-  }
-
-  .wineCountry svg {
-    width: 12px;
-    height: 12px;
-  }
-
-  .winePrice {
-    font-size: 13px;
   }
 
   /* Full-width action buttons */
