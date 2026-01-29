@@ -178,13 +178,16 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
                     )}
                   </div>
 
-                  {/* Row 2: Wine name with vintage */}
+                  {/* Row 2: Wine name */}
                   <h3 className={styles.wineName}>
-                    {he.decode(wine.name)} {wine.year && `${wine.year}`}
+                    {he.decode(wine.name)}
                   </h3>
 
-                  {/* Row 3: Wine metadata (category, country, price) */}
+                  {/* Row 3: Wine metadata (vintage, category, country, district) */}
                   <div className={styles.wineMetaRow}>
+                    {wine.year && (
+                      <span className={styles.wineVintage}>{wine.year}</span>
+                    )}
                     {wine.main_category && (
                       <span
                         className={styles.wineCategory}
