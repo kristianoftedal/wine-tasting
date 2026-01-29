@@ -167,13 +167,20 @@ export default function EventEditForm({
         <h2 className={styles.sectionTitle}>Viner</h2>
 
         <div className={styles.wineSearch}>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Søk etter vin å legge til..."
-            className={styles.searchInput}
-          />
+          <div className={styles.searchInputWrapper}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Søk etter vin å legge til..."
+              className={styles.searchInput}
+            />
+            {isSearching && (
+              <div className={styles.searchSpinner}>
+                <div className={styles.spinner} />
+              </div>
+            )}
+          </div>
           {filteredWines.length > 0 && (
             <div className={styles.searchResults}>
               {filteredWines.map((wine) => (
@@ -182,6 +189,9 @@ export default function EventEditForm({
                 </button>
               ))}
             </div>
+          )}
+          {searchQuery.length >= 2 && !isSearching && filteredWines.length === 0 && (
+            <div className={styles.noResults}>Ingen treff</div>
           )}
         </div>
 

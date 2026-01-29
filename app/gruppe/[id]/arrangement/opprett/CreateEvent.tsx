@@ -23,13 +23,16 @@ export default function CreateEventForm({
   const [wines, setWines] = useState<WineSelection[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState<WineSelection[]>([])
+  const [isSearching, setIsSearching] = useState(false)
   const router = useRouter()
 
   const onSearchChanged = async (value: string) => {
     setSearchQuery(value)
     if (value.trim() && value.length > 2) {
+      setIsSearching(true)
       const results = await searchWines(value)
       setSearchResults(results)
+      setIsSearching(false)
     } else {
       setSearchResults([])
     }
@@ -91,14 +94,24 @@ export default function CreateEventForm({
         />
       </div>
       <div className={styles.field}>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => onSearchChanged(e.target.value)}
-          placeholder="Søk etter vin..."
-          className={styles.input}
-        />
+        <div className={styles.searchInputWrapper}>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => onSearchChanged(e.target.value)}
+            placeholder="Søk etter vin..."
+            className={styles.input}
+          />
+          {isSearching && (
+            <div className={styles.searchSpinner}>
+              <div className={styles.spinner} />
+            </div>
+          )}
+        </div>
       </div>
+      {searchQuery.length >= 2 && !isSearching && searchResults.length === 0 && (
+        <div className={styles.noResults}>Ingen treff</div>
+      )}
       {searchResults.length > 0 && (
         <div className={styles.searchResults}>
           <p className={styles.searchResultsLabel}>Treff:</p>
