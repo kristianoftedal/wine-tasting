@@ -31,11 +31,32 @@ export const Search: React.FC = () => {
 
       setIsLoading(true)
 
-      const { data, error } = await supabase
+      // Search by name first
+      const { data: nameResults, error: nameError } = await supabase
         .from("wines")
         .select("id, product_id, name, year")
-        .or(`name.ilike.%${searchTerm}%,product_id.ilike.%${searchTerm}%`)
+        .ilike("name", `%${searchTerm}%`)
         .limit(20)
+
+      // Also search by product_id if the search term looks like an ID (numeric)
+      let productIdResults: Wine[] = []
+      if (/^\d+$/.test(searchTerm)) {
+        const { data: idData } = await supabase
+          .from("wines")
+          .select("id, product_id, name, year")
+          .ilike("product_id", `%${searchTerm}%`)
+          .limit(10)
+        productIdResults = idData || []
+      }
+
+      // Combine results, removing duplicates
+      const combinedResults = [...(nameResults || []), ...productIdResults]
+      const uniqueResults = combinedResults.filter(
+        (wine, index, self) => index === self.findIndex((w) => w.id === wine.id)
+      )
+
+      const data = uniqueResults.slice(0, 20)
+      const error = nameError
 
       if (error) {
         console.error("Search error:", error)
