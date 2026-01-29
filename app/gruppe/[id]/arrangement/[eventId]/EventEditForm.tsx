@@ -1,7 +1,8 @@
 "use client"
 import type { Wine } from "@/lib/types"
+import { createClient } from "@/lib/supabase/client"
 import { decode } from "he"
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import styles from "./page.module.css"
 
 interface EventEditFormProps {
@@ -30,7 +31,44 @@ export default function EventEditForm({
   const [date, setDate] = useState(initialDate)
   const [selectedWines, setSelectedWines] = useState<string[]>(initialWines)
   const [searchQuery, setSearchQuery] = useState("")
+  const [searchResults, setSearchResults] = useState<Wine[]>([])
+  const [isSearching, setIsSearching] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+
+  // Server-side search for wines
+  const searchWines = useCallback(async (query: string) => {
+    if (query.length < 2) {
+      setSearchResults([])
+      return
+    }
+
+    setIsSearching(true)
+    const supabase = createClient()
+    
+    const { data, error } = await supabase
+      .from("wines")
+      .select("id, product_id, name, year")
+      .ilike("name", `%${query}%`)
+      .limit(20)
+
+    if (error) {
+      console.error("[v0] Wine search error:", error)
+      setSearchResults([])
+    } else {
+      // Filter out already selected wines
+      const filtered = (data || []).filter(w => !selectedWines.includes(w.id))
+      setSearchResults(filtered as Wine[])
+    }
+    setIsSearching(false)
+  }, [selectedWines])
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      searchWines(searchQuery)
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [searchQuery, searchWines])
 
   const handleSubmit = async () => {
     setIsSaving(true)
@@ -60,14 +98,8 @@ export default function EventEditForm({
     setSelectedWines(newWines)
   }
 
-  const filteredWines =
-    searchQuery.length > 1
-      ? allWines
-          .filter(
-            (w) => decode(w.name).toLowerCase().includes(searchQuery.toLowerCase()) && !selectedWines.includes(w.id),
-          )
-          .slice(0, 10)
-      : []
+  // Use server-side search results instead of client-side filtering
+  const filteredWines = searchResults
 
   return (
     <div className={styles.editForm}>
