@@ -40,17 +40,27 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
 
       setEvent(eventData)
 
+      // Load event wines (sorted by event order)
       if (eventData.wines?.length > 0) {
         const { data: winesData } = await supabase.from("wines").select("*").in("id", eventData.wines)
 
         if (winesData) {
           const sorted = winesData.sort((a, b) => eventData.wines.indexOf(a.id) - eventData.wines.indexOf(b.id))
           setWines(sorted)
-          setAllWines(winesData)
         }
       } else {
         setWines([])
-        setAllWines([])
+      }
+
+      // Load ALL wines for search/selection in edit mode
+      const { data: allWinesData } = await supabase
+        .from("wines")
+        .select("*")
+        .order("name", { ascending: true })
+        .limit(1000)
+
+      if (allWinesData) {
+        setAllWines(allWinesData)
       }
     }
 
@@ -87,12 +97,11 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
         if (winesData) {
           const sorted = winesData.sort((a, b) => updatedEvent.wines.indexOf(a.id) - updatedEvent.wines.indexOf(b.id))
           setWines(sorted)
-          setAllWines(winesData)
         }
       } else {
         setWines([])
-        setAllWines([])
       }
+      // Note: allWines doesn't need to be reloaded as it contains all wines
     }
 
     setIsEditing(false)
