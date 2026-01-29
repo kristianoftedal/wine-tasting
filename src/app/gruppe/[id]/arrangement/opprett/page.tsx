@@ -8,8 +8,17 @@ import styles from './page.module.css';
 async function searchWines(query: string) {
   'use server';
 
+  if (!query || query.length < 2) {
+    return [];
+  }
+
   const supabase = await createClient();
-  const { data: wines } = await supabase.from('wines').select('name, id').ilike('name', `%${query}%`).limit(10);
+  const { data: wines, error } = await supabase.from('wines').select('name, id').ilike('name', `%${query}%`).limit(20);
+
+  if (error) {
+    console.error('[v0] Wine search error:', error);
+    return [];
+  }
 
   return (wines as Pick<Wine, 'name' | 'id'>[]) || [];
 }

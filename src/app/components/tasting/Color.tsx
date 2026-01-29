@@ -28,7 +28,6 @@ export const Color: React.FC = () => {
   };
 
   const hasGrapes = wine.grapes && wine.grapes.length > 0;
-
   return (
     <div className={styles.colorContainer}>
       <div className={styles.wineInfoCard}>

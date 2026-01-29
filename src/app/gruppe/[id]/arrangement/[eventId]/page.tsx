@@ -4,11 +4,13 @@ import { createClient } from '@/lib/supabase/client';
 import type { Event, Wine } from '@/lib/types';
 import { decode } from 'he';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import EventEditForm from './EventEditForm';
 import styles from './page.module.css';
 
 export default function EditArrangement({ params }: { params: Promise<{ id: string; eventId: string }> }) {
+  const router = useRouter();
   const [event, setEvent] = useState<Event | null>(null);
   const [wines, setWines] = useState<Wine[]>([]);
   const [allWines, setAllWines] = useState<Wine[]>([]);
@@ -38,17 +40,27 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
 
       setEvent(eventData);
 
+      // Load event wines (sorted by event order)
       if (eventData.wines?.length > 0) {
         const { data: winesData } = await supabase.from('wines').select('*').in('id', eventData.wines);
 
         if (winesData) {
           const sorted = winesData.sort((a, b) => eventData.wines.indexOf(a.id) - eventData.wines.indexOf(b.id));
           setWines(sorted);
-          setAllWines(winesData);
         }
       } else {
         setWines([]);
-        setAllWines([]);
+      }
+
+      // Load ALL wines for search/selection in edit mode
+      const { data: allWinesData } = await supabase
+        .from('wines')
+        .select('*')
+        .order('name', { ascending: true })
+        .limit(1000);
+
+      if (allWinesData) {
+        setAllWines(allWinesData);
       }
     }
 
@@ -85,12 +97,11 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
         if (winesData) {
           const sorted = winesData.sort((a, b) => updatedEvent.wines.indexOf(a.id) - updatedEvent.wines.indexOf(b.id));
           setWines(sorted);
-          setAllWines(winesData);
         }
       } else {
         setWines([]);
-        setAllWines([]);
       }
+      // Note: allWines doesn't need to be reloaded as it contains all wines
     }
 
     setIsEditing(false);
@@ -237,6 +248,7 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
                   <h5 className={styles.wineTitle}>
                     <Link href={`/smaking/${wine.id}?eventId=${event.id}`}>{decode(wine.name)}</Link>
                   </h5>
+                  {wine.description && <p className={styles.wineDescription}>{wine.description}</p>}
                 </div>
               </article>
             ))
