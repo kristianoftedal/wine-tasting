@@ -270,8 +270,10 @@
 /* Wine card header: number + title + status badge in one row */
 .wineCardHeader {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
   gap: 12px;
+  width: 100%;
 }
 
 .wineNumberBadge {
@@ -295,8 +297,10 @@
   font-weight: 600;
   color: #1f2937;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.4;
   min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .statusBadgeTasted,
@@ -309,6 +313,7 @@
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .statusBadgeTasted {
@@ -558,27 +563,35 @@
 
   /* Header row: compact on mobile */
   .wineCardHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
     gap: 8px;
+    width: 100%;
   }
 
   .wineNumberBadge {
-    position: static;
-    width: 26px;
-    height: 26px;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
     font-size: 12px;
     border-radius: 8px;
   }
 
   .wineName {
+    flex: 1;
     font-size: 14px;
-    line-height: 1.25;
+    line-height: 1.35;
+    min-width: 0;
   }
 
   .statusBadgeTasted,
   .statusBadgeNext {
+    flex-shrink: 0;
     padding: 4px 8px;
     font-size: 10px;
     gap: 4px;
+    white-space: nowrap;
   }
 
   .statusBadgeTasted svg,
@@ -589,7 +602,16 @@
 
   /* Hide wine image on mobile */
   .wineImageWrapper {
-    display: none;
+    display: none !important;
+  }
+
+  /* Wine details take full width on mobile */
+  .wineDetails {
+    width: 100%;
+  }
+
+  .wineMetaRow {
+    gap: 6px;
   }
 
   /* Compact wine details */
