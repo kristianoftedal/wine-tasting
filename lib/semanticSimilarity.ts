@@ -1,81 +1,44 @@
-import { pipeline } from '@xenova/transformers';
 import { stopwords } from './lemmatizeAndWeight';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let embedder: any = null;
-
-// Lazy load model once
-async function getEmbedder() {
-  if (!embedder) {
-    embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-  }
-  return embedder;
-}
-
-function cosineSimilarity(a: number[], b: number[]): number {
-  const dot = a.reduce((sum, val, i) => sum + val * b[i], 0);
-  const normA = Math.sqrt(a.reduce((sum, val) => sum + val ** 2, 0));
-  const normB = Math.sqrt(b.reduce((sum, val) => sum + val ** 2, 0));
-  return dot / (normA * normB);
-}
-function cosineSimilarity1(vecA: number[], vecB: number[]): number {
-  if (vecA.length !== vecB.length) {
-    throw new Error('Vectors must have the same dimensions');
-  }
-
-  // Calculate dot product: A·B = Σ(A[i] * B[i])
-  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
-
-  // Calculate magnitudes using Math.hypot()
-  const magnitudeA = Math.hypot(...vecA);
-  const magnitudeB = Math.hypot(...vecB);
-
-  // Check for zero magnitude
-  if (magnitudeA === 0 || magnitudeB === 0) {
-    return 0;
-  }
-
-  // Calculate cosine similarity: (A·B) / (|A|*|B|)
-  return dotProduct / (magnitudeA * magnitudeB);
-}
-
 /**
- * Compute semantic similarity (0–100) between two phrases.
+ * Compute text similarity (0–100) between two phrases using Jaccard similarity
+ * with word overlap. This is a serverless-compatible alternative to ML embeddings.
  */
 export async function semanticSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0;
 
   try {
-    const embed = await getEmbedder();
+    // Clean and filter stopwords
+    const cleanText = (text: string) => 
+      text
+        .toLowerCase()
+        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
+        .split(/\s+/)
+        .filter(word => word.length > 2 && !stopwords.has(word));
 
-    // Clean and filter stopwords, then join back into a single string
-    const cleanedText1 = text1
-      .toLowerCase()
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-      .split(/\s+/)
-      .filter(word => word.length > 0 && !stopwords.has(word))
-      .join(' ');
+    const words1 = new Set(cleanText(text1));
+    const words2 = new Set(cleanText(text2));
 
-    const cleanedText2 = text2
-      .toLowerCase()
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-      .split(/\s+/)
-      .filter(word => word.length > 0 && !stopwords.has(word))
-      .join(' ');
+    if (words1.size === 0 || words2.size === 0) return 0;
 
-    if (!cleanedText1 || !cleanedText2) return 0;
+    // Calculate Jaccard similarity: intersection / union
+    const intersection = [...words1].filter(word => words2.has(word)).length;
+    const union = new Set([...words1, ...words2]).size;
 
-    // Embed single strings to get consistent vector dimensions
-    const [out1, out2] = await Promise.all([
-      embed(cleanedText1, { pooling: 'mean', normalize: true }),
-      embed(cleanedText2, { pooling: 'mean', normalize: true })
-    ]);
+    if (union === 0) return 0;
 
-    const emb1 = Array.from(out1.data) as number[];
-    const emb2 = Array.from(out2.data) as number[];
-
-    const similarity = cosineSimilarity(emb1, emb2);
-    return Math.round(similarity * 100);
+    // Jaccard gives 0-1, scale to 0-100
+    const jaccard = intersection / union;
+    
+    // Also calculate overlap coefficient for better partial matching
+    // Overlap = intersection / min(|A|, |B|)
+    const minSize = Math.min(words1.size, words2.size);
+    const overlap = intersection / minSize;
+    
+    // Weighted combination: 60% overlap (better for partial matches) + 40% Jaccard
+    const combined = overlap * 0.6 + jaccard * 0.4;
+    
+    return Math.round(combined * 100);
   } catch (error) {
     console.error('Semantic similarity error:', error);
     return 0;
