@@ -55,6 +55,13 @@
   font-weight: 600;
 }
 
+.groupName {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #667eea;
+  margin: 0 0 0.5rem 0;
+}
+
 .description {
   /* Improved contrast from var(--text-secondary) which uses #6b7280 to #4b5563 */
   color: #4b5563;

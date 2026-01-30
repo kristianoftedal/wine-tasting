@@ -31,11 +31,11 @@ export async function UpcomingEvents() {
     )
   }
 
-  // Get upcoming events for those groups
+  // Get upcoming events for those groups with group name
   const today = new Date().toISOString().split("T")[0]
   const { data: events } = await supabase
     .from("events")
-    .select("*")
+    .select("*, groups(name)")
     .in("group_id", groupIds)
     .gte("date", today)
     .order("date", { ascending: true })
@@ -61,6 +61,10 @@ export async function UpcomingEvents() {
                   <h3 className={styles.eventTitle}>{event.name}</h3>
                   <span className={styles.badge}>{event.wines?.length || 0} viner</span>
                 </div>
+
+                {event.groups?.name && (
+                  <p className={styles.groupName}>{event.groups.name}</p>
+                )}
 
                 <p className={styles.description}>{event.description}</p>
 
