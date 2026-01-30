@@ -6,7 +6,7 @@ import type { Wine } from '@/lib/types';
 import { useAtomValue, useSetAtom } from 'jotai';
 import type React from 'react';
 import { useEffect, useState } from 'react';
-import styles from './Summary.module.css';
+import styles from './Summary1.module.css';
 
 function calculateNumericSimilarity(
   userValue: string | number | undefined,
