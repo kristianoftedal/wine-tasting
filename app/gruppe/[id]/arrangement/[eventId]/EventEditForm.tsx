@@ -1,9 +1,13 @@
 "use client"
-import type { Wine } from "@/lib/types"
+import type { WineSearchResult } from "@/actions/wine-search"
+import { WineSearch } from "@/app/components/WineSearch"
+import type { Wine } from "@/types/wine"
 import { createClient } from "@/lib/supabase/client"
 import { decode } from "he"
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import styles from "./page.module.css"
+
+type WineWithMeta = WineSearchResult & { product_id: string; year: number | null; volume: number | null }
 
 interface EventEditFormProps {
   eventId: string
@@ -11,85 +15,46 @@ interface EventEditFormProps {
   initialDescription: string
   initialDate: string
   initialWines: string[]
-  allWines: Wine[]
   onSave: (data: { name: string; description: string; date: string; wines: string[] }) => Promise<void>
   onCancel: () => void
+  allWines: Wine[] // Include allWines in props
 }
 
 export default function EventEditForm({
-  eventId,
   initialName,
   initialDescription,
   initialDate,
   initialWines,
-  allWines,
   onSave,
   onCancel,
+  allWines,
 }: EventEditFormProps) {
   const [name, setName] = useState(initialName)
   const [description, setDescription] = useState(initialDescription)
   const [date, setDate] = useState(initialDate)
   const [selectedWines, setSelectedWines] = useState<string[]>(initialWines)
-  const [selectedWineNames, setSelectedWineNames] = useState<Map<string, string>>(new Map())
-  const [searchQuery, setSearchQuery] = useState("")
-  const [searchResults, setSearchResults] = useState<Wine[]>([])
-  const [isSearching, setIsSearching] = useState(false)
+  const [selectedWineData, setSelectedWineData] = useState<Map<string, WineWithMeta>>(new Map())
   const [isSaving, setIsSaving] = useState(false)
 
-  // Load wine names for selected wines on mount
+  // Load wine data for selected wines on mount
   useEffect(() => {
-    const loadWineNames = async () => {
+    const loadWineData = async () => {
       if (initialWines.length === 0) return
       
       const supabase = createClient()
       const { data } = await supabase
         .from("wines")
-        .select("id, name")
+        .select("id, product_id, name, year, volume")
         .in("id", initialWines)
       
       if (data) {
-        const namesMap = new Map<string, string>()
-        data.forEach(w => namesMap.set(w.id, w.name))
-        setSelectedWineNames(namesMap)
+        const dataMap = new Map<string, WineWithMeta>()
+        data.forEach(w => dataMap.set(w.id, w as WineWithMeta))
+        setSelectedWineData(dataMap)
       }
     }
-    loadWineNames()
+    loadWineData()
   }, [initialWines])
-
-  // Server-side search for wines
-  const searchWines = useCallback(async (query: string) => {
-    if (query.length < 2) {
-      setSearchResults([])
-      return
-    }
-
-    setIsSearching(true)
-    const supabase = createClient()
-    
-    const { data, error } = await supabase
-      .from("wines")
-      .select("id, product_id, name, year")
-      .ilike("name", `%${query}%`)
-      .limit(20)
-
-    if (error) {
-      console.error("[v0] Wine search error:", error)
-      setSearchResults([])
-    } else {
-      // Filter out already selected wines
-      const filtered = (data || []).filter(w => !selectedWines.includes(w.id))
-      setSearchResults(filtered as Wine[])
-    }
-    setIsSearching(false)
-  }, [selectedWines])
-
-  // Debounced search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      searchWines(searchQuery)
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [searchQuery, searchWines])
 
   const handleSubmit = async () => {
     setIsSaving(true)
@@ -100,13 +65,11 @@ export default function EventEditForm({
     }
   }
 
-  const addWine = (wine: Wine) => {
+  const addWine = (wine: WineSearchResult) => {
     if (!selectedWines.includes(wine.id)) {
       setSelectedWines([...selectedWines, wine.id])
-      setSelectedWineNames(prev => new Map(prev).set(wine.id, wine.name))
+      setSelectedWineData(prev => new Map(prev).set(wine.id, wine as WineWithMeta))
     }
-    setSearchQuery("")
-    setSearchResults([])
   }
 
   const removeWine = (wineId: string) => {
@@ -121,16 +84,13 @@ export default function EventEditForm({
     setSelectedWines(newWines)
   }
 
-  // Use server-side search results instead of client-side filtering
-  const filteredWines = searchResults
-
-  // Get wine name from either the names map or allWines
-  const getWineName = (wineId: string) => {
-    const fromMap = selectedWineNames.get(wineId)
-    if (fromMap) return decode(fromMap)
+  // Get wine data from the map or allWines
+  const getWineData = (wineId: string) => {
+    const fromMap = selectedWineData.get(wineId)
+    if (fromMap) return fromMap
     const fromAll = allWines.find(w => w.id === wineId)
-    if (fromAll) return decode(fromAll.name)
-    return wineId
+    if (fromAll) return { id: fromAll.id, name: fromAll.name, product_id: fromAll.product_id, year: fromAll.year, volume: fromAll.volume }
+    return null
   }
 
   return (
@@ -166,40 +126,22 @@ export default function EventEditForm({
       <section className={styles.winesSection}>
         <h2 className={styles.sectionTitle}>Viner</h2>
 
-        <div className={styles.wineSearch}>
-          <div className={styles.searchInputWrapper}>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Søk etter vin å legge til..."
-              className={styles.searchInput}
-            />
-            {isSearching && (
-              <div className={styles.searchSpinner}>
-                <div className={styles.spinner} />
-              </div>
-            )}
-          </div>
-          {filteredWines.length > 0 && (
-            <div className={styles.searchResults}>
-              {filteredWines.map((wine) => (
-                <button key={wine.id} onClick={() => addWine(wine)} className={styles.searchResultItem}>
-                  {decode(wine.name)}
-                </button>
-              ))}
-            </div>
-          )}
-          {searchQuery.length >= 2 && !isSearching && filteredWines.length === 0 && (
-            <div className={styles.noResults}>Ingen treff</div>
-          )}
-        </div>
+        <WineSearch onSelect={addWine} placeholder="Søk etter vin å legge til..." />
 
         <div className={styles.selectedWines}>
-          {selectedWines.map((wineId, index) => (
+          {selectedWines.map((wineId, index) => {
+            const wineData = getWineData(wineId)
+            return (
             <div key={wineId} className={styles.selectedWineItem}>
               <span className={styles.wineNumber}>{index + 1}</span>
-              <span className={styles.selectedWineName}>{getWineName(wineId)}</span>
+              <div className={styles.wineInfo}>
+                <span className={styles.selectedWineName}>{wineData ? decode(wineData.name) : wineId}</span>
+                {wineData && (
+                  <span className={styles.wineMeta}>
+                    #{wineData.product_id} {wineData.year && `| ${wineData.year}`} {wineData.volume && `| ${wineData.volume >= 1 ? `${wineData.volume}L` : `${(wineData.volume ?? 0) * 100}cl`}`}
+                  </span>
+                )}
+              </div>
               <div className={styles.wineActions}>
                 <button onClick={() => moveWine(index, "up")} disabled={index === 0} className={styles.moveButton}>
                   ↑
@@ -216,7 +158,8 @@ export default function EventEditForm({
                 </button>
               </div>
             </div>
-          ))}
+          )})}
+          
           {selectedWines.length === 0 && <p className={styles.emptyWines}>Ingen viner valgt</p>}
         </div>
       </section>
