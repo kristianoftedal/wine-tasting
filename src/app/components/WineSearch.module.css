@@ -1,0 +1,186 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 44px;
+  font-size: 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input:disabled {
+  background: #f9fafb;
+  cursor: not-allowed;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.spinner {
+  position: absolute;
+  right: 14px;
+}
+
+.spinnerIcon {
+  width: 20px;
+  height: 20px;
+  color: #667eea;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  list-style: none;
+  padding: 8px;
+  margin: 0;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.result:hover,
+.resultSelected {
+  background: #f3f4f6;
+}
+
+.resultImage {
+  flex-shrink: 0;
+  width: 40px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.wineImage {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.resultInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.resultName {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resultMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.metaTag {
+  font-size: 12px;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.categoryTag {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+/* Mobile styles */
+@media (max-width: 640px) {
+  .input {
+    padding: 10px 40px;
+    font-size: 14px;
+  }
+
+  .searchIcon {
+    left: 12px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .dropdown {
+    max-height: 300px;
+  }
+
+  .result {
+    padding: 8px 10px;
+    gap: 10px;
+  }
+
+  .resultImage {
+    width: 36px;
+    height: 54px;
+  }
+
+  .resultName {
+    font-size: 13px;
+  }
+
+  .metaTag {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+}

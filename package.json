@@ -45,6 +45,7 @@
   "devDependencies": {
     "@swc-jotai/debug-label": "^0.5.0",
     "@swc-jotai/react-refresh": "^0.5.0",
+    "@types/he": "^1.2.3",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
