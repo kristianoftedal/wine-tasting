@@ -16,8 +16,8 @@
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0); /* Added from diff */
-  --accent-foreground: oklch(0.205 0 0); /* Added from diff */
+  --accent: oklch(0.97 0 0); /* User's value takes precedence over default */
+  --accent-foreground: oklch(0.205 0 0); /* User's value takes precedence over default */
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
@@ -48,7 +48,7 @@
   --gradient-soft-vertical: linear-gradient(to bottom, #dbeafe, #ede9fe);
 
   /* Accent colors derived from gradient */
-  --accent: #764ba2;
+  --accent: #764ba2; /* This user defined value for --accent will override the oklch value above */
   --accent-hover: #6a4190;
   --accent-light: #a78bfa;
   --accent-dark: #5a4190;
