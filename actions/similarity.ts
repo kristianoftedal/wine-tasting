@@ -1,59 +1,44 @@
 "use server"
 
-import { pipeline } from "@xenova/transformers"
 import { stopwords, lemmatizeAndWeight } from "@/lib/lemmatizeAndWeight"
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let embedder: any = null
-
-// Lazy load model once
-async function getEmbedder() {
-  if (!embedder) {
-    embedder = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2")
-  }
-  return embedder
-}
-
-function cosineSimilarity(a: number[], b: number[]): number {
-  const dot = a.reduce((sum, val, i) => sum + val * b[i], 0)
-  const normA = Math.sqrt(a.reduce((sum, val) => sum + val ** 2, 0))
-  const normB = Math.sqrt(b.reduce((sum, val) => sum + val ** 2, 0))
-  return dot / (normA * normB)
-}
-
 /**
- * Compute semantic similarity (0–100) between two phrases using embeddings.
+ * Compute text similarity (0–100) between two phrases using Jaccard similarity.
+ * This is a serverless-compatible alternative - for ML-based similarity, use
+ * the client-side useSemanticSimilarity hook.
  */
 export async function semanticSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0
 
   try {
-    const embed = await getEmbedder()
+    const cleanText = (text: string) =>
+      text
+        .toLowerCase()
+        .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
+        .split(/\s+/)
+        .filter((word) => word.length > 2 && !stopwords.has(word))
 
-    const cleanedText1: string[] = text1
-      .toLowerCase()
-      .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
-      .split(/\s+/)
-      .filter((word) => word.length > 0 && !stopwords.has(word))
+    const words1 = new Set(cleanText(text1))
+    const words2 = new Set(cleanText(text2))
 
-    const cleanedText2 = text2
-      .toLowerCase()
-      .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
-      .split(/\s+/)
-      .filter((word) => word.length > 0 && !stopwords.has(word))
+    if (words1.size === 0 || words2.size === 0) return 0
 
-    if (cleanedText1.length === 0 || cleanedText2.length === 0) return 0
+    // Calculate Jaccard similarity: intersection / union
+    const intersection = [...words1].filter((word) => words2.has(word)).length
+    const union = new Set([...words1, ...words2]).size
 
-    const [out1, out2] = await Promise.all([
-      embed(cleanedText1, { pooling: "mean", normalize: true }),
-      embed(cleanedText2, { pooling: "mean", normalize: true }),
-    ])
+    if (union === 0) return 0
 
-    const emb1 = Array.from(out1.data)
-    const emb2 = Array.from(out2.data)
+    const jaccard = intersection / union
 
-    const similarity = cosineSimilarity(emb1 as number[], emb2 as number[])
-    return Math.round(similarity * 100)
+    // Also calculate overlap coefficient for better partial matching
+    const minSize = Math.min(words1.size, words2.size)
+    const overlap = intersection / minSize
+
+    // Weighted combination: 60% overlap + 40% Jaccard
+    const combined = overlap * 0.6 + jaccard * 0.4
+
+    return Math.round(combined * 100)
   } catch (error) {
     console.error("Semantic similarity error:", error)
     return 0
@@ -61,56 +46,58 @@ export async function semanticSimilarity(text1: string, text2: string): Promise<
 }
 
 /**
- * Compute semantic similarity between lemmatized words (0-100)
+ * Compute similarity between lemmatized words (0-100)
  */
-async function lemmaSemanticSimilarity(text1: string, text2: string): Promise<number> {
+async function lemmaSimpleSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0
 
   try {
     const data1 = lemmatizeAndWeight(text1)
     const data2 = lemmatizeAndWeight(text2)
 
-    // Extract unique lemmas from both texts
-    const lemmas1 = Array.from(new Set(data1.lemmatized.map((item) => item.lemma))).join(" ")
-    const lemmas2 = Array.from(new Set(data2.lemmatized.map((item) => item.lemma))).join(" ")
+    const lemmas1 = new Set(data1.lemmatized.map((item) => item.lemma))
+    const lemmas2 = new Set(data2.lemmatized.map((item) => item.lemma))
 
-    if (!lemmas1 || !lemmas2) return 0
+    if (lemmas1.size === 0 || lemmas2.size === 0) return 0
 
-    return await semanticSimilarity(lemmas1, lemmas2)
+    const intersection = [...lemmas1].filter((lemma) => lemmas2.has(lemma)).length
+    const union = new Set([...lemmas1, ...lemmas2]).size
+
+    return Math.round((intersection / union) * 100)
   } catch (error) {
-    console.error("Lemma semantic similarity error:", error)
+    console.error("Lemma similarity error:", error)
     return 0
   }
 }
 
 /**
- * Compute semantic similarity between category distributions (0-100)
+ * Compute similarity between category distributions (0-100)
  */
-async function categorySemanticSimilarity(text1: string, text2: string): Promise<number> {
+async function categorySimpleSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0
 
   try {
     const data1 = lemmatizeAndWeight(text1)
     const data2 = lemmatizeAndWeight(text2)
 
-    // Extract categories as descriptive text
-    const categories1 = Object.keys(data1.categories).join(" ")
-    const categories2 = Object.keys(data2.categories).join(" ")
+    const categories1 = new Set(Object.keys(data1.categories))
+    const categories2 = new Set(Object.keys(data2.categories))
 
-    if (!categories1 || !categories2) return 0
+    if (categories1.size === 0 || categories2.size === 0) return 0
 
-    return await semanticSimilarity(categories1, categories2)
+    const intersection = [...categories1].filter((cat) => categories2.has(cat)).length
+    const union = new Set([...categories1, ...categories2]).size
+
+    return Math.round((intersection / union) * 100)
   } catch (error) {
-    console.error("Category semantic similarity error:", error)
+    console.error("Category similarity error:", error)
     return 0
   }
 }
 
 /**
- * Calculate comprehensive similarity score by averaging:
- * - Standard semantic similarity
- * - Lemma-based semantic similarity
- * - Category-based semantic similarity
+ * Calculate comprehensive similarity score (serverless-compatible version).
+ * For ML-based similarity, use the client-side useSemanticSimilarity hook.
  */
 export async function comprehensiveSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0
@@ -118,8 +105,8 @@ export async function comprehensiveSimilarity(text1: string, text2: string): Pro
   try {
     const [standardScore, lemmaScore, categoryScore] = await Promise.all([
       semanticSimilarity(text1, text2),
-      lemmaSemanticSimilarity(text1, text2),
-      categorySemanticSimilarity(text1, text2),
+      lemmaSimpleSimilarity(text1, text2),
+      categorySimpleSimilarity(text1, text2),
     ])
 
     // Average the three scores
@@ -133,7 +120,8 @@ export async function comprehensiveSimilarity(text1: string, text2: string): Pro
 }
 
 /**
- * Calculate all similarity scores for a tasting in one server call
+ * Calculate all similarity scores for a tasting in one server call.
+ * Uses word-overlap similarity (serverless-compatible).
  */
 export async function calculateTastingScores(
   userFarge: string,

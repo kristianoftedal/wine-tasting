@@ -3,8 +3,8 @@
 import { tastingAtom, wineAtom } from "@/app/store/tasting"
 import { useAtomValue, useSetAtom } from "jotai"
 import type React from "react"
-import { useEffect, useState } from "react"
-import { comprehensiveSimilarity } from "@/actions/similarity"
+import { useEffect, useState, useCallback } from "react"
+import { useSemanticSimilarity } from "@/hooks/useSemanticSimilarity"
 import type { Wine } from "@/lib/types"
 import styles from "./Summary.module.css"
 
@@ -77,6 +77,9 @@ export const Summary: React.FC = () => {
   const [scores, setScores] = useState(initState())
   const [overallScore, setOverallScore] = useState(0)
   const [isCalculating, setIsCalculating] = useState(true)
+  
+  // Use client-side semantic similarity
+  const { calculateSimilarity, isReady: modelReady, isLoading: modelLoading } = useSemanticSimilarity()
 
   const isRedWine = wine?.main_category?.toLowerCase().includes("rød")
 
@@ -119,19 +122,22 @@ export const Summary: React.FC = () => {
   // </CHANGE>
 
   useEffect(() => {
+    // Wait for model to be ready before calculating
+    if (!modelReady) return
+    
     async function calculateScores() {
       setIsCalculating(true)
       try {
         const colorScore =
           tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
-            ? await comprehensiveSimilarity(tastingState.farge, wine.color!)
+            ? await calculateSimilarity(tastingState.farge, wine.color!)
             : 0
 
         const userSmellText = `${tastingState.selectedFlavorsLukt.map((x) => x.flavor.name).join(", ")} ${tastingState.lukt}`
-        const smellScore = wine?.smell ? await comprehensiveSimilarity(userSmellText, wine.smell!) : 0
+        const smellScore = wine?.smell ? await calculateSimilarity(userSmellText, wine.smell!) : 0
 
         const userTasteText = `${tastingState.selectedFlavorsSmak.map((x) => x.flavor.name).join(", ")} ${tastingState.smak}`
-        const tasteScore = wine?.taste ? await comprehensiveSimilarity(userTasteText, wine.taste!) : 0
+        const tasteScore = wine?.taste ? await calculateSimilarity(userTasteText, wine.taste!) : 0
 
         const prosentScore = calculateDirectSimilarity(
           tastingState.alkohol,
@@ -225,16 +231,20 @@ export const Summary: React.FC = () => {
     vmpFylde,
     vmpFriskhet,
     setTastingState,
+    modelReady,
+    calculateSimilarity,
   ])
 
   const vmpLuktWords = wine?.smell?.toLowerCase().split(/[\s,]+/) || []
   const vmpSmakWords = wine?.taste?.toLowerCase().split(/[\s,]+/) || []
 
-  if (isCalculating)
+  if (modelLoading || isCalculating)
     return (
       <div className={styles.loadingContainer}>
         <div className={styles.spinner} />
-        <p className={styles.loadingText}>Beregner din smaksscore...</p>
+        <p className={styles.loadingText}>
+          {modelLoading ? "Laster inn AI-modell..." : "Beregner din smaksscore..."}
+        </p>
       </div>
     )
 
