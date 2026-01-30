@@ -22,9 +22,6 @@ export default function CreateEventForm({
   const [description, setDescription] = useState("")
   const [date, setDate] = useState("")
   const [wines, setWines] = useState<WineSelection[]>([])
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isSearching, setIsSearching] = useState(false)
-  const [searchResults, setSearchResults] = useState<WineSearchResult[]>([])
   const router = useRouter()
 
   const addWine = (wine: WineSearchResult) => {
@@ -50,17 +47,7 @@ export default function CreateEventForm({
     router.refresh()
   }
 
-  const onSearchChanged = async (query: string) => {
-    setSearchQuery(query)
-    if (query.length >= 2) {
-      setIsSearching(true)
-      const results = await WineSearch(query)
-      setSearchResults(results)
-      setIsSearching(false)
-    } else {
-      setSearchResults([])
-    }
-  }
+
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
