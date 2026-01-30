@@ -36,6 +36,7 @@ type Props = {
   initialTastings: TastingScore[];
   initialProfileMap: Record<string, string>;
 };
+type SortMethod = 'order' | 'score' | 'karakter';
 
 export function EventScoresRealtime({ eventId, wines, initialTastings, initialProfileMap }: Props) {
   const [tastings, setTastings] = useState<TastingScore[]>(initialTastings);
@@ -43,6 +44,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
   const [expandedWine, setExpandedWine] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<Record<string, string>>({});
   const [expandedParticipant, setExpandedParticipant] = useState<string | null>(null);
+  const [sortMethod, setSortMethod] = useState<SortMethod>('order');
   const supabase = createClient();
 
   useEffect(() => {
@@ -132,9 +134,21 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
   });
 
   const sortedWineScores = [...wineScores].sort((a, b) => {
-    if (a.avgOverall === null) return 1;
-    if (b.avgOverall === null) return -1;
-    return b.avgOverall - a.avgOverall;
+    if (sortMethod === 'order') {
+      // Keep original order from wines array
+      return 0;
+    }
+    if (sortMethod === 'score') {
+      if (a.avgOverall === null) return 1;
+      if (b.avgOverall === null) return -1;
+      return b.avgOverall - a.avgOverall;
+    }
+    if (sortMethod === 'karakter') {
+      if (a.avgKarakter === null) return 1;
+      if (b.avgKarakter === null) return -1;
+      return b.avgKarakter - a.avgKarakter;
+    }
+    return 0;
   });
 
   const toggleWine = (wineId: string) => {
@@ -153,6 +167,27 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
 
   return (
     <div className={styles.scoresContainer}>
+      {/* Sort Buttons */}
+      <div className={styles.sortButtonsContainer}>
+        <span className={styles.sortLabel}>Sorter etter:</span>
+        <div className={styles.sortButtons}>
+          <button
+            className={`${styles.sortButton} ${sortMethod === 'order' ? styles.sortButtonActive : ''}`}
+            onClick={() => setSortMethod('order')}>
+            Rekkefølge
+          </button>
+          <button
+            className={`${styles.sortButton} ${sortMethod === 'score' ? styles.sortButtonActive : ''}`}
+            onClick={() => setSortMethod('score')}>
+            Poeng
+          </button>
+          <button
+            className={`${styles.sortButton} ${sortMethod === 'karakter' ? styles.sortButtonActive : ''}`}
+            onClick={() => setSortMethod('karakter')}>
+            Karakter
+          </button>
+        </div>
+      </div>
       {sortedWineScores.map((wine, index) => (
         <div
           key={wine.id}
