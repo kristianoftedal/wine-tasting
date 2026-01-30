@@ -505,7 +505,7 @@ function ParticipantAccordionList({
                           {tasting.fylde || "-"}/12 → {tasting.fylde_score?.toFixed(0) || "-"}/100
                         </span>
                       </div>
-                      {!tasting.wine.main_category?.toLowerCase().includes("rød") && (
+                      {!tasting.wine?.main_category?.toLowerCase().includes("rød") && (
                         <div className={styles.tastingNoteField}>
                           <span className={styles.tastingNoteLabel}>Sødme:</span>
                           <span className={styles.tastingNoteValue}>
@@ -513,7 +513,7 @@ function ParticipantAccordionList({
                           </span>
                         </div>
                       )}
-                      {tasting.wine.main_category?.toLowerCase().includes("rød") && (
+                      {tasting.wine?.main_category?.toLowerCase().includes("rød") && (
                         <div className={styles.tastingNoteField}>
                           <span className={styles.tastingNoteLabel}>Snærp:</span>
                           <span className={styles.tastingNoteValue}>
