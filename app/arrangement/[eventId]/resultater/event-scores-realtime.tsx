@@ -252,38 +252,70 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                   </svg>
                   Vinens egenskaper (fra Vinmonopolet)
                 </h4>
-                <div className={styles.winePropertiesGrid}>
-                  {wine.color && (
-                    <div className={styles.winePropertyItem}>
-                      <span className={styles.winePropertyLabel}>Farge</span>
-                      <span className={styles.winePropertyValue}>{wine.color}</span>
-                    </div>
-                  )}
-                  {wine.smell && (
-                    <div className={styles.winePropertyItem}>
-                      <span className={styles.winePropertyLabel}>Lukt</span>
-                      <span className={styles.winePropertyValue}>{wine.smell}</span>
-                    </div>
-                  )}
-                  {wine.taste && (
-                    <div className={styles.winePropertyItem}>
-                      <span className={styles.winePropertyLabel}>Smak</span>
-                      <span className={styles.winePropertyValue}>{wine.taste}</span>
-                    </div>
-                  )}
-                  {!wine.main_category?.toLowerCase().includes("rød") && wine.sodme !== null && (
-                    <div className={styles.winePropertyItem}>
-                      <span className={styles.winePropertyLabel}>Sødme</span>
-                      <span className={styles.winePropertyValue}>{wine.sodme}</span>
-                    </div>
-                  )}
-                  {wine.main_category?.toLowerCase().includes("rød") && wine.garvestoff !== null && (
-                    <div className={styles.winePropertyItem}>
-                      <span className={styles.winePropertyLabel}>Garvestoffer</span>
-                      <span className={styles.winePropertyValue}>{wine.garvestoff}</span>
-                    </div>
-                  )}
-                </div>
+                <table className={styles.winePropertiesTable}>
+                  <tbody>
+                    {wine.color && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Farge</td>
+                        <td className={styles.winePropertyValue}>{wine.color}</td>
+                      </tr>
+                    )}
+                    {wine.smell && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Lukt</td>
+                        <td className={styles.winePropertyValue}>{wine.smell}</td>
+                      </tr>
+                    )}
+                    {wine.taste && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Smak</td>
+                        <td className={styles.winePropertyValue}>{wine.taste}</td>
+                      </tr>
+                    )}
+                    {wine.fylde !== null && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Fylde</td>
+                        <td className={styles.winePropertyValue}>{wine.fylde}/12</td>
+                      </tr>
+                    )}
+                    {wine.friskhet !== null && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Friskhet</td>
+                        <td className={styles.winePropertyValue}>{wine.friskhet}/12</td>
+                      </tr>
+                    )}
+                    {!wine.main_category?.toLowerCase().includes("rød") && wine.sodme !== null && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Sødme</td>
+                        <td className={styles.winePropertyValue}>{wine.sodme}/12</td>
+                      </tr>
+                    )}
+                    {wine.main_category?.toLowerCase().includes("rød") && wine.garvestoff !== null && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Garvestoffer</td>
+                        <td className={styles.winePropertyValue}>{wine.garvestoff}/12</td>
+                      </tr>
+                    )}
+                    {getCharacteristic(wine.content, "Alkohol") && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Alkohol</td>
+                        <td className={styles.winePropertyValue}>{getCharacteristic(wine.content, "Alkohol")}</td>
+                      </tr>
+                    )}
+                    {getCharacteristic(wine.content, "Sukker") && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Sukker</td>
+                        <td className={styles.winePropertyValue}>{getCharacteristic(wine.content, "Sukker")}</td>
+                      </tr>
+                    )}
+                    {getCharacteristic(wine.content, "Syre") && (
+                      <tr>
+                        <td className={styles.winePropertyLabel}>Syre</td>
+                        <td className={styles.winePropertyValue}>{getCharacteristic(wine.content, "Syre")}</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
 
               {/* Styled Tabs */}

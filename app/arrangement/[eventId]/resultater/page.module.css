@@ -316,32 +316,41 @@
   color: #764ba2;
 }
 
-.winePropertiesGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-}
-
-.winePropertyItem {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 14px 16px;
+.winePropertiesTable {
+  width: 100%;
+  border-collapse: collapse;
   background: white;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.winePropertyLabel {
-  font-size: 11px;
-  font-weight: 700;
-  color: #764ba2;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.winePropertiesTable tbody tr {
+  border-bottom: 1px solid #f3f4f6;
 }
 
-.winePropertyValue {
+.winePropertiesTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+.winePropertiesTable tbody tr:hover {
+  background: #fafbff;
+}
+
+.winePropertiesTable td {
+  padding: 12px 16px;
+  vertical-align: top;
+}
+
+.winePropertiesTable td.winePropertyLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  width: 120px;
+  white-space: nowrap;
+}
+
+.winePropertiesTable td.winePropertyValue {
   font-size: 14px;
   color: #1f2937;
   font-weight: 500;
@@ -762,8 +771,17 @@
     padding: 16px;
   }
 
-  .winePropertiesGrid {
-    grid-template-columns: 1fr;
+  .winePropertiesTable td {
+    padding: 10px 12px;
+  }
+
+  .winePropertiesTable td.winePropertyLabel {
+    font-size: 12px;
+    width: 100px;
+  }
+
+  .winePropertiesTable td.winePropertyValue {
+    font-size: 13px;
   }
 
   .winePropertiesTitle {
