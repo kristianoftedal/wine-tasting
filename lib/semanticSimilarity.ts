@@ -43,33 +43,41 @@ function cosineSimilarity1(vecA: number[], vecB: number[]): number {
  * Compute semantic similarity (0–100) between two phrases.
  */
 export async function semanticSimilarity(text1: string, text2: string): Promise<number> {
-  const embed = await getEmbedder();
+  if (!text1 || !text2) return 0;
 
-  const cleanedText1: string[] = text1
-    .toLowerCase()
-    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-    .split(/\s+/)
-    .filter(word => word.length > 0 && !stopwords.has(word));
+  try {
+    const embed = await getEmbedder();
 
-  const cleanedText2 = text2
-    .toLowerCase()
-    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-    .split(/\s+/)
-    .filter(word => word.length > 0 && !stopwords.has(word));
-  const [out1, out2] = await Promise.all([
-    embed(cleanedText1, { pooling: 'mean', normalize: true }),
-    embed(cleanedText2, { pooling: 'mean', normalize: true })
-  ]);
+    // Clean and filter stopwords, then join back into a single string
+    const cleanedText1 = text1
+      .toLowerCase()
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
+      .split(/\s+/)
+      .filter(word => word.length > 0 && !stopwords.has(word))
+      .join(' ');
 
-  const emb1 = Array.from(out1.data);
-  const emb2 = Array.from(out2.data);
+    const cleanedText2 = text2
+      .toLowerCase()
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
+      .split(/\s+/)
+      .filter(word => word.length > 0 && !stopwords.has(word))
+      .join(' ');
 
-  const similarity1 = cosineSimilarity(emb1 as number[], emb2 as number[]);
-  const similarity2 = cosineSimilarity1(emb1 as number[], emb2 as number[]);
-  const result = Math.round(similarity1 * 100);
-  const result2 = Math.round(similarity2 * 100);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const diff = result - result2;
-  debugger;
-  return result;
+    if (!cleanedText1 || !cleanedText2) return 0;
+
+    // Embed single strings to get consistent vector dimensions
+    const [out1, out2] = await Promise.all([
+      embed(cleanedText1, { pooling: 'mean', normalize: true }),
+      embed(cleanedText2, { pooling: 'mean', normalize: true })
+    ]);
+
+    const emb1 = Array.from(out1.data) as number[];
+    const emb2 = Array.from(out2.data) as number[];
+
+    const similarity = cosineSimilarity(emb1, emb2);
+    return Math.round(similarity * 100);
+  } catch (error) {
+    console.error('Semantic similarity error:', error);
+    return 0;
+  }
 }
