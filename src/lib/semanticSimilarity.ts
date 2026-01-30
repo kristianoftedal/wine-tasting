@@ -68,8 +68,5 @@ export async function semanticSimilarity(text1: string, text2: string): Promise<
   const similarity2 = cosineSimilarity1(emb1 as number[], emb2 as number[]);
   const result = Math.round(similarity1 * 100);
   const result2 = Math.round(similarity2 * 100);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const diff = result - result2;
-  debugger;
   return result;
 }

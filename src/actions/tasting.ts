@@ -13,16 +13,11 @@ export const addTasting = async (tastingModel: TastingFormData) => {
     redirect('/login');
   }
 
-  const smellFlavors = tastingModel.selectedFlavorsLukt.map(f => f.flavor.name).join(', ');
-  const tasteFlavors = tastingModel.selectedFlavorsSmak.map(f => f.flavor.name).join(', ');
-
   const { error } = await supabase.from('tastings').insert({
     user_id: user.id,
-    product_id: tastingModel.wineId,
+    wine_id: tastingModel.wineId,
     event_id: tastingModel.eventId || null,
     farge: tastingModel.farge,
-    smell: smellFlavors,
-    taste: tasteFlavors,
     lukt: tastingModel.lukt,
     smak: tastingModel.smak,
     friskhet: tastingModel.friskhet,

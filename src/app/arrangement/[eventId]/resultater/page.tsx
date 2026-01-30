@@ -20,9 +20,7 @@ export default async function EventScoresPage({ params }: { params: Promise<{ ev
 
   const { data: wines } = await supabase
     .from('wines')
-    .select(
-      'id, product_id, name, year, color, smell, taste, fylde, friskhet, garvestoff, sodme, content, main_category'
-    )
+    .select('*')
     .in('id', event.wines.length > 0 ? event.wines : ['']);
 
   const sortedWines = wines?.sort((a, b) => event.wines.indexOf(a.id) - event.wines.indexOf(b.id)) || [];

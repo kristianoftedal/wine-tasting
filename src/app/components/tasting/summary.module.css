@@ -123,7 +123,7 @@
   border: 1px solid #e5e7eb;
 }
 
-.flavorPill.matched {
+.flavorPillMatched {
   background: #fef3c7;
   color: #92400e;
   border: 1.5px dashed #fbbf24;

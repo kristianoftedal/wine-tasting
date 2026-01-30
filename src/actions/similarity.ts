@@ -14,11 +14,25 @@ async function getEmbedder() {
   return embedder;
 }
 
-function cosineSimilarity(a: number[], b: number[]): number {
-  const dot = a.reduce((sum, val, i) => sum + val * b[i], 0);
-  const normA = Math.sqrt(a.reduce((sum, val) => sum + val ** 2, 0));
-  const normB = Math.sqrt(b.reduce((sum, val) => sum + val ** 2, 0));
-  return dot / (normA * normB);
+function cosineSimilarity(vecA: number[], vecB: number[]): number {
+  if (vecA.length !== vecB.length) {
+    throw new Error('Vectors must have the same dimensions');
+  }
+
+  // Calculate dot product: A·B = Σ(A[i] * B[i])
+  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+
+  // Calculate magnitudes using Math.hypot()
+  const magnitudeA = Math.hypot(...vecA);
+  const magnitudeB = Math.hypot(...vecB);
+
+  // Check for zero magnitude
+  if (magnitudeA === 0 || magnitudeB === 0) {
+    return 0;
+  }
+
+  // Calculate cosine similarity: (A·B) / (|A|*|B|)
+  return dotProduct / (magnitudeA * magnitudeB);
 }
 
 /**
@@ -30,17 +44,19 @@ export async function semanticSimilarity(text1: string, text2: string): Promise<
   try {
     const embed = await getEmbedder();
 
-    const cleanedText1: string[] = text1
+    const cleanedText1 = text1
       .toLowerCase()
       .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')
       .split(/\s+/)
-      .filter(word => word.length > 0 && !stopwords.has(word));
+      .filter(word => word.length > 0 && !stopwords.has(word))
+      .join(' ');
 
     const cleanedText2 = text2
       .toLowerCase()
       .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')
       .split(/\s+/)
-      .filter(word => word.length > 0 && !stopwords.has(word));
+      .filter(word => word.length > 0 && !stopwords.has(word))
+      .join(' ');
 
     if (cleanedText1.length === 0 || cleanedText2.length === 0) return 0;
 
@@ -130,24 +146,4 @@ export async function comprehensiveSimilarity(text1: string, text2: string): Pro
     console.error('Comprehensive similarity error:', error);
     return 0;
   }
-}
-
-/**
- * Calculate all similarity scores for a tasting in one server call
- */
-export async function calculateTastingScores(
-  userFarge: string,
-  userLukt: string,
-  userSmak: string,
-  wineColor: string,
-  wineSmell: string,
-  wineTaste: string
-): Promise<{ colorScore: number; smellScore: number; tasteScore: number }> {
-  const [colorScore, smellScore, tasteScore] = await Promise.all([
-    userFarge && wineColor ? comprehensiveSimilarity(userFarge, wineColor) : Promise.resolve(0),
-    userLukt && wineSmell ? comprehensiveSimilarity(userLukt, wineSmell) : Promise.resolve(0),
-    userSmak && wineTaste ? comprehensiveSimilarity(userSmak, wineTaste) : Promise.resolve(0)
-  ]);
-
-  return { colorScore, smellScore, tasteScore };
 }

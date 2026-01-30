@@ -34,13 +34,9 @@ export const Color: React.FC = () => {
         <div className={styles.wineInfoRow}>
           <span className={styles.wineInfoLabel}>Druer:</span>
           {hasGrapes ? (
-            <div className={styles.grapeList}>
+            <div>
               {wine.grapes.map((x, index) => (
-                <div
-                  key={x || `grape-${index}`}
-                  className={styles.grapeItem}>
-                  • {x}
-                </div>
+                <div key={x || `grape-${index}`}>{x}</div>
               ))}
             </div>
           ) : (
