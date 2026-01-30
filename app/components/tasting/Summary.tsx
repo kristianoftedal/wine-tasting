@@ -6,7 +6,7 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { comprehensiveSimilarity } from "@/actions/similarity"
 import type { Wine } from "@/lib/types"
-import styles from "./summary-1.module.css"
+import styles from "./Summary.module.css"
 
 function calculateNumericSimilarity(
   userValue: string | number | undefined,
