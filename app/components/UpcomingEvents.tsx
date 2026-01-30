@@ -32,7 +32,7 @@ export async function UpcomingEvents() {
   }
 
   // Get upcoming events for those groups
-  const today = new Date().toISOString()
+  const today = new Date().toISOString().split("T")[0]
   const { data: events } = await supabase
     .from("events")
     .select("*")
