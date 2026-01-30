@@ -102,14 +102,10 @@ export async function findSimilarWinesSQL(
   const tastedWineIds = allUserTastings?.map((t) => t.wine_id).filter(Boolean) || []
 
   const { data: candidateWines, error } = await supabase.rpc("find_similar_wines_weighted", {
-    p_avg_fylde: avgAttributes.fylde,
-    p_avg_friskhet: avgAttributes.friskhet,
-    p_avg_garvestoff: avgAttributes.snaerp,
-    p_avg_sodme: avgAttributes.sodme,
-    p_weight_fylde: weights.fylde,
-    p_weight_friskhet: weights.friskhet,
-    p_weight_garvestoff: weights.snaerp,
-    p_weight_sodme: weights.sodme,
+    p_fylde: avgAttributes.fylde,
+    p_friskhet: avgAttributes.friskhet,
+    p_garvestoff: avgAttributes.snaerp,
+    p_sodme: avgAttributes.sodme,
     p_smell_similarity: 0.5,
     p_taste_similarity: 0.5,
     p_alcohol_similarity: 0.5,
