@@ -1,49 +1,33 @@
 'use client';
 
-import type { Event, Wine } from '@/lib/types';
+import type { WineSearchResult } from '@/actions/wine-search';
+import { WineSearch } from '@/app/components/WineSearch';
+import type { Event } from '@/lib/types';
+import he from 'he';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { useState } from 'react';
 import styles from './CreateEvent.module.css';
 
-type WineSelection = Pick<Wine, 'name' | 'id'>;
+type WineSelection = Pick<WineSearchResult, 'name' | 'id' | 'product_id' | 'year' | 'volume'>;
 
 export default function CreateEventForm({
   createEvent,
-  searchWines,
   groupId
 }: {
   createEvent: (formData: FormData) => Promise<Event>;
-  searchWines: (query: string) => Promise<WineSelection[]>;
   groupId: string;
 }) {
   const [groupName, setGroupName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [wines, setWines] = useState<WineSelection[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<WineSelection[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
   const router = useRouter();
 
-  const onSearchChanged = async (value: string) => {
-    setSearchQuery(value);
-    if (value.trim() && value.length > 2) {
-      setIsSearching(true);
-      const results = await searchWines(value);
-      setSearchResults(results);
-      setIsSearching(false);
-    } else {
-      setSearchResults([]);
-    }
-  };
-
-  const addWine = (wine: WineSelection) => {
+  const addWine = (wine: WineSearchResult) => {
     if (!wines.some(x => x.id === wine.id)) {
       setWines([...wines, wine]);
     }
-    setSearchQuery('');
-    setSearchResults([]);
   };
 
   const removeWine = (wineId: string) => {
@@ -96,53 +80,27 @@ export default function CreateEventForm({
         />
       </div>
       <div className={styles.field}>
-        <div className={styles.searchInputWrapper}>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => onSearchChanged(e.target.value)}
-            placeholder="Søk etter vin..."
-            className={styles.input}
-          />
-          {isSearching && (
-            <div className={styles.searchSpinner}>
-              <div className={styles.spinner} />
-            </div>
-          )}
-        </div>
+        <WineSearch
+          onSelect={addWine}
+          placeholder="Sok etter vin a legge til..."
+        />
       </div>
-      {searchQuery.length >= 2 && !isSearching && searchResults.length === 0 && (
-        <div className={styles.noResults}>Ingen treff</div>
-      )}
-      {searchResults.length > 0 && (
-        <div className={styles.searchResults}>
-          <p className={styles.searchResultsLabel}>Treff:</p>
-          <ul className={styles.list}>
-            {searchResults.map(x => (
-              <li
-                key={x.id}
-                className={styles.listItem}>
-                <span>{x.name}</span>
-                <button
-                  type="button"
-                  onClick={() => addWine(x)}
-                  className={`${styles.button} ${styles.addButton}`}>
-                  Legg til
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
       {wines.length > 0 && (
         <div className={styles.wineSection}>
-          <p className={styles.wineSectionLabel}>Valgte viner:</p>
+          <p className={styles.wineSectionLabel}>Valgte viner ({wines.length}):</p>
           <ul className={styles.list}>
-            {wines.map(x => (
+            {wines.map((x, index) => (
               <li
                 key={x.id}
                 className={styles.listItem}>
-                <span>{x.name}</span>
+                <span className={styles.wineNumber}>{index + 1}</span>
+                <div className={styles.wineInfo}>
+                  <span className={styles.wineName}>{he.decode(x.name)}</span>
+                  <span className={styles.wineMeta}>
+                    #{x.product_id} {x.year && `| ${x.year}`}{' '}
+                    {x.volume && `| ${x.volume >= 1 ? `${x.volume}L` : `${(x.volume ?? 0) * 100}cl`}`}
+                  </span>
+                </div>
                 <button
                   type="button"
                   onClick={() => removeWine(x.id)}
