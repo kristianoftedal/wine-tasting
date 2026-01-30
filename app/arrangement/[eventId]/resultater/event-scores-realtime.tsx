@@ -18,6 +18,7 @@ type TastingScore = {
   fylde_score: number | null
   sodme_score: number | null
   snaerp_score: number | null
+  attribute_score?: number | null // Calculated: (friskhet + fylde + snaerp + sodme) / 3
   karakter: number | null
   farge: string | null
   lukt: string | null
@@ -145,6 +146,8 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
       tastings: wineTastings.map((t) => ({
         ...t,
         userName: profileMap[t.user_id] || "Ukjent",
+        attribute_score:
+          ((t.friskhet_score || 0) + (t.fylde_score || 0) + (t.snaerp_score || 0) + (t.sodme_score || 0)) / 3,
       })),
     }
   })
@@ -388,7 +391,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                 {getActiveTab(wine.id) === "attributter" && (
                   <ParticipantAccordionList
                     tastings={wine.tastings}
-                    scoreKey="overall_score"
+                    scoreKey="attribute_score"
                     expandedParticipant={expandedParticipant}
                     toggleParticipant={toggleParticipant}
                     showField="attributes"
@@ -525,6 +528,12 @@ function ParticipantAccordionList({
                   )}
                   {showField === "attributes" && (
                     <div className={styles.tastingNoteGrid}>
+                      <div className={styles.tastingNoteField}>
+                        <span className={styles.tastingNoteLabel}>Attributtpoeng:</span>
+                        <span className={styles.tastingNoteValue}>
+                          {tasting.attribute_score?.toFixed(1) || "-"}/100
+                        </span>
+                      </div>
                       <div className={styles.tastingNoteField}>
                         <span className={styles.tastingNoteLabel}>Friskhet:</span>
                         <span className={styles.tastingNoteValue}>
