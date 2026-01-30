@@ -320,13 +320,13 @@
   width: 100%;
   border-collapse: collapse;
   background: white;
-  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .winePropertiesTable tbody tr {
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .winePropertiesTable tbody tr:last-child {
@@ -334,12 +334,17 @@
 }
 
 .winePropertiesTable tbody tr:hover {
-  background: #fafbff;
+  background: #f9fafb;
 }
 
 .winePropertiesTable td {
   padding: 12px 16px;
   vertical-align: top;
+  border-right: 1px solid #e5e7eb;
+}
+
+.winePropertiesTable td:last-child {
+  border-right: none;
 }
 
 .winePropertiesTable td.winePropertyLabel {
@@ -348,6 +353,7 @@
   color: #667eea;
   width: 120px;
   white-space: nowrap;
+  background: #fafbfc;
 }
 
 .winePropertiesTable td.winePropertyValue {
@@ -355,6 +361,7 @@
   color: #1f2937;
   font-weight: 500;
   line-height: 1.5;
+  background: white;
 }
 
 /* Beautiful Gradient Tabs */
