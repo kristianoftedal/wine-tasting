@@ -61,10 +61,6 @@ export default async function EventScoresPage({ params }: { params: Promise<{ ev
       <header className={styles.header}>
         <h1 className={styles.title}>Resultater</h1>
         <p className={styles.subtitle}>{event.name}</p>
-        <div className={styles.liveIndicator}>
-          <span className={styles.liveDot} />
-          Live oppdateringer
-        </div>
       </header>
 
       <EventScoresRealtime

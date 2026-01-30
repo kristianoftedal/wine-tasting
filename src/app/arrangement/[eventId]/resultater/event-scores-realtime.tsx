@@ -300,7 +300,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                     )}
                     {wine.acidity && (
                       <tr>
-                        <td className={styles.winePropertyLabel}>Sukker</td>
+                        <td className={styles.winePropertyLabel}>Syre</td>
                         <td className={styles.winePropertyValue}>{wine.acidity}</td>
                       </tr>
                     )}
