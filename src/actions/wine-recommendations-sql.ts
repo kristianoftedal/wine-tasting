@@ -1,9 +1,9 @@
 'use server';
 
 import type { RecommendationThresholds, RecommendationWeights, WineSimilarityScore } from '@/lib/recommendation-types';
+import { semanticSimilarity } from '@/lib/semanticSimilarity';
 import { createClient } from '@/lib/supabase/server';
 import type { Wine } from '@/lib/types';
-import { semanticSimilarity } from './similarity';
 
 function getCategoryAttributes(category: string) {
   if (category === 'Rødvin') {

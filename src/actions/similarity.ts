@@ -1,6 +1,7 @@
 'use server';
 
 import { lemmatizeAndWeight } from '@/lib/lemmatizeAndWeight';
+import { semanticSimilarity } from '@/lib/semanticSimilarity';
 
 /**
  * Compute similarity between lemmatized words (0-100)
@@ -53,21 +54,24 @@ async function categorySimpleSimilarity(text1: string, text2: string): Promise<n
 }
 
 /**
- * Calculate server-side similarity score using lemma and category matching.
- * This should be combined with client-side ML similarity (useSemanticSimilarity hook)
- * for the final score: (serverScore + mlScore) / 2
+ * Calculate comprehensive server-side similarity score using:
+ * - Lemma matching
+ * - Category matching
+ * - OpenAI embedding similarity
+ * Final score = (lemmaScore + categoryScore + embeddingScore) / 3
  */
 export async function serverSideSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0;
 
   try {
-    const [lemmaScore, categoryScore] = await Promise.all([
+    const [lemmaScore, categoryScore, embeddingScore] = await Promise.all([
       lemmaSimpleSimilarity(text1, text2),
-      categorySimpleSimilarity(text1, text2)
+      categorySimpleSimilarity(text1, text2),
+      semanticSimilarity(text1, text2)
     ]);
 
-    // Average lemma and category scores
-    const averageScore = Math.round((lemmaScore + categoryScore) / 2);
+    // Average all three scores
+    const averageScore = Math.round((lemmaScore + categoryScore + embeddingScore) / 3);
 
     return averageScore;
   } catch (error) {
