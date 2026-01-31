@@ -1,6 +1,7 @@
 "use client"
 
 import { tastingAtom, wineAtom } from "@/app/store/tasting"
+import { serverSideSimilarity } from "@/actions/similarity"
 import { useAtomValue, useSetAtom } from "jotai"
 import type React from "react"
 import { useEffect, useState, useCallback } from "react"
@@ -128,16 +129,32 @@ export const Summary: React.FC = () => {
     async function calculateScores() {
       setIsCalculating(true)
       try {
-        const colorScore =
-          tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
-            ? await calculateSimilarity(tastingState.farge, wine.color!)
-            : 0
-
+        // Calculate ML-based scores (client-side) and server-side scores, then combine
         const userSmellText = `${tastingState.selectedFlavorsLukt.map((x) => x.flavor.name).join(", ")} ${tastingState.lukt}`
-        const smellScore = wine?.smell ? await calculateSimilarity(userSmellText, wine.smell!) : 0
-
         const userTasteText = `${tastingState.selectedFlavorsSmak.map((x) => x.flavor.name).join(", ")} ${tastingState.smak}`
-        const tasteScore = wine?.taste ? await calculateSimilarity(userTasteText, wine.taste!) : 0
+
+        // Get ML scores (client-side)
+        const [mlColorScore, mlSmellScore, mlTasteScore] = await Promise.all([
+          tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
+            ? calculateSimilarity(tastingState.farge, wine.color!)
+            : 0,
+          wine?.smell ? calculateSimilarity(userSmellText, wine.smell!) : 0,
+          wine?.taste ? calculateSimilarity(userTasteText, wine.taste!) : 0,
+        ])
+
+        // Get server-side scores (lemma + category)
+        const [serverColorScore, serverSmellScore, serverTasteScore] = await Promise.all([
+          tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
+            ? serverSideSimilarity(tastingState.farge, wine.color!)
+            : 0,
+          wine?.smell ? serverSideSimilarity(userSmellText, wine.smell!) : 0,
+          wine?.taste ? serverSideSimilarity(userTasteText, wine.taste!) : 0,
+        ])
+
+        // Combine: (ML score + server score) / 2
+        const colorScore = Math.round((mlColorScore + serverColorScore) / 2)
+        const smellScore = Math.round((mlSmellScore + serverSmellScore) / 2)
+        const tasteScore = Math.round((mlTasteScore + serverTasteScore) / 2)
 
         const prosentScore = calculateDirectSimilarity(
           tastingState.alkohol,

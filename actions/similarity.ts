@@ -1,54 +1,11 @@
 "use server"
 
-import { stopwords, lemmatizeAndWeight } from "@/lib/lemmatizeAndWeight"
-
-/**
- * Compute text similarity (0–100) between two phrases using Jaccard similarity.
- * This is a serverless-compatible alternative - for ML-based similarity, use
- * the client-side useSemanticSimilarity hook.
- */
-export async function semanticSimilarity(text1: string, text2: string): Promise<number> {
-  if (!text1 || !text2) return 0
-
-  try {
-    const cleanText = (text: string) =>
-      text
-        .toLowerCase()
-        .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
-        .split(/\s+/)
-        .filter((word) => word.length > 2 && !stopwords.has(word))
-
-    const words1 = new Set(cleanText(text1))
-    const words2 = new Set(cleanText(text2))
-
-    if (words1.size === 0 || words2.size === 0) return 0
-
-    // Calculate Jaccard similarity: intersection / union
-    const intersection = [...words1].filter((word) => words2.has(word)).length
-    const union = new Set([...words1, ...words2]).size
-
-    if (union === 0) return 0
-
-    const jaccard = intersection / union
-
-    // Also calculate overlap coefficient for better partial matching
-    const minSize = Math.min(words1.size, words2.size)
-    const overlap = intersection / minSize
-
-    // Weighted combination: 60% overlap + 40% Jaccard
-    const combined = overlap * 0.6 + jaccard * 0.4
-
-    return Math.round(combined * 100)
-  } catch (error) {
-    console.error("Semantic similarity error:", error)
-    return 0
-  }
-}
+import { lemmatizeAndWeight } from "@/lib/lemmatizeAndWeight"
 
 /**
  * Compute similarity between lemmatized words (0-100)
  */
-async function lemmaSimpleSimilarity(text1: string, text2: string): Promise<number> {
+export async function lemmaSimpleSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0
 
   try {
@@ -96,34 +53,34 @@ async function categorySimpleSimilarity(text1: string, text2: string): Promise<n
 }
 
 /**
- * Calculate comprehensive similarity score (serverless-compatible version).
- * For ML-based similarity, use the client-side useSemanticSimilarity hook.
+ * Calculate server-side similarity score using lemma and category matching.
+ * This should be combined with client-side ML similarity (useSemanticSimilarity hook)
+ * for the final score: (serverScore + mlScore) / 2
  */
-export async function comprehensiveSimilarity(text1: string, text2: string): Promise<number> {
+export async function serverSideSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0
 
   try {
-    const [standardScore, lemmaScore, categoryScore] = await Promise.all([
-      semanticSimilarity(text1, text2),
+    const [lemmaScore, categoryScore] = await Promise.all([
       lemmaSimpleSimilarity(text1, text2),
       categorySimpleSimilarity(text1, text2),
     ])
 
-    // Average the three scores
-    const averageScore = Math.round((standardScore + lemmaScore + categoryScore) / 3)
+    // Average lemma and category scores
+    const averageScore = Math.round((lemmaScore + categoryScore) / 2)
 
     return averageScore
   } catch (error) {
-    console.error("Comprehensive similarity error:", error)
+    console.error("Server-side similarity error:", error)
     return 0
   }
 }
 
 /**
- * Calculate all similarity scores for a tasting in one server call.
- * Uses word-overlap similarity (serverless-compatible).
+ * Calculate all server-side similarity scores for a tasting in one server call.
+ * Uses lemma + category similarity. Should be combined with client-side ML scores.
  */
-export async function calculateTastingScores(
+export async function calculateServerSideScores(
   userFarge: string,
   userLukt: string,
   userSmak: string,
@@ -132,9 +89,9 @@ export async function calculateTastingScores(
   wineTaste: string,
 ): Promise<{ colorScore: number; smellScore: number; tasteScore: number }> {
   const [colorScore, smellScore, tasteScore] = await Promise.all([
-    userFarge && wineColor ? comprehensiveSimilarity(userFarge, wineColor) : Promise.resolve(0),
-    userLukt && wineSmell ? comprehensiveSimilarity(userLukt, wineSmell) : Promise.resolve(0),
-    userSmak && wineTaste ? comprehensiveSimilarity(userSmak, wineTaste) : Promise.resolve(0),
+    userFarge && wineColor ? serverSideSimilarity(userFarge, wineColor) : Promise.resolve(0),
+    userLukt && wineSmell ? serverSideSimilarity(userLukt, wineSmell) : Promise.resolve(0),
+    userSmak && wineTaste ? serverSideSimilarity(userSmak, wineTaste) : Promise.resolve(0),
   ])
 
   return { colorScore, smellScore, tasteScore }
