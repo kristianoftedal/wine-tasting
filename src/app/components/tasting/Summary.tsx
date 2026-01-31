@@ -1,17 +1,19 @@
 'use client';
 
-import { comprehensiveSimilarity } from '@/actions/similarity';
+import { serverSideSimilarity } from '@/actions/similarity';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
+import { useSemanticSimilarity } from '@/hooks/useSemanticSimilarity';
 import type { Wine } from '@/lib/types';
 import { useAtomValue, useSetAtom } from 'jotai';
 import type React from 'react';
 import { useEffect, useState } from 'react';
-import styles from './Summary1.module.css';
+import styles from './Summary.module.css';
 
 function calculateNumericSimilarity(
   userValue: string | number | undefined,
   actualValue: string | number | undefined,
-  scale = 12
+  userScale = 10,
+  expertScale = 12
 ): number {
   const normalizeNumber = (val: string | number | undefined): number => {
     if (val === undefined || val === null || val === '' || val === '-') return Number.NaN;
@@ -29,8 +31,8 @@ function calculateNumericSimilarity(
   }
 
   // Normalize both values to percentage (0-1 scale)
-  const userNormalized = userNum / scale;
-  const expertNormalized = actualNum / scale;
+  const userNormalized = userNum / userScale;
+  const expertNormalized = actualNum / expertScale;
 
   // Calculate difference on normalized scale
   const difference = Math.abs(userNormalized - expertNormalized);
@@ -77,6 +79,9 @@ export const Summary: React.FC = () => {
   const [overallScore, setOverallScore] = useState(0);
   const [isCalculating, setIsCalculating] = useState(true);
 
+  // Use client-side semantic similarity
+  const { calculateSimilarity, isReady: modelReady, isLoading: modelLoading } = useSemanticSimilarity();
+
   const isRedWine = wine?.main_category?.toLowerCase().includes('rød');
 
   const getCharacteristicValue = (
@@ -86,6 +91,29 @@ export const Summary: React.FC = () => {
     // First try to use the column value
     if (columnValue != null) {
       return columnValue;
+    }
+
+    // Fallback: try to parse from content.characteristics array
+    try {
+      const characteristics = wine?.content?.characteristics;
+      if (Array.isArray(characteristics)) {
+        const characteristic = characteristics.find(
+          (c: any) =>
+            c?.name?.toLowerCase() === characteristicName.toLowerCase() ||
+            c?.Name?.toLowerCase() === characteristicName.toLowerCase()
+        );
+        if (characteristic) {
+          const value =
+            characteristic.value ||
+            characteristic.Value ||
+            characteristic.readableValue ||
+            characteristic.ReadableValue;
+          const numValue = typeof value === 'string' ? Number.parseInt(value, 10) : value;
+          return isNaN(numValue) ? null : numValue;
+        }
+      }
+    } catch (e) {
+      console.error(`Failed to parse ${characteristicName} from content:`, e);
     }
 
     return null;
@@ -98,32 +126,50 @@ export const Summary: React.FC = () => {
   // </CHANGE>
 
   useEffect(() => {
+    // Wait for model to be ready before calculating
+    if (!modelReady) return;
+
     async function calculateScores() {
       setIsCalculating(true);
       try {
-        const colorScore =
+        // Calculate ML-based scores (client-side) and server-side scores, then combine
+        const userSmellText = `${tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')} ${tastingState.lukt}`;
+        const userTasteText = `${tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')} ${tastingState.smak}`;
+
+        // Get ML scores (client-side)
+        const [mlColorScore, mlSmellScore, mlTasteScore] = await Promise.all([
           tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
-            ? await comprehensiveSimilarity(tastingState.farge, wine.color!)
-            : 0;
+            ? calculateSimilarity(tastingState.farge, wine.color!)
+            : 0,
+          wine?.smell ? calculateSimilarity(userSmellText, wine.smell!) : 0,
+          wine?.taste ? calculateSimilarity(userTasteText, wine.taste!) : 0
+        ]);
 
-        const userSmellText = `${tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')} ${
-          tastingState.lukt
-        }`;
-        const smellScore = wine?.smell ? await comprehensiveSimilarity(userSmellText, wine.smell!) : 0;
+        // Get server-side scores (lemma + category)
+        const [serverColorScore, serverSmellScore, serverTasteScore] = await Promise.all([
+          tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
+            ? serverSideSimilarity(tastingState.farge, wine.color!)
+            : 0,
+          wine?.smell ? serverSideSimilarity(userSmellText, wine.smell!) : 0,
+          wine?.taste ? serverSideSimilarity(userTasteText, wine.taste!) : 0
+        ]);
 
-        const userTasteText = `${tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')} ${
-          tastingState.smak
-        }`;
-        const tasteScore = wine?.taste ? await comprehensiveSimilarity(userTasteText, wine.taste!) : 0;
+        // Combine: (ML score + server score) / 2
+        const colorScore = Math.round((mlColorScore + serverColorScore) / 2);
+        const smellScore = Math.round((mlSmellScore + serverSmellScore) / 2);
+        const tasteScore = Math.round((mlTasteScore + serverTasteScore) / 2);
 
-        const prosentScore = calculateDirectSimilarity(tastingState.alkohol, wine?.alcohol);
+        const prosentScore = calculateDirectSimilarity(
+          tastingState.alkohol,
+          wine?.content?.traits?.[0]?.readableValue || '0'
+        );
 
         const priceScore = calculateDirectSimilarity(tastingState.pris?.toString(), wine?.price);
 
-        const snærpScore = vmpSnærp ? calculateNumericSimilarity(tastingState.snaerp, vmpSnærp) : 0;
-        const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme) : 0;
-        const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde) : 0;
-        const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet) : 0;
+        const snærpScore = vmpSnærp ? calculateNumericSimilarity(tastingState.snaerp, vmpSnærp, 10, 12) : 0;
+        const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme, 10, 12) : 0;
+        const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde, 10, 12) : 0;
+        const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet, 10, 12) : 0;
 
         const newScores = {
           farge: colorScore,
@@ -204,17 +250,19 @@ export const Summary: React.FC = () => {
     vmpSødme,
     vmpFylde,
     vmpFriskhet,
-    setTastingState
+    setTastingState,
+    modelReady,
+    calculateSimilarity
   ]);
 
   const vmpLuktWords = wine?.smell?.toLowerCase().split(/[\s,]+/) || [];
   const vmpSmakWords = wine?.taste?.toLowerCase().split(/[\s,]+/) || [];
 
-  if (isCalculating)
+  if (modelLoading || isCalculating)
     return (
       <div className={styles.loadingContainer}>
         <div className={styles.spinner} />
-        <p className={styles.loadingText}>Beregner din smaksscore...</p>
+        <p className={styles.loadingText}>{modelLoading ? 'Laster inn AI-modell...' : 'Beregner din smaksscore...'}</p>
       </div>
     );
 
@@ -240,11 +288,7 @@ export const Summary: React.FC = () => {
                   {tastingState.selectedFlavorsLukt.map((x, i) => (
                     <span
                       key={i}
-                      className={
-                        vmpLuktWords.includes(x.flavor.name)
-                          ? `${styles.flavorPill} ${styles.flavorPillMatched}`
-                          : styles.flavorPill
-                      }>
+                      className={styles.flavorPill}>
                       {x.flavor.name}
                     </span>
                   ))}
@@ -292,6 +336,12 @@ export const Summary: React.FC = () => {
                 <div className={styles.summaryValue}>{tastingState.sodme || '-'}</div>
               </div>
             )}
+
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Karakter</div>
+              <div className={styles.summaryValue}>{tastingState.karakter}</div>
+            </div>
+
             <div className={styles.summaryRow}>
               <div className={styles.summaryLabel}>Alkohol</div>
               <div className={styles.summaryValue}>{tastingState.alkohol}%</div>
@@ -308,11 +358,6 @@ export const Summary: React.FC = () => {
                 <div className={styles.summaryValue}>{tastingState.egenskaper}</div>
               </div>
             )}
-
-            <div className={styles.summaryRow}>
-              <div className={styles.summaryLabel}>Karakter</div>
-              <div className={styles.summaryValue}>{tastingState.karakter}</div>
-            </div>
           </div>
 
           <div className={styles.comparisonToggle}>
@@ -421,10 +466,18 @@ export const Summary: React.FC = () => {
                 <div className={styles.scoreValue}>{vmpSødme != null ? `${scores.sodme}%` : '-'}</div>
               </div>
             )}
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Karakter</div>
+              <div className={styles.attributeValue}>{tastingState.karakter}</div>
+              <div className={styles.attributeValue}>-</div>
+              <div className={styles.scoreValue}>-</div>
+            </div>
+
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Alkohol</div>
               <div className={styles.attributeValue}>{tastingState.alkohol}%</div>
-              <div className={styles.attributeValue}>{wine?.alcohol}</div>
+              <div className={styles.attributeValue}>{wine?.content?.traits?.[0]?.readableValue}</div>
               <div className={styles.scoreValue}>{scores.alkoholProsent}%</div>
             </div>
 
@@ -433,13 +486,6 @@ export const Summary: React.FC = () => {
               <div className={styles.attributeValue}>{tastingState.pris} kr</div>
               <div className={styles.attributeValue}>{wine?.price} kr</div>
               <div className={styles.scoreValue}>{scores.pris}%</div>
-            </div>
-
-            <div className={styles.tableRow}>
-              <div className={styles.attributeName}>Karakter</div>
-              <div className={styles.attributeValue}></div>
-              <div className={styles.attributeValue}></div>
-              <div className={styles.scoreValue}>{tastingState.karakter}</div>
             </div>
           </div>
 
