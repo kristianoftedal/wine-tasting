@@ -134,9 +134,8 @@ export const Summary: React.FC = () => {
           wine?.taste ? serverSideSimilarity(userTasteText, wine.taste!) : 0,
         ])
 
-        // Get alcohol value from wine content.traits (traits array contains alcohol as first item)
-        const alcoholTrait = wine?.content?.traits?.find(t => t.name?.toLowerCase().includes('alkohol'))
-        const wineAlcohol = alcoholTrait?.readableValue || wine?.content?.traits?.[0]?.readableValue || "0"
+        // Get alcohol value from wine.alcohol field
+        const wineAlcohol = wine?.alcohol || "0"
         const prosentScore = calculateDirectSimilarity(tastingState.alkohol, wineAlcohol)
 
         const priceScore = calculateDirectSimilarity(tastingState.pris?.toString(), wine?.price)
@@ -440,11 +439,7 @@ export const Summary: React.FC = () => {
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Alkohol</div>
               <div className={styles.attributeValue}>{tastingState.alkohol}%</div>
-              <div className={styles.attributeValue}>
-                {wine?.content?.traits?.find(t => t.name?.toLowerCase().includes('alkohol'))?.readableValue 
-                  || wine?.content?.traits?.[0]?.readableValue 
-                  || "-"}
-              </div>
+              <div className={styles.attributeValue}>{wine?.alcohol || "-"}%</div>
               <div className={styles.scoreValue}>{scores.alkoholProsent}%</div>
             </div>
 
