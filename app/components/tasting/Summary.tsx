@@ -4,8 +4,7 @@ import { tastingAtom, wineAtom } from "@/app/store/tasting"
 import { serverSideSimilarity } from "@/actions/similarity"
 import { useAtomValue, useSetAtom } from "jotai"
 import type React from "react"
-import { useEffect, useState, useCallback } from "react"
-import { useSemanticSimilarity } from "@/hooks/useSemanticSimilarity"
+import { useEffect, useState } from "react"
 import type { Wine } from "@/lib/types"
 import styles from "./Summary.module.css"
 
@@ -78,9 +77,6 @@ export const Summary: React.FC = () => {
   const [scores, setScores] = useState(initState())
   const [overallScore, setOverallScore] = useState(0)
   const [isCalculating, setIsCalculating] = useState(true)
-  
-  // Use client-side semantic similarity
-  const { calculateSimilarity, isReady: modelReady, isLoading: modelLoading } = useSemanticSimilarity()
 
   const isRedWine = wine?.main_category?.toLowerCase().includes("rød")
 
@@ -123,38 +119,20 @@ export const Summary: React.FC = () => {
   // </CHANGE>
 
   useEffect(() => {
-    // Wait for model to be ready before calculating
-    if (!modelReady) return
-    
     async function calculateScores() {
       setIsCalculating(true)
       try {
-        // Calculate ML-based scores (client-side) and server-side scores, then combine
+        // Calculate server-side scores (lemma + category + OpenAI embedding)
         const userSmellText = `${tastingState.selectedFlavorsLukt.map((x) => x.flavor.name).join(", ")} ${tastingState.lukt}`
         const userTasteText = `${tastingState.selectedFlavorsSmak.map((x) => x.flavor.name).join(", ")} ${tastingState.smak}`
 
-        // Get ML scores (client-side)
-        const [mlColorScore, mlSmellScore, mlTasteScore] = await Promise.all([
-          tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
-            ? calculateSimilarity(tastingState.farge, wine.color!)
-            : 0,
-          wine?.smell ? calculateSimilarity(userSmellText, wine.smell!) : 0,
-          wine?.taste ? calculateSimilarity(userTasteText, wine.taste!) : 0,
-        ])
-
-        // Get server-side scores (lemma + category)
-        const [serverColorScore, serverSmellScore, serverTasteScore] = await Promise.all([
+        const [colorScore, smellScore, tasteScore] = await Promise.all([
           tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
             ? serverSideSimilarity(tastingState.farge, wine.color!)
             : 0,
           wine?.smell ? serverSideSimilarity(userSmellText, wine.smell!) : 0,
           wine?.taste ? serverSideSimilarity(userTasteText, wine.taste!) : 0,
         ])
-
-        // Combine: (ML score + server score) / 2
-        const colorScore = Math.round((mlColorScore + serverColorScore) / 2)
-        const smellScore = Math.round((mlSmellScore + serverSmellScore) / 2)
-        const tasteScore = Math.round((mlTasteScore + serverTasteScore) / 2)
 
         const prosentScore = calculateDirectSimilarity(
           tastingState.alkohol,
@@ -248,20 +226,16 @@ export const Summary: React.FC = () => {
     vmpFylde,
     vmpFriskhet,
     setTastingState,
-    modelReady,
-    calculateSimilarity,
   ])
 
   const vmpLuktWords = wine?.smell?.toLowerCase().split(/[\s,]+/) || []
   const vmpSmakWords = wine?.taste?.toLowerCase().split(/[\s,]+/) || []
 
-  if (modelLoading || isCalculating)
+  if (isCalculating)
     return (
       <div className={styles.loadingContainer}>
         <div className={styles.spinner} />
-        <p className={styles.loadingText}>
-          {modelLoading ? "Laster inn AI-modell..." : "Beregner din smaksscore..."}
-        </p>
+        <p className={styles.loadingText}>Beregner din smaksscore...</p>
       </div>
     )
 
