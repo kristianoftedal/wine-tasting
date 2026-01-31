@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server"
 import type { Wine } from "@/lib/types"
 import type { RecommendationWeights, RecommendationThresholds, WineSimilarityScore } from "@/lib/recommendation-types"
-import { embeddingSimilarity } from "@/lib/embeddingSimilarity"
+import { semanticSimilarity } from "@/lib/semanticSimilarity"
 
 function getCategoryAttributes(category: string) {
   if (category === "Rødvin") {
@@ -141,11 +141,11 @@ export async function findSimilarWinesSQL(
     let tasteSimilarity = 50
 
     if (combinedSmell && wine.smell) {
-      smellSimilarity = await embeddingSimilarity(combinedSmell, wine.smell)
+      smellSimilarity = await semanticSimilarity(combinedSmell, wine.smell)
     }
 
     if (combinedTaste && wine.taste) {
-      tasteSimilarity = await embeddingSimilarity(combinedTaste, wine.taste)
+      tasteSimilarity = await semanticSimilarity(combinedTaste, wine.taste)
     }
 
     const numericScore = wine.numeric_score || 0

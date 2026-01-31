@@ -1,7 +1,7 @@
 "use server"
 
 import { lemmatizeAndWeight } from "@/lib/lemmatizeAndWeight"
-import { embeddingSimilarity } from "@/lib/embeddingSimilarity"
+import { semanticSimilarity } from "@/lib/semanticSimilarity"
 
 /**
  * Compute similarity between lemmatized words (0-100)
@@ -67,7 +67,7 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
     const [lemmaScore, categoryScore, embeddingScore] = await Promise.all([
       lemmaSimpleSimilarity(text1, text2),
       categorySimpleSimilarity(text1, text2),
-      embeddingSimilarity(text1, text2),
+      semanticSimilarity(text1, text2),
     ])
 
     // Average all three scores
