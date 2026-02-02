@@ -40,31 +40,7 @@ function calculateNumericSimilarity(
   return score
 }
 
-function calculateDirectSimilarity(
-  userValue: string | number | undefined,
-  actualValue: string | number | undefined,
-): number {
-  const normalizeNumber = (val: string | number | undefined): number => {
-    if (val === undefined || val === null || val === "" || val === "-") return Number.NaN
-    const str = String(val)
-    const cleaned = str.replace(/[^\d.,]/g, "").replace("prosent", "")
-    return Number.parseFloat(cleaned.replace(",", "."))
-  }
 
-  const userNum = normalizeNumber(userValue)
-  const actualNum = normalizeNumber(actualValue)
-
-  if (isNaN(userNum) || isNaN(actualNum)) return 0
-  if (userNum === 0 && actualNum === 0) return 100
-
-  const maxVal = Math.max(Math.abs(userNum), Math.abs(actualNum))
-  if (maxVal === 0) return 100
-
-  const difference = Math.abs(userNum - actualNum)
-  const percentDifference = (difference / maxVal) * 100
-
-  return Math.max(0, Math.round(100 - Math.min(percentDifference, 100)))
-}
 
 export const Summary: React.FC = () => {
   const tastingState = useAtomValue(tastingAtom)
@@ -134,9 +110,9 @@ export const Summary: React.FC = () => {
 
         // Get alcohol value from wine.alcohol field
         const wineAlcohol = wine?.alcohol || "0"
-        const prosentScore = calculateDirectSimilarity(tastingState.alkohol, wineAlcohol)
+        const prosentScore = calculateNumericSimilarity(tastingState.alkohol, wineAlcohol)
 
-        const priceScore = calculateDirectSimilarity(tastingState.pris?.toString(), wine?.price)
+        const priceScore = calculateNumericSimilarity(tastingState.pris?.toString(), wine?.price)
 
         const snærpScore = vmpSnærp ? calculateNumericSimilarity(tastingState.snaerp, vmpSnærp) : 0
         const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme) : 0
