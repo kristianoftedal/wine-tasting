@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "analyze": "tsx scripts/analyze-wine-vocabulary.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "latest",
@@ -41,7 +42,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "baseline-browser-mapping": "^2.8.32",
+    "dotenv": "^17.2.3",
     "postcss": "^8.5",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }
