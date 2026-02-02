@@ -11,8 +11,7 @@ import styles from "./Summary.module.css"
 function calculateNumericSimilarity(
   userValue: string | number | undefined,
   actualValue: string | number | undefined,
-  userScale = 10,
-  expertScale = 12,
+  maxScale = 12,
 ): number {
   const normalizeNumber = (val: string | number | undefined): number => {
     if (val === undefined || val === null || val === "" || val === "-") return Number.NaN
@@ -29,15 +28,15 @@ function calculateNumericSimilarity(
     return 0
   }
 
-  // Normalize both values to percentage (0-1 scale)
-  const userNormalized = userNum / userScale
-  const expertNormalized = actualNum / expertScale
+  // If both values are the same, return 100%
+  if (userNum === actualNum) {
+    return 100
+  }
 
-  // Calculate difference on normalized scale
-  const difference = Math.abs(userNormalized - expertNormalized)
-
-  // Convert to 0-100 score (closer = higher score)
-  const score = Math.max(0, Math.round((1 - difference) * 100))
+  // Calculate difference and convert to percentage score
+  // Using maxScale as the maximum possible difference
+  const difference = Math.abs(userNum - actualNum)
+  const score = Math.max(0, Math.round((1 - difference / maxScale) * 100))
 
   return score
 }
@@ -140,10 +139,10 @@ export const Summary: React.FC = () => {
 
         const priceScore = calculateDirectSimilarity(tastingState.pris?.toString(), wine?.price)
 
-        const snærpScore = vmpSnærp ? calculateNumericSimilarity(tastingState.snaerp, vmpSnærp, 10, 12) : 0
-        const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme, 10, 12) : 0
-        const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde, 10, 12) : 0
-        const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet, 10, 12) : 0
+        const snærpScore = vmpSnærp ? calculateNumericSimilarity(tastingState.snaerp, vmpSnærp) : 0
+        const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme) : 0
+        const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde) : 0
+        const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet) : 0
 
         const newScores = {
           farge: colorScore,
