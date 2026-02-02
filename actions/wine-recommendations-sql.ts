@@ -4,6 +4,30 @@ import { createClient } from "@/lib/supabase/server"
 import type { Wine } from "@/lib/types"
 import type { RecommendationWeights, RecommendationThresholds, WineSimilarityScore } from "@/lib/recommendation-types"
 import { semanticSimilarity } from "@/lib/semanticSimilarity"
+import { localSemanticSimilarity } from "@/lib/localSemanticSimilarity"
+
+/**
+ * Check if running on localhost
+ */
+function isLocalhost(): boolean {
+  const host = process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || ""
+  return !host || host.includes("localhost") || host.includes("127.0.0.1")
+}
+
+/**
+ * Get semantic similarity using OpenAI on production, local on localhost
+ */
+async function getSemanticSimilarity(text1: string, text2: string): Promise<number> {
+  if (isLocalhost() || !process.env.AI_GATEWAY_API_KEY) {
+    return localSemanticSimilarity(text1, text2)
+  }
+  try {
+    return await semanticSimilarity(text1, text2)
+  } catch {
+    console.warn("[v0] OpenAI embedding failed, falling back to local similarity")
+    return localSemanticSimilarity(text1, text2)
+  }
+}
 
 function getCategoryAttributes(category: string) {
   if (category === "Rødvin") {
