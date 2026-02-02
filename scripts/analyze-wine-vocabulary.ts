@@ -111,12 +111,75 @@ function findMissingTerms(
   return missing.sort((a, b) => b.count - a.count);
 }
 
+/**
+ * Calculate Levenshtein distance between two strings
+ */
+function levenshteinDistance(a: string, b: string): number {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+
+  const matrix: number[][] = [];
+
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+/**
+ * Find potential typos by comparing words to existing lemmas
+ */
+function findTypoSuggestions(
+  allFrequencies: Map<string, number>,
+  existingLemmas: Record<string, unknown>,
+  maxDistance: number = 1
+): { word: string; suggestion: string; count: number; distance: number }[] {
+  const typos: { word: string; suggestion: string; count: number; distance: number }[] = [];
+  const lemmaKeys = Object.keys(existingLemmas);
+
+  allFrequencies.forEach((count, word) => {
+    // Only check words NOT in lemmas
+    if (existingLemmas[word]) return;
+
+    // Check against all lemma keys
+    for (const lemma of lemmaKeys) {
+      const distance = levenshteinDistance(word, lemma);
+      // Only consider close matches (1 edit away) and words > 3 chars
+      if (distance > 0 && distance <= maxDistance && word.length > 3) {
+        typos.push({ word, suggestion: lemma, count, distance });
+        break; // Only first match per word
+      }
+    }
+  });
+
+  return typos.sort((a, b) => b.count - a.count);
+}
+
 interface AnalysisResults {
   totalWines: number;
   smellTermFrequency: [string, number][];
   tasteTermFrequency: [string, number][];
   colorTermFrequency: [string, number][];
   missingTerms: { term: string; count: number }[];
+  typoSuggestions: { word: string; suggestion: string; count: number; distance: number }[];
   analyzedAt: string;
 }
 
@@ -161,6 +224,10 @@ async function main() {
     const missingTerms = findMissingTerms(allTerms, norwegianLemmas, 3);
     console.log(`\nFound ${missingTerms.length} missing terms (appearing 3+ times)`);
 
+    // Find typo suggestions
+    const typoSuggestions = findTypoSuggestions(allTerms, norwegianLemmas, 1);
+    console.log(`Found ${typoSuggestions.length} potential typos (edit distance 1)`);
+
     // Build results object
     const results: AnalysisResults = {
       totalWines: wines.length,
@@ -168,6 +235,7 @@ async function main() {
       tasteTermFrequency: tasteTerms,
       colorTermFrequency: colorTerms,
       missingTerms: missingTerms,
+      typoSuggestions: typoSuggestions,
       analyzedAt: new Date().toISOString()
     };
 
@@ -187,6 +255,11 @@ async function main() {
     console.log('\n=== TOP 10 TASTE TERMS ===');
     tasteTerms.slice(0, 10).forEach(([term, count]) => {
       console.log(`${term}: ${count}`);
+    });
+
+    console.log('\n=== TOP 5 LIKELY TYPOS ===');
+    typoSuggestions.slice(0, 5).forEach(({ word, suggestion, count }) => {
+      console.log(`"${word}" -> "${suggestion}" (${count} occurrences)`);
     });
 
     console.log('\n✓ Analysis complete!');

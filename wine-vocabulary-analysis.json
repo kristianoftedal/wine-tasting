@@ -7244,5 +7244,1441 @@
       "count": 3
     }
   ],
-  "analyzedAt": "2026-02-02T11:48:22.274Z"
+  "typoSuggestions": [
+    {
+      "word": "hint",
+      "suggestion": "fint",
+      "count": 11250,
+      "distance": 1
+    },
+    {
+      "word": "krydret",
+      "suggestion": "krydrete",
+      "count": 2428,
+      "distance": 1
+    },
+    {
+      "word": "modent",
+      "suggestion": "moden",
+      "count": 575,
+      "distance": 1
+    },
+    {
+      "word": "saftige",
+      "suggestion": "saftig",
+      "count": 349,
+      "distance": 1
+    },
+    {
+      "word": "ferske",
+      "suggestion": "fersken",
+      "count": 190,
+      "distance": 1
+    },
+    {
+      "word": "åpen",
+      "suggestion": "pen",
+      "count": 162,
+      "distance": 1
+    },
+    {
+      "word": "mint",
+      "suggestion": "fint",
+      "count": 130,
+      "distance": 1
+    },
+    {
+      "word": "rene",
+      "suggestion": "pene",
+      "count": 118,
+      "distance": 1
+    },
+    {
+      "word": "rosa",
+      "suggestion": "rose",
+      "count": 91,
+      "distance": 1
+    },
+    {
+      "word": "strukturerte",
+      "suggestion": "strukturert",
+      "count": 89,
+      "distance": 1
+    },
+    {
+      "word": "fløte",
+      "suggestion": "bløte",
+      "count": 88,
+      "distance": 1
+    },
+    {
+      "word": "lenge",
+      "suggestion": "lange",
+      "count": 75,
+      "distance": 1
+    },
+    {
+      "word": "krydrede",
+      "suggestion": "krydrete",
+      "count": 74,
+      "distance": 1
+    },
+    {
+      "word": "lite",
+      "suggestion": "lime",
+      "count": 34,
+      "distance": 1
+    },
+    {
+      "word": "bløtt",
+      "suggestion": "bløt",
+      "count": 33,
+      "distance": 1
+    },
+    {
+      "word": "røkt",
+      "suggestion": "rikt",
+      "count": 32,
+      "distance": 1
+    },
+    {
+      "word": "komplekst",
+      "suggestion": "kompleks",
+      "count": 29,
+      "distance": 1
+    },
+    {
+      "word": "sure",
+      "suggestion": "syre",
+      "count": 28,
+      "distance": 1
+    },
+    {
+      "word": "steinete",
+      "suggestion": "steinet",
+      "count": 28,
+      "distance": 1
+    },
+    {
+      "word": "avslutting",
+      "suggestion": "avslutning",
+      "count": 27,
+      "distance": 1
+    },
+    {
+      "word": "situs",
+      "suggestion": "sitrus",
+      "count": 25,
+      "distance": 1
+    },
+    {
+      "word": "rent",
+      "suggestion": "pent",
+      "count": 25,
+      "distance": 1
+    },
+    {
+      "word": "lyng",
+      "suggestion": "lang",
+      "count": 22,
+      "distance": 1
+    },
+    {
+      "word": "urte",
+      "suggestion": "urter",
+      "count": 21,
+      "distance": 1
+    },
+    {
+      "word": "rundt",
+      "suggestion": "rund",
+      "count": 21,
+      "distance": 1
+    },
+    {
+      "word": "dype",
+      "suggestion": "dyp",
+      "count": 20,
+      "distance": 1
+    },
+    {
+      "word": "intenst",
+      "suggestion": "intens",
+      "count": 19,
+      "distance": 1
+    },
+    {
+      "word": "mykt",
+      "suggestion": "myk",
+      "count": 19,
+      "distance": 1
+    },
+    {
+      "word": "silkemyke",
+      "suggestion": "silkemyk",
+      "count": 19,
+      "distance": 1
+    },
+    {
+      "word": "konsentrerte",
+      "suggestion": "konsentrert",
+      "count": 18,
+      "distance": 1
+    },
+    {
+      "word": "bred",
+      "suggestion": "brød",
+      "count": 15,
+      "distance": 1
+    },
+    {
+      "word": "tang",
+      "suggestion": "lang",
+      "count": 14,
+      "distance": 1
+    },
+    {
+      "word": "tørkete",
+      "suggestion": "tørket",
+      "count": 12,
+      "distance": 1
+    },
+    {
+      "word": "balanser",
+      "suggestion": "balansert",
+      "count": 11,
+      "distance": 1
+    },
+    {
+      "word": "syrer",
+      "suggestion": "syre",
+      "count": 11,
+      "distance": 1
+    },
+    {
+      "word": "eiket",
+      "suggestion": "eiken",
+      "count": 10,
+      "distance": 1
+    },
+    {
+      "word": "avsluttning",
+      "suggestion": "avslutning",
+      "count": 10,
+      "distance": 1
+    },
+    {
+      "word": "tanninger",
+      "suggestion": "tanniner",
+      "count": 10,
+      "distance": 1
+    },
+    {
+      "word": "taniner",
+      "suggestion": "tanniner",
+      "count": 10,
+      "distance": 1
+    },
+    {
+      "word": "sten",
+      "suggestion": "stein",
+      "count": 9,
+      "distance": 1
+    },
+    {
+      "word": "langt",
+      "suggestion": "lang",
+      "count": 9,
+      "distance": 1
+    },
+    {
+      "word": "røstede",
+      "suggestion": "ristede",
+      "count": 8,
+      "distance": 1
+    },
+    {
+      "word": "syrin",
+      "suggestion": "syren",
+      "count": 8,
+      "distance": 1
+    },
+    {
+      "word": "frist",
+      "suggestion": "frisk",
+      "count": 8,
+      "distance": 1
+    },
+    {
+      "word": "behagelige",
+      "suggestion": "behagelig",
+      "count": 8,
+      "distance": 1
+    },
+    {
+      "word": "violer",
+      "suggestion": "fioler",
+      "count": 7,
+      "distance": 1
+    },
+    {
+      "word": "steiner",
+      "suggestion": "steinet",
+      "count": 7,
+      "distance": 1
+    },
+    {
+      "word": "eleganse",
+      "suggestion": "elegante",
+      "count": 7,
+      "distance": 1
+    },
+    {
+      "word": "frisket",
+      "suggestion": "friskhet",
+      "count": 7,
+      "distance": 1
+    },
+    {
+      "word": "saltig",
+      "suggestion": "saftig",
+      "count": 7,
+      "distance": 1
+    },
+    {
+      "word": "peon",
+      "suggestion": "pen",
+      "count": 6,
+      "distance": 1
+    },
+    {
+      "word": "mange",
+      "suggestion": "lange",
+      "count": 6,
+      "distance": 1
+    },
+    {
+      "word": "særlig",
+      "suggestion": "syrlig",
+      "count": 6,
+      "distance": 1
+    },
+    {
+      "word": "umoden",
+      "suggestion": "moden",
+      "count": 6,
+      "distance": 1
+    },
+    {
+      "word": "mose",
+      "suggestion": "rose",
+      "count": 6,
+      "distance": 1
+    },
+    {
+      "word": "røstet",
+      "suggestion": "ristet",
+      "count": 6,
+      "distance": 1
+    },
+    {
+      "word": "plummer",
+      "suggestion": "plommer",
+      "count": 5,
+      "distance": 1
+    },
+    {
+      "word": "kryddere",
+      "suggestion": "krydder",
+      "count": 5,
+      "distance": 1
+    },
+    {
+      "word": "blomstret",
+      "suggestion": "blomsteret",
+      "count": 5,
+      "distance": 1
+    },
+    {
+      "word": "rosé",
+      "suggestion": "rose",
+      "count": 5,
+      "distance": 1
+    },
+    {
+      "word": "fisk",
+      "suggestion": "frisk",
+      "count": 5,
+      "distance": 1
+    },
+    {
+      "word": "sødmen",
+      "suggestion": "sødme",
+      "count": 5,
+      "distance": 1
+    },
+    {
+      "word": "land",
+      "suggestion": "lang",
+      "count": 5,
+      "distance": 1
+    },
+    {
+      "word": "stukturert",
+      "suggestion": "strukturert",
+      "count": 5,
+      "distance": 1
+    },
+    {
+      "word": "konsentreret",
+      "suggestion": "konsentrert",
+      "count": 5,
+      "distance": 1
+    },
+    {
+      "word": "ballansert",
+      "suggestion": "balansert",
+      "count": 4,
+      "distance": 1
+    },
+    {
+      "word": "fris",
+      "suggestion": "frisk",
+      "count": 4,
+      "distance": 1
+    },
+    {
+      "word": "mode",
+      "suggestion": "moden",
+      "count": 4,
+      "distance": 1
+    },
+    {
+      "word": "minerals",
+      "suggestion": "mineralsk",
+      "count": 4,
+      "distance": 1
+    },
+    {
+      "word": "sydlig",
+      "suggestion": "syrlig",
+      "count": 4,
+      "distance": 1
+    },
+    {
+      "word": "finnish",
+      "suggestion": "finish",
+      "count": 4,
+      "distance": 1
+    },
+    {
+      "word": "balansere",
+      "suggestion": "balansert",
+      "count": 4,
+      "distance": 1
+    },
+    {
+      "word": "ureter",
+      "suggestion": "urter",
+      "count": 4,
+      "distance": 1
+    },
+    {
+      "word": "lende",
+      "suggestion": "lengde",
+      "count": 4,
+      "distance": 1
+    },
+    {
+      "word": "modn",
+      "suggestion": "moden",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "minerale",
+      "suggestion": "mineraler",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "ristete",
+      "suggestion": "ristet",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "bære",
+      "suggestion": "pære",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "sammensatte",
+      "suggestion": "sammensatt",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "erter",
+      "suggestion": "urter",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "lengden",
+      "suggestion": "lengde",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "mynt",
+      "suggestion": "mynte",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "konsentret",
+      "suggestion": "konsentrert",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "mineralskt",
+      "suggestion": "mineralsk",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "konsentert",
+      "suggestion": "konsentrert",
+      "count": 3,
+      "distance": 1
+    },
+    {
+      "word": "pæred",
+      "suggestion": "pære",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "fiske",
+      "suggestion": "friske",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "blommer",
+      "suggestion": "plommer",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "jorbær",
+      "suggestion": "jordbær",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "minte",
+      "suggestion": "mynte",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "annanas",
+      "suggestion": "ananas",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "tobakks",
+      "suggestion": "tobakk",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "dypt",
+      "suggestion": "dyp",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "blomter",
+      "suggestion": "blomster",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "grapefruit",
+      "suggestion": "grapefrukt",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "kirsbær",
+      "suggestion": "kirsebær",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "blomstrede",
+      "suggestion": "blomstrete",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "anans",
+      "suggestion": "ananas",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "kryder",
+      "suggestion": "krydder",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "modnet",
+      "suggestion": "modne",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "kydder",
+      "suggestion": "krydder",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "rydder",
+      "suggestion": "krydder",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "modem",
+      "suggestion": "moden",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "avsutning",
+      "suggestion": "avslutning",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "tanninner",
+      "suggestion": "tanniner",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "balanseret",
+      "suggestion": "balansert",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "broche",
+      "suggestion": "brioche",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "honnig",
+      "suggestion": "honning",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "eples",
+      "suggestion": "eple",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "blansert",
+      "suggestion": "balansert",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "edle",
+      "suggestion": "eple",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "kirskebær",
+      "suggestion": "kirsebær",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "fesken",
+      "suggestion": "fersken",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "konsentrer",
+      "suggestion": "konsentrert",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "mineralisk",
+      "suggestion": "mineralsk",
+      "count": 2,
+      "distance": 1
+    },
+    {
+      "word": "rørt",
+      "suggestion": "tørt",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "karamel",
+      "suggestion": "karamell",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "bjærnebær",
+      "suggestion": "bjørnebær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "kjære",
+      "suggestion": "tjære",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "blomstrer",
+      "suggestion": "blomster",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "edlet",
+      "suggestion": "eplet",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "ruse",
+      "suggestion": "rose",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "plumme",
+      "suggestion": "plomme",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "minneraler",
+      "suggestion": "mineraler",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "plommen",
+      "suggestion": "plomme",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "minealer",
+      "suggestion": "mineraler",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "morello",
+      "suggestion": "morell",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "lblomster",
+      "suggestion": "blomster",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "toasty",
+      "suggestion": "toast",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "jordbære",
+      "suggestion": "jordbær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "kafe",
+      "suggestion": "kaffe",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "jordlær",
+      "suggestion": "jordbær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "kaffeb",
+      "suggestion": "kaffe",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "tøket",
+      "suggestion": "tørket",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "bjørnbebær",
+      "suggestion": "bjørnebær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "lakis",
+      "suggestion": "lakris",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "ferken",
+      "suggestion": "fersken",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "nytt",
+      "suggestion": "nøtt",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "citrus",
+      "suggestion": "sitrus",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "risk",
+      "suggestion": "rik",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "vanlilje",
+      "suggestion": "vanilje",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "minralitet",
+      "suggestion": "mineralitet",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "røtter",
+      "suggestion": "nøtter",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "thimian",
+      "suggestion": "timian",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "bjørnebør",
+      "suggestion": "bjørnebær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "bringbær",
+      "suggestion": "bringebær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "ordbær",
+      "suggestion": "jordbær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "rikk",
+      "suggestion": "rik",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "mmineraler",
+      "suggestion": "mineraler",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "lakrits",
+      "suggestion": "lakris",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "plen",
+      "suggestion": "pen",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "honnning",
+      "suggestion": "honning",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "eulalyptus",
+      "suggestion": "eukalyptus",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "myske",
+      "suggestion": "myke",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "avsluning",
+      "suggestion": "avslutning",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "balsnsert",
+      "suggestion": "balansert",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "dose",
+      "suggestion": "rose",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "fydig",
+      "suggestion": "fyldig",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "smørm",
+      "suggestion": "smør",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "mykk",
+      "suggestion": "myk",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "fyldie",
+      "suggestion": "fylde",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "interns",
+      "suggestion": "intens",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "fylding",
+      "suggestion": "fyldig",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "konsetrert",
+      "suggestion": "konsentrert",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "rundes",
+      "suggestion": "runde",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "umodne",
+      "suggestion": "modne",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "modner",
+      "suggestion": "modne",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "legde",
+      "suggestion": "lengde",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "ettersmaks",
+      "suggestion": "ettersmak",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "elegang",
+      "suggestion": "elegant",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "etteresmak",
+      "suggestion": "ettersmak",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "grapefukt",
+      "suggestion": "grapefrukt",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "grapfrukt",
+      "suggestion": "grapefrukt",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "eukayptus",
+      "suggestion": "eukalyptus",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "kosentrasjon",
+      "suggestion": "konsentrasjon",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "minraler",
+      "suggestion": "mineraler",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "safting",
+      "suggestion": "saftig",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "sammesatt",
+      "suggestion": "sammensatt",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "struktrert",
+      "suggestion": "strukturert",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "mineraksk",
+      "suggestion": "mineralsk",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "rode",
+      "suggestion": "rose",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "kirksebær",
+      "suggestion": "kirsebær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "fyle",
+      "suggestion": "fylde",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "konsentrason",
+      "suggestion": "konsentrasjon",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "saftiig",
+      "suggestion": "saftig",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "bringerbær",
+      "suggestion": "bringebær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "lavslutning",
+      "suggestion": "avslutning",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "langde",
+      "suggestion": "lange",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "ettermsmak",
+      "suggestion": "ettersmak",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "saftg",
+      "suggestion": "saftig",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "spent",
+      "suggestion": "pent",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "mineralet",
+      "suggestion": "mineraler",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "sølbær",
+      "suggestion": "solbær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "krydde",
+      "suggestion": "krydder",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "frik",
+      "suggestion": "rik",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "runder",
+      "suggestion": "runde",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "balasnserte",
+      "suggestion": "balanserte",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "tanning",
+      "suggestion": "tannin",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "konsenstrasjon",
+      "suggestion": "konsentrasjon",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "kjeke",
+      "suggestion": "kjeks",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "fryldig",
+      "suggestion": "fyldig",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "bøte",
+      "suggestion": "søte",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "sjololade",
+      "suggestion": "sjokolade",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "frtiske",
+      "suggestion": "friske",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "firisk",
+      "suggestion": "frisk",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "mineralite",
+      "suggestion": "mineralitet",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "styre",
+      "suggestion": "syre",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "snert",
+      "suggestion": "snerp",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "tranniner",
+      "suggestion": "tanniner",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "avslutnig",
+      "suggestion": "avslutning",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "anslutning",
+      "suggestion": "avslutning",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "friskg",
+      "suggestion": "frisk",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "tanninet",
+      "suggestion": "tanniner",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "vanille",
+      "suggestion": "vanilje",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "blomstene",
+      "suggestion": "blomsten",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "strukturet",
+      "suggestion": "strukturert",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "rrisk",
+      "suggestion": "frisk",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "konsenrert",
+      "suggestion": "konsentrert",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "miniralitet",
+      "suggestion": "mineralitet",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "gods",
+      "suggestion": "god",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "konsentreet",
+      "suggestion": "konsentrert",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "skrukturert",
+      "suggestion": "strukturert",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "avslutnin",
+      "suggestion": "avslutning",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "strukterert",
+      "suggestion": "strukturert",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "bakanserte",
+      "suggestion": "balanserte",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "ayrlig",
+      "suggestion": "syrlig",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "friskl",
+      "suggestion": "frisk",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "konsetrasjon",
+      "suggestion": "konsentrasjon",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "tannier",
+      "suggestion": "tanniner",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "safti",
+      "suggestion": "saftig",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "fastet",
+      "suggestion": "fatet",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "fiskt",
+      "suggestion": "friskt",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "ettersmakt",
+      "suggestion": "ettersmak",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "langvarige",
+      "suggestion": "langvarig",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "elegent",
+      "suggestion": "elegant",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "avsluting",
+      "suggestion": "avslutning",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "jrdbær",
+      "suggestion": "jordbær",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "fyllde",
+      "suggestion": "fylde",
+      "count": 1,
+      "distance": 1
+    },
+    {
+      "word": "ettesmak",
+      "suggestion": "ettersmak",
+      "count": 1,
+      "distance": 1
+    }
+  ],
+  "analyzedAt": "2026-02-02T11:49:34.048Z"
 }
