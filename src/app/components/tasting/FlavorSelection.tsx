@@ -17,13 +17,12 @@ interface Props {
 
 export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => {
   const [tastingState, setTastingState] = useAtom(tastingAtom);
-  const [tasting, setTasting] = useAtom(tastingAtom);
 
   let flavorData = redWineFlavorsData;
 
   if (vintype === 'Rødvin') {
     flavorData = redWineFlavorsData;
-  } else if (vintype === 'Hvitvin' || vintype === 'Musserende vin' || 'Rosévin') {
+  } else if (vintype === 'Hvitvin' || vintype === 'Musserende vin' || vintype === 'Rosévin') {
     flavorData = whiteWineFlavorsData;
   }
 
@@ -40,16 +39,15 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
   };
 
   const onChangeIntensity = (value: 'lav' | 'middels' | 'høy') => {
-    setTasting((prev: TastingFormData) => {
+    setTastingState((prev: TastingFormData) => {
       if (type === 'lukt') return { ...prev, luktIntensitet: value };
       return { ...prev, smaksIntensitet: value };
     });
   };
 
-  const currentIntensity = type === 'lukt' ? tasting.luktIntensitet : tasting.smaksIntensitet;
-  const selectedFlavors =
-    tastingState[type === 'lukt' ? 'selectedFlavorsLukt' : 'selectedFlavorsSmak']?.map(x => x.flavor) || [];
-
+  const currentIntensity = type === 'lukt' ? tastingState.luktIntensitet : tastingState.smaksIntensitet;
+  const selectedFlavorsList = tastingState[type === 'lukt' ? 'selectedFlavorsLukt' : 'selectedFlavorsSmak'] || [];
+  const selectedFlavors = selectedFlavorsList.map(x => x.flavor);
   return (
     <div className={styles.flavorSelection}>
       <div className={styles.intensitySection}>

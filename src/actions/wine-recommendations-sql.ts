@@ -4,6 +4,7 @@ import type { RecommendationThresholds, RecommendationWeights, WineSimilaritySco
 import { semanticSimilarity } from '@/lib/semanticSimilarity';
 import { createClient } from '@/lib/supabase/server';
 import type { Wine } from '@/lib/types';
+import { localSemanticSimilarity } from '../lib/localSemanticSimilarity';
 
 function getCategoryAttributes(category: string) {
   if (category === 'Rødvin') {
@@ -141,11 +142,11 @@ export async function findSimilarWinesSQL(
     let tasteSimilarity = 50;
 
     if (combinedSmell && wine.smell) {
-      smellSimilarity = await semanticSimilarity(combinedSmell, wine.smell);
+      smellSimilarity = await calculateSemanticSimilarity(combinedSmell, wine.smell);
     }
 
     if (combinedTaste && wine.taste) {
-      tasteSimilarity = await semanticSimilarity(combinedTaste, wine.taste);
+      tasteSimilarity = await calculateSemanticSimilarity(combinedTaste, wine.taste);
     }
 
     const numericScore = wine.numeric_score || 0;
@@ -200,4 +201,32 @@ export async function findSimilarWinesSQL(
     wines: topScored.map(sw => sw.wine),
     scores: topScored
   };
+}
+
+async function calculateSemanticSimilarity(text1: string, text2: string) {
+  const useLocalSimilarity = isLocalhost() || !process.env.AI_GATEWAY_API_KEY;
+  let semanticScore = 0;
+
+  if (useLocalSimilarity) {
+    // Use local semantic similarity (Norwegian wine vocabulary weighted matching)
+    semanticScore = await localSemanticSimilarity(text1, text2);
+  } else {
+    // Use OpenAI embedding similarity
+    try {
+      semanticScore = await semanticSimilarity(text1, text2);
+    } catch {
+      // Fallback to local if API fails
+      console.warn('OpenAI embedding failed, falling back to local similarity');
+      semanticScore = await localSemanticSimilarity(text1, text2);
+    }
+  }
+  return semanticScore;
+}
+
+/**
+ * Check if running on localhost
+ */
+function isLocalhost(): boolean {
+  const host = process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || '';
+  return !host || host.includes('localhost') || host.includes('127.0.0.1');
 }
