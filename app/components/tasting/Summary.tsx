@@ -280,11 +280,6 @@ export const Summary: React.FC = () => {
             )}
 
             <div className={styles.summaryRow}>
-              <div className={styles.summaryLabel}>Karakter</div>
-              <div className={styles.summaryValue}>{tastingState.karakter}</div>
-            </div>
-
-            <div className={styles.summaryRow}>
               <div className={styles.summaryLabel}>Alkohol</div>
               <div className={styles.summaryValue}>{tastingState.alkohol}%</div>
             </div>
@@ -300,6 +295,11 @@ export const Summary: React.FC = () => {
                 <div className={styles.summaryValue}>{tastingState.egenskaper}</div>
               </div>
             )}
+
+            <div className={styles.summaryRow}>
+              <div className={styles.summaryLabel}>Karakter</div>
+              <div className={styles.summaryValue}>{tastingState.karakter}</div>
+            </div>
           </div>
 
           <div className={styles.comparisonToggle}>
@@ -404,13 +404,6 @@ export const Summary: React.FC = () => {
             )}
 
             <div className={styles.tableRow}>
-              <div className={styles.attributeName}>Karakter</div>
-              <div className={styles.attributeValue}>{tastingState.karakter}</div>
-              <div className={styles.attributeValue}>-</div>
-              <div className={styles.scoreValue}>-</div>
-            </div>
-
-            <div className={styles.tableRow}>
               <div className={styles.attributeName}>Alkohol</div>
               <div className={styles.attributeValue}>{tastingState.alkohol}%</div>
               <div className={styles.attributeValue}>{wine?.alcohol || "-"}%</div>
@@ -422,6 +415,13 @@ export const Summary: React.FC = () => {
               <div className={styles.attributeValue}>{tastingState.pris} kr</div>
               <div className={styles.attributeValue}>{wine?.price} kr</div>
               <div className={styles.scoreValue}>{scores.pris}%</div>
+            </div>
+
+            <div className={styles.tableRow}>
+              <div className={styles.attributeName}>Karakter</div>
+              <div className={styles.attributeValue}></div>
+              <div className={styles.attributeValue}></div>
+              <div className={styles.scoreValue}>{tastingState.karakter}</div>
             </div>
           </div>
 
