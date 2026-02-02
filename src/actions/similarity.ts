@@ -94,7 +94,7 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
 
     // Determine which semantic similarity to use
     let semanticScore = 0;
-    const useLocalSimilarity = isLocalhost() || !process.env.AI_GATEWAY_API_KEY;
+    const useLocalSimilarity = isLocalhost();
 
     if (useLocalSimilarity) {
       // Use local semantic similarity (Norwegian wine vocabulary weighted matching)
