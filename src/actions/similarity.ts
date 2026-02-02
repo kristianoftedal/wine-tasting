@@ -1,6 +1,7 @@
 'use server';
 
 import { lemmatizeAndWeight } from '@/lib/lemmatizeAndWeight';
+import { localSemanticSimilarity } from '@/lib/localSemanticSimilarity';
 import { semanticSimilarity } from '@/lib/semanticSimilarity';
 
 /**
@@ -54,26 +55,51 @@ async function categorySimpleSimilarity(text1: string, text2: string): Promise<n
 }
 
 /**
+ * Check if running on localhost
+ */
+function isLocalhost(): boolean {
+  const host = process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || '';
+  return !host || host.includes('localhost') || host.includes('127.0.0.1');
+}
+
+/**
  * Calculate comprehensive server-side similarity score using:
  * - Lemma matching
  * - Category matching
- * - OpenAI embedding similarity
- * Final score = (lemmaScore + categoryScore + embeddingScore) / 3
+ * - OpenAI embedding similarity (if AI_GATEWAY_API_KEY is available and not localhost)
+ * - Falls back to local semantic similarity on localhost or when API key is missing
+ * Final score = average of available scores
  */
 export async function serverSideSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0;
 
   try {
-    const [lemmaScore, categoryScore, embeddingScore] = await Promise.all([
+    // Always calculate lemma and category scores
+    const [lemmaScore, categoryScore] = await Promise.all([
       lemmaSimpleSimilarity(text1, text2),
-      categorySimpleSimilarity(text1, text2),
-      semanticSimilarity(text1, text2)
+      categorySimpleSimilarity(text1, text2)
     ]);
 
-    // Average all three scores
-    const averageScore = Math.round((lemmaScore + categoryScore + embeddingScore) / 3);
+    // Determine which semantic similarity to use
+    let semanticScore = 0;
+    const useLocalSimilarity = isLocalhost() || !process.env.AI_GATEWAY_API_KEY;
 
-    return averageScore;
+    if (useLocalSimilarity) {
+      // Use local semantic similarity (Norwegian wine vocabulary weighted matching)
+      semanticScore = await localSemanticSimilarity(text1, text2);
+    } else {
+      // Use OpenAI embedding similarity
+      try {
+        semanticScore = await semanticSimilarity(text1, text2);
+      } catch {
+        // Fallback to local if API fails
+        console.warn('OpenAI embedding failed, falling back to local similarity');
+        semanticScore = await localSemanticSimilarity(text1, text2);
+      }
+    }
+
+    // Average all three scores
+    return Math.round((lemmaScore + categoryScore + semanticScore) / 3);
   } catch (error) {
     console.error('Server-side similarity error:', error);
     return 0;

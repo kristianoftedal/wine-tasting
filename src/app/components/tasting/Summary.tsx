@@ -115,7 +115,7 @@ export const Summary: React.FC = () => {
     return null;
   };
 
-  const vmpFylde = getCharacteristicValue(wine?.fylde, 'fylde');
+  const vmpFylde = wine?.fylde;
   const vmpFriskhet = getCharacteristicValue(wine?.friskhet, 'friskhet');
   const vmpSnærp = getCharacteristicValue(wine?.garvestoff, 'garvestoffer');
   const vmpSødme = getCharacteristicValue(wine?.sodme, 'sødme');
@@ -137,10 +137,7 @@ export const Summary: React.FC = () => {
           wine?.taste ? serverSideSimilarity(userTasteText, wine.taste!) : 0
         ]);
 
-        const prosentScore = calculateDirectSimilarity(
-          tastingState.alkohol,
-          wine?.content?.traits?.[0]?.readableValue || '0'
-        );
+        const prosentScore = calculateDirectSimilarity(tastingState.alkohol, wine.alcohol);
 
         const priceScore = calculateDirectSimilarity(tastingState.pris?.toString(), wine?.price);
 
@@ -445,7 +442,7 @@ export const Summary: React.FC = () => {
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Alkohol</div>
               <div className={styles.attributeValue}>{tastingState.alkohol}%</div>
-              <div className={styles.attributeValue}>{wine?.content?.traits?.[0]?.readableValue}</div>
+              <div className={styles.attributeValue}>{wine?.alcohol}</div>
               <div className={styles.scoreValue}>{scores.alkoholProsent}%</div>
             </div>
 

@@ -6,8 +6,8 @@ export type WineCategory =
   | 'fylde'
   | 'friskhet'
   | 'sødme'
-  | 'mørke-bær'
-  | 'røde-bær'
+  | 'mørke bær'
+  | 'røde bær'
   | 'sitrus'
   | 'steinfrukt'
   | 'frukt'
@@ -126,17 +126,17 @@ const norwegianLemmas: Record<string, LemmaData> = {
   halvtørr: { lemma: 'halvtørr', weight: 1.8, category: 'sødme' },
 
   // MØRKE BÆR (medium-høy vekt - 1.7x)
-  solbær: { lemma: 'solbær', weight: 1.7, category: 'mørke-bær' },
-  bjørnebær: { lemma: 'bjørnebær', weight: 1.7, category: 'mørke-bær' },
-  blåbær: { lemma: 'blåbær', weight: 1.7, category: 'mørke-bær' },
-  moreller: { lemma: 'morell', weight: 1.7, category: 'mørke-bær' },
-  morell: { lemma: 'morell', weight: 1.7, category: 'mørke-bær' },
+  solbær: { lemma: 'solbær', weight: 1.7, category: 'mørke bær' },
+  bjørnebær: { lemma: 'bjørnebær', weight: 1.7, category: 'mørke bær' },
+  blåbær: { lemma: 'blåbær', weight: 1.7, category: 'mørke bær' },
+  moreller: { lemma: 'morell', weight: 1.7, category: 'mørke bær' },
+  morell: { lemma: 'morell', weight: 1.7, category: 'mørke bær' },
 
   // RØDE BÆR (medium vekt - 1.5x)
-  kirsebær: { lemma: 'kirsebær', weight: 1.5, category: 'røde-bær' },
-  jordbær: { lemma: 'jordbær', weight: 1.5, category: 'røde-bær' },
-  bringebær: { lemma: 'bringebær', weight: 1.5, category: 'røde-bær' },
-  rips: { lemma: 'rips', weight: 1.5, category: 'røde-bær' },
+  kirsebær: { lemma: 'kirsebær', weight: 1.5, category: 'røde bær' },
+  jordbær: { lemma: 'jordbær', weight: 1.5, category: 'røde bær' },
+  bringebær: { lemma: 'bringebær', weight: 1.5, category: 'røde bær' },
+  rips: { lemma: 'rips', weight: 1.5, category: 'røde bær' },
 
   // SITRUS (medium vekt - 1.5x)
   sitrus: { lemma: 'sitrus', weight: 1.5, category: 'sitrus' },
