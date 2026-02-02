@@ -1,6 +1,5 @@
 "use client"
 
-import type React from "react"
 import type { Category, Flavor, SelectedFlavor, Subcategory } from "@/lib/types"
 import styles from "./SelectedFlavours.module.css"
 
@@ -9,10 +8,22 @@ type SelectedFlavorsProps = {
   onFlavorClick: (category: Category, subcategory: Subcategory, flavor: Flavor) => void
 }
 
-export const SelectedFlavors: React.FC<SelectedFlavorsProps> = ({ selectedFlavors, onFlavorClick }) => {
+// Polyfill for Object.groupBy - not supported on older Safari (< 17.4)
+function groupBy<T>(array: T[], keyFn: (item: T) => string): Record<string, T[]> {
+  return array.reduce((result, item) => {
+    const key = keyFn(item)
+    if (!result[key]) {
+      result[key] = []
+    }
+    result[key].push(item)
+    return result
+  }, {} as Record<string, T[]>)
+}
+
+export const SelectedFlavors = ({ selectedFlavors, onFlavorClick }: SelectedFlavorsProps) => {
   if (!selectedFlavors || selectedFlavors.length === 0) return null
 
-  const categories = Object.groupBy(selectedFlavors, (x) => x.category.name)
+  const categories = groupBy(selectedFlavors, x => x.category.name)
   const list = Object.entries(categories)
 
   return (
@@ -23,7 +34,7 @@ export const SelectedFlavors: React.FC<SelectedFlavorsProps> = ({ selectedFlavor
           <div className={styles.selectedCategory}>
             <div className={styles.selectedCategoryName}>{categoryName}</div>
             <div className={styles.selectedFlavorPills}>
-              {flavors?.map((y) => (
+              {flavors?.map(y => (
                 <button
                   key={y.flavor.name + y.category.name + y.subcategory.name}
                   className={styles.selectedFlavorPill}

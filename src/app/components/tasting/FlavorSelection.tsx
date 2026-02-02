@@ -6,7 +6,6 @@ import redWineFlavorsData from '@/app/data/red-flavor.json';
 import whiteWineFlavorsData from '@/app/data/white-flavor.json';
 import type { Category, Flavor, Subcategory, TastingFormData, WineType } from '@/lib/types';
 import { useAtom } from 'jotai';
-import type React from 'react';
 import { tastingAtom } from '../../store/tasting';
 import styles from './FlavorSelection.module.css';
 
@@ -15,7 +14,7 @@ interface Props {
   vintype: WineType;
 }
 
-export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => {
+export const FlavorSelection = ({ type = 'lukt', vintype }: Props) => {
   const [tastingState, setTastingState] = useAtom(tastingAtom);
 
   let flavorData = redWineFlavorsData;
@@ -29,20 +28,19 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
   const handleFlavorClick = (category: Category, subcategory: Subcategory, flavor: Flavor) => {
     setTastingState((prev: TastingFormData) => {
       const key = type === 'lukt' ? 'selectedFlavorsLukt' : 'selectedFlavorsSmak';
-      const existing = (prev[key] || []) as { category: Category; subcategory: Subcategory; flavor: Flavor }[];
-      const isSelected = existing.some(function (x) { return x.flavor.name === flavor.name; });
-      const updatedFlavors = isSelected
-        ? existing.filter(function (x) { return x.flavor.name !== flavor.name; })
-        : existing.concat([{ category: category, subcategory: subcategory, flavor: flavor }]);
+      const existing = prev[key] as { category: Category; subcategory: Subcategory; flavor: Flavor }[];
+      const updatedFlavors = existing.some(x => x.flavor.name === flavor.name)
+        ? existing.filter(x => x.flavor.name !== flavor.name)
+        : [...existing, { category, subcategory, flavor }];
 
-      return Object.assign({}, prev, { [key]: updatedFlavors });
+      return { ...prev, [key]: updatedFlavors };
     });
   };
 
   const onChangeIntensity = (value: 'lav' | 'middels' | 'høy') => {
     setTastingState((prev: TastingFormData) => {
-      if (type === 'lukt') return Object.assign({}, prev, { luktIntensitet: value });
-      return Object.assign({}, prev, { smaksIntensitet: value });
+      if (type === 'lukt') return { ...prev, luktIntensitet: value };
+      return { ...prev, smaksIntensitet: value };
     });
   };
 
@@ -56,17 +54,17 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
         <div className={styles.intensityButtons}>
           <button
             className={`${styles.intensityButton} ${currentIntensity === 'lav' ? styles.active : ''}`}
-            onClick={function () { onChangeIntensity('lav'); }}>
+            onClick={() => onChangeIntensity('lav')}>
             Lav
           </button>
           <button
             className={`${styles.intensityButton} ${currentIntensity === 'middels' ? styles.active : ''}`}
-            onClick={function () { onChangeIntensity('middels'); }}>
+            onClick={() => onChangeIntensity('middels')}>
             Middels
           </button>
           <button
             className={`${styles.intensityButton} ${currentIntensity === 'høy' ? styles.active : ''}`}
-            onClick={function () { onChangeIntensity('høy'); }}>
+            onClick={() => onChangeIntensity('høy')}>
             Høy
           </button>
         </div>
@@ -77,7 +75,7 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
         <textarea
           className={styles.commentTextarea}
           value={tastingState[type]}
-          onChange={function (event) { setTastingState(function (prev: TastingFormData) { return Object.assign({}, prev, { [type]: event.target.value }); }); }}
+          onChange={event => setTastingState((prev: TastingFormData) => ({ ...prev, [type]: event.target.value }))}
           placeholder="Legg til dine egne notater her..."
         />
       </div>

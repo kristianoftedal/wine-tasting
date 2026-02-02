@@ -11,86 +11,71 @@ type AccordionProps = {
   selectedFlavors?: Flavor[];
 };
 
-function AccordionComponent({ category, subcategories, onFlavorClick, selectedFlavors }: AccordionProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [openSub, setOpenSub] = useState<string | null>(function () {
-    return subcategories && subcategories.length === 1 ? subcategories[0].name : null;
-  });
+export const Accordion = memo(
+  ({ category, subcategories, onFlavorClick, selectedFlavors = [] }: AccordionProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [openSub, setOpenSub] = useState<string | null>(subcategories.length === 1 ? subcategories[0].name : null);
 
-  const flavors = selectedFlavors || [];
+    const isFlavorSelected = (flavor: Flavor) => selectedFlavors.some(f => f.name === flavor.name);
 
-  function isFlavorSelected(flavor: Flavor) {
-    return flavors.some(function (f) { return f.name === flavor.name; });
-  }
+    return (
+      <div className={styles.flavorAccordion}>
+        {/* Category header */}
+        <button
+          type="button"
+          className={styles.flavorCategorySummary}
+          onClick={() => setIsOpen(prev => !prev)}
+          aria-expanded={isOpen}>
+          <div className={styles.categoryTitle}>
+            <div>{category.name}</div>
+            <div className={styles.categoryDescription}>{category.description}</div>
+          </div>
+          <span>{category.icon}</span>
+        </button>
 
-  function toggleOpen() {
-    setIsOpen(function (prev) { return !prev; });
-  }
+        {isOpen && (
+          <div className={styles.flavorSubcategories}>
+            {subcategories.map(subcategory => {
+              const subOpen = openSub === subcategory.name;
 
-  function toggleSubcategory(name: string, currentlyOpen: boolean) {
-    setOpenSub(currentlyOpen ? null : name);
-  }
+              return (
+                <div
+                  key={subcategory.name}
+                  className={styles.flavorSubcategory}>
+                  {/* Subcategory header */}
+                  <button
+                    type="button"
+                    className={styles.subcategorySummary}
+                    onClick={() => setOpenSub(subOpen ? null : subcategory.name)}
+                    aria-expanded={subOpen}>
+                    <div>
+                      {subcategory.name}
+                      <span className={styles.subcategoryDescription}>{subcategory.description}</span>
+                    </div>
+                    <span>{subcategory.icon}</span>
+                  </button>
 
-  return (
-    <div className={styles.flavorAccordion}>
-      {/* Category header */}
-      <button
-        type="button"
-        className={styles.flavorCategorySummary}
-        onClick={toggleOpen}
-        aria-expanded={isOpen}>
-        <div className={styles.categoryTitle}>
-          <div>{category.name}</div>
-          <div className={styles.categoryDescription}>{category.description}</div>
-        </div>
-        <span>{category.icon}</span>
-      </button>
-
-      {isOpen && (
-        <div className={styles.flavorSubcategories}>
-          {subcategories.map(function (subcategory) {
-            var subOpen = openSub === subcategory.name;
-
-            return (
-              <div
-                key={subcategory.name}
-                className={styles.flavorSubcategory}>
-                {/* Subcategory header */}
-                <button
-                  type="button"
-                  className={styles.subcategorySummary}
-                  onClick={function () { toggleSubcategory(subcategory.name, subOpen); }}
-                  aria-expanded={subOpen}>
-                  <div>
-                    {subcategory.name}
-                    <span className={styles.subcategoryDescription}>{subcategory.description}</span>
-                  </div>
-                  <span>{subcategory.icon}</span>
-                </button>
-
-                {subOpen && (
-                  <div className={styles.flavorPills}>
-                    {subcategory.flavors.map(function (flavor) {
-                      return (
+                  {subOpen && (
+                    <div className={styles.flavorPills}>
+                      {subcategory.flavors.map(flavor => (
                         <button
                           key={flavor.name}
                           type="button"
-                          className={styles.flavorPill + ' ' + (isFlavorSelected(flavor) ? styles.selected : '')}
-                          onClick={function () { onFlavorClick(category, subcategory, flavor); }}>
+                          className={`${styles.flavorPill} ${isFlavorSelected(flavor) ? styles.selected : ''}`}
+                          onClick={() => onFlavorClick(category, subcategory, flavor)}>
                           {flavor.name}
                         </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
-export const Accordion = memo(AccordionComponent);
 Accordion.displayName = 'Accordion';
