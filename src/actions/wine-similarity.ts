@@ -3,7 +3,7 @@
 import type { RecommendationThresholds, RecommendationWeights, WineSimilarityScore } from '@/lib/recommendation-types';
 import { createClient } from '@/lib/supabase/server';
 import type { Wine } from '@/lib/types';
-import { semanticSimilarity } from './similarity';
+import { semanticOnlySimilarity as semanticSimilarity } from './similarity';
 
 export type { RecommendationThresholds, RecommendationWeights, WineSimilarityScore };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { serverSideSimilarity } from '@/actions/similarity';
+import { calculateServerSideScores } from '@/actions/similarity';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import type { Wine } from '@/lib/types';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -65,13 +65,14 @@ export const Summary: React.FC = () => {
         const userSmellText = `${tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')} ${tastingState.lukt}`;
         const userTasteText = `${tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')} ${tastingState.smak}`;
 
-        const [colorScore, smellScore, tasteScore] = await Promise.all([
-          tastingState.farge.length > 0 && wine?.color && wine.color.length > 0
-            ? serverSideSimilarity(tastingState.farge, wine.color!)
-            : 0,
-          wine?.smell ? serverSideSimilarity(userSmellText, wine.smell!) : 0,
-          wine?.taste ? serverSideSimilarity(userTasteText, wine.taste!) : 0
-        ]);
+        const { colorScore, smellScore, tasteScore } = await calculateServerSideScores(
+          tastingState.farge,
+          userSmellText,
+          userTasteText,
+          wine.color,
+          wine.smell,
+          wine.taste
+        );
 
         // Get alcohol value from wine.alcohol field
         const wineAlcohol = wine?.alcohol || '0';

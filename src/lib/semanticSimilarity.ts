@@ -1,19 +1,24 @@
 'use server';
 
+import { openai } from '@ai-sdk/openai';
 import { embed } from 'ai';
-
 /**
  * Calculate cosine similarity between two vectors
  */
-function cosineSimilarity(a: number[], b: number[]): number {
-  if (a.length !== b.length) return 0;
+function cosineSimilarity(vecA: number[], vecB: number[]): number {
+  if (vecA.length !== vecB.length) {
+    throw new Error('Vectors must have the same dimensions');
+  }
 
-  const dot = a.reduce((sum, val, i) => sum + val * b[i], 0);
-  const normA = Math.sqrt(a.reduce((sum, val) => sum + val ** 2, 0));
-  const normB = Math.sqrt(b.reduce((sum, val) => sum + val ** 2, 0));
+  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+  const magnitudeA = Math.hypot(...vecA);
+  const magnitudeB = Math.hypot(...vecB);
 
-  if (normA === 0 || normB === 0) return 0;
-  return dot / (normA * normB);
+  if (magnitudeA === 0 || magnitudeB === 0) {
+    return 0;
+  }
+
+  return dotProduct / (magnitudeA * magnitudeB);
 }
 
 /**
@@ -24,14 +29,13 @@ export async function semanticSimilarity(text1: string, text2: string): Promise<
   if (!text1 || !text2) return 0;
 
   try {
-    // Get embeddings for both texts using AI SDK
     const [result1, result2] = await Promise.all([
       embed({
-        model: 'openai/text-embedding-3-small',
+        model: openai.embedding('text-embedding-3-small'),
         value: text1
       }),
       embed({
-        model: 'openai/text-embedding-3-small',
+        model: openai.embedding('text-embedding-3-small'),
         value: text2
       })
     ]);
@@ -59,7 +63,7 @@ export async function batchSemanticSimilarity(pairs: Array<{ text1: string; text
     const embeddings = await Promise.all(
       uniqueTexts.map(text =>
         embed({
-          model: 'openai/text-embedding-3-small',
+          model: openai.embedding('text-embedding-3-small'),
           value: text
         })
       )

@@ -1,7 +1,6 @@
 'use server';
 
 import { lemmatizeAndWeight } from '@/lib/lemmatizeAndWeight';
-import { localSemanticSimilarity } from '@/lib/localSemanticSimilarity';
 import { semanticSimilarity } from '@/lib/semanticSimilarity';
 
 /**
@@ -55,14 +54,6 @@ async function categorySimpleSimilarity(text1: string, text2: string): Promise<n
 }
 
 /**
- * Check if running on localhost
- */
-function isLocalhost(): boolean {
-  const host = process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || '';
-  return !host || host.includes('localhost') || host.includes('127.0.0.1');
-}
-
-/**
  * Convert text to its lemmatized form (lemmas joined as space-separated string)
  */
 function toLemmatizedText(text: string): string {
@@ -71,9 +62,46 @@ function toLemmatizedText(text: string): string {
 }
 
 /**
+ * Calculate semantic similarity score only (for color comparison)
+ * Uses OpenAI embeddings
+ */
+export async function semanticOnlySimilarity(text1: string, text2: string): Promise<number> {
+  if (!text1 || !text2) return 0;
+
+  try {
+    const result = await semanticSimilarity(text1, text2);
+    return result;
+  } catch (error) {
+    console.error('Semantic similarity error:', error);
+    return 0;
+  }
+}
+
+/**
+ * Calculate similarity between lemmatized text strings using semantic comparison
+ */
+async function lemmatizedTextSimilarity(text1: string, text2: string): Promise<number> {
+  if (!text1 || !text2) return 0;
+
+  try {
+    const lemmatizedText1 = toLemmatizedText(text1);
+    const lemmatizedText2 = toLemmatizedText(text2);
+
+    if (!lemmatizedText1 || !lemmatizedText2) return 0;
+
+    const result = await semanticSimilarity(lemmatizedText1, lemmatizedText2);
+    return result;
+  } catch (error) {
+    console.error('Lemmatized text similarity error:', error);
+    return 0;
+  }
+}
+
+/**
  * Calculate comprehensive server-side similarity score using:
- * - Lemma matching
- * - Category matching
+ * - Lemma matching (set intersection)
+ * - Category matching (set intersection)
+ * - Lemmatized text semantic similarity
  * - OpenAI embedding similarity (if AI_GATEWAY_API_KEY is available and not localhost)
  * - Falls back to local semantic similarity on localhost or when API key is missing
  * Final score = average of available scores
@@ -82,36 +110,15 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
   if (!text1 || !text2) return 0;
 
   try {
-    // Always calculate lemma and category scores
-    const [lemmaScore, categoryScore] = await Promise.all([
+    // Calculate all similarity scores in parallel
+    const [lemmaScore, categoryScore, lemmatizedTextScore] = await Promise.all([
       lemmaSimpleSimilarity(text1, text2),
-      categorySimpleSimilarity(text1, text2)
+      categorySimpleSimilarity(text1, text2),
+      lemmatizedTextSimilarity(text1, text2)
     ]);
 
-    // Lemmatize texts before semantic comparison for better matching
-    const lemmatizedText1 = toLemmatizedText(text1);
-    const lemmatizedText2 = toLemmatizedText(text2);
-
-    // Determine which semantic similarity to use
-    let semanticScore = 0;
-    const useLocalSimilarity = isLocalhost();
-
-    if (useLocalSimilarity) {
-      // Use local semantic similarity (Norwegian wine vocabulary weighted matching)
-      semanticScore = await localSemanticSimilarity(lemmatizedText1, lemmatizedText2);
-    } else {
-      // Use OpenAI embedding similarity on lemmatized text
-      try {
-        semanticScore = await semanticSimilarity(lemmatizedText1, lemmatizedText2);
-      } catch {
-        // Fallback to local if API fails
-        console.warn('OpenAI embedding failed, falling back to local similarity');
-        semanticScore = await localSemanticSimilarity(lemmatizedText1, lemmatizedText2);
-      }
-    }
-
     // Average all three scores
-    return Math.round((lemmaScore + categoryScore + semanticScore) / 3);
+    return Math.round((lemmaScore + categoryScore + lemmatizedTextScore) / 3);
   } catch (error) {
     console.error('Server-side similarity error:', error);
     return 0;
@@ -120,7 +127,8 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
 
 /**
  * Calculate all server-side similarity scores for a tasting in one server call.
- * Uses lemma + category similarity. Should be combined with client-side ML scores.
+ * - Color uses semantic similarity only
+ * - Smell and taste use lemma + category + lemmatized text similarity
  */
 export async function calculateServerSideScores(
   userFarge: string,
@@ -131,7 +139,7 @@ export async function calculateServerSideScores(
   wineTaste: string
 ): Promise<{ colorScore: number; smellScore: number; tasteScore: number }> {
   const [colorScore, smellScore, tasteScore] = await Promise.all([
-    userFarge && wineColor ? serverSideSimilarity(userFarge, wineColor) : Promise.resolve(0),
+    userFarge && wineColor ? semanticOnlySimilarity(userFarge, wineColor) : Promise.resolve(0),
     userLukt && wineSmell ? serverSideSimilarity(userLukt, wineSmell) : Promise.resolve(0),
     userSmak && wineTaste ? serverSideSimilarity(userSmak, wineTaste) : Promise.resolve(0)
   ]);
