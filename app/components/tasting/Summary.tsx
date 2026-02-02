@@ -11,7 +11,6 @@ import styles from "./Summary.module.css"
 function calculateNumericSimilarity(
   userValue: string | number | undefined,
   actualValue: string | number | undefined,
-  maxScale = 12,
 ): number {
   const normalizeNumber = (val: string | number | undefined): number => {
     if (val === undefined || val === null || val === "" || val === "-") return Number.NaN
@@ -33,10 +32,10 @@ function calculateNumericSimilarity(
     return 100
   }
 
-  // Calculate difference and convert to percentage score
-  // Using maxScale as the maximum possible difference
+  // Calculate difference as percentage of the larger value
+  const maxVal = Math.max(userNum, actualNum)
   const difference = Math.abs(userNum - actualNum)
-  const score = Math.max(0, Math.round((1 - difference / maxScale) * 100))
+  const score = Math.max(0, Math.round((1 - difference / maxVal) * 100))
 
   return score
 }
