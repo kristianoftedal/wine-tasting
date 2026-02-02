@@ -29,10 +29,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Frequency analysis shows most common terms and categories
   3. Missing terms identified that should be in lemma dictionary
   4. Existing typos in lemmas documented with corrections needed
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] TBD
+- [ ] 01-01-PLAN.md — Extract wines from Supabase, analyze term frequency
+- [ ] 01-02-PLAN.md — Identify missing terms and typos in lemma dictionary
 
 ### Phase 2: Category Restructuring
 **Goal**: Categories align with Vinmonopolet's official tasting wheel structure
@@ -97,7 +98,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Data Analysis | 0/0 | Not started | - |
+| 1. Data Analysis | 0/2 | Planned | - |
 | 2. Category Restructuring | 0/0 | Not started | - |
 | 3. Weight Profile System | 0/0 | Not started | - |
 | 4. Quality Assurance | 0/0 | Not started | - |
