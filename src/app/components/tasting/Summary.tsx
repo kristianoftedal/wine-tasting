@@ -52,46 +52,10 @@ export const Summary: React.FC = () => {
 
   const isRedWine = wine?.main_category?.toLowerCase().includes('rød');
 
-  const getCharacteristicValue = (
-    columnValue: number | null | undefined,
-    characteristicName: string
-  ): number | null => {
-    // First try to use the column value
-    if (columnValue != null) {
-      return columnValue;
-    }
-
-    // Fallback: try to parse from content.characteristics array
-    try {
-      const characteristics = wine?.content?.characteristics;
-      if (Array.isArray(characteristics)) {
-        const characteristic = characteristics.find(
-          (c: any) =>
-            c?.name?.toLowerCase() === characteristicName.toLowerCase() ||
-            c?.Name?.toLowerCase() === characteristicName.toLowerCase()
-        );
-        if (characteristic) {
-          const value =
-            characteristic.value ||
-            characteristic.Value ||
-            characteristic.readableValue ||
-            characteristic.ReadableValue;
-          const numValue = typeof value === 'string' ? Number.parseInt(value, 10) : value;
-          return isNaN(numValue) ? null : numValue;
-        }
-      }
-    } catch (e) {
-      console.error(`Failed to parse ${characteristicName} from content:`, e);
-    }
-
-    return null;
-  };
-
-  const vmpFylde = getCharacteristicValue(wine?.fylde, 'fylde');
-  const vmpFriskhet = getCharacteristicValue(wine?.friskhet, 'friskhet');
-  const vmpSnærp = getCharacteristicValue(wine?.garvestoff, 'garvestoffer');
-  const vmpSødme = getCharacteristicValue(wine?.sodme, 'sødme');
-  // </CHANGE>
+  const vmpFylde = wine?.fylde ?? null;
+  const vmpFriskhet = wine?.friskhet ?? null;
+  const vmpSnærp = wine?.garvestoff ?? null;
+  const vmpSødme = wine?.sodme ?? null;
 
   useEffect(() => {
     async function calculateScores() {
