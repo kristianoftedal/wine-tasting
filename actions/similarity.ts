@@ -2,6 +2,7 @@
 
 import { lemmatizeAndWeight } from "@/lib/lemmatizeAndWeight"
 import { semanticSimilarity } from "@/lib/semanticSimilarity"
+import { localSemanticSimilarity } from "@/lib/localSemanticSimilarity"
 
 /**
  * Compute similarity between lemmatized words (0-100)
@@ -54,10 +55,19 @@ async function categorySimpleSimilarity(text1: string, text2: string): Promise<n
 }
 
 /**
+ * Check if running on localhost
+ */
+function isLocalhost(): boolean {
+  const host = process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || ""
+  return !host || host.includes("localhost") || host.includes("127.0.0.1")
+}
+
+/**
  * Calculate comprehensive server-side similarity score using:
  * - Lemma matching
  * - Category matching  
- * - OpenAI embedding similarity (if AI_GATEWAY_API_KEY is available)
+ * - OpenAI embedding similarity (if AI_GATEWAY_API_KEY is available and not localhost)
+ * - Falls back to local semantic similarity on localhost or when API key is missing
  * Final score = average of available scores
  */
 export async function serverSideSimilarity(text1: string, text2: string): Promise<number> {
@@ -70,25 +80,26 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
       categorySimpleSimilarity(text1, text2),
     ])
 
-    // Try to get embedding score if API key is available
-    let embeddingScore = 0
-    let hasEmbedding = false
+    // Determine which semantic similarity to use
+    let semanticScore = 0
+    const useLocalSimilarity = isLocalhost() || !process.env.AI_GATEWAY_API_KEY
     
-    if (process.env.AI_GATEWAY_API_KEY) {
+    if (useLocalSimilarity) {
+      // Use local semantic similarity (Norwegian wine vocabulary weighted matching)
+      semanticScore = await localSemanticSimilarity(text1, text2)
+    } else {
+      // Use OpenAI embedding similarity
       try {
-        embeddingScore = await semanticSimilarity(text1, text2)
-        hasEmbedding = true
+        semanticScore = await semanticSimilarity(text1, text2)
       } catch {
-        // API key might be invalid or quota exceeded, continue without embedding
-        console.warn("Embedding similarity unavailable, using lemma and category only")
+        // Fallback to local if API fails
+        console.warn("OpenAI embedding failed, falling back to local similarity")
+        semanticScore = await localSemanticSimilarity(text1, text2)
       }
     }
 
-    // Average available scores
-    if (hasEmbedding) {
-      return Math.round((lemmaScore + categoryScore + embeddingScore) / 3)
-    }
-    return Math.round((lemmaScore + categoryScore) / 2)
+    // Average all three scores
+    return Math.round((lemmaScore + categoryScore + semanticScore) / 3)
   } catch (error) {
     console.error("Server-side similarity error:", error)
     return 0
