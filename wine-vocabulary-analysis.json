@@ -8680,5 +8680,14 @@
       "distance": 1
     }
   ],
-  "analyzedAt": "2026-02-02T11:49:34.048Z"
+  "summary": {
+    "totalWines": 49067,
+    "uniqueSmellTerms": 2531,
+    "uniqueTasteTerms": 2605,
+    "termsInLemmas": 169,
+    "termsNotInLemmas": 3591,
+    "potentialTypos": 239,
+    "coveragePercent": 4.49
+  },
+  "analyzedAt": "2026-02-02T11:50:34.148Z"
 }

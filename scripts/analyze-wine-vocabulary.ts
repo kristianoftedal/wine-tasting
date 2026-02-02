@@ -180,6 +180,15 @@ interface AnalysisResults {
   colorTermFrequency: [string, number][];
   missingTerms: { term: string; count: number }[];
   typoSuggestions: { word: string; suggestion: string; count: number; distance: number }[];
+  summary: {
+    totalWines: number;
+    uniqueSmellTerms: number;
+    uniqueTasteTerms: number;
+    termsInLemmas: number;
+    termsNotInLemmas: number;
+    potentialTypos: number;
+    coveragePercent: number;
+  };
   analyzedAt: string;
 }
 
@@ -228,6 +237,21 @@ async function main() {
     const typoSuggestions = findTypoSuggestions(allTerms, norwegianLemmas, 1);
     console.log(`Found ${typoSuggestions.length} potential typos (edit distance 1)`);
 
+    // Calculate coverage statistics
+    let termsInLemmas = 0;
+    let termsNotInLemmas = 0;
+
+    allTerms.forEach((count, term) => {
+      if (norwegianLemmas[term]) {
+        termsInLemmas++;
+      } else {
+        termsNotInLemmas++;
+      }
+    });
+
+    const totalUniqueTerms = termsInLemmas + termsNotInLemmas;
+    const coveragePercent = (termsInLemmas / totalUniqueTerms) * 100;
+
     // Build results object
     const results: AnalysisResults = {
       totalWines: wines.length,
@@ -236,6 +260,15 @@ async function main() {
       colorTermFrequency: colorTerms,
       missingTerms: missingTerms,
       typoSuggestions: typoSuggestions,
+      summary: {
+        totalWines: wines.length,
+        uniqueSmellTerms: smellFreq.size,
+        uniqueTasteTerms: tasteFreq.size,
+        termsInLemmas: termsInLemmas,
+        termsNotInLemmas: termsNotInLemmas,
+        potentialTypos: typoSuggestions.length,
+        coveragePercent: Math.round(coveragePercent * 100) / 100
+      },
       analyzedAt: new Date().toISOString()
     };
 
@@ -247,23 +280,28 @@ async function main() {
     );
 
     // Console output
-    console.log('\n=== TOP 10 SMELL TERMS ===');
-    smellTerms.slice(0, 10).forEach(([term, count]) => {
-      console.log(`${term}: ${count}`);
+    console.log('\n=== ANALYSIS SUMMARY ===');
+    console.log(`Total wines analyzed: ${results.summary.totalWines}`);
+    console.log(`Unique smell terms: ${results.summary.uniqueSmellTerms}`);
+    console.log(`Unique taste terms: ${results.summary.uniqueTasteTerms}`);
+
+    console.log('\n=== LEMMA COVERAGE ===');
+    console.log(`Terms in dictionary: ${results.summary.termsInLemmas} (${results.summary.coveragePercent}%)`);
+    console.log(`Terms missing: ${results.summary.termsNotInLemmas}`);
+    console.log(`Potential typos: ${results.summary.potentialTypos}`);
+
+    console.log('\n=== TOP 10 MISSING TERMS (add to lemmas) ===');
+    missingTerms.slice(0, 10).forEach(({ term, count }, index) => {
+      console.log(`${index + 1}. ${term}: ${count} occurrences`);
     });
 
-    console.log('\n=== TOP 10 TASTE TERMS ===');
-    tasteTerms.slice(0, 10).forEach(([term, count]) => {
-      console.log(`${term}: ${count}`);
-    });
-
-    console.log('\n=== TOP 5 LIKELY TYPOS ===');
-    typoSuggestions.slice(0, 5).forEach(({ word, suggestion, count }) => {
-      console.log(`"${word}" -> "${suggestion}" (${count} occurrences)`);
+    console.log('\n=== TOP 5 LIKELY TYPOS (fix in lemmas) ===');
+    typoSuggestions.slice(0, 5).forEach(({ word, suggestion, count }, index) => {
+      console.log(`${index + 1}. "${word}" -> "${suggestion}" (${count} occurrences)`);
     });
 
     console.log('\n✓ Analysis complete!');
-    console.log(`Results exported to: wine-vocabulary-analysis.json`);
+    console.log(`Full results saved to wine-vocabulary-analysis.json`);
 
   } catch (error) {
     console.error('Error during analysis:', error);
