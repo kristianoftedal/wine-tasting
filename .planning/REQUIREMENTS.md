@@ -22,10 +22,10 @@
 
 ### Data Analysis
 
-- [ ] **DATA-01**: Query Supabase to extract all smell/taste notes from wines table
-- [ ] **DATA-02**: Analyze frequency of terms to identify common vocabulary
-- [ ] **DATA-03**: Identify missing terms not in current lemmas
-- [ ] **DATA-04**: Fix typos in existing lemmas based on actual usage
+- [x] **DATA-01**: Query Supabase to extract all smell/taste notes from wines table
+- [x] **DATA-02**: Analyze frequency of terms to identify common vocabulary
+- [x] **DATA-03**: Identify missing terms not in current lemmas
+- [x] **DATA-04**: Fix typos in existing lemmas based on actual usage
 
 ### Quality & Compatibility
 
@@ -61,10 +61,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 | Phase 1 | Pending |
-| DATA-02 | Phase 1 | Pending |
-| DATA-03 | Phase 1 | Pending |
-| DATA-04 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Complete |
+| DATA-02 | Phase 1 | Complete |
+| DATA-03 | Phase 1 | Complete |
+| DATA-04 | Phase 1 | Complete |
 | CAT-01 | Phase 2 | Pending |
 | CAT-02 | Phase 2 | Pending |
 | CAT-03 | Phase 2 | Pending |
@@ -89,4 +89,4 @@
 
 ---
 *Requirements defined: 2026-02-02*
-*Last updated: 2026-02-02 after roadmap creation*
+*Last updated: 2026-02-02 after Phase 1 completion*

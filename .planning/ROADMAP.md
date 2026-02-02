@@ -12,7 +12,7 @@ This roadmap transforms the similarity scoring system to reward specific tasting
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Data Analysis** - Extract and analyze actual wine vocabulary from database
+- [x] **Phase 1: Data Analysis** - Extract and analyze actual wine vocabulary from database
 - [ ] **Phase 2: Category Restructuring** - Align categories with Vinmonopolet tasting wheels
 - [ ] **Phase 3: Weight Profile System** - Create switchable weight profiles for different scoring strategies
 - [ ] **Phase 4: Quality Assurance** - Ensure localhost/server compatibility maintained
@@ -32,8 +32,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Extract wines from Supabase, analyze term frequency
-- [ ] 01-02-PLAN.md — Identify missing terms and typos in lemma dictionary
+- [x] 01-01-PLAN.md — Extract wines from Supabase, analyze term frequency
+- [x] 01-02-PLAN.md — Identify missing terms and typos in lemma dictionary
 
 ### Phase 2: Category Restructuring
 **Goal**: Categories align with Vinmonopolet's official tasting wheel structure
@@ -98,7 +98,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Data Analysis | 0/2 | Planned | - |
+| 1. Data Analysis | 2/2 | Complete | 2026-02-02 |
 | 2. Category Restructuring | 0/0 | Not started | - |
 | 3. Weight Profile System | 0/0 | Not started | - |
 | 4. Quality Assurance | 0/0 | Not started | - |
