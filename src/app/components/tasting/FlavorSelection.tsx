@@ -29,19 +29,20 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
   const handleFlavorClick = (category: Category, subcategory: Subcategory, flavor: Flavor) => {
     setTastingState((prev: TastingFormData) => {
       const key = type === 'lukt' ? 'selectedFlavorsLukt' : 'selectedFlavorsSmak';
-      const existing = prev[key] as { category: Category; subcategory: Subcategory; flavor: Flavor }[];
-      const updatedFlavors = existing.some(x => x.flavor.name === flavor.name)
-        ? existing.filter(x => x.flavor.name !== flavor.name)
-        : [...existing, { category, subcategory, flavor }];
+      const existing = (prev[key] || []) as { category: Category; subcategory: Subcategory; flavor: Flavor }[];
+      const isSelected = existing.some(function (x) { return x.flavor.name === flavor.name; });
+      const updatedFlavors = isSelected
+        ? existing.filter(function (x) { return x.flavor.name !== flavor.name; })
+        : existing.concat([{ category: category, subcategory: subcategory, flavor: flavor }]);
 
-      return { ...prev, [key]: updatedFlavors };
+      return Object.assign({}, prev, { [key]: updatedFlavors });
     });
   };
 
   const onChangeIntensity = (value: 'lav' | 'middels' | 'høy') => {
     setTastingState((prev: TastingFormData) => {
-      if (type === 'lukt') return { ...prev, luktIntensitet: value };
-      return { ...prev, smaksIntensitet: value };
+      if (type === 'lukt') return Object.assign({}, prev, { luktIntensitet: value });
+      return Object.assign({}, prev, { smaksIntensitet: value });
     });
   };
 
@@ -55,17 +56,17 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
         <div className={styles.intensityButtons}>
           <button
             className={`${styles.intensityButton} ${currentIntensity === 'lav' ? styles.active : ''}`}
-            onClick={() => onChangeIntensity('lav')}>
+            onClick={function () { onChangeIntensity('lav'); }}>
             Lav
           </button>
           <button
             className={`${styles.intensityButton} ${currentIntensity === 'middels' ? styles.active : ''}`}
-            onClick={() => onChangeIntensity('middels')}>
+            onClick={function () { onChangeIntensity('middels'); }}>
             Middels
           </button>
           <button
             className={`${styles.intensityButton} ${currentIntensity === 'høy' ? styles.active : ''}`}
-            onClick={() => onChangeIntensity('høy')}>
+            onClick={function () { onChangeIntensity('høy'); }}>
             Høy
           </button>
         </div>
@@ -76,7 +77,7 @@ export const FlavorSelection: React.FC<Props> = ({ type = 'lukt', vintype }) => 
         <textarea
           className={styles.commentTextarea}
           value={tastingState[type]}
-          onChange={event => setTastingState((prev: TastingFormData) => ({ ...prev, [type]: event.target.value }))}
+          onChange={function (event) { setTastingState(function (prev: TastingFormData) { return Object.assign({}, prev, { [type]: event.target.value }); }); }}
           placeholder="Legg til dine egne notater her..."
         />
       </div>

@@ -63,6 +63,14 @@ function isLocalhost(): boolean {
 }
 
 /**
+ * Convert text to its lemmatized form (lemmas joined as space-separated string)
+ */
+function toLemmatizedText(text: string): string {
+  const data = lemmatizeAndWeight(text);
+  return data.lemmatized.map(item => item.lemma).join(' ');
+}
+
+/**
  * Calculate comprehensive server-side similarity score using:
  * - Lemma matching
  * - Category matching
@@ -80,21 +88,25 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
       categorySimpleSimilarity(text1, text2)
     ]);
 
+    // Lemmatize texts before semantic comparison for better matching
+    const lemmatizedText1 = toLemmatizedText(text1);
+    const lemmatizedText2 = toLemmatizedText(text2);
+
     // Determine which semantic similarity to use
     let semanticScore = 0;
     const useLocalSimilarity = isLocalhost() || !process.env.AI_GATEWAY_API_KEY;
 
     if (useLocalSimilarity) {
       // Use local semantic similarity (Norwegian wine vocabulary weighted matching)
-      semanticScore = await localSemanticSimilarity(text1, text2);
+      semanticScore = await localSemanticSimilarity(lemmatizedText1, lemmatizedText2);
     } else {
-      // Use OpenAI embedding similarity
+      // Use OpenAI embedding similarity on lemmatized text
       try {
-        semanticScore = await semanticSimilarity(text1, text2);
+        semanticScore = await semanticSimilarity(lemmatizedText1, lemmatizedText2);
       } catch {
         // Fallback to local if API fails
         console.warn('OpenAI embedding failed, falling back to local similarity');
-        semanticScore = await localSemanticSimilarity(text1, text2);
+        semanticScore = await localSemanticSimilarity(lemmatizedText1, lemmatizedText2);
       }
     }
 
