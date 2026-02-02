@@ -54,7 +54,7 @@ export type AnalysisResult = {
   commonLemmas: CommonLemma[];
 };
 
-const norwegianLemmas: Record<string, LemmaData> = {
+export const norwegianLemmas: Record<string, LemmaData> = {
   // STRUKTUR OG KVALITET (høyest vekt - 2.5x) - Vinmonopolets nøkkelbeskrivelser
   balansert: { lemma: 'balanse', weight: 2.5, category: 'struktur' },
   balanserte: { lemma: 'balanse', weight: 2.5, category: 'struktur' },

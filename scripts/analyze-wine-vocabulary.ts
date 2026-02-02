@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
-import { stopwords } from '../src/lib/lemmatizeAndWeight';
+import { stopwords, norwegianLemmas } from '../src/lib/lemmatizeAndWeight';
 import { writeFile } from 'fs/promises';
 import { Wine } from '../src/lib/types';
 
@@ -91,11 +91,32 @@ function analyzeFrequency(texts: (string | null)[]): Map<string, number> {
   return frequency;
 }
 
+/**
+ * Find terms that appear in database but not in lemma dictionary
+ */
+function findMissingTerms(
+  allFrequencies: Map<string, number>,
+  existingLemmas: Record<string, unknown>,
+  minFrequency: number = 3
+): { term: string; count: number }[] {
+  const missing: { term: string; count: number }[] = [];
+
+  allFrequencies.forEach((count, term) => {
+    // Term not in lemmas and appears frequently
+    if (!existingLemmas[term] && count >= minFrequency) {
+      missing.push({ term, count });
+    }
+  });
+
+  return missing.sort((a, b) => b.count - a.count);
+}
+
 interface AnalysisResults {
   totalWines: number;
   smellTermFrequency: [string, number][];
   tasteTermFrequency: [string, number][];
   colorTermFrequency: [string, number][];
+  missingTerms: { term: string; count: number }[];
   analyzedAt: string;
 }
 
@@ -127,12 +148,26 @@ async function main() {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 50);
 
+    // Combine smell and taste frequencies into allTerms Map
+    const allTerms = new Map<string, number>();
+    smellFreq.forEach((count, term) => {
+      allTerms.set(term, (allTerms.get(term) || 0) + count);
+    });
+    tasteFreq.forEach((count, term) => {
+      allTerms.set(term, (allTerms.get(term) || 0) + count);
+    });
+
+    // Find missing terms
+    const missingTerms = findMissingTerms(allTerms, norwegianLemmas, 3);
+    console.log(`\nFound ${missingTerms.length} missing terms (appearing 3+ times)`);
+
     // Build results object
     const results: AnalysisResults = {
       totalWines: wines.length,
       smellTermFrequency: smellTerms,
       tasteTermFrequency: tasteTerms,
       colorTermFrequency: colorTerms,
+      missingTerms: missingTerms,
       analyzedAt: new Date().toISOString()
     };
 

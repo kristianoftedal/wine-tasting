@@ -1006,5 +1006,6243 @@
       108
     ]
   ],
-  "analyzedAt": "2026-02-02T11:44:39.375Z"
+  "missingTerms": [
+    {
+      "term": "bær",
+      "count": 23271
+    },
+    {
+      "term": "aroma",
+      "count": 18477
+    },
+    {
+      "term": "frukt",
+      "count": 17028
+    },
+    {
+      "term": "røde",
+      "count": 15811
+    },
+    {
+      "term": "fruktig",
+      "count": 11688
+    },
+    {
+      "term": "hint",
+      "count": 11250
+    },
+    {
+      "term": "mørke",
+      "count": 11144
+    },
+    {
+      "term": "duft",
+      "count": 9215
+    },
+    {
+      "term": "smak",
+      "count": 6801
+    },
+    {
+      "term": "ung",
+      "count": 3996
+    },
+    {
+      "term": "blomst",
+      "count": 3702
+    },
+    {
+      "term": "toner",
+      "count": 3582
+    },
+    {
+      "term": "ren",
+      "count": 2908
+    },
+    {
+      "term": "grønne",
+      "count": 2790
+    },
+    {
+      "term": "frukter",
+      "count": 2478
+    },
+    {
+      "term": "krydret",
+      "count": 2428
+    },
+    {
+      "term": "rød",
+      "count": 2397
+    },
+    {
+      "term": "utviklet",
+      "count": 2252
+    },
+    {
+      "term": "steinfrukt",
+      "count": 2176
+    },
+    {
+      "term": "preget",
+      "count": 2118
+    },
+    {
+      "term": "fokusert",
+      "count": 1832
+    },
+    {
+      "term": "floral",
+      "count": 1793
+    },
+    {
+      "term": "middels",
+      "count": 1719
+    },
+    {
+      "term": "mørk",
+      "count": 1610
+    },
+    {
+      "term": "urt",
+      "count": 1608
+    },
+    {
+      "term": "aromatisk",
+      "count": 1599
+    },
+    {
+      "term": "hvit",
+      "count": 1592
+    },
+    {
+      "term": "kremet",
+      "count": 1574
+    },
+    {
+      "term": "skogsbær",
+      "count": 1512
+    },
+    {
+      "term": "gule",
+      "count": 1485
+    },
+    {
+      "term": "gul",
+      "count": 1450
+    },
+    {
+      "term": "hvite",
+      "count": 1399
+    },
+    {
+      "term": "nyansert",
+      "count": 1278
+    },
+    {
+      "term": "florale",
+      "count": 1262
+    },
+    {
+      "term": "fruktighet",
+      "count": 1202
+    },
+    {
+      "term": "ungdommelig",
+      "count": 1176
+    },
+    {
+      "term": "munnfølelse",
+      "count": 1081
+    },
+    {
+      "term": "sval",
+      "count": 972
+    },
+    {
+      "term": "skogbunn",
+      "count": 965
+    },
+    {
+      "term": "aromaer",
+      "count": 929
+    },
+    {
+      "term": "integrert",
+      "count": 919
+    },
+    {
+      "term": "svale",
+      "count": 872
+    },
+    {
+      "term": "anslag",
+      "count": 839
+    },
+    {
+      "term": "kamfer",
+      "count": 798
+    },
+    {
+      "term": "høy",
+      "count": 773
+    },
+    {
+      "term": "sedertre",
+      "count": 744
+    },
+    {
+      "term": "kraftig",
+      "count": 727
+    },
+    {
+      "term": "grønt",
+      "count": 698
+    },
+    {
+      "term": "røyk",
+      "count": 688
+    },
+    {
+      "term": "streif",
+      "count": 680
+    },
+    {
+      "term": "te",
+      "count": 655
+    },
+    {
+      "term": "stikkelsbær",
+      "count": 654
+    },
+    {
+      "term": "fersk",
+      "count": 633
+    },
+    {
+      "term": "sjø",
+      "count": 630
+    },
+    {
+      "term": "grønn",
+      "count": 614
+    },
+    {
+      "term": "intensitet",
+      "count": 600
+    },
+    {
+      "term": "mineral",
+      "count": 596
+    },
+    {
+      "term": "integrerte",
+      "count": 576
+    },
+    {
+      "term": "modent",
+      "count": 575
+    },
+    {
+      "term": "mandel",
+      "count": 566
+    },
+    {
+      "term": "mandler",
+      "count": 562
+    },
+    {
+      "term": "salt",
+      "count": 549
+    },
+    {
+      "term": "bærpreget",
+      "count": 546
+    },
+    {
+      "term": "avslutningen",
+      "count": 530
+    },
+    {
+      "term": "kjølig",
+      "count": 528
+    },
+    {
+      "term": "nese",
+      "count": 525
+    },
+    {
+      "term": "balsam",
+      "count": 520
+    },
+    {
+      "term": "slank",
+      "count": 498
+    },
+    {
+      "term": "tekstur",
+      "count": 481
+    },
+    {
+      "term": "lyse",
+      "count": 475
+    },
+    {
+      "term": "utgang",
+      "count": 475
+    },
+    {
+      "term": "samt",
+      "count": 464
+    },
+    {
+      "term": "stil",
+      "count": 447
+    },
+    {
+      "term": "kalk",
+      "count": 433
+    },
+    {
+      "term": "kakao",
+      "count": 432
+    },
+    {
+      "term": "våt",
+      "count": 432
+    },
+    {
+      "term": "over",
+      "count": 431
+    },
+    {
+      "term": "stenfrukt",
+      "count": 430
+    },
+    {
+      "term": "overtoner",
+      "count": 430
+    },
+    {
+      "term": "sopp",
+      "count": 421
+    },
+    {
+      "term": "kryddertoner",
+      "count": 414
+    },
+    {
+      "term": "sort",
+      "count": 399
+    },
+    {
+      "term": "syrlighet",
+      "count": 398
+    },
+    {
+      "term": "sitrusfrukt",
+      "count": 396
+    },
+    {
+      "term": "markjordbær",
+      "count": 389
+    },
+    {
+      "term": "ørlite",
+      "count": 386
+    },
+    {
+      "term": "ettersmaken",
+      "count": 375
+    },
+    {
+      "term": "jord",
+      "count": 374
+    },
+    {
+      "term": "syrefrisk",
+      "count": 372
+    },
+    {
+      "term": "delikat",
+      "count": 364
+    },
+    {
+      "term": "lette",
+      "count": 360
+    },
+    {
+      "term": "syltet",
+      "count": 358
+    },
+    {
+      "term": "varm",
+      "count": 355
+    },
+    {
+      "term": "kalkmineraler",
+      "count": 353
+    },
+    {
+      "term": "saftige",
+      "count": 349
+    },
+    {
+      "term": "bakverk",
+      "count": 345
+    },
+    {
+      "term": "snev",
+      "count": 335
+    },
+    {
+      "term": "sødmefull",
+      "count": 334
+    },
+    {
+      "term": "paprika",
+      "count": 328
+    },
+    {
+      "term": "appelsin",
+      "count": 321
+    },
+    {
+      "term": "tanninstruktur",
+      "count": 317
+    },
+    {
+      "term": "mokka",
+      "count": 315
+    },
+    {
+      "term": "fruktdrevet",
+      "count": 308
+    },
+    {
+      "term": "saltaktig",
+      "count": 303
+    },
+    {
+      "term": "lys",
+      "count": 301
+    },
+    {
+      "term": "appelsinskall",
+      "count": 299
+    },
+    {
+      "term": "pasjonsfrukt",
+      "count": 297
+    },
+    {
+      "term": "sorte",
+      "count": 286
+    },
+    {
+      "term": "krekling",
+      "count": 285
+    },
+    {
+      "term": "presis",
+      "count": 282
+    },
+    {
+      "term": "bærfrukt",
+      "count": 282
+    },
+    {
+      "term": "nype",
+      "count": 279
+    },
+    {
+      "term": "svart",
+      "count": 276
+    },
+    {
+      "term": "bitter",
+      "count": 274
+    },
+    {
+      "term": "nesle",
+      "count": 271
+    },
+    {
+      "term": "gjærbakst",
+      "count": 269
+    },
+    {
+      "term": "vin",
+      "count": 267
+    },
+    {
+      "term": "bakst",
+      "count": 260
+    },
+    {
+      "term": "trekrydder",
+      "count": 258
+    },
+    {
+      "term": "granateple",
+      "count": 247
+    },
+    {
+      "term": "fruktdreven",
+      "count": 245
+    },
+    {
+      "term": "tranebær",
+      "count": 243
+    },
+    {
+      "term": "kvede",
+      "count": 241
+    },
+    {
+      "term": "sitruspreget",
+      "count": 239
+    },
+    {
+      "term": "fruktkonsentrasjon",
+      "count": 239
+    },
+    {
+      "term": "underskog",
+      "count": 236
+    },
+    {
+      "term": "tett",
+      "count": 235
+    },
+    {
+      "term": "balsamico",
+      "count": 233
+    },
+    {
+      "term": "gult",
+      "count": 233
+    },
+    {
+      "term": "kjernefrukt",
+      "count": 230
+    },
+    {
+      "term": "mellom",
+      "count": 225
+    },
+    {
+      "term": "sitrusfrukter",
+      "count": 221
+    },
+    {
+      "term": "kandisert",
+      "count": 221
+    },
+    {
+      "term": "mot",
+      "count": 220
+    },
+    {
+      "term": "dufter",
+      "count": 220
+    },
+    {
+      "term": "knuste",
+      "count": 214
+    },
+    {
+      "term": "lukt",
+      "count": 214
+    },
+    {
+      "term": "fruktige",
+      "count": 214
+    },
+    {
+      "term": "eksotisk",
+      "count": 210
+    },
+    {
+      "term": "jordlige",
+      "count": 210
+    },
+    {
+      "term": "fedme",
+      "count": 210
+    },
+    {
+      "term": "nyanser",
+      "count": 201
+    },
+    {
+      "term": "hasselnøtter",
+      "count": 195
+    },
+    {
+      "term": "munnen",
+      "count": 195
+    },
+    {
+      "term": "undertoner",
+      "count": 194
+    },
+    {
+      "term": "litchi",
+      "count": 194
+    },
+    {
+      "term": "treverk",
+      "count": 191
+    },
+    {
+      "term": "tone",
+      "count": 191
+    },
+    {
+      "term": "tre",
+      "count": 190
+    },
+    {
+      "term": "ferske",
+      "count": 190
+    },
+    {
+      "term": "sunn",
+      "count": 188
+    },
+    {
+      "term": "bærpreg",
+      "count": 186
+    },
+    {
+      "term": "syrestruktur",
+      "count": 184
+    },
+    {
+      "term": "trøffel",
+      "count": 183
+    },
+    {
+      "term": "svarte",
+      "count": 183
+    },
+    {
+      "term": "klar",
+      "count": 182
+    },
+    {
+      "term": "brus",
+      "count": 182
+    },
+    {
+      "term": "hylleblomst",
+      "count": 181
+    },
+    {
+      "term": "bra",
+      "count": 180
+    },
+    {
+      "term": "smaksrik",
+      "count": 179
+    },
+    {
+      "term": "ungt",
+      "count": 177
+    },
+    {
+      "term": "hasselnøtt",
+      "count": 176
+    },
+    {
+      "term": "drops",
+      "count": 174
+    },
+    {
+      "term": "kjøtt",
+      "count": 173
+    },
+    {
+      "term": "sitronskall",
+      "count": 171
+    },
+    {
+      "term": "tydelige",
+      "count": 171
+    },
+    {
+      "term": "jordsmonn",
+      "count": 170
+    },
+    {
+      "term": "oliven",
+      "count": 167
+    },
+    {
+      "term": "eikepreg",
+      "count": 165
+    },
+    {
+      "term": "livlig",
+      "count": 165
+    },
+    {
+      "term": "midtparti",
+      "count": 164
+    },
+    {
+      "term": "ferskt",
+      "count": 163
+    },
+    {
+      "term": "åpen",
+      "count": 162
+    },
+    {
+      "term": "søtlig",
+      "count": 162
+    },
+    {
+      "term": "balsamisk",
+      "count": 161
+    },
+    {
+      "term": "stram",
+      "count": 160
+    },
+    {
+      "term": "mineralpreget",
+      "count": 159
+    },
+    {
+      "term": "svakt",
+      "count": 158
+    },
+    {
+      "term": "mineraltoner",
+      "count": 156
+    },
+    {
+      "term": "fennikel",
+      "count": 153
+    },
+    {
+      "term": "jordtoner",
+      "count": 152
+    },
+    {
+      "term": "mineralpreg",
+      "count": 151
+    },
+    {
+      "term": "lavendel",
+      "count": 150
+    },
+    {
+      "term": "sitrusskall",
+      "count": 149
+    },
+    {
+      "term": "nektarin",
+      "count": 149
+    },
+    {
+      "term": "ingefær",
+      "count": 149
+    },
+    {
+      "term": "bobler",
+      "count": 148
+    },
+    {
+      "term": "sitrustoner",
+      "count": 145
+    },
+    {
+      "term": "små",
+      "count": 145
+    },
+    {
+      "term": "fatkrydder",
+      "count": 144
+    },
+    {
+      "term": "fruktkarakter",
+      "count": 143
+    },
+    {
+      "term": "mousse",
+      "count": 142
+    },
+    {
+      "term": "dempet",
+      "count": 138
+    },
+    {
+      "term": "akasie",
+      "count": 137
+    },
+    {
+      "term": "eplepreget",
+      "count": 136
+    },
+    {
+      "term": "nesen",
+      "count": 131
+    },
+    {
+      "term": "mint",
+      "count": 130
+    },
+    {
+      "term": "karakter",
+      "count": 128
+    },
+    {
+      "term": "inngang",
+      "count": 128
+    },
+    {
+      "term": "villbringebær",
+      "count": 124
+    },
+    {
+      "term": "dropsaktig",
+      "count": 121
+    },
+    {
+      "term": "balsamiske",
+      "count": 121
+    },
+    {
+      "term": "smørtoner",
+      "count": 121
+    },
+    {
+      "term": "vedvarende",
+      "count": 121
+    },
+    {
+      "term": "floralt",
+      "count": 119
+    },
+    {
+      "term": "krydderpreg",
+      "count": 119
+    },
+    {
+      "term": "rene",
+      "count": 118
+    },
+    {
+      "term": "jordlig",
+      "count": 118
+    },
+    {
+      "term": "smørblomst",
+      "count": 117
+    },
+    {
+      "term": "syrefriskhet",
+      "count": 116
+    },
+    {
+      "term": "druer",
+      "count": 114
+    },
+    {
+      "term": "roseblader",
+      "count": 113
+    },
+    {
+      "term": "fattoner",
+      "count": 112
+    },
+    {
+      "term": "appelsinblomst",
+      "count": 111
+    },
+    {
+      "term": "mentol",
+      "count": 110
+    },
+    {
+      "term": "drue",
+      "count": 108
+    },
+    {
+      "term": "skifer",
+      "count": 106
+    },
+    {
+      "term": "fet",
+      "count": 106
+    },
+    {
+      "term": "eksotiske",
+      "count": 105
+    },
+    {
+      "term": "honningmelon",
+      "count": 105
+    },
+    {
+      "term": "parfymert",
+      "count": 104
+    },
+    {
+      "term": "brødbakst",
+      "count": 103
+    },
+    {
+      "term": "bakt",
+      "count": 101
+    },
+    {
+      "term": "undertone",
+      "count": 100
+    },
+    {
+      "term": "fruktsødme",
+      "count": 100
+    },
+    {
+      "term": "sjasmin",
+      "count": 100
+    },
+    {
+      "term": "autolyse",
+      "count": 99
+    },
+    {
+      "term": "autolysepreg",
+      "count": 98
+    },
+    {
+      "term": "mandarin",
+      "count": 97
+    },
+    {
+      "term": "undermoden",
+      "count": 97
+    },
+    {
+      "term": "blå",
+      "count": 96
+    },
+    {
+      "term": "delikate",
+      "count": 96
+    },
+    {
+      "term": "moderat",
+      "count": 96
+    },
+    {
+      "term": "muskat",
+      "count": 94
+    },
+    {
+      "term": "blodappelsin",
+      "count": 93
+    },
+    {
+      "term": "elementer",
+      "count": 93
+    },
+    {
+      "term": "anslaget",
+      "count": 93
+    },
+    {
+      "term": "rosa",
+      "count": 91
+    },
+    {
+      "term": "skog",
+      "count": 91
+    },
+    {
+      "term": "reduktiv",
+      "count": 90
+    },
+    {
+      "term": "syrebalanse",
+      "count": 90
+    },
+    {
+      "term": "balanserende",
+      "count": 89
+    },
+    {
+      "term": "strukturerte",
+      "count": 89
+    },
+    {
+      "term": "fløte",
+      "count": 88
+    },
+    {
+      "term": "blomstertoner",
+      "count": 87
+    },
+    {
+      "term": "rabarbra",
+      "count": 87
+    },
+    {
+      "term": "voks",
+      "count": 87
+    },
+    {
+      "term": "kraftfull",
+      "count": 87
+    },
+    {
+      "term": "salte",
+      "count": 87
+    },
+    {
+      "term": "saltpreget",
+      "count": 85
+    },
+    {
+      "term": "grafitt",
+      "count": 84
+    },
+    {
+      "term": "petroleum",
+      "count": 84
+    },
+    {
+      "term": "diskret",
+      "count": 84
+    },
+    {
+      "term": "energisk",
+      "count": 84
+    },
+    {
+      "term": "marsipan",
+      "count": 82
+    },
+    {
+      "term": "sjømineraler",
+      "count": 82
+    },
+    {
+      "term": "espresso",
+      "count": 82
+    },
+    {
+      "term": "leskende",
+      "count": 82
+    },
+    {
+      "term": "svalt",
+      "count": 80
+    },
+    {
+      "term": "kritt",
+      "count": 80
+    },
+    {
+      "term": "anelse",
+      "count": 79
+    },
+    {
+      "term": "animalsk",
+      "count": 77
+    },
+    {
+      "term": "frukttoner",
+      "count": 77
+    },
+    {
+      "term": "sødmerike",
+      "count": 77
+    },
+    {
+      "term": "kaprifol",
+      "count": 76
+    },
+    {
+      "term": "fruktpreg",
+      "count": 76
+    },
+    {
+      "term": "engsyre",
+      "count": 76
+    },
+    {
+      "term": "banan",
+      "count": 75
+    },
+    {
+      "term": "lenge",
+      "count": 75
+    },
+    {
+      "term": "kamille",
+      "count": 74
+    },
+    {
+      "term": "krydrede",
+      "count": 74
+    },
+    {
+      "term": "kjøttfull",
+      "count": 73
+    },
+    {
+      "term": "tropefrukt",
+      "count": 72
+    },
+    {
+      "term": "sitroner",
+      "count": 72
+    },
+    {
+      "term": "syltetøy",
+      "count": 70
+    },
+    {
+      "term": "smaker",
+      "count": 70
+    },
+    {
+      "term": "østers",
+      "count": 69
+    },
+    {
+      "term": "bitterhet",
+      "count": 69
+    },
+    {
+      "term": "sitter",
+      "count": 68
+    },
+    {
+      "term": "bæraktig",
+      "count": 67
+    },
+    {
+      "term": "fullmodne",
+      "count": 67
+    },
+    {
+      "term": "fatpreget",
+      "count": 65
+    },
+    {
+      "term": "eikefat",
+      "count": 65
+    },
+    {
+      "term": "kjølige",
+      "count": 65
+    },
+    {
+      "term": "løv",
+      "count": 65
+    },
+    {
+      "term": "varme",
+      "count": 64
+    },
+    {
+      "term": "steinfrukter",
+      "count": 64
+    },
+    {
+      "term": "teblader",
+      "count": 63
+    },
+    {
+      "term": "transparent",
+      "count": 63
+    },
+    {
+      "term": "aprikoser",
+      "count": 63
+    },
+    {
+      "term": "bladverk",
+      "count": 62
+    },
+    {
+      "term": "krem",
+      "count": 62
+    },
+    {
+      "term": "sydfrukter",
+      "count": 62
+    },
+    {
+      "term": "blyant",
+      "count": 62
+    },
+    {
+      "term": "ville",
+      "count": 62
+    },
+    {
+      "term": "gjær",
+      "count": 62
+    },
+    {
+      "term": "hyllebær",
+      "count": 61
+    },
+    {
+      "term": "kardemomme",
+      "count": 61
+    },
+    {
+      "term": "markant",
+      "count": 61
+    },
+    {
+      "term": "rødbærsfrukt",
+      "count": 60
+    },
+    {
+      "term": "sitrongress",
+      "count": 60
+    },
+    {
+      "term": "asparges",
+      "count": 60
+    },
+    {
+      "term": "umiddelbar",
+      "count": 60
+    },
+    {
+      "term": "bergamott",
+      "count": 59
+    },
+    {
+      "term": "bivoks",
+      "count": 59
+    },
+    {
+      "term": "høstløv",
+      "count": 59
+    },
+    {
+      "term": "trøfler",
+      "count": 58
+    },
+    {
+      "term": "kombinert",
+      "count": 58
+    },
+    {
+      "term": "skarp",
+      "count": 58
+    },
+    {
+      "term": "fruktintensitet",
+      "count": 58
+    },
+    {
+      "term": "feit",
+      "count": 58
+    },
+    {
+      "term": "seder",
+      "count": 57
+    },
+    {
+      "term": "barnål",
+      "count": 57
+    },
+    {
+      "term": "nyanserik",
+      "count": 57
+    },
+    {
+      "term": "stor",
+      "count": 57
+    },
+    {
+      "term": "retning",
+      "count": 56
+    },
+    {
+      "term": "mørkerøde",
+      "count": 56
+    },
+    {
+      "term": "vekt",
+      "count": 56
+    },
+    {
+      "term": "lyserøde",
+      "count": 55
+    },
+    {
+      "term": "noen",
+      "count": 55
+    },
+    {
+      "term": "akasiehonning",
+      "count": 55
+    },
+    {
+      "term": "sødmefulle",
+      "count": 55
+    },
+    {
+      "term": "blyantspiss",
+      "count": 54
+    },
+    {
+      "term": "karri",
+      "count": 54
+    },
+    {
+      "term": "marmelade",
+      "count": 54
+    },
+    {
+      "term": "smaken",
+      "count": 54
+    },
+    {
+      "term": "solbærblader",
+      "count": 53
+    },
+    {
+      "term": "underliggende",
+      "count": 53
+    },
+    {
+      "term": "sitruspreg",
+      "count": 53
+    },
+    {
+      "term": "stall",
+      "count": 53
+    },
+    {
+      "term": "solid",
+      "count": 52
+    },
+    {
+      "term": "roseblad",
+      "count": 51
+    },
+    {
+      "term": "eiketoner",
+      "count": 51
+    },
+    {
+      "term": "sigarboks",
+      "count": 51
+    },
+    {
+      "term": "mild",
+      "count": 51
+    },
+    {
+      "term": "syltede",
+      "count": 50
+    },
+    {
+      "term": "glatt",
+      "count": 50
+    },
+    {
+      "term": "grep",
+      "count": 50
+    },
+    {
+      "term": "akasieblomst",
+      "count": 49
+    },
+    {
+      "term": "steinmineraler",
+      "count": 49
+    },
+    {
+      "term": "kokos",
+      "count": 49
+    },
+    {
+      "term": "bærtoner",
+      "count": 49
+    },
+    {
+      "term": "milde",
+      "count": 49
+    },
+    {
+      "term": "solbærblad",
+      "count": 48
+    },
+    {
+      "term": "flor",
+      "count": 48
+    },
+    {
+      "term": "jod",
+      "count": 48
+    },
+    {
+      "term": "valnøtter",
+      "count": 48
+    },
+    {
+      "term": "boysenbær",
+      "count": 47
+    },
+    {
+      "term": "unge",
+      "count": 47
+    },
+    {
+      "term": "solmodne",
+      "count": 47
+    },
+    {
+      "term": "fruktaromaer",
+      "count": 47
+    },
+    {
+      "term": "dominert",
+      "count": 47
+    },
+    {
+      "term": "kiwi",
+      "count": 46
+    },
+    {
+      "term": "pinjekjerner",
+      "count": 46
+    },
+    {
+      "term": "markert",
+      "count": 46
+    },
+    {
+      "term": "perlende",
+      "count": 46
+    },
+    {
+      "term": "krydderurter",
+      "count": 45
+    },
+    {
+      "term": "fatkarakter",
+      "count": 45
+    },
+    {
+      "term": "fruktsmak",
+      "count": 45
+    },
+    {
+      "term": "nokså",
+      "count": 45
+    },
+    {
+      "term": "sursøte",
+      "count": 44
+    },
+    {
+      "term": "skifermineraler",
+      "count": 44
+    },
+    {
+      "term": "utvikling",
+      "count": 44
+    },
+    {
+      "term": "urtepreget",
+      "count": 44
+    },
+    {
+      "term": "slutt",
+      "count": 44
+    },
+    {
+      "term": "tanninrik",
+      "count": 44
+    },
+    {
+      "term": "teksturert",
+      "count": 44
+    },
+    {
+      "term": "rødt",
+      "count": 43
+    },
+    {
+      "term": "brent",
+      "count": 43
+    },
+    {
+      "term": "papaya",
+      "count": 43
+    },
+    {
+      "term": "avrundet",
+      "count": 43
+    },
+    {
+      "term": "stenfrukter",
+      "count": 43
+    },
+    {
+      "term": "avrundede",
+      "count": 43
+    },
+    {
+      "term": "gummi",
+      "count": 42
+    },
+    {
+      "term": "bittert",
+      "count": 42
+    },
+    {
+      "term": "pepret",
+      "count": 41
+    },
+    {
+      "term": "aromatiske",
+      "count": 41
+    },
+    {
+      "term": "flintrøyk",
+      "count": 41
+    },
+    {
+      "term": "sigareske",
+      "count": 40
+    },
+    {
+      "term": "jordsmonnspreg",
+      "count": 40
+    },
+    {
+      "term": "animalske",
+      "count": 40
+    },
+    {
+      "term": "safran",
+      "count": 40
+    },
+    {
+      "term": "morbær",
+      "count": 40
+    },
+    {
+      "term": "vannmelon",
+      "count": 40
+    },
+    {
+      "term": "moderate",
+      "count": 40
+    },
+    {
+      "term": "robust",
+      "count": 40
+    },
+    {
+      "term": "kaffebønner",
+      "count": 39
+    },
+    {
+      "term": "hagtorn",
+      "count": 39
+    },
+    {
+      "term": "smøraktig",
+      "count": 39
+    },
+    {
+      "term": "frukten",
+      "count": 39
+    },
+    {
+      "term": "fruktaroma",
+      "count": 38
+    },
+    {
+      "term": "kalkmineralitet",
+      "count": 38
+    },
+    {
+      "term": "stjernefrukt",
+      "count": 38
+    },
+    {
+      "term": "bør",
+      "count": 38
+    },
+    {
+      "term": "masse",
+      "count": 38
+    },
+    {
+      "term": "nøttepreg",
+      "count": 37
+    },
+    {
+      "term": "kjerne",
+      "count": 37
+    },
+    {
+      "term": "distinkt",
+      "count": 37
+    },
+    {
+      "term": "sigar",
+      "count": 36
+    },
+    {
+      "term": "kandiserte",
+      "count": 36
+    },
+    {
+      "term": "klare",
+      "count": 36
+    },
+    {
+      "term": "humus",
+      "count": 36
+    },
+    {
+      "term": "valnøtt",
+      "count": 35
+    },
+    {
+      "term": "knust",
+      "count": 35
+    },
+    {
+      "term": "fiolett",
+      "count": 35
+    },
+    {
+      "term": "etterfulgt",
+      "count": 35
+    },
+    {
+      "term": "bark",
+      "count": 35
+    },
+    {
+      "term": "gyllen",
+      "count": 35
+    },
+    {
+      "term": "flintstein",
+      "count": 35
+    },
+    {
+      "term": "kirsebærpreget",
+      "count": 35
+    },
+    {
+      "term": "nyknuste",
+      "count": 34
+    },
+    {
+      "term": "edel",
+      "count": 34
+    },
+    {
+      "term": "duften",
+      "count": 34
+    },
+    {
+      "term": "tyttebær",
+      "count": 34
+    },
+    {
+      "term": "svak",
+      "count": 34
+    },
+    {
+      "term": "lite",
+      "count": 34
+    },
+    {
+      "term": "appelsinmarmelade",
+      "count": 34
+    },
+    {
+      "term": "gammelt",
+      "count": 33
+    },
+    {
+      "term": "stjerneanis",
+      "count": 33
+    },
+    {
+      "term": "topptoner",
+      "count": 33
+    },
+    {
+      "term": "bakte",
+      "count": 33
+    },
+    {
+      "term": "sandeltre",
+      "count": 33
+    },
+    {
+      "term": "røykfylt",
+      "count": 33
+    },
+    {
+      "term": "bløtt",
+      "count": 33
+    },
+    {
+      "term": "salinitet",
+      "count": 33
+    },
+    {
+      "term": "smakfull",
+      "count": 33
+    },
+    {
+      "term": "røkt",
+      "count": 32
+    },
+    {
+      "term": "begynnende",
+      "count": 32
+    },
+    {
+      "term": "appelsiner",
+      "count": 32
+    },
+    {
+      "term": "laurbærblad",
+      "count": 32
+    },
+    {
+      "term": "røykpreg",
+      "count": 32
+    },
+    {
+      "term": "samme",
+      "count": 32
+    },
+    {
+      "term": "tobakksblader",
+      "count": 31
+    },
+    {
+      "term": "urtetoner",
+      "count": 31
+    },
+    {
+      "term": "vaniljetoner",
+      "count": 31
+    },
+    {
+      "term": "smørmalt",
+      "count": 31
+    },
+    {
+      "term": "peppertoner",
+      "count": 31
+    },
+    {
+      "term": "antydning",
+      "count": 31
+    },
+    {
+      "term": "kirsebærfrukt",
+      "count": 31
+    },
+    {
+      "term": "nybakt",
+      "count": 31
+    },
+    {
+      "term": "rustikk",
+      "count": 31
+    },
+    {
+      "term": "kraft",
+      "count": 31
+    },
+    {
+      "term": "kalkaktig",
+      "count": 30
+    },
+    {
+      "term": "mais",
+      "count": 29
+    },
+    {
+      "term": "fataroma",
+      "count": 29
+    },
+    {
+      "term": "epleblomst",
+      "count": 29
+    },
+    {
+      "term": "komplekst",
+      "count": 29
+    },
+    {
+      "term": "røykaktig",
+      "count": 29
+    },
+    {
+      "term": "bitre",
+      "count": 29
+    },
+    {
+      "term": "sitrusdominert",
+      "count": 29
+    },
+    {
+      "term": "markante",
+      "count": 29
+    },
+    {
+      "term": "ganen",
+      "count": 29
+    },
+    {
+      "term": "sure",
+      "count": 28
+    },
+    {
+      "term": "bærfrukter",
+      "count": 28
+    },
+    {
+      "term": "nøtteaktig",
+      "count": 28
+    },
+    {
+      "term": "akasieblomster",
+      "count": 28
+    },
+    {
+      "term": "saltpreg",
+      "count": 28
+    },
+    {
+      "term": "steinete",
+      "count": 28
+    },
+    {
+      "term": "saltmineraler",
+      "count": 28
+    },
+    {
+      "term": "eplepreg",
+      "count": 28
+    },
+    {
+      "term": "tørrhet",
+      "count": 28
+    },
+    {
+      "term": "restsødme",
+      "count": 28
+    },
+    {
+      "term": "avdempet",
+      "count": 27
+    },
+    {
+      "term": "flintpreget",
+      "count": 27
+    },
+    {
+      "term": "fruktpreget",
+      "count": 27
+    },
+    {
+      "term": "røk",
+      "count": 27
+    },
+    {
+      "term": "nektariner",
+      "count": 27
+    },
+    {
+      "term": "kraftige",
+      "count": 27
+    },
+    {
+      "term": "krydderpreget",
+      "count": 27
+    },
+    {
+      "term": "bærsmak",
+      "count": 27
+    },
+    {
+      "term": "avslutting",
+      "count": 27
+    },
+    {
+      "term": "tørrende",
+      "count": 27
+    },
+    {
+      "term": "jordbærsyltetøy",
+      "count": 26
+    },
+    {
+      "term": "kalkstein",
+      "count": 26
+    },
+    {
+      "term": "blomsteraktig",
+      "count": 26
+    },
+    {
+      "term": "furunål",
+      "count": 26
+    },
+    {
+      "term": "nyper",
+      "count": 26
+    },
+    {
+      "term": "søtlige",
+      "count": 26
+    },
+    {
+      "term": "bouquet",
+      "count": 26
+    },
+    {
+      "term": "guava",
+      "count": 26
+    },
+    {
+      "term": "nøttepreget",
+      "count": 26
+    },
+    {
+      "term": "karamellisert",
+      "count": 26
+    },
+    {
+      "term": "slutten",
+      "count": 26
+    },
+    {
+      "term": "smidig",
+      "count": 26
+    },
+    {
+      "term": "situs",
+      "count": 25
+    },
+    {
+      "term": "utviklede",
+      "count": 25
+    },
+    {
+      "term": "einebær",
+      "count": 25
+    },
+    {
+      "term": "rødbærspreget",
+      "count": 25
+    },
+    {
+      "term": "alkohol",
+      "count": 25
+    },
+    {
+      "term": "rent",
+      "count": 25
+    },
+    {
+      "term": "limeskall",
+      "count": 25
+    },
+    {
+      "term": "kirsebæraktig",
+      "count": 25
+    },
+    {
+      "term": "solmoden",
+      "count": 24
+    },
+    {
+      "term": "luftig",
+      "count": 24
+    },
+    {
+      "term": "fremtredende",
+      "count": 24
+    },
+    {
+      "term": "lag",
+      "count": 24
+    },
+    {
+      "term": "sødmefylt",
+      "count": 24
+    },
+    {
+      "term": "flott",
+      "count": 24
+    },
+    {
+      "term": "saltmineral",
+      "count": 24
+    },
+    {
+      "term": "kirsebærstein",
+      "count": 23
+    },
+    {
+      "term": "kirsebærsteiner",
+      "count": 23
+    },
+    {
+      "term": "kumquat",
+      "count": 23
+    },
+    {
+      "term": "røkpreget",
+      "count": 23
+    },
+    {
+      "term": "helt",
+      "count": 23
+    },
+    {
+      "term": "kvae",
+      "count": 22
+    },
+    {
+      "term": "bakekrydder",
+      "count": 22
+    },
+    {
+      "term": "melent",
+      "count": 22
+    },
+    {
+      "term": "lyng",
+      "count": 22
+    },
+    {
+      "term": "fuktig",
+      "count": 22
+    },
+    {
+      "term": "steinmineralitet",
+      "count": 22
+    },
+    {
+      "term": "sevje",
+      "count": 22
+    },
+    {
+      "term": "hibiskus",
+      "count": 22
+    },
+    {
+      "term": "muskatnøtt",
+      "count": 22
+    },
+    {
+      "term": "parfyme",
+      "count": 22
+    },
+    {
+      "term": "dropspreget",
+      "count": 22
+    },
+    {
+      "term": "harmonisk",
+      "count": 22
+    },
+    {
+      "term": "følger",
+      "count": 22
+    },
+    {
+      "term": "lineær",
+      "count": 22
+    },
+    {
+      "term": "avslepne",
+      "count": 22
+    },
+    {
+      "term": "noter",
+      "count": 21
+    },
+    {
+      "term": "undervekst",
+      "count": 21
+    },
+    {
+      "term": "klart",
+      "count": 21
+    },
+    {
+      "term": "subtil",
+      "count": 21
+    },
+    {
+      "term": "brødskorpe",
+      "count": 21
+    },
+    {
+      "term": "plommesyltetøy",
+      "count": 21
+    },
+    {
+      "term": "urte",
+      "count": 21
+    },
+    {
+      "term": "villjordbær",
+      "count": 21
+    },
+    {
+      "term": "lagret",
+      "count": 21
+    },
+    {
+      "term": "havsalt",
+      "count": 21
+    },
+    {
+      "term": "urteaktig",
+      "count": 21
+    },
+    {
+      "term": "sødmefullt",
+      "count": 21
+    },
+    {
+      "term": "detaljert",
+      "count": 21
+    },
+    {
+      "term": "full",
+      "count": 21
+    },
+    {
+      "term": "tør",
+      "count": 21
+    },
+    {
+      "term": "rundt",
+      "count": 21
+    },
+    {
+      "term": "bitt",
+      "count": 21
+    },
+    {
+      "term": "sitrusaktig",
+      "count": 21
+    },
+    {
+      "term": "fløyelsaktig",
+      "count": 21
+    },
+    {
+      "term": "sitrusaroma",
+      "count": 20
+    },
+    {
+      "term": "orientalsk",
+      "count": 20
+    },
+    {
+      "term": "flintaktig",
+      "count": 20
+    },
+    {
+      "term": "bakgrunn",
+      "count": 20
+    },
+    {
+      "term": "sherrytoner",
+      "count": 20
+    },
+    {
+      "term": "uttalt",
+      "count": 20
+    },
+    {
+      "term": "blandet",
+      "count": 20
+    },
+    {
+      "term": "sukker",
+      "count": 20
+    },
+    {
+      "term": "raffinert",
+      "count": 20
+    },
+    {
+      "term": "dype",
+      "count": 20
+    },
+    {
+      "term": "slanke",
+      "count": 20
+    },
+    {
+      "term": "samtidig",
+      "count": 20
+    },
+    {
+      "term": "klassisk",
+      "count": 19
+    },
+    {
+      "term": "druepreg",
+      "count": 19
+    },
+    {
+      "term": "intenst",
+      "count": 19
+    },
+    {
+      "term": "glassepler",
+      "count": 19
+    },
+    {
+      "term": "mandariner",
+      "count": 19
+    },
+    {
+      "term": "allehånde",
+      "count": 19
+    },
+    {
+      "term": "subtile",
+      "count": 19
+    },
+    {
+      "term": "kantarell",
+      "count": 19
+    },
+    {
+      "term": "mykt",
+      "count": 19
+    },
+    {
+      "term": "silkemyke",
+      "count": 19
+    },
+    {
+      "term": "svært",
+      "count": 19
+    },
+    {
+      "term": "naturlig",
+      "count": 19
+    },
+    {
+      "term": "kons",
+      "count": 19
+    },
+    {
+      "term": "balanserer",
+      "count": 19
+    },
+    {
+      "term": "avsl",
+      "count": 19
+    },
+    {
+      "term": "andre",
+      "count": 18
+    },
+    {
+      "term": "aromabilde",
+      "count": 18
+    },
+    {
+      "term": "lukket",
+      "count": 18
+    },
+    {
+      "term": "innsalg",
+      "count": 18
+    },
+    {
+      "term": "sitrusblomst",
+      "count": 18
+    },
+    {
+      "term": "konsentrerte",
+      "count": 18
+    },
+    {
+      "term": "rosenblad",
+      "count": 18
+    },
+    {
+      "term": "nougat",
+      "count": 18
+    },
+    {
+      "term": "røykfylte",
+      "count": 18
+    },
+    {
+      "term": "mineralkarakter",
+      "count": 18
+    },
+    {
+      "term": "harpiks",
+      "count": 18
+    },
+    {
+      "term": "modenhet",
+      "count": 18
+    },
+    {
+      "term": "utpreget",
+      "count": 18
+    },
+    {
+      "term": "vinøs",
+      "count": 18
+    },
+    {
+      "term": "treaktig",
+      "count": 18
+    },
+    {
+      "term": "balanseres",
+      "count": 18
+    },
+    {
+      "term": "utgangen",
+      "count": 18
+    },
+    {
+      "term": "polerte",
+      "count": 18
+    },
+    {
+      "term": "kløver",
+      "count": 17
+    },
+    {
+      "term": "markblomster",
+      "count": 17
+    },
+    {
+      "term": "lakrisrot",
+      "count": 17
+    },
+    {
+      "term": "del",
+      "count": 17
+    },
+    {
+      "term": "kjernefrukter",
+      "count": 17
+    },
+    {
+      "term": "uttrykk",
+      "count": 17
+    },
+    {
+      "term": "minner",
+      "count": 17
+    },
+    {
+      "term": "pepperkorn",
+      "count": 17
+    },
+    {
+      "term": "mineraldrevet",
+      "count": 17
+    },
+    {
+      "term": "karakteristisk",
+      "count": 17
+    },
+    {
+      "term": "gir",
+      "count": 17
+    },
+    {
+      "term": "einer",
+      "count": 17
+    },
+    {
+      "term": "diskré",
+      "count": 17
+    },
+    {
+      "term": "krisp",
+      "count": 17
+    },
+    {
+      "term": "oksidasjon",
+      "count": 17
+    },
+    {
+      "term": "midtpartiet",
+      "count": 17
+    },
+    {
+      "term": "teksturdrevet",
+      "count": 17
+    },
+    {
+      "term": "vårblomster",
+      "count": 16
+    },
+    {
+      "term": "mandelblomst",
+      "count": 16
+    },
+    {
+      "term": "melne",
+      "count": 16
+    },
+    {
+      "term": "modning",
+      "count": 16
+    },
+    {
+      "term": "blyantstift",
+      "count": 16
+    },
+    {
+      "term": "brente",
+      "count": 16
+    },
+    {
+      "term": "fukt",
+      "count": 16
+    },
+    {
+      "term": "vegetale",
+      "count": 16
+    },
+    {
+      "term": "strå",
+      "count": 16
+    },
+    {
+      "term": "fokus",
+      "count": 16
+    },
+    {
+      "term": "forsiktig",
+      "count": 16
+    },
+    {
+      "term": "typeriktig",
+      "count": 16
+    },
+    {
+      "term": "mørkt",
+      "count": 16
+    },
+    {
+      "term": "nektar",
+      "count": 16
+    },
+    {
+      "term": "botrytis",
+      "count": 16
+    },
+    {
+      "term": "steinmineral",
+      "count": 16
+    },
+    {
+      "term": "kompakt",
+      "count": 16
+    },
+    {
+      "term": "smaksbilde",
+      "count": 16
+    },
+    {
+      "term": "avslutter",
+      "count": 16
+    },
+    {
+      "term": "basilikum",
+      "count": 15
+    },
+    {
+      "term": "jordaktig",
+      "count": 15
+    },
+    {
+      "term": "pepperkaker",
+      "count": 15
+    },
+    {
+      "term": "rødbærpreget",
+      "count": 15
+    },
+    {
+      "term": "oregano",
+      "count": 15
+    },
+    {
+      "term": "blekk",
+      "count": 15
+    },
+    {
+      "term": "gylne",
+      "count": 15
+    },
+    {
+      "term": "steinsopp",
+      "count": 15
+    },
+    {
+      "term": "morellfrukt",
+      "count": 15
+    },
+    {
+      "term": "eplekjerner",
+      "count": 15
+    },
+    {
+      "term": "gulfrukt",
+      "count": 15
+    },
+    {
+      "term": "bred",
+      "count": 15
+    },
+    {
+      "term": "rognebær",
+      "count": 15
+    },
+    {
+      "term": "sursøt",
+      "count": 15
+    },
+    {
+      "term": "lønnesirup",
+      "count": 15
+    },
+    {
+      "term": "vulkansk",
+      "count": 15
+    },
+    {
+      "term": "mineralrik",
+      "count": 15
+    },
+    {
+      "term": "fløyelsmyk",
+      "count": 15
+    },
+    {
+      "term": "start",
+      "count": 15
+    },
+    {
+      "term": "fruktkjerne",
+      "count": 15
+    },
+    {
+      "term": "tang",
+      "count": 14
+    },
+    {
+      "term": "skogsbunn",
+      "count": 14
+    },
+    {
+      "term": "sitrusaromaer",
+      "count": 14
+    },
+    {
+      "term": "kirsebærfruktig",
+      "count": 14
+    },
+    {
+      "term": "nyanserte",
+      "count": 14
+    },
+    {
+      "term": "trevirke",
+      "count": 14
+    },
+    {
+      "term": "kakaobønner",
+      "count": 14
+    },
+    {
+      "term": "fataromaer",
+      "count": 14
+    },
+    {
+      "term": "fullmoden",
+      "count": 14
+    },
+    {
+      "term": "primærfrukt",
+      "count": 14
+    },
+    {
+      "term": "kirsebærsyltetøy",
+      "count": 14
+    },
+    {
+      "term": "yoghurt",
+      "count": 14
+    },
+    {
+      "term": "blomstereng",
+      "count": 14
+    },
+    {
+      "term": "grillet",
+      "count": 14
+    },
+    {
+      "term": "hav",
+      "count": 14
+    },
+    {
+      "term": "mørkere",
+      "count": 14
+    },
+    {
+      "term": "veldig",
+      "count": 14
+    },
+    {
+      "term": "tilgjengelig",
+      "count": 14
+    },
+    {
+      "term": "undermodent",
+      "count": 14
+    },
+    {
+      "term": "velbalansert",
+      "count": 14
+    },
+    {
+      "term": "salin",
+      "count": 14
+    },
+    {
+      "term": "tanninbalanse",
+      "count": 14
+    },
+    {
+      "term": "konsistens",
+      "count": 14
+    },
+    {
+      "term": "vegetalt",
+      "count": 13
+    },
+    {
+      "term": "pepperpreg",
+      "count": 13
+    },
+    {
+      "term": "oksidativ",
+      "count": 13
+    },
+    {
+      "term": "kokosnøtt",
+      "count": 13
+    },
+    {
+      "term": "bærfruktig",
+      "count": 13
+    },
+    {
+      "term": "markerte",
+      "count": 13
+    },
+    {
+      "term": "rosenblader",
+      "count": 13
+    },
+    {
+      "term": "annen",
+      "count": 13
+    },
+    {
+      "term": "eplefrukt",
+      "count": 13
+    },
+    {
+      "term": "bæraromaer",
+      "count": 13
+    },
+    {
+      "term": "vegetabilsk",
+      "count": 13
+    },
+    {
+      "term": "sitronmelisse",
+      "count": 13
+    },
+    {
+      "term": "sterk",
+      "count": 13
+    },
+    {
+      "term": "krydre",
+      "count": 13
+    },
+    {
+      "term": "nyanse",
+      "count": 13
+    },
+    {
+      "term": "nyslått",
+      "count": 13
+    },
+    {
+      "term": "multer",
+      "count": 13
+    },
+    {
+      "term": "røyktoner",
+      "count": 13
+    },
+    {
+      "term": "dill",
+      "count": 13
+    },
+    {
+      "term": "flintpreg",
+      "count": 13
+    },
+    {
+      "term": "bærkarakter",
+      "count": 13
+    },
+    {
+      "term": "saltmineralsk",
+      "count": 13
+    },
+    {
+      "term": "tette",
+      "count": 13
+    },
+    {
+      "term": "syrespill",
+      "count": 13
+    },
+    {
+      "term": "pæredrops",
+      "count": 12
+    },
+    {
+      "term": "jasmin",
+      "count": 12
+    },
+    {
+      "term": "hvitt",
+      "count": 12
+    },
+    {
+      "term": "blader",
+      "count": 12
+    },
+    {
+      "term": "krydderaromaer",
+      "count": 12
+    },
+    {
+      "term": "eplekjerne",
+      "count": 12
+    },
+    {
+      "term": "fransk",
+      "count": 12
+    },
+    {
+      "term": "finesse",
+      "count": 12
+    },
+    {
+      "term": "honningtoner",
+      "count": 12
+    },
+    {
+      "term": "blomsterduft",
+      "count": 12
+    },
+    {
+      "term": "aske",
+      "count": 12
+    },
+    {
+      "term": "mandarinskall",
+      "count": 12
+    },
+    {
+      "term": "tomatblader",
+      "count": 12
+    },
+    {
+      "term": "lakristoner",
+      "count": 12
+    },
+    {
+      "term": "granatepler",
+      "count": 12
+    },
+    {
+      "term": "urteaktige",
+      "count": 12
+    },
+    {
+      "term": "sitrusdrevet",
+      "count": 12
+    },
+    {
+      "term": "tørkete",
+      "count": 12
+    },
+    {
+      "term": "vegetal",
+      "count": 12
+    },
+    {
+      "term": "kirsebærtoner",
+      "count": 12
+    },
+    {
+      "term": "granitt",
+      "count": 12
+    },
+    {
+      "term": "sylta",
+      "count": 12
+    },
+    {
+      "term": "sommerbær",
+      "count": 12
+    },
+    {
+      "term": "definert",
+      "count": 12
+    },
+    {
+      "term": "limepreget",
+      "count": 12
+    },
+    {
+      "term": "sitronkrem",
+      "count": 12
+    },
+    {
+      "term": "skallpreg",
+      "count": 12
+    },
+    {
+      "term": "nypete",
+      "count": 12
+    },
+    {
+      "term": "kremete",
+      "count": 12
+    },
+    {
+      "term": "solbærpreg",
+      "count": 12
+    },
+    {
+      "term": "fyldighet",
+      "count": 12
+    },
+    {
+      "term": "stoffrik",
+      "count": 12
+    },
+    {
+      "term": "kraftfullt",
+      "count": 12
+    },
+    {
+      "term": "umami",
+      "count": 12
+    },
+    {
+      "term": "lagvis",
+      "count": 12
+    },
+    {
+      "term": "seige",
+      "count": 12
+    },
+    {
+      "term": "medium",
+      "count": 12
+    },
+    {
+      "term": "finkornede",
+      "count": 12
+    },
+    {
+      "term": "koriander",
+      "count": 11
+    },
+    {
+      "term": "blomsterhonning",
+      "count": 11
+    },
+    {
+      "term": "sommerfrukter",
+      "count": 11
+    },
+    {
+      "term": "mørkerød",
+      "count": 11
+    },
+    {
+      "term": "frukthage",
+      "count": 11
+    },
+    {
+      "term": "pepperaktig",
+      "count": 11
+    },
+    {
+      "term": "pomelo",
+      "count": 11
+    },
+    {
+      "term": "bæraroma",
+      "count": 11
+    },
+    {
+      "term": "sommerblomster",
+      "count": 11
+    },
+    {
+      "term": "sjøbunn",
+      "count": 11
+    },
+    {
+      "term": "peoner",
+      "count": 11
+    },
+    {
+      "term": "klementin",
+      "count": 11
+    },
+    {
+      "term": "notater",
+      "count": 11
+    },
+    {
+      "term": "blomsteraroma",
+      "count": 11
+    },
+    {
+      "term": "kalkmineralsk",
+      "count": 11
+    },
+    {
+      "term": "bittertoner",
+      "count": 11
+    },
+    {
+      "term": "presisjon",
+      "count": 11
+    },
+    {
+      "term": "fruktkjøtt",
+      "count": 11
+    },
+    {
+      "term": "skall",
+      "count": 11
+    },
+    {
+      "term": "mektig",
+      "count": 11
+    },
+    {
+      "term": "vaniljestang",
+      "count": 11
+    },
+    {
+      "term": "epleaktig",
+      "count": 11
+    },
+    {
+      "term": "hagebær",
+      "count": 11
+    },
+    {
+      "term": "ganske",
+      "count": 11
+    },
+    {
+      "term": "tilsnitt",
+      "count": 11
+    },
+    {
+      "term": "oksidert",
+      "count": 11
+    },
+    {
+      "term": "fruktbilde",
+      "count": 11
+    },
+    {
+      "term": "røykpreget",
+      "count": 11
+    },
+    {
+      "term": "lav",
+      "count": 11
+    },
+    {
+      "term": "sitrende",
+      "count": 11
+    },
+    {
+      "term": "frutkdrevet",
+      "count": 11
+    },
+    {
+      "term": "balanser",
+      "count": 11
+    },
+    {
+      "term": "knusktørr",
+      "count": 11
+    },
+    {
+      "term": "syrerik",
+      "count": 11
+    },
+    {
+      "term": "syrer",
+      "count": 11
+    },
+    {
+      "term": "glatte",
+      "count": 11
+    },
+    {
+      "term": "bringebærdrops",
+      "count": 10
+    },
+    {
+      "term": "blomsterovertoner",
+      "count": 10
+    },
+    {
+      "term": "pioner",
+      "count": 10
+    },
+    {
+      "term": "vegetabilske",
+      "count": 10
+    },
+    {
+      "term": "lukter",
+      "count": 10
+    },
+    {
+      "term": "hvitpepper",
+      "count": 10
+    },
+    {
+      "term": "tomatblad",
+      "count": 10
+    },
+    {
+      "term": "generøs",
+      "count": 10
+    },
+    {
+      "term": "røkte",
+      "count": 10
+    },
+    {
+      "term": "mildt",
+      "count": 10
+    },
+    {
+      "term": "sitronblomst",
+      "count": 10
+    },
+    {
+      "term": "sitrusblomster",
+      "count": 10
+    },
+    {
+      "term": "balsamicotoner",
+      "count": 10
+    },
+    {
+      "term": "epletoner",
+      "count": 10
+    },
+    {
+      "term": "peppermynte",
+      "count": 10
+    },
+    {
+      "term": "fokuserte",
+      "count": 10
+    },
+    {
+      "term": "ull",
+      "count": 10
+    },
+    {
+      "term": "definerte",
+      "count": 10
+    },
+    {
+      "term": "blomsterpreg",
+      "count": 10
+    },
+    {
+      "term": "edelt",
+      "count": 10
+    },
+    {
+      "term": "sammen",
+      "count": 10
+    },
+    {
+      "term": "kjellereple",
+      "count": 10
+    },
+    {
+      "term": "jern",
+      "count": 10
+    },
+    {
+      "term": "saltvann",
+      "count": 10
+    },
+    {
+      "term": "vilt",
+      "count": 10
+    },
+    {
+      "term": "rødbærsfruktighet",
+      "count": 10
+    },
+    {
+      "term": "kombinasjon",
+      "count": 10
+    },
+    {
+      "term": "ueiket",
+      "count": 10
+    },
+    {
+      "term": "overmodne",
+      "count": 10
+    },
+    {
+      "term": "blanding",
+      "count": 10
+    },
+    {
+      "term": "innbydende",
+      "count": 10
+    },
+    {
+      "term": "cola",
+      "count": 10
+    },
+    {
+      "term": "subtilt",
+      "count": 10
+    },
+    {
+      "term": "eiket",
+      "count": 10
+    },
+    {
+      "term": "smørpreg",
+      "count": 10
+    },
+    {
+      "term": "skiferpreg",
+      "count": 10
+    },
+    {
+      "term": "sitrusavslutning",
+      "count": 10
+    },
+    {
+      "term": "avsluttning",
+      "count": 10
+    },
+    {
+      "term": "tanninger",
+      "count": 10
+    },
+    {
+      "term": "taniner",
+      "count": 10
+    },
+    {
+      "term": "gane",
+      "count": 10
+    },
+    {
+      "term": "nerve",
+      "count": 10
+    },
+    {
+      "term": "stramme",
+      "count": 10
+    },
+    {
+      "term": "limeblomst",
+      "count": 9
+    },
+    {
+      "term": "krutt",
+      "count": 9
+    },
+    {
+      "term": "sten",
+      "count": 9
+    },
+    {
+      "term": "tomat",
+      "count": 9
+    },
+    {
+      "term": "at",
+      "count": 9
+    },
+    {
+      "term": "stilk",
+      "count": 9
+    },
+    {
+      "term": "sommerfrukt",
+      "count": 9
+    },
+    {
+      "term": "nyperose",
+      "count": 9
+    },
+    {
+      "term": "lilla",
+      "count": 9
+    },
+    {
+      "term": "asfalt",
+      "count": 9
+    },
+    {
+      "term": "solbærbusk",
+      "count": 9
+    },
+    {
+      "term": "florpreget",
+      "count": 9
+    },
+    {
+      "term": "røkelse",
+      "count": 9
+    },
+    {
+      "term": "nykvernet",
+      "count": 9
+    },
+    {
+      "term": "ripsbær",
+      "count": 9
+    },
+    {
+      "term": "røykaktige",
+      "count": 9
+    },
+    {
+      "term": "lyst",
+      "count": 9
+    },
+    {
+      "term": "eplekart",
+      "count": 9
+    },
+    {
+      "term": "skogsfrukter",
+      "count": 9
+    },
+    {
+      "term": "svarthyll",
+      "count": 9
+    },
+    {
+      "term": "nyperoser",
+      "count": 9
+    },
+    {
+      "term": "pipetobakk",
+      "count": 9
+    },
+    {
+      "term": "overtone",
+      "count": 9
+    },
+    {
+      "term": "krittaktig",
+      "count": 9
+    },
+    {
+      "term": "kryddertone",
+      "count": 9
+    },
+    {
+      "term": "granbar",
+      "count": 9
+    },
+    {
+      "term": "tyngde",
+      "count": 9
+    },
+    {
+      "term": "florpreg",
+      "count": 9
+    },
+    {
+      "term": "rognebærgelé",
+      "count": 9
+    },
+    {
+      "term": "saltholdig",
+      "count": 9
+    },
+    {
+      "term": "surhet",
+      "count": 9
+    },
+    {
+      "term": "avstemt",
+      "count": 9
+    },
+    {
+      "term": "mineraldreven",
+      "count": 9
+    },
+    {
+      "term": "tanninpreg",
+      "count": 9
+    },
+    {
+      "term": "opp",
+      "count": 9
+    },
+    {
+      "term": "konsertert",
+      "count": 9
+    },
+    {
+      "term": "velsmakende",
+      "count": 9
+    },
+    {
+      "term": "langt",
+      "count": 9
+    },
+    {
+      "term": "relativt",
+      "count": 9
+    },
+    {
+      "term": "supplert",
+      "count": 8
+    },
+    {
+      "term": "aning",
+      "count": 8
+    },
+    {
+      "term": "flora",
+      "count": 8
+    },
+    {
+      "term": "honningblomst",
+      "count": 8
+    },
+    {
+      "term": "pion",
+      "count": 8
+    },
+    {
+      "term": "reduksjon",
+      "count": 8
+    },
+    {
+      "term": "ostemasse",
+      "count": 8
+    },
+    {
+      "term": "tobakksblad",
+      "count": 8
+    },
+    {
+      "term": "hengt",
+      "count": 8
+    },
+    {
+      "term": "sjømineral",
+      "count": 8
+    },
+    {
+      "term": "villblomster",
+      "count": 8
+    },
+    {
+      "term": "loff",
+      "count": 8
+    },
+    {
+      "term": "villbær",
+      "count": 8
+    },
+    {
+      "term": "røstede",
+      "count": 8
+    },
+    {
+      "term": "appelsinblomster",
+      "count": 8
+    },
+    {
+      "term": "deretter",
+      "count": 8
+    },
+    {
+      "term": "avsluttes",
+      "count": 8
+    },
+    {
+      "term": "brunt",
+      "count": 8
+    },
+    {
+      "term": "frukte",
+      "count": 8
+    },
+    {
+      "term": "tørka",
+      "count": 8
+    },
+    {
+      "term": "kratt",
+      "count": 8
+    },
+    {
+      "term": "grønnsaker",
+      "count": 8
+    },
+    {
+      "term": "syrin",
+      "count": 8
+    },
+    {
+      "term": "kokt",
+      "count": 8
+    },
+    {
+      "term": "svartkirsebær",
+      "count": 8
+    },
+    {
+      "term": "kokte",
+      "count": 8
+    },
+    {
+      "term": "saltaktige",
+      "count": 8
+    },
+    {
+      "term": "glasseplekart",
+      "count": 8
+    },
+    {
+      "term": "hvetebakst",
+      "count": 8
+    },
+    {
+      "term": "reduktive",
+      "count": 8
+    },
+    {
+      "term": "rikelig",
+      "count": 8
+    },
+    {
+      "term": "furu",
+      "count": 8
+    },
+    {
+      "term": "både",
+      "count": 8
+    },
+    {
+      "term": "eddik",
+      "count": 8
+    },
+    {
+      "term": "frist",
+      "count": 8
+    },
+    {
+      "term": "steinmineralsk",
+      "count": 8
+    },
+    {
+      "term": "liten",
+      "count": 8
+    },
+    {
+      "term": "eikepreget",
+      "count": 8
+    },
+    {
+      "term": "velintegrert",
+      "count": 8
+    },
+    {
+      "term": "druekarakter",
+      "count": 8
+    },
+    {
+      "term": "honningpreget",
+      "count": 8
+    },
+    {
+      "term": "mandelavslutning",
+      "count": 8
+    },
+    {
+      "term": "tørrstoffer",
+      "count": 8
+    },
+    {
+      "term": "saltmineralitet",
+      "count": 8
+    },
+    {
+      "term": "syrefriskt",
+      "count": 8
+    },
+    {
+      "term": "behagelige",
+      "count": 8
+    },
+    {
+      "term": "saltholdighet",
+      "count": 8
+    },
+    {
+      "term": "oljete",
+      "count": 8
+    },
+    {
+      "term": "mineralbitter",
+      "count": 8
+    },
+    {
+      "term": "munnfølese",
+      "count": 8
+    },
+    {
+      "term": "liljer",
+      "count": 7
+    },
+    {
+      "term": "konditori",
+      "count": 7
+    },
+    {
+      "term": "eterisk",
+      "count": 7
+    },
+    {
+      "term": "skalldyr",
+      "count": 7
+    },
+    {
+      "term": "lynghonning",
+      "count": 7
+    },
+    {
+      "term": "mørker",
+      "count": 7
+    },
+    {
+      "term": "jordbærtoner",
+      "count": 7
+    },
+    {
+      "term": "skogsfrukt",
+      "count": 7
+    },
+    {
+      "term": "vill",
+      "count": 7
+    },
+    {
+      "term": "urtekrydder",
+      "count": 7
+    },
+    {
+      "term": "solbærpreget",
+      "count": 7
+    },
+    {
+      "term": "vinen",
+      "count": 7
+    },
+    {
+      "term": "sjømineralitet",
+      "count": 7
+    },
+    {
+      "term": "druepreget",
+      "count": 7
+    },
+    {
+      "term": "violer",
+      "count": 7
+    },
+    {
+      "term": "sjøsprøyt",
+      "count": 7
+    },
+    {
+      "term": "krydderaroma",
+      "count": 7
+    },
+    {
+      "term": "kirsebærblomst",
+      "count": 7
+    },
+    {
+      "term": "ost",
+      "count": 7
+    },
+    {
+      "term": "flintaktige",
+      "count": 7
+    },
+    {
+      "term": "jordbærdrops",
+      "count": 7
+    },
+    {
+      "term": "steiner",
+      "count": 7
+    },
+    {
+      "term": "østersskall",
+      "count": 7
+    },
+    {
+      "term": "bringebæraktig",
+      "count": 7
+    },
+    {
+      "term": "berme",
+      "count": 7
+    },
+    {
+      "term": "skallkontakt",
+      "count": 7
+    },
+    {
+      "term": "sjøgress",
+      "count": 7
+    },
+    {
+      "term": "lærpreg",
+      "count": 7
+    },
+    {
+      "term": "fruk",
+      "count": 7
+    },
+    {
+      "term": "dominerer",
+      "count": 7
+    },
+    {
+      "term": "parfymerte",
+      "count": 7
+    },
+    {
+      "term": "kirsch",
+      "count": 7
+    },
+    {
+      "term": "surkirsebær",
+      "count": 7
+    },
+    {
+      "term": "kalkholdig",
+      "count": 7
+    },
+    {
+      "term": "krydderier",
+      "count": 7
+    },
+    {
+      "term": "nypesyltetøy",
+      "count": 7
+    },
+    {
+      "term": "kirsebærkjerner",
+      "count": 7
+    },
+    {
+      "term": "fatlagring",
+      "count": 7
+    },
+    {
+      "term": "konfekt",
+      "count": 7
+    },
+    {
+      "term": "sødmepreg",
+      "count": 7
+    },
+    {
+      "term": "jordnære",
+      "count": 7
+    },
+    {
+      "term": "hummus",
+      "count": 7
+    },
+    {
+      "term": "sjenerøs",
+      "count": 7
+    },
+    {
+      "term": "karamelliserte",
+      "count": 7
+    },
+    {
+      "term": "orientalske",
+      "count": 7
+    },
+    {
+      "term": "jordsmonnspreget",
+      "count": 7
+    },
+    {
+      "term": "velutviklet",
+      "count": 7
+    },
+    {
+      "term": "blomstrende",
+      "count": 7
+    },
+    {
+      "term": "primær",
+      "count": 7
+    },
+    {
+      "term": "druetypisk",
+      "count": 7
+    },
+    {
+      "term": "estragon",
+      "count": 7
+    },
+    {
+      "term": "støttet",
+      "count": 7
+    },
+    {
+      "term": "petroleumspreg",
+      "count": 7
+    },
+    {
+      "term": "gjærtoner",
+      "count": 7
+    },
+    {
+      "term": "julekrydder",
+      "count": 7
+    },
+    {
+      "term": "pærepreget",
+      "count": 7
+    },
+    {
+      "term": "spor",
+      "count": 7
+    },
+    {
+      "term": "jevn",
+      "count": 7
+    },
+    {
+      "term": "eleganse",
+      "count": 7
+    },
+    {
+      "term": "fruktfokusert",
+      "count": 7
+    },
+    {
+      "term": "tannisk",
+      "count": 7
+    },
+    {
+      "term": "volum",
+      "count": 7
+    },
+    {
+      "term": "slepne",
+      "count": 7
+    },
+    {
+      "term": "sitruskarakter",
+      "count": 7
+    },
+    {
+      "term": "utholdenhet",
+      "count": 7
+    },
+    {
+      "term": "finkornet",
+      "count": 7
+    },
+    {
+      "term": "tanninbitt",
+      "count": 7
+    },
+    {
+      "term": "frisket",
+      "count": 7
+    },
+    {
+      "term": "saltig",
+      "count": 7
+    },
+    {
+      "term": "bringebærpreget",
+      "count": 7
+    },
+    {
+      "term": "kalkrik",
+      "count": 7
+    },
+    {
+      "term": "peon",
+      "count": 6
+    },
+    {
+      "term": "middelhavsurter",
+      "count": 6
+    },
+    {
+      "term": "grapefruktskall",
+      "count": 6
+    },
+    {
+      "term": "tertiæraromaer",
+      "count": 6
+    },
+    {
+      "term": "sirup",
+      "count": 6
+    },
+    {
+      "term": "barskog",
+      "count": 6
+    },
+    {
+      "term": "sherry",
+      "count": 6
+    },
+    {
+      "term": "blåregn",
+      "count": 6
+    },
+    {
+      "term": "salttoner",
+      "count": 6
+    },
+    {
+      "term": "lindeblomst",
+      "count": 6
+    },
+    {
+      "term": "grenadin",
+      "count": 6
+    },
+    {
+      "term": "blomsteraromaer",
+      "count": 6
+    },
+    {
+      "term": "bukett",
+      "count": 6
+    },
+    {
+      "term": "sekundæraromaer",
+      "count": 6
+    },
+    {
+      "term": "mange",
+      "count": 6
+    },
+    {
+      "term": "kake",
+      "count": 6
+    },
+    {
+      "term": "intesitet",
+      "count": 6
+    },
+    {
+      "term": "malt",
+      "count": 6
+    },
+    {
+      "term": "sigarkasse",
+      "count": 6
+    },
+    {
+      "term": "særlig",
+      "count": 6
+    },
+    {
+      "term": "nellikspiker",
+      "count": 6
+    },
+    {
+      "term": "møre",
+      "count": 6
+    },
+    {
+      "term": "rødbærfrukt",
+      "count": 6
+    },
+    {
+      "term": "mørkebær",
+      "count": 6
+    },
+    {
+      "term": "treaktige",
+      "count": 6
+    },
+    {
+      "term": "flyktig",
+      "count": 6
+    },
+    {
+      "term": "umoden",
+      "count": 6
+    },
+    {
+      "term": "mose",
+      "count": 6
+    },
+    {
+      "term": "asiatisk",
+      "count": 6
+    },
+    {
+      "term": "oransje",
+      "count": 6
+    },
+    {
+      "term": "bærfruktighet",
+      "count": 6
+    },
+    {
+      "term": "tomater",
+      "count": 6
+    },
+    {
+      "term": "stekte",
+      "count": 6
+    },
+    {
+      "term": "slåpetorn",
+      "count": 6
+    },
+    {
+      "term": "kastanje",
+      "count": 6
+    },
+    {
+      "term": "nøttetoner",
+      "count": 6
+    },
+    {
+      "term": "bringebærsyltetøy",
+      "count": 6
+    },
+    {
+      "term": "blant",
+      "count": 6
+    },
+    {
+      "term": "front",
+      "count": 6
+    },
+    {
+      "term": "kastanjer",
+      "count": 6
+    },
+    {
+      "term": "skjell",
+      "count": 6
+    },
+    {
+      "term": "bla",
+      "count": 6
+    },
+    {
+      "term": "vaniljepreg",
+      "count": 6
+    },
+    {
+      "term": "volatil",
+      "count": 6
+    },
+    {
+      "term": "fresken",
+      "count": 6
+    },
+    {
+      "term": "syriner",
+      "count": 6
+    },
+    {
+      "term": "spisskummen",
+      "count": 6
+    },
+    {
+      "term": "deilig",
+      "count": 6
+    },
+    {
+      "term": "hyll",
+      "count": 6
+    },
+    {
+      "term": "kakaosmør",
+      "count": 6
+    },
+    {
+      "term": "løftet",
+      "count": 6
+    },
+    {
+      "term": "blåbærsyltetøy",
+      "count": 6
+    },
+    {
+      "term": "klementiner",
+      "count": 6
+    },
+    {
+      "term": "sjasminblomst",
+      "count": 6
+    },
+    {
+      "term": "gyllent",
+      "count": 6
+    },
+    {
+      "term": "kryddernellik",
+      "count": 6
+    },
+    {
+      "term": "harmoni",
+      "count": 6
+    },
+    {
+      "term": "einerbær",
+      "count": 6
+    },
+    {
+      "term": "skogbær",
+      "count": 6
+    },
+    {
+      "term": "kalkaktige",
+      "count": 6
+    },
+    {
+      "term": "fruktsyre",
+      "count": 6
+    },
+    {
+      "term": "ruccola",
+      "count": 6
+    },
+    {
+      "term": "jordsmonnskarakter",
+      "count": 6
+    },
+    {
+      "term": "jordbunn",
+      "count": 6
+    },
+    {
+      "term": "ungdommlig",
+      "count": 6
+    },
+    {
+      "term": "lettere",
+      "count": 6
+    },
+    {
+      "term": "røstet",
+      "count": 6
+    },
+    {
+      "term": "mineraltone",
+      "count": 6
+    },
+    {
+      "term": "chili",
+      "count": 6
+    },
+    {
+      "term": "musk",
+      "count": 6
+    },
+    {
+      "term": "lind",
+      "count": 6
+    },
+    {
+      "term": "rørte",
+      "count": 6
+    },
+    {
+      "term": "innsmigrende",
+      "count": 6
+    },
+    {
+      "term": "saltet",
+      "count": 6
+    },
+    {
+      "term": "salter",
+      "count": 6
+    },
+    {
+      "term": "lagdelt",
+      "count": 6
+    },
+    {
+      "term": "ferskhet",
+      "count": 6
+    },
+    {
+      "term": "innover",
+      "count": 6
+    },
+    {
+      "term": "epleinnslag",
+      "count": 6
+    },
+    {
+      "term": "sublim",
+      "count": 6
+    },
+    {
+      "term": "kvalitet",
+      "count": 6
+    },
+    {
+      "term": "frodig",
+      "count": 6
+    },
+    {
+      "term": "edelsødme",
+      "count": 6
+    },
+    {
+      "term": "avbalansert",
+      "count": 6
+    },
+    {
+      "term": "robuste",
+      "count": 6
+    },
+    {
+      "term": "fløyelsmyke",
+      "count": 6
+    },
+    {
+      "term": "forfriskende",
+      "count": 6
+    },
+    {
+      "term": "bærdrevet",
+      "count": 6
+    },
+    {
+      "term": "sjokoladetoner",
+      "count": 6
+    },
+    {
+      "term": "ekstraktpreget",
+      "count": 6
+    },
+    {
+      "term": "sødmerik",
+      "count": 6
+    },
+    {
+      "term": "jordaroma",
+      "count": 6
+    },
+    {
+      "term": "bærsødme",
+      "count": 6
+    },
+    {
+      "term": "utrykk",
+      "count": 6
+    },
+    {
+      "term": "mineralbitt",
+      "count": 6
+    },
+    {
+      "term": "ferskener",
+      "count": 5
+    },
+    {
+      "term": "engelsk",
+      "count": 5
+    },
+    {
+      "term": "hageurter",
+      "count": 5
+    },
+    {
+      "term": "enebær",
+      "count": 5
+    },
+    {
+      "term": "hassel",
+      "count": 5
+    },
+    {
+      "term": "spesielt",
+      "count": 5
+    },
+    {
+      "term": "ett",
+      "count": 5
+    },
+    {
+      "term": "nøttekarakter",
+      "count": 5
+    },
+    {
+      "term": "herbal",
+      "count": 5
+    },
+    {
+      "term": "skiferstein",
+      "count": 5
+    },
+    {
+      "term": "svake",
+      "count": 5
+    },
+    {
+      "term": "toastpreg",
+      "count": 5
+    },
+    {
+      "term": "bermepreg",
+      "count": 5
+    },
+    {
+      "term": "anstrøk",
+      "count": 5
+    },
+    {
+      "term": "plummer",
+      "count": 5
+    },
+    {
+      "term": "steinaktig",
+      "count": 5
+    },
+    {
+      "term": "velhengt",
+      "count": 5
+    },
+    {
+      "term": "trekk",
+      "count": 5
+    },
+    {
+      "term": "lettkrydret",
+      "count": 5
+    },
+    {
+      "term": "brunet",
+      "count": 5
+    },
+    {
+      "term": "riesling",
+      "count": 5
+    },
+    {
+      "term": "høstskog",
+      "count": 5
+    },
+    {
+      "term": "soya",
+      "count": 5
+    },
+    {
+      "term": "ferskentoner",
+      "count": 5
+    },
+    {
+      "term": "kull",
+      "count": 5
+    },
+    {
+      "term": "oksidativt",
+      "count": 5
+    },
+    {
+      "term": "skogsopp",
+      "count": 5
+    },
+    {
+      "term": "kamomille",
+      "count": 5
+    },
+    {
+      "term": "ledsaget",
+      "count": 5
+    },
+    {
+      "term": "earl",
+      "count": 5
+    },
+    {
+      "term": "grey",
+      "count": 5
+    },
+    {
+      "term": "presise",
+      "count": 5
+    },
+    {
+      "term": "kryddere",
+      "count": 5
+    },
+    {
+      "term": "krydderhint",
+      "count": 5
+    },
+    {
+      "term": "pluss",
+      "count": 5
+    },
+    {
+      "term": "går",
+      "count": 5
+    },
+    {
+      "term": "annet",
+      "count": 5
+    },
+    {
+      "term": "nyknust",
+      "count": 5
+    },
+    {
+      "term": "jordbæraktig",
+      "count": 5
+    },
+    {
+      "term": "blomstret",
+      "count": 5
+    },
+    {
+      "term": "vått",
+      "count": 5
+    },
+    {
+      "term": "sitrusmarmelade",
+      "count": 5
+    },
+    {
+      "term": "zest",
+      "count": 5
+    },
+    {
+      "term": "belgfrukt",
+      "count": 5
+    },
+    {
+      "term": "skinn",
+      "count": 5
+    },
+    {
+      "term": "fullt",
+      "count": 5
+    },
+    {
+      "term": "lilje",
+      "count": 5
+    },
+    {
+      "term": "pur",
+      "count": 5
+    },
+    {
+      "term": "kirsebæraromaer",
+      "count": 5
+    },
+    {
+      "term": "utvikler",
+      "count": 5
+    },
+    {
+      "term": "rødbærspreg",
+      "count": 5
+    },
+    {
+      "term": "asiatiske",
+      "count": 5
+    },
+    {
+      "term": "integret",
+      "count": 5
+    },
+    {
+      "term": "autolysekarakter",
+      "count": 5
+    },
+    {
+      "term": "wienerbrød",
+      "count": 5
+    },
+    {
+      "term": "havtorn",
+      "count": 5
+    },
+    {
+      "term": "sjøpreget",
+      "count": 5
+    },
+    {
+      "term": "tyroleple",
+      "count": 5
+    },
+    {
+      "term": "humle",
+      "count": 5
+    },
+    {
+      "term": "iblandet",
+      "count": 5
+    },
+    {
+      "term": "smørkjeks",
+      "count": 5
+    },
+    {
+      "term": "tobakktoner",
+      "count": 5
+    },
+    {
+      "term": "skiferpreget",
+      "count": 5
+    },
+    {
+      "term": "kalkaromaer",
+      "count": 5
+    },
+    {
+      "term": "myr",
+      "count": 5
+    },
+    {
+      "term": "ferskenblomst",
+      "count": 5
+    },
+    {
+      "term": "fulgt",
+      "count": 5
+    },
+    {
+      "term": "tomatstilk",
+      "count": 5
+    },
+    {
+      "term": "rålakris",
+      "count": 5
+    },
+    {
+      "term": "forsiktige",
+      "count": 5
+    },
+    {
+      "term": "bærgelé",
+      "count": 5
+    },
+    {
+      "term": "gauksyre",
+      "count": 5
+    },
+    {
+      "term": "rosé",
+      "count": 5
+    },
+    {
+      "term": "fisk",
+      "count": 5
+    },
+    {
+      "term": "sødmen",
+      "count": 5
+    },
+    {
+      "term": "bittersøt",
+      "count": 5
+    },
+    {
+      "term": "rødbærsfruktig",
+      "count": 5
+    },
+    {
+      "term": "pikant",
+      "count": 5
+    },
+    {
+      "term": "uten",
+      "count": 5
+    },
+    {
+      "term": "land",
+      "count": 5
+    },
+    {
+      "term": "syrenivå",
+      "count": 5
+    },
+    {
+      "term": "avslepen",
+      "count": 5
+    },
+    {
+      "term": "animerende",
+      "count": 5
+    },
+    {
+      "term": "raffinerte",
+      "count": 5
+    },
+    {
+      "term": "ekstraktrik",
+      "count": 5
+    },
+    {
+      "term": "mandelaktig",
+      "count": 5
+    },
+    {
+      "term": "silkeaktig",
+      "count": 5
+    },
+    {
+      "term": "fruktnerve",
+      "count": 5
+    },
+    {
+      "term": "saliverende",
+      "count": 5
+    },
+    {
+      "term": "flerdimensjonal",
+      "count": 5
+    },
+    {
+      "term": "oljet",
+      "count": 5
+    },
+    {
+      "term": "renhet",
+      "count": 5
+    },
+    {
+      "term": "rem",
+      "count": 5
+    },
+    {
+      "term": "skifertoner",
+      "count": 5
+    },
+    {
+      "term": "saftaktig",
+      "count": 5
+    },
+    {
+      "term": "stukturert",
+      "count": 5
+    },
+    {
+      "term": "konsentreret",
+      "count": 5
+    },
+    {
+      "term": "solide",
+      "count": 5
+    },
+    {
+      "term": "sitrusfruktighet",
+      "count": 5
+    },
+    {
+      "term": "bruk",
+      "count": 5
+    },
+    {
+      "term": "garvestoff",
+      "count": 5
+    },
+    {
+      "term": "finkornete",
+      "count": 5
+    },
+    {
+      "term": "sitronblomster",
+      "count": 4
+    },
+    {
+      "term": "gjærpreg",
+      "count": 4
+    },
+    {
+      "term": "godteri",
+      "count": 4
+    },
+    {
+      "term": "fennikelfrø",
+      "count": 4
+    },
+    {
+      "term": "and",
+      "count": 4
+    },
+    {
+      "term": "eplearoma",
+      "count": 4
+    },
+    {
+      "term": "franske",
+      "count": 4
+    },
+    {
+      "term": "våte",
+      "count": 4
+    },
+    {
+      "term": "rosevann",
+      "count": 4
+    },
+    {
+      "term": "tindved",
+      "count": 4
+    },
+    {
+      "term": "brennesle",
+      "count": 4
+    },
+    {
+      "term": "aromaene",
+      "count": 4
+    },
+    {
+      "term": "eikekrydder",
+      "count": 4
+    },
+    {
+      "term": "kronblad",
+      "count": 4
+    },
+    {
+      "term": "østersskjell",
+      "count": 4
+    },
+    {
+      "term": "bjørnebærsyltetøy",
+      "count": 4
+    },
+    {
+      "term": "sukkertøy",
+      "count": 4
+    },
+    {
+      "term": "myrt",
+      "count": 4
+    },
+    {
+      "term": "fruktkompott",
+      "count": 4
+    },
+    {
+      "term": "så",
+      "count": 4
+    },
+    {
+      "term": "eikekarakter",
+      "count": 4
+    },
+    {
+      "term": "sjømineralsk",
+      "count": 4
+    },
+    {
+      "term": "reduktivt",
+      "count": 4
+    },
+    {
+      "term": "undervegetasjon",
+      "count": 4
+    },
+    {
+      "term": "galiamelon",
+      "count": 4
+    },
+    {
+      "term": "ballansert",
+      "count": 4
+    },
+    {
+      "term": "pisket",
+      "count": 4
+    },
+    {
+      "term": "urtearoma",
+      "count": 4
+    },
+    {
+      "term": "mandelmelk",
+      "count": 4
+    },
+    {
+      "term": "popcorn",
+      "count": 4
+    },
+    {
+      "term": "middelhavssalvie",
+      "count": 4
+    },
+    {
+      "term": "appelsinolje",
+      "count": 4
+    },
+    {
+      "term": "epleskall",
+      "count": 4
+    },
+    {
+      "term": "bakgrunnen",
+      "count": 4
+    },
+    {
+      "term": "kirsebæraroma",
+      "count": 4
+    },
+    {
+      "term": "havbris",
+      "count": 4
+    },
+    {
+      "term": "liljenyanser",
+      "count": 4
+    },
+    {
+      "term": "fortsatt",
+      "count": 4
+    },
+    {
+      "term": "kaffetoner",
+      "count": 4
+    },
+    {
+      "term": "tertiære",
+      "count": 4
+    },
+    {
+      "term": "sjampinjong",
+      "count": 4
+    },
+    {
+      "term": "røyket",
+      "count": 4
+    },
+    {
+      "term": "kjellerepler",
+      "count": 4
+    },
+    {
+      "term": "kjekspreg",
+      "count": 4
+    },
+    {
+      "term": "solbærtoner",
+      "count": 4
+    },
+    {
+      "term": "crème",
+      "count": 4
+    },
+    {
+      "term": "brulée",
+      "count": 4
+    },
+    {
+      "term": "sitrusnoter",
+      "count": 4
+    },
+    {
+      "term": "touch",
+      "count": 4
+    },
+    {
+      "term": "havre",
+      "count": 4
+    },
+    {
+      "term": "provenceurter",
+      "count": 4
+    },
+    {
+      "term": "tapenade",
+      "count": 4
+    },
+    {
+      "term": "aprikosmarmelade",
+      "count": 4
+    },
+    {
+      "term": "gåselever",
+      "count": 4
+    },
+    {
+      "term": "steinlignende",
+      "count": 4
+    },
+    {
+      "term": "edelråte",
+      "count": 4
+    },
+    {
+      "term": "sitronpreg",
+      "count": 4
+    },
+    {
+      "term": "kreklingpreget",
+      "count": 4
+    },
+    {
+      "term": "sitronterte",
+      "count": 4
+    },
+    {
+      "term": "marin",
+      "count": 4
+    },
+    {
+      "term": "enkel",
+      "count": 4
+    },
+    {
+      "term": "tangerin",
+      "count": 4
+    },
+    {
+      "term": "tretoner",
+      "count": 4
+    },
+    {
+      "term": "an",
+      "count": 4
+    },
+    {
+      "term": "appelsinzest",
+      "count": 4
+    },
+    {
+      "term": "kalktoner",
+      "count": 4
+    },
+    {
+      "term": "pai",
+      "count": 4
+    },
+    {
+      "term": "selta",
+      "count": 4
+    },
+    {
+      "term": "blomsterkarakter",
+      "count": 4
+    },
+    {
+      "term": "kirsebærblomster",
+      "count": 4
+    },
+    {
+      "term": "dominante",
+      "count": 4
+    },
+    {
+      "term": "korn",
+      "count": 4
+    },
+    {
+      "term": "sjøaromaer",
+      "count": 4
+    },
+    {
+      "term": "hyllebærblomst",
+      "count": 4
+    },
+    {
+      "term": "lanolin",
+      "count": 4
+    },
+    {
+      "term": "brun",
+      "count": 4
+    },
+    {
+      "term": "fris",
+      "count": 4
+    },
+    {
+      "term": "jordbærfrukt",
+      "count": 4
+    },
+    {
+      "term": "liljekonvall",
+      "count": 4
+    },
+    {
+      "term": "furuharpiks",
+      "count": 4
+    },
+    {
+      "term": "medisinske",
+      "count": 4
+    },
+    {
+      "term": "nøttesmør",
+      "count": 4
+    },
+    {
+      "term": "rosépepper",
+      "count": 4
+    },
+    {
+      "term": "fruktnyanser",
+      "count": 4
+    },
+    {
+      "term": "musserende",
+      "count": 4
+    },
+    {
+      "term": "typisk",
+      "count": 4
+    },
+    {
+      "term": "mimosa",
+      "count": 4
+    },
+    {
+      "term": "jordbærpreget",
+      "count": 4
+    },
+    {
+      "term": "aksieblomst",
+      "count": 4
+    },
+    {
+      "term": "nyanserikdom",
+      "count": 4
+    },
+    {
+      "term": "roseblomst",
+      "count": 4
+    },
+    {
+      "term": "smørtoast",
+      "count": 4
+    },
+    {
+      "term": "sødmepreget",
+      "count": 4
+    },
+    {
+      "term": "kalkpreget",
+      "count": 4
+    },
+    {
+      "term": "kirsebærkjerne",
+      "count": 4
+    },
+    {
+      "term": "herbale",
+      "count": 4
+    },
+    {
+      "term": "stekt",
+      "count": 4
+    },
+    {
+      "term": "grillede",
+      "count": 4
+    },
+    {
+      "term": "naturvinspreg",
+      "count": 4
+    },
+    {
+      "term": "mokkabønner",
+      "count": 4
+    },
+    {
+      "term": "oksiderte",
+      "count": 4
+    },
+    {
+      "term": "tung",
+      "count": 4
+    },
+    {
+      "term": "blomsteraktige",
+      "count": 4
+    },
+    {
+      "term": "mode",
+      "count": 4
+    },
+    {
+      "term": "krydderinnslag",
+      "count": 4
+    },
+    {
+      "term": "nypegelé",
+      "count": 4
+    },
+    {
+      "term": "duftende",
+      "count": 4
+    },
+    {
+      "term": "iris",
+      "count": 4
+    },
+    {
+      "term": "minerals",
+      "count": 4
+    },
+    {
+      "term": "sitronolje",
+      "count": 4
+    },
+    {
+      "term": "mandeltoner",
+      "count": 4
+    },
+    {
+      "term": "ripsgelé",
+      "count": 4
+    },
+    {
+      "term": "smørkaramell",
+      "count": 4
+    },
+    {
+      "term": "kaffirlime",
+      "count": 4
+    },
+    {
+      "term": "presist",
+      "count": 4
+    },
+    {
+      "term": "fløtekaramell",
+      "count": 4
+    },
+    {
+      "term": "mandelkjerne",
+      "count": 4
+    },
+    {
+      "term": "fatbruk",
+      "count": 4
+    },
+    {
+      "term": "villrose",
+      "count": 4
+    },
+    {
+      "term": "aronia",
+      "count": 4
+    },
+    {
+      "term": "fruktkake",
+      "count": 4
+    },
+    {
+      "term": "sydhavssitrus",
+      "count": 4
+    },
+    {
+      "term": "krydet",
+      "count": 4
+    },
+    {
+      "term": "eikearomaer",
+      "count": 4
+    },
+    {
+      "term": "ferskenpreg",
+      "count": 4
+    },
+    {
+      "term": "rødvin",
+      "count": 4
+    },
+    {
+      "term": "sydlig",
+      "count": 4
+    },
+    {
+      "term": "avsluttingen",
+      "count": 4
+    },
+    {
+      "term": "melkesjokolade",
+      "count": 4
+    },
+    {
+      "term": "gyllne",
+      "count": 4
+    },
+    {
+      "term": "eplefrisk",
+      "count": 4
+    },
+    {
+      "term": "marengs",
+      "count": 4
+    },
+    {
+      "term": "knusk",
+      "count": 4
+    },
+    {
+      "term": "skallfedme",
+      "count": 4
+    },
+    {
+      "term": "følelse",
+      "count": 4
+    },
+    {
+      "term": "finnish",
+      "count": 4
+    },
+    {
+      "term": "sekundærfrukt",
+      "count": 4
+    },
+    {
+      "term": "anvendelig",
+      "count": 4
+    },
+    {
+      "term": "oppfriskende",
+      "count": 4
+    },
+    {
+      "term": "ligger",
+      "count": 4
+    },
+    {
+      "term": "smaksintensitet",
+      "count": 4
+    },
+    {
+      "term": "tetthet",
+      "count": 4
+    },
+    {
+      "term": "sterke",
+      "count": 4
+    },
+    {
+      "term": "mineralstruktur",
+      "count": 4
+    },
+    {
+      "term": "balansere",
+      "count": 4
+    },
+    {
+      "term": "stofflig",
+      "count": 4
+    },
+    {
+      "term": "avrundende",
+      "count": 4
+    },
+    {
+      "term": "ureter",
+      "count": 4
+    },
+    {
+      "term": "syrepreg",
+      "count": 4
+    },
+    {
+      "term": "taninner",
+      "count": 4
+    },
+    {
+      "term": "kommer",
+      "count": 4
+    },
+    {
+      "term": "silkepreget",
+      "count": 4
+    },
+    {
+      "term": "avslutt",
+      "count": 4
+    },
+    {
+      "term": "lavekstrahert",
+      "count": 4
+    },
+    {
+      "term": "lende",
+      "count": 4
+    },
+    {
+      "term": "tillegg",
+      "count": 4
+    },
+    {
+      "term": "varig",
+      "count": 4
+    },
+    {
+      "term": "fruktsmaker",
+      "count": 4
+    },
+    {
+      "term": "avdempende",
+      "count": 4
+    },
+    {
+      "term": "strukturdrevet",
+      "count": 4
+    },
+    {
+      "term": "kornete",
+      "count": 4
+    },
+    {
+      "term": "skum",
+      "count": 4
+    },
+    {
+      "term": "sødmesyre",
+      "count": 4
+    },
+    {
+      "term": "bittertone",
+      "count": 4
+    },
+    {
+      "term": "vel",
+      "count": 4
+    },
+    {
+      "term": "avrundete",
+      "count": 4
+    },
+    {
+      "term": "toppfrukt",
+      "count": 3
+    },
+    {
+      "term": "torv",
+      "count": 3
+    },
+    {
+      "term": "bregner",
+      "count": 3
+    },
+    {
+      "term": "anisfrø",
+      "count": 3
+    },
+    {
+      "term": "hit",
+      "count": 3
+    },
+    {
+      "term": "dominant",
+      "count": 3
+    },
+    {
+      "term": "åpner",
+      "count": 3
+    },
+    {
+      "term": "presset",
+      "count": 3
+    },
+    {
+      "term": "oksidative",
+      "count": 3
+    },
+    {
+      "term": "ferskenpreget",
+      "count": 3
+    },
+    {
+      "term": "treolje",
+      "count": 3
+    },
+    {
+      "term": "modn",
+      "count": 3
+    },
+    {
+      "term": "visne",
+      "count": 3
+    },
+    {
+      "term": "fjellurter",
+      "count": 3
+    },
+    {
+      "term": "ingefærbrød",
+      "count": 3
+    },
+    {
+      "term": "rødbærfruktig",
+      "count": 3
+    },
+    {
+      "term": "bål",
+      "count": 3
+    },
+    {
+      "term": "basert",
+      "count": 3
+    },
+    {
+      "term": "floralske",
+      "count": 3
+    },
+    {
+      "term": "sitronmellise",
+      "count": 3
+    },
+    {
+      "term": "livlighet",
+      "count": 3
+    },
+    {
+      "term": "saft",
+      "count": 3
+    },
+    {
+      "term": "vårbregne",
+      "count": 3
+    },
+    {
+      "term": "kinin",
+      "count": 3
+    },
+    {
+      "term": "bunnfall",
+      "count": 3
+    },
+    {
+      "term": "morkler",
+      "count": 3
+    },
+    {
+      "term": "minerale",
+      "count": 3
+    },
+    {
+      "term": "planter",
+      "count": 3
+    },
+    {
+      "term": "limetreblomster",
+      "count": 3
+    },
+    {
+      "term": "verbena",
+      "count": 3
+    },
+    {
+      "term": "ekspressiv",
+      "count": 3
+    },
+    {
+      "term": "eplevoks",
+      "count": 3
+    },
+    {
+      "term": "pollen",
+      "count": 3
+    },
+    {
+      "term": "bakevarer",
+      "count": 3
+    },
+    {
+      "term": "yuzu",
+      "count": 3
+    },
+    {
+      "term": "kreklingaktig",
+      "count": 3
+    },
+    {
+      "term": "diskre",
+      "count": 3
+    },
+    {
+      "term": "pinot",
+      "count": 3
+    },
+    {
+      "term": "noir",
+      "count": 3
+    },
+    {
+      "term": "jernurt",
+      "count": 3
+    },
+    {
+      "term": "mirabelleplommer",
+      "count": 3
+    },
+    {
+      "term": "frukdreven",
+      "count": 3
+    },
+    {
+      "term": "variert",
+      "count": 3
+    },
+    {
+      "term": "dempede",
+      "count": 3
+    },
+    {
+      "term": "der",
+      "count": 3
+    },
+    {
+      "term": "stirus",
+      "count": 3
+    },
+    {
+      "term": "kryddret",
+      "count": 3
+    },
+    {
+      "term": "kalkmineral",
+      "count": 3
+    },
+    {
+      "term": "soltørket",
+      "count": 3
+    },
+    {
+      "term": "villkirsebær",
+      "count": 3
+    },
+    {
+      "term": "magnolia",
+      "count": 3
+    },
+    {
+      "term": "provencalske",
+      "count": 3
+    },
+    {
+      "term": "vulkanmineraler",
+      "count": 3
+    },
+    {
+      "term": "eplepai",
+      "count": 3
+    },
+    {
+      "term": "utsøkt",
+      "count": 3
+    },
+    {
+      "term": "løvverk",
+      "count": 3
+    },
+    {
+      "term": "sitronsorbet",
+      "count": 3
+    },
+    {
+      "term": "fløyel",
+      "count": 3
+    },
+    {
+      "term": "kald",
+      "count": 3
+    },
+    {
+      "term": "skogs",
+      "count": 3
+    },
+    {
+      "term": "ristete",
+      "count": 3
+    },
+    {
+      "term": "jernholdige",
+      "count": 3
+    },
+    {
+      "term": "jordlighet",
+      "count": 3
+    },
+    {
+      "term": "middelhavskrydder",
+      "count": 3
+    },
+    {
+      "term": "intensiv",
+      "count": 3
+    },
+    {
+      "term": "mentoltoner",
+      "count": 3
+    },
+    {
+      "term": "lindeblomster",
+      "count": 3
+    },
+    {
+      "term": "rødebær",
+      "count": 3
+    },
+    {
+      "term": "rå",
+      "count": 3
+    },
+    {
+      "term": "gjæraktig",
+      "count": 3
+    },
+    {
+      "term": "chilipepper",
+      "count": 3
+    },
+    {
+      "term": "sunne",
+      "count": 3
+    },
+    {
+      "term": "kjøttbuljong",
+      "count": 3
+    },
+    {
+      "term": "fynbos",
+      "count": 3
+    },
+    {
+      "term": "pepperpreget",
+      "count": 3
+    },
+    {
+      "term": "garrigue",
+      "count": 3
+    },
+    {
+      "term": "komplett",
+      "count": 3
+    },
+    {
+      "term": "nesleblad",
+      "count": 3
+    },
+    {
+      "term": "detaljer",
+      "count": 3
+    },
+    {
+      "term": "vulkanske",
+      "count": 3
+    },
+    {
+      "term": "agurk",
+      "count": 3
+    },
+    {
+      "term": "fruktsyltetøy",
+      "count": 3
+    },
+    {
+      "term": "kirsebærgelé",
+      "count": 3
+    },
+    {
+      "term": "honningkake",
+      "count": 3
+    },
+    {
+      "term": "velintegrerte",
+      "count": 3
+    },
+    {
+      "term": "skogsbæraroma",
+      "count": 3
+    },
+    {
+      "term": "aromabildet",
+      "count": 3
+    },
+    {
+      "term": "vår",
+      "count": 3
+    },
+    {
+      "term": "mandle",
+      "count": 3
+    },
+    {
+      "term": "sand",
+      "count": 3
+    },
+    {
+      "term": "hasselnøtttoner",
+      "count": 3
+    },
+    {
+      "term": "brødtoner",
+      "count": 3
+    },
+    {
+      "term": "skogssopp",
+      "count": 3
+    },
+    {
+      "term": "skogsbærpreget",
+      "count": 3
+    },
+    {
+      "term": "botrytispreg",
+      "count": 3
+    },
+    {
+      "term": "fjøs",
+      "count": 3
+    },
+    {
+      "term": "bjørnebæraktig",
+      "count": 3
+    },
+    {
+      "term": "geranium",
+      "count": 3
+    },
+    {
+      "term": "persimon",
+      "count": 3
+    },
+    {
+      "term": "nyklippet",
+      "count": 3
+    },
+    {
+      "term": "skogblomster",
+      "count": 3
+    },
+    {
+      "term": "let",
+      "count": 3
+    },
+    {
+      "term": "bære",
+      "count": 3
+    },
+    {
+      "term": "sitruspregede",
+      "count": 3
+    },
+    {
+      "term": "moste",
+      "count": 3
+    },
+    {
+      "term": "lærpreget",
+      "count": 3
+    },
+    {
+      "term": "ferskenblomster",
+      "count": 3
+    },
+    {
+      "term": "passionsfrukt",
+      "count": 3
+    },
+    {
+      "term": "salinmineralitet",
+      "count": 3
+    },
+    {
+      "term": "kamillete",
+      "count": 3
+    },
+    {
+      "term": "floraldreven",
+      "count": 3
+    },
+    {
+      "term": "sprø",
+      "count": 3
+    },
+    {
+      "term": "ferskenaktig",
+      "count": 3
+    },
+    {
+      "term": "forsterket",
+      "count": 3
+    },
+    {
+      "term": "morellaktig",
+      "count": 3
+    },
+    {
+      "term": "arom",
+      "count": 3
+    },
+    {
+      "term": "cassis",
+      "count": 3
+    },
+    {
+      "term": "pepperkrydder",
+      "count": 3
+    },
+    {
+      "term": "klassiske",
+      "count": 3
+    },
+    {
+      "term": "grønnpepper",
+      "count": 3
+    },
+    {
+      "term": "lemon",
+      "count": 3
+    },
+    {
+      "term": "curd",
+      "count": 3
+    },
+    {
+      "term": "tresorter",
+      "count": 3
+    },
+    {
+      "term": "sammensatte",
+      "count": 3
+    },
+    {
+      "term": "skogsbærfrukt",
+      "count": 3
+    },
+    {
+      "term": "sitronkjeks",
+      "count": 3
+    },
+    {
+      "term": "røyktone",
+      "count": 3
+    },
+    {
+      "term": "flintavslag",
+      "count": 3
+    },
+    {
+      "term": "havregryn",
+      "count": 3
+    },
+    {
+      "term": "edeltre",
+      "count": 3
+    },
+    {
+      "term": "pinje",
+      "count": 3
+    },
+    {
+      "term": "sukat",
+      "count": 3
+    },
+    {
+      "term": "salttone",
+      "count": 3
+    },
+    {
+      "term": "surdeig",
+      "count": 3
+    },
+    {
+      "term": "erter",
+      "count": 3
+    },
+    {
+      "term": "nybakte",
+      "count": 3
+    },
+    {
+      "term": "blanc",
+      "count": 3
+    },
+    {
+      "term": "tradisjonell",
+      "count": 3
+    },
+    {
+      "term": "buksbom",
+      "count": 3
+    },
+    {
+      "term": "of",
+      "count": 3
+    },
+    {
+      "term": "nøtteaktige",
+      "count": 3
+    },
+    {
+      "term": "mineralt",
+      "count": 3
+    },
+    {
+      "term": "eplesider",
+      "count": 3
+    },
+    {
+      "term": "krydderkompleksitet",
+      "count": 3
+    },
+    {
+      "term": "terroir",
+      "count": 3
+    },
+    {
+      "term": "direkte",
+      "count": 3
+    },
+    {
+      "term": "etterfølges",
+      "count": 3
+    },
+    {
+      "term": "skinke",
+      "count": 3
+    },
+    {
+      "term": "bar",
+      "count": 3
+    },
+    {
+      "term": "pepperkake",
+      "count": 3
+    },
+    {
+      "term": "fremtreden",
+      "count": 3
+    },
+    {
+      "term": "endel",
+      "count": 3
+    },
+    {
+      "term": "note",
+      "count": 3
+    },
+    {
+      "term": "gjøkesyre",
+      "count": 3
+    },
+    {
+      "term": "ferskenfrukt",
+      "count": 3
+    },
+    {
+      "term": "eplekompott",
+      "count": 3
+    },
+    {
+      "term": "domineres",
+      "count": 3
+    },
+    {
+      "term": "smakskurve",
+      "count": 3
+    },
+    {
+      "term": "jordpreg",
+      "count": 3
+    },
+    {
+      "term": "lengden",
+      "count": 3
+    },
+    {
+      "term": "smal",
+      "count": 3
+    },
+    {
+      "term": "midten",
+      "count": 3
+    },
+    {
+      "term": "karakterfull",
+      "count": 3
+    },
+    {
+      "term": "mineralsmak",
+      "count": 3
+    },
+    {
+      "term": "md",
+      "count": 3
+    },
+    {
+      "term": "grove",
+      "count": 3
+    },
+    {
+      "term": "gråpærer",
+      "count": 3
+    },
+    {
+      "term": "tanninsk",
+      "count": 3
+    },
+    {
+      "term": "mynt",
+      "count": 3
+    },
+    {
+      "term": "krittpulver",
+      "count": 3
+    },
+    {
+      "term": "strammer",
+      "count": 3
+    },
+    {
+      "term": "konsentrat",
+      "count": 3
+    },
+    {
+      "term": "ananaspreg",
+      "count": 3
+    },
+    {
+      "term": "eikenyanser",
+      "count": 3
+    },
+    {
+      "term": "trepreget",
+      "count": 3
+    },
+    {
+      "term": "stille",
+      "count": 3
+    },
+    {
+      "term": "pærefrukt",
+      "count": 3
+    },
+    {
+      "term": "løft",
+      "count": 3
+    },
+    {
+      "term": "skogfrukter",
+      "count": 3
+    },
+    {
+      "term": "stort",
+      "count": 3
+    },
+    {
+      "term": "læraktig",
+      "count": 3
+    },
+    {
+      "term": "eikesmak",
+      "count": 3
+    },
+    {
+      "term": "viskositet",
+      "count": 3
+    },
+    {
+      "term": "konsentret",
+      "count": 3
+    },
+    {
+      "term": "fruktkvalitet",
+      "count": 3
+    },
+    {
+      "term": "tanningrep",
+      "count": 3
+    },
+    {
+      "term": "burgunder",
+      "count": 3
+    },
+    {
+      "term": "palett",
+      "count": 3
+    },
+    {
+      "term": "prege",
+      "count": 3
+    },
+    {
+      "term": "fløteaktig",
+      "count": 3
+    },
+    {
+      "term": "sitronzest",
+      "count": 3
+    },
+    {
+      "term": "mineralskt",
+      "count": 3
+    },
+    {
+      "term": "tanninkonsistens",
+      "count": 3
+    },
+    {
+      "term": "fruktfylde",
+      "count": 3
+    },
+    {
+      "term": "kalket",
+      "count": 3
+    },
+    {
+      "term": "merkbar",
+      "count": 3
+    },
+    {
+      "term": "rødbærpreg",
+      "count": 3
+    },
+    {
+      "term": "lettdrikkelig",
+      "count": 3
+    },
+    {
+      "term": "fruktsyrer",
+      "count": 3
+    },
+    {
+      "term": "eukalyptustoner",
+      "count": 3
+    },
+    {
+      "term": "mineralfriskhet",
+      "count": 3
+    },
+    {
+      "term": "holdbar",
+      "count": 3
+    },
+    {
+      "term": "lagring",
+      "count": 3
+    },
+    {
+      "term": "energi",
+      "count": 3
+    },
+    {
+      "term": "fruktdominert",
+      "count": 3
+    },
+    {
+      "term": "lukten",
+      "count": 3
+    },
+    {
+      "term": "sitrusfriskhet",
+      "count": 3
+    },
+    {
+      "term": "saltsmak",
+      "count": 3
+    },
+    {
+      "term": "trå",
+      "count": 3
+    },
+    {
+      "term": "fløyelsaktige",
+      "count": 3
+    },
+    {
+      "term": "varer",
+      "count": 3
+    },
+    {
+      "term": "fuktighet",
+      "count": 3
+    },
+    {
+      "term": "konsentert",
+      "count": 3
+    },
+    {
+      "term": "jordsmonnet",
+      "count": 3
+    },
+    {
+      "term": "halvsøt",
+      "count": 3
+    },
+    {
+      "term": "nerverik",
+      "count": 3
+    },
+    {
+      "term": "kjeksgod",
+      "count": 3
+    },
+    {
+      "term": "snitt",
+      "count": 3
+    },
+    {
+      "term": "mandelsmak",
+      "count": 3
+    },
+    {
+      "term": "langettersmak",
+      "count": 3
+    },
+    {
+      "term": "varmende",
+      "count": 3
+    },
+    {
+      "term": "krydderaktig",
+      "count": 3
+    },
+    {
+      "term": "imponerende",
+      "count": 3
+    },
+    {
+      "term": "inngangen",
+      "count": 3
+    },
+    {
+      "term": "merkbare",
+      "count": 3
+    },
+    {
+      "term": "fruktdybde",
+      "count": 3
+    },
+    {
+      "term": "brede",
+      "count": 3
+    },
+    {
+      "term": "bjørnebærfrukt",
+      "count": 3
+    },
+    {
+      "term": "intergrert",
+      "count": 3
+    },
+    {
+      "term": "smørsmak",
+      "count": 3
+    },
+    {
+      "term": "garvesyre",
+      "count": 3
+    },
+    {
+      "term": "rundhet",
+      "count": 3
+    },
+    {
+      "term": "passe",
+      "count": 3
+    }
+  ],
+  "analyzedAt": "2026-02-02T11:48:22.274Z"
 }
