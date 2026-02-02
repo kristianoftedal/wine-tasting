@@ -10,9 +10,7 @@ import styles from './Summary.module.css';
 
 function calculateNumericSimilarity(
   userValue: string | number | undefined,
-  actualValue: string | number | undefined,
-  userScale = 10,
-  expertScale = 12
+  actualValue: string | number | undefined
 ): number {
   const normalizeNumber = (val: string | number | undefined): number => {
     if (val === undefined || val === null || val === '' || val === '-') return Number.NaN;
@@ -29,43 +27,17 @@ function calculateNumericSimilarity(
     return 0;
   }
 
-  // Normalize both values to percentage (0-1 scale)
-  const userNormalized = userNum / userScale;
-  const expertNormalized = actualNum / expertScale;
+  // If both values are the same, return 100%
+  if (userNum === actualNum) {
+    return 100;
+  }
 
-  // Calculate difference on normalized scale
-  const difference = Math.abs(userNormalized - expertNormalized);
-
-  // Convert to 0-100 score (closer = higher score)
-  const score = Math.max(0, Math.round((1 - difference) * 100));
+  // Calculate difference as percentage of the larger value
+  const maxVal = Math.max(userNum, actualNum);
+  const difference = Math.abs(userNum - actualNum);
+  const score = Math.max(0, Math.round((1 - difference / maxVal) * 100));
 
   return score;
-}
-
-function calculateDirectSimilarity(
-  userValue: string | number | undefined,
-  actualValue: string | number | undefined
-): number {
-  const normalizeNumber = (val: string | number | undefined): number => {
-    if (val === undefined || val === null || val === '' || val === '-') return Number.NaN;
-    const str = String(val);
-    const cleaned = str.replace(/[^\d.,]/g, '').replace('prosent', '');
-    return Number.parseFloat(cleaned.replace(',', '.'));
-  };
-
-  const userNum = normalizeNumber(userValue);
-  const actualNum = normalizeNumber(actualValue);
-
-  if (isNaN(userNum) || isNaN(actualNum)) return 0;
-  if (userNum === 0 && actualNum === 0) return 100;
-
-  const maxVal = Math.max(Math.abs(userNum), Math.abs(actualNum));
-  if (maxVal === 0) return 100;
-
-  const difference = Math.abs(userNum - actualNum);
-  const percentDifference = (difference / maxVal) * 100;
-
-  return Math.max(0, Math.round(100 - Math.min(percentDifference, 100)));
 }
 
 export const Summary: React.FC = () => {
@@ -115,7 +87,7 @@ export const Summary: React.FC = () => {
     return null;
   };
 
-  const vmpFylde = wine?.fylde;
+  const vmpFylde = getCharacteristicValue(wine?.fylde, 'fylde');
   const vmpFriskhet = getCharacteristicValue(wine?.friskhet, 'friskhet');
   const vmpSnærp = getCharacteristicValue(wine?.garvestoff, 'garvestoffer');
   const vmpSødme = getCharacteristicValue(wine?.sodme, 'sødme');
@@ -137,14 +109,16 @@ export const Summary: React.FC = () => {
           wine?.taste ? serverSideSimilarity(userTasteText, wine.taste!) : 0
         ]);
 
-        const prosentScore = calculateDirectSimilarity(tastingState.alkohol, wine.alcohol);
+        // Get alcohol value from wine.alcohol field
+        const wineAlcohol = wine?.alcohol || '0';
+        const prosentScore = calculateNumericSimilarity(tastingState.alkohol, wineAlcohol);
 
-        const priceScore = calculateDirectSimilarity(tastingState.pris?.toString(), wine?.price);
+        const priceScore = calculateNumericSimilarity(tastingState.pris?.toString(), wine?.price);
 
-        const snærpScore = vmpSnærp ? calculateNumericSimilarity(tastingState.snaerp, vmpSnærp, 10, 12) : 0;
-        const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme, 10, 12) : 0;
-        const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde, 10, 12) : 0;
-        const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet, 10, 12) : 0;
+        const snærpScore = vmpSnærp ? calculateNumericSimilarity(tastingState.snaerp, vmpSnærp) : 0;
+        const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme) : 0;
+        const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde) : 0;
+        const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet) : 0;
 
         const newScores = {
           farge: colorScore,
@@ -326,6 +300,7 @@ export const Summary: React.FC = () => {
                 <div className={styles.summaryValue}>{tastingState.egenskaper}</div>
               </div>
             )}
+
             <div className={styles.summaryRow}>
               <div className={styles.summaryLabel}>Karakter</div>
               <div className={styles.summaryValue}>{tastingState.karakter}</div>
@@ -442,7 +417,7 @@ export const Summary: React.FC = () => {
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Alkohol</div>
               <div className={styles.attributeValue}>{tastingState.alkohol}%</div>
-              <div className={styles.attributeValue}>{wine?.alcohol}</div>
+              <div className={styles.attributeValue}>{wine?.alcohol || '-'}%</div>
               <div className={styles.scoreValue}>{scores.alkoholProsent}%</div>
             </div>
 
@@ -452,10 +427,11 @@ export const Summary: React.FC = () => {
               <div className={styles.attributeValue}>{wine?.price} kr</div>
               <div className={styles.scoreValue}>{scores.pris}%</div>
             </div>
+
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Karakter</div>
               <div className={styles.attributeValue}></div>
-              <div className={styles.attributeValue}>-</div>
+              <div className={styles.attributeValue}></div>
               <div className={styles.scoreValue}>{tastingState.karakter}</div>
             </div>
           </div>
