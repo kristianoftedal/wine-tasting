@@ -57,23 +57,38 @@ async function categorySimpleSimilarity(text1: string, text2: string): Promise<n
  * Calculate comprehensive server-side similarity score using:
  * - Lemma matching
  * - Category matching  
- * - OpenAI embedding similarity
- * Final score = (lemmaScore + categoryScore + embeddingScore) / 3
+ * - OpenAI embedding similarity (if AI_GATEWAY_API_KEY is available)
+ * Final score = average of available scores
  */
 export async function serverSideSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0
 
   try {
-    const [lemmaScore, categoryScore, embeddingScore] = await Promise.all([
+    // Always calculate lemma and category scores
+    const [lemmaScore, categoryScore] = await Promise.all([
       lemmaSimpleSimilarity(text1, text2),
       categorySimpleSimilarity(text1, text2),
-      semanticSimilarity(text1, text2),
     ])
 
-    // Average all three scores
-    const averageScore = Math.round((lemmaScore + categoryScore + embeddingScore) / 3)
+    // Try to get embedding score if API key is available
+    let embeddingScore = 0
+    let hasEmbedding = false
+    
+    if (process.env.AI_GATEWAY_API_KEY) {
+      try {
+        embeddingScore = await semanticSimilarity(text1, text2)
+        hasEmbedding = true
+      } catch {
+        // API key might be invalid or quota exceeded, continue without embedding
+        console.warn("Embedding similarity unavailable, using lemma and category only")
+      }
+    }
 
-    return averageScore
+    // Average available scores
+    if (hasEmbedding) {
+      return Math.round((lemmaScore + categoryScore + embeddingScore) / 3)
+    }
+    return Math.round((lemmaScore + categoryScore) / 2)
   } catch (error) {
     console.error("Server-side similarity error:", error)
     return 0
