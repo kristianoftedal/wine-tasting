@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 2 of 5 (Category Restructuring)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-03 — Completed 02-01-PLAN.md
+Last activity: 2026-02-03 — Completed 02-02-PLAN.md
 
-Progress: [████░░░░░░] 33% of Phase 2 (1 of 3 plans)
+Progress: [███████░░░] 67% of Phase 2 (2 of 3 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 2 min
-- Total execution time: 0.1 hours
+- Total plans completed: 4
+- Average duration: 3 min
+- Total execution time: 0.2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Data Analysis | 2 | 6 min | 3 min |
-| 2. Category Restructuring | 1 | 1 min | 1 min |
+| 2. Category Restructuring | 2 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 2min, 4min, 1min
-- Trend: Improving execution velocity
+- Last 5 plans: 4min, 1min, 5min
+- Trend: Steady velocity
 
 *Updated after each plan completion*
 
@@ -43,11 +43,11 @@ Progress: [████░░░░░░] 33% of Phase 2 (1 of 3 plans)
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
+- Maintain backwards compatibility: flat category field kept alongside hierarchical categoryPath (02-02)
+- Berry merge weight set to 1.6: averaged from mørke bær 1.7 and røde bær 1.5 (Completed - 02-02)
+- Weight inversion fully implemented: generic 0.8, specific 1.3+ (Completed - 02-02)
 - Use ASCII-safe identifiers (baer not bær) to avoid encoding issues (02-01)
-- Merge all berry terms into single 'baer' subcategory with averaged weight 1.6 (Completed - 02-01)
-- Generic structure terms weighted at 0.8, lower than all specific categories (Completed - 02-01)
 - Each main category has 'annet' fallback subcategory (02-01)
-- Invert weight hierarchy: Generic terms are easy to guess, specific notes show skill (Completed - 02-01)
 - Query actual database: Base lemmas on real language, not assumptions (Completed - 01-01)
 - Use tsx over ts-node for faster TypeScript execution (01-01)
 - Export norwegianLemmas to enable external analysis (01-02)
@@ -58,11 +58,11 @@ None yet.
 
 ### Blockers/Concerns
 
-None - Hierarchical category module created and validated. Ready for Phase 02 Plan 02 (migration implementation).
+None - lemmatizeAndWeight.ts successfully migrated with weight inversion and berry merge. Ready for Phase 02 Plan 03 (similarity calculation update).
 
 ## Session Continuity
 
-Last session: 2026-02-03 07:41
-Stopped at: Completed 02-01-PLAN.md (Hierarchical Category Module)
+Last session: 2026-02-03 08:48
+Stopped at: Completed 02-02-PLAN.md (Lemmatization Migration)
 Resume file: None
-Next: Continue Phase 2 with 02-02 (migration implementation)
+Next: Continue Phase 2 with 02-03 (similarity calculation update)
