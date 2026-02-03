@@ -30,8 +30,6 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const [, setWine] = useAtom(wineAtom);
   const tasting = useAtomValue(tastingAtom);
   const router = useRouter();
-  const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [isSaved, setIsSaved] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [index, setIndex] = useState<number>(0);
@@ -56,28 +54,14 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   }, [wine, setWine]);
 
   const onSave = async () => {
-    setIsSaving(true);
-
-    if (!userId) {
-      setIsSaving(false);
-      return;
-    }
-
-    if (!wine?.id) {
-      setIsSaving(false);
-      return;
-    }
-
     const wineId = wine.id;
     const tastedAt = new Date();
 
     try {
       await addTasting({ ...tasting, userId, wineId: wineId, tastedAt, eventId: eventId || undefined });
-      setIsSaved(true);
     } catch (error) {
       console.error('Error saving tasting:', error);
     } finally {
-      setIsSaving(false);
     }
   };
 
@@ -89,6 +73,11 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const handlePreviousStep = () => {
     setIndex(index > 0 ? index - 1 : 0);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const finish = async () => {
+    await onSave();
+    router.push(eventId ? `/arrangement/${eventId}` : '/');
   };
 
   if (!wine) {
@@ -133,37 +122,6 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
             )}
             {index === 3 && <TastingAttributes />}
             {index === 4 && <Summary />}
-
-            {index === 4 && userId && (
-              <div className={styles.saveSection}>
-                {!isSaved ? (
-                  <>
-                    <p className={styles.savePrompt}>Lagre smaksnotat</p>
-                    <button
-                      className={styles.saveButton}
-                      disabled={isSaving}
-                      onClick={async () => await onSave()}>
-                      {isSaving ? 'Lagrer...' : 'Lagre'}
-                    </button>
-                  </>
-                ) : (
-                  <div className={styles.savedConfirmation}>
-                    <div className={styles.checkmarkCircle}>
-                      <svg
-                        className={styles.checkmark}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    </div>
-                    <p className={styles.savedText}>Smaksnotat lagret!</p>
-                    <p className={styles.savedSubtext}>Din vurdering er nå lagret i profilen din</p>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
 
           <footer className={styles.footer}>
@@ -185,7 +143,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
             {index + 1 === steps.length && (
               <button
                 className={styles.nextButton}
-                onClick={() => router.push(eventId ? `/arrangement/${eventId}` : '/')}>
+                onClick={async () => await finish()}>
                 Ferdig
               </button>
             )}
