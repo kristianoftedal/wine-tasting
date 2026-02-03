@@ -44,10 +44,11 @@ Plans:
   2. Category structure matches Vinmonopolet aromahjul/smakshjul hierarchy
   3. Six main categories exist: Frukt, Krydder, Urter, Blomster, Eik/fat, Mineral
   4. Generic structure terms have lower category weights than specific descriptors
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] TBD
+- [ ] 02-01-PLAN.md — Create categories module with hierarchy and validation script
+- [ ] 02-02-PLAN.md — Migrate lemmatizeAndWeight.ts to use new categories
 
 ### Phase 3: Weight Profile System
 **Goal**: Three switchable weight profiles available for different scoring strategies
@@ -99,7 +100,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Data Analysis | 2/2 | Complete | 2026-02-02 |
-| 2. Category Restructuring | 0/0 | Not started | - |
+| 2. Category Restructuring | 0/2 | Planned | - |
 | 3. Weight Profile System | 0/0 | Not started | - |
 | 4. Quality Assurance | 0/0 | Not started | - |
 | 5. Validation | 0/0 | Not started | - |
