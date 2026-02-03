@@ -1,4 +1,8 @@
+// Import hierarchical category types
+import { CategoryPath, MainCategory, WineSubcategory, LemmaDataV2 } from './categories';
+
 // Type definitions
+/** @deprecated Use CategoryPath instead - flat categories being phased out */
 export type WineCategory =
   | 'struktur'
   | 'kvalitet'
@@ -6,8 +10,7 @@ export type WineCategory =
   | 'fylde'
   | 'friskhet'
   | 'sødme'
-  | 'mørke bær'
-  | 'røde bær'
+  | 'bær'
   | 'sitrus'
   | 'steinfrukt'
   | 'frukt'
@@ -25,7 +28,8 @@ export type WineCategory =
 export type LemmaData = {
   lemma: string;
   weight: number;
-  category: WineCategory;
+  category: WineCategory;  // Keep for backwards compat
+  categoryPath?: CategoryPath;  // New hierarchical path
 };
 
 export type LemmatizedWord = {
