@@ -5,22 +5,22 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Specific tasting descriptors should contribute more to similarity scores than generic wine structure terms — rewarding actual tasting skill
-**Current focus:** Phase 1 - Data Analysis
+**Current focus:** Phase 2 - Category Restructuring
 
 ## Current Position
 
-Phase: 1 of 5 (Data Analysis)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 01-02-PLAN.md
+Phase: 2 of 5 (Category Restructuring)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-03 — Completed 02-01-PLAN.md
 
-Progress: [██░░░░░░░░] 100% of Phase 1 (2 of 2 plans)
+Progress: [████░░░░░░] 33% of Phase 2 (1 of 3 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 3 min
+- Total plans completed: 3
+- Average duration: 2 min
 - Total execution time: 0.1 hours
 
 **By Phase:**
@@ -28,10 +28,11 @@ Progress: [██░░░░░░░░] 100% of Phase 1 (2 of 2 plans)
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Data Analysis | 2 | 6 min | 3 min |
+| 2. Category Restructuring | 1 | 1 min | 1 min |
 
 **Recent Trend:**
-- Last 5 plans: 2min, 4min
-- Trend: Consistent execution velocity
+- Last 5 plans: 2min, 4min, 1min
+- Trend: Improving execution velocity
 
 *Updated after each plan completion*
 
@@ -42,17 +43,14 @@ Progress: [██░░░░░░░░] 100% of Phase 1 (2 of 2 plans)
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- Invert weight hierarchy: Generic terms are easy to guess, specific notes show skill (Pending)
-- Merge bær into frukt: Aligns with Vinmonopolet's categorization (Pending)
+- Use ASCII-safe identifiers (baer not bær) to avoid encoding issues (02-01)
+- Merge all berry terms into single 'baer' subcategory with averaged weight 1.6 (Completed - 02-01)
+- Generic structure terms weighted at 0.8, lower than all specific categories (Completed - 02-01)
+- Each main category has 'annet' fallback subcategory (02-01)
+- Invert weight hierarchy: Generic terms are easy to guess, specific notes show skill (Completed - 02-01)
 - Query actual database: Base lemmas on real language, not assumptions (Completed - 01-01)
 - Use tsx over ts-node for faster TypeScript execution (01-01)
-- Use Map for O(1) frequency counting performance (01-01)
-- Consistent pagination ordering with .order('id') for reliable results (01-01)
-- Export top 100 smell/taste terms, top 50 color terms as sufficient sample (01-01)
 - Export norwegianLemmas to enable external analysis (01-02)
-- minFrequency=3 for missing terms balances noise vs valid terms (01-02)
-- maxDistance=1 for typo detection avoids false positives (01-02)
-- word.length > 3 for typos prevents matching short common words (01-02)
 
 ### Pending Todos
 
@@ -60,11 +58,11 @@ None yet.
 
 ### Blockers/Concerns
 
-None - Phase 1 complete. Analysis of 49,067 wines with 1,559 missing terms identified and 239 potential typos detected. Coverage baseline: 4.49%. Ready for Phase 2 (Category Restructuring).
+None - Hierarchical category module created and validated. Ready for Phase 02 Plan 02 (migration implementation).
 
 ## Session Continuity
 
-Last session: 2026-02-02 11:51
-Stopped at: Completed 01-02-PLAN.md (Lemma Dictionary Gap Analysis)
+Last session: 2026-02-03 07:41
+Stopped at: Completed 02-01-PLAN.md (Hierarchical Category Module)
 Resume file: None
-Next: Phase 1 complete - proceed to Phase 2 (Category Restructuring)
+Next: Continue Phase 2 with 02-02 (migration implementation)
