@@ -13,7 +13,7 @@ This roadmap transforms the similarity scoring system to reward specific tasting
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Data Analysis** - Extract and analyze actual wine vocabulary from database
-- [ ] **Phase 2: Category Restructuring** - Align categories with Vinmonopolet tasting wheels
+- [x] **Phase 2: Category Restructuring** - Align categories with Vinmonopolet tasting wheels
 - [ ] **Phase 3: Weight Profile System** - Create switchable weight profiles for different scoring strategies
 - [ ] **Phase 4: Quality Assurance** - Ensure localhost/server compatibility maintained
 - [ ] **Phase 5: Validation** - Verify scoring improvements through testing
@@ -47,8 +47,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Create categories module with hierarchy and validation script
-- [ ] 02-02-PLAN.md — Migrate lemmatizeAndWeight.ts to use new categories
+- [x] 02-01-PLAN.md — Create categories module with hierarchy and validation script
+- [x] 02-02-PLAN.md — Migrate lemmatizeAndWeight.ts to use new categories
 
 ### Phase 3: Weight Profile System
 **Goal**: Three switchable weight profiles available for different scoring strategies
@@ -100,7 +100,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Data Analysis | 2/2 | Complete | 2026-02-02 |
-| 2. Category Restructuring | 0/2 | Planned | - |
+| 2. Category Restructuring | 2/2 | Complete | 2026-02-03 |
 | 3. Weight Profile System | 0/0 | Not started | - |
 | 4. Quality Assurance | 0/0 | Not started | - |
 | 5. Validation | 0/0 | Not started | - |

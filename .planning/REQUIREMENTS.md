@@ -15,10 +15,10 @@
 
 ### Category Restructuring
 
-- [ ] **CAT-01**: Merge "mørke bær" and "røde bær" into unified "frukt" category
-- [ ] **CAT-02**: Align categories with Vinmonopolet tasting wheels (aromahjul/smakshjul)
-- [ ] **CAT-03**: Structure: Frukt (bær, sitrus, steinfrukt, tropisk, tørket), Krydder, Urter, Blomster, Eik/fat, Mineral
-- [ ] **CAT-04**: Lower category weight for generic structure terms (struktur, avslutning, fylde, friskhet, sødme)
+- [x] **CAT-01**: Merge "mørke bær" and "røde bær" into unified "frukt" category
+- [x] **CAT-02**: Align categories with Vinmonopolet tasting wheels (aromahjul/smakshjul)
+- [x] **CAT-03**: Structure: Frukt (bær, sitrus, steinfrukt, tropisk, tørket), Krydder, Urter, Blomster, Eik/fat, Mineral
+- [x] **CAT-04**: Lower category weight for generic structure terms (struktur, avslutning, fylde, friskhet, sødme)
 
 ### Data Analysis
 
@@ -65,10 +65,10 @@
 | DATA-02 | Phase 1 | Complete |
 | DATA-03 | Phase 1 | Complete |
 | DATA-04 | Phase 1 | Complete |
-| CAT-01 | Phase 2 | Pending |
-| CAT-02 | Phase 2 | Pending |
-| CAT-03 | Phase 2 | Pending |
-| CAT-04 | Phase 2 | Pending |
+| CAT-01 | Phase 2 | Complete |
+| CAT-02 | Phase 2 | Complete |
+| CAT-03 | Phase 2 | Complete |
+| CAT-04 | Phase 2 | Complete |
 | WGHT-01 | Phase 3 | Pending |
 | WGHT-02 | Phase 3 | Pending |
 | WGHT-03 | Phase 3 | Pending |
@@ -89,4 +89,4 @@
 
 ---
 *Requirements defined: 2026-02-02*
-*Last updated: 2026-02-02 after Phase 1 completion*
+*Last updated: 2026-02-03 after Phase 2 completion*
