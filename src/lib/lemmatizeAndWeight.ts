@@ -1,5 +1,7 @@
 // Import hierarchical category types
 import { CategoryPath, MainCategory, WineSubcategory, LemmaDataV2 } from './categories';
+// Import profile-based weight lookup
+import { getCategoryWeight } from './profiles';
 
 // Type definitions
 /** @deprecated Use CategoryPath instead - flat categories being phased out */
@@ -339,23 +341,32 @@ export const lemmatizeAndWeight = (text: string): TextAnalysis => {
   words.forEach(word => {
     const lemmaData: LemmaData | undefined = norwegianLemmas[word];
     if (lemmaData) {
+      // Use profile weight based on category instead of hardcoded weight
+      // Profile weight REPLACES base weight (not multiplies)
+      const profileWeight = lemmaData.categoryPath
+        ? getCategoryWeight(lemmaData.categoryPath.main)
+        : getCategoryWeight('GENERIC');
+
       lemmatized.push({
         original: word,
         lemma: lemmaData.lemma,
-        weight: lemmaData.weight,
+        weight: profileWeight,
         category: lemmaData.category
       });
 
       categories[lemmaData.category] = (categories[lemmaData.category] || 0) + 1;
-      weightSum += lemmaData.weight;
+      weightSum += profileWeight;
     } else {
+      // Unknown terms get GENERIC profile weight
+      const genericWeight = getCategoryWeight('GENERIC');
+
       lemmatized.push({
         original: word,
         lemma: word,
-        weight: 1.0,
+        weight: genericWeight,
         category: 'ukjent'
       });
-      weightSum += 1.0;
+      weightSum += genericWeight;
     }
   });
 
