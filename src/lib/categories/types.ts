@@ -10,7 +10,7 @@ export type EikSubcategory = 'fatlagring' | 'ristet' | 'annet';
 export type MineralSubcategory = 'stein' | 'annet';
 
 // Generic structure categories (separate from aroma categories)
-export type GenericCategory = 'structure' | 'quality' | 'finish' | 'body' | 'acidity' | 'sweetness' | 'texture';
+export type GenericCategory = 'structure' | 'quality' | 'finish' | 'body' | 'acidity' | 'sweetness' | 'texture' | 'general';
 
 // Combined subcategory type
 export type WineSubcategory =
