@@ -60,10 +60,10 @@ Plans:
   3. Moderate profile configured with specific notes 1.8-2.2, generic terms 1.0-1.5
   4. Data-driven profile configured with weights based on database frequency analysis
   5. Switching profiles requires minimal effort (single config change or environment variable)
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] TBD
+- [ ] 03-01-PLAN.md — Create profiles module with typed weights and env-based selection
 
 ### Phase 4: Quality Assurance
 **Goal**: Localhost and server environments both work correctly with new scoring
@@ -101,6 +101,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Data Analysis | 2/2 | Complete | 2026-02-02 |
 | 2. Category Restructuring | 2/2 | Complete | 2026-02-03 |
-| 3. Weight Profile System | 0/0 | Not started | - |
+| 3. Weight Profile System | 0/1 | Ready | - |
 | 4. Quality Assurance | 0/0 | Not started | - |
 | 5. Validation | 0/0 | Not started | - |
