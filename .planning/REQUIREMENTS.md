@@ -7,11 +7,11 @@
 
 ### Weight Profiles
 
-- [ ] **WGHT-01**: Create three switchable weight profiles (inverted, moderate, data-driven)
-- [ ] **WGHT-02**: Inverted profile: specific notes 2.0-2.5, generic terms 0.8-1.2
-- [ ] **WGHT-03**: Moderate profile: specific notes 1.8-2.2, generic terms 1.0-1.5
-- [ ] **WGHT-04**: Data-driven profile: weights based on database analysis
-- [ ] **WGHT-05**: Easy configuration to switch between profiles
+- [x] **WGHT-01**: Create three switchable weight profiles (inverted, moderate, data-driven)
+- [x] **WGHT-02**: Inverted profile: specific notes 2.0-2.5, generic terms 0.8-1.2
+- [x] **WGHT-03**: Moderate profile: specific notes 1.8-2.2, generic terms 1.0-1.5
+- [x] **WGHT-04**: Data-driven profile: weights based on database analysis
+- [x] **WGHT-05**: Easy configuration to switch between profiles
 
 ### Category Restructuring
 
@@ -69,11 +69,11 @@
 | CAT-02 | Phase 2 | Complete |
 | CAT-03 | Phase 2 | Complete |
 | CAT-04 | Phase 2 | Complete |
-| WGHT-01 | Phase 3 | Pending |
-| WGHT-02 | Phase 3 | Pending |
-| WGHT-03 | Phase 3 | Pending |
-| WGHT-04 | Phase 3 | Pending |
-| WGHT-05 | Phase 3 | Pending |
+| WGHT-01 | Phase 3 | Complete |
+| WGHT-02 | Phase 3 | Complete |
+| WGHT-03 | Phase 3 | Complete |
+| WGHT-04 | Phase 3 | Complete |
+| WGHT-05 | Phase 3 | Complete |
 | QUAL-01 | Phase 4 | Pending |
 | QUAL-02 | Phase 4 | Pending |
 | QUAL-03 | Phase 4 | Pending |
@@ -89,4 +89,4 @@
 
 ---
 *Requirements defined: 2026-02-02*
-*Last updated: 2026-02-03 after Phase 2 completion*
+*Last updated: 2026-02-06 after Phase 3 completion*
