@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Specific tasting descriptors should contribute more to similarity scores than generic wine structure terms — rewarding actual tasting skill
-**Current focus:** Phase 4 - Quality Assurance (Plan 01 Complete)
+**Current focus:** Phase 4 - Quality Assurance Complete
 
 ## Current Position
 
 Phase: 4 of 5 (Quality Assurance)
-Plan: 1 of 1 in current phase
-Status: Plan 04-01 complete
-Last activity: 2026-02-06 — Completed 04-01-PLAN.md (testing infrastructure)
+Plan: 2 of 2 in current phase
+Status: Phase 4 complete
+Last activity: 2026-02-06 — Completed 04-02-PLAN.md (integration tests and migration script)
 
-Progress: [████████░░] 80% (6 of ~7 plans complete)
+Progress: [█████████░] 90% (7 of ~8 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
+- Total plans completed: 7
 - Average duration: 4 min
-- Total execution time: 0.35 hours
+- Total execution time: 0.4 hours
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [████████░░] 80% (6 of ~7 plans complete)
 | 1. Data Analysis | 2 | 6 min | 3 min |
 | 2. Category Restructuring | 2 | 6 min | 3 min |
 | 3. Weight Profile System | 1 | 5 min | 5 min |
-| 4. Quality Assurance | 1 | 3 min | 3 min |
+| 4. Quality Assurance | 2 | 7 min | 3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 1min, 5min, 5min, 3min
+- Last 5 plans: 5min, 3min, 3min, 4min
 - Trend: Steady velocity
 
 *Updated after each plan completion*
@@ -45,6 +45,9 @@ Progress: [████████░░] 80% (6 of ~7 plans complete)
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
+- Test isLocalhost logic indirectly via helper function replicating behavior (04-02)
+- Use expectTypeOf for compile-time API signature verification (04-02)
+- Migration script is read-only by default for safety (04-02)
 - Node test environment (not jsdom) for pure function tests (04-01)
 - Mock browser alert with vi.stubGlobal for node tests (04-01)
 - vi.stubEnv + resetModules + dynamic import for env var testing (04-01)
@@ -63,15 +66,22 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
-None - Phase 4 Plan 01 complete. Vitest infrastructure set up with 31 unit tests covering lemmatization scoring and profile selection. Ready for additional test coverage or Phase 5 (UI Improvements).
+None - Phase 4 (Quality Assurance) complete. Full test suite with 57 tests covering:
+- Lemmatization and weight scoring (20 tests)
+- Profile selection and fallback (11 tests)
+- Localhost detection and similarity switching (26 tests)
+
+Migration script available: `npm run recalculate-scores`
+
+Ready for Phase 5 (UI Improvements).
 
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed 04-01-PLAN.md (testing infrastructure)
+Stopped at: Completed 04-02-PLAN.md (integration tests and migration script)
 Resume file: None
-Next: Check if additional Phase 4 plans exist, or proceed to Phase 5 (UI Improvements)
+Next: Phase 5 - UI Improvements
