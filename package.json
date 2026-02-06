@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "analyze": "tsx scripts/analyze-wine-vocabulary.ts",
+    "recalculate-scores": "tsx scripts/recalculate-scores.ts",
     "test": "vitest",
     "test:run": "vitest run"
   },
