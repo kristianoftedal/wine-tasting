@@ -74,10 +74,11 @@ Plans:
   2. Server environment uses OpenAI embeddings without errors
   3. Both environments can switch between localhost/server modes correctly
   4. Existing API signatures unchanged (no breaking changes for consumers)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] TBD
+- [ ] 04-01-PLAN.md — Set up Vitest, write unit tests for lemmatization and profiles
+- [ ] 04-02-PLAN.md — Integration tests for localhost/server split, migration script
 
 ### Phase 5: Validation
 **Goal**: Scoring improvements verified through before/after comparison
@@ -102,5 +103,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Data Analysis | 2/2 | Complete | 2026-02-02 |
 | 2. Category Restructuring | 2/2 | Complete | 2026-02-03 |
 | 3. Weight Profile System | 1/1 | Complete | 2026-02-06 |
-| 4. Quality Assurance | 0/0 | Not started | - |
+| 4. Quality Assurance | 0/2 | Not started | - |
 | 5. Validation | 0/0 | Not started | - |
