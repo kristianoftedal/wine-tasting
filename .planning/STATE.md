@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Specific tasting descriptors should contribute more to similarity scores than generic wine structure terms — rewarding actual tasting skill
-**Current focus:** Phase 3 - Weight Profile System (Complete)
+**Current focus:** Phase 4 - Quality Assurance (Plan 01 Complete)
 
 ## Current Position
 
-Phase: 3 of 5 (Weight Profile System)
+Phase: 4 of 5 (Quality Assurance)
 Plan: 1 of 1 in current phase
-Status: Phase complete (verified)
-Last activity: 2026-02-06 — Phase 3 verified, all must-haves passed
+Status: Plan 04-01 complete
+Last activity: 2026-02-06 — Completed 04-01-PLAN.md (testing infrastructure)
 
-Progress: [██████████] 100% of Phase 3 (1 of 1 plans)
+Progress: [████████░░] 80% (6 of ~7 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
+- Total plans completed: 6
 - Average duration: 4 min
-- Total execution time: 0.3 hours
+- Total execution time: 0.35 hours
 
 **By Phase:**
 
@@ -30,9 +30,10 @@ Progress: [██████████] 100% of Phase 3 (1 of 1 plans)
 | 1. Data Analysis | 2 | 6 min | 3 min |
 | 2. Category Restructuring | 2 | 6 min | 3 min |
 | 3. Weight Profile System | 1 | 5 min | 5 min |
+| 4. Quality Assurance | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 4min, 1min, 5min, 5min
+- Last 5 plans: 1min, 5min, 5min, 3min
 - Trend: Steady velocity
 
 *Updated after each plan completion*
@@ -44,6 +45,9 @@ Progress: [██████████] 100% of Phase 3 (1 of 1 plans)
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
+- Node test environment (not jsdom) for pure function tests (04-01)
+- Mock browser alert with vi.stubGlobal for node tests (04-01)
+- vi.stubEnv + resetModules + dynamic import for env var testing (04-01)
 - Profile weights REPLACE base weights (not multiply) (03-01)
 - Data-driven profile uses frequency = high weight (opposite of inverted) (03-01)
 - Invalid profile falls back to inverted with console warning (03-01)
@@ -63,12 +67,11 @@ None yet.
 
 ### Blockers/Concerns
 
-None - Phase 3 complete and verified. Three weight profiles (inverted/moderate/data-driven) implemented with environment-based selection via NEXT_PUBLIC_WEIGHT_PROFILE. Ready for Phase 4 (Quality Assurance).
+None - Phase 4 Plan 01 complete. Vitest infrastructure set up with 31 unit tests covering lemmatization scoring and profile selection. Ready for additional test coverage or Phase 5 (UI Improvements).
 
 ## Session Continuity
 
 Last session: 2026-02-06
-Stopped at: Completed Phase 3 (Weight Profile System) - verified
+Stopped at: Completed 04-01-PLAN.md (testing infrastructure)
 Resume file: None
-Next: Phase 3 complete - proceed to Phase 4 (Quality Assurance)
-
+Next: Check if additional Phase 4 plans exist, or proceed to Phase 5 (UI Improvements)
