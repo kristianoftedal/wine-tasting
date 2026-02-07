@@ -88,10 +88,11 @@ Plans:
   1. Test cases created with known note pairs showing expected behavior
   2. Before/after scores documented showing specific notes now score higher
   3. Manual testing in app confirms scoring rewards tasting skill appropriately
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] TBD
+- [ ] 05-01-PLAN.md — Create validation script with test cases and multi-profile comparison
+- [ ] 05-02-PLAN.md — Execute validation, generate report, create manual testing checklist
 
 ## Progress
 
