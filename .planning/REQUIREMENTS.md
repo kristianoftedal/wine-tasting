@@ -36,9 +36,9 @@
 
 ### Validation
 
-- [ ] **VAL-01**: Create test cases with known note pairs
-- [ ] **VAL-02**: Compare before/after scores for test cases
-- [ ] **VAL-03**: Manual verification in app with real tastings
+- [x] **VAL-01**: Create test cases with known note pairs
+- [x] **VAL-02**: Compare before/after scores for test cases
+- [x] **VAL-03**: Manual verification in app with real tastings
 
 ## v2 Requirements
 
@@ -78,9 +78,9 @@
 | QUAL-02 | Phase 4 | Complete |
 | QUAL-03 | Phase 4 | Complete |
 | QUAL-04 | Phase 4 | Complete |
-| VAL-01 | Phase 5 | Pending |
-| VAL-02 | Phase 5 | Pending |
-| VAL-03 | Phase 5 | Pending |
+| VAL-01 | Phase 5 | Complete |
+| VAL-02 | Phase 5 | Complete |
+| VAL-03 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 20 total
@@ -89,4 +89,4 @@
 
 ---
 *Requirements defined: 2026-02-02*
-*Last updated: 2026-02-06 after Phase 4 completion*
+*Last updated: 2026-02-07 after Phase 5 completion*

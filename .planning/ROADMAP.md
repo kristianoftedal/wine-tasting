@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Category Restructuring** - Align categories with Vinmonopolet tasting wheels
 - [x] **Phase 3: Weight Profile System** - Create switchable weight profiles for different scoring strategies
 - [x] **Phase 4: Quality Assurance** - Ensure localhost/server compatibility maintained
-- [ ] **Phase 5: Validation** - Verify scoring improvements through testing
+- [x] **Phase 5: Validation** - Verify scoring improvements through testing
 
 ## Phase Details
 
@@ -91,8 +91,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Create validation script with test cases and multi-profile comparison
-- [ ] 05-02-PLAN.md — Execute validation, generate report, create manual testing checklist
+- [x] 05-01-PLAN.md — Create validation script with test cases and multi-profile comparison
+- [x] 05-02-PLAN.md — Execute validation, generate report, create manual testing checklist
 
 ## Progress
 
@@ -105,4 +105,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Category Restructuring | 2/2 | Complete | 2026-02-03 |
 | 3. Weight Profile System | 1/1 | Complete | 2026-02-06 |
 | 4. Quality Assurance | 2/2 | Complete | 2026-02-06 |
-| 5. Validation | 0/0 | Not started | - |
+| 5. Validation | 2/2 | Complete | 2026-02-07 |
