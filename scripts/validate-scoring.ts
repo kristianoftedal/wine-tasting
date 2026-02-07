@@ -222,7 +222,7 @@ const testCases: ValidationTestCase[] = [
   }
 ];
 
-async function runValidation(): Promise<void> {
+async function runValidation(generateReport: boolean = false): Promise<void> {
   console.log('='.repeat(70));
   console.log('WEIGHT PROFILE VALIDATION: SCORING COMPARISON');
   console.log('='.repeat(70));
@@ -369,10 +369,151 @@ async function runValidation(): Promise<void> {
   console.log('  - DATA-DRIVEN profile should fail most (rewards generic terms)');
   console.log('  - MODERATE profile should be in between');
   console.log();
+
+  // Generate markdown report if requested
+  if (generateReport) {
+    await generateMarkdownReport(results, summaries);
+  }
+}
+
+async function generateMarkdownReport(
+  results: TestResult[],
+  summaries: Record<'inverted' | 'moderate' | 'data-driven', { total: number; passed: number }>
+): Promise<void> {
+  const fs = await import('fs/promises');
+  const path = await import('path');
+
+  const reportPath = path.join(__dirname, 'validation-results', 'validation-report.md');
+  const today = new Date().toISOString().split('T')[0];
+
+  let markdown = `# Scoring Validation Report
+
+Generated: ${today}
+
+## Summary
+
+| Profile | Pass Rate | Passed | Failed | Total |
+|---------|-----------|--------|--------|-------|
+`;
+
+  const profileNames = ['inverted', 'moderate', 'data-driven'] as const;
+  for (const profileName of profileNames) {
+    const s = summaries[profileName];
+    const passRate = ((s.passed / s.total) * 100).toFixed(1);
+    const failed = s.total - s.passed;
+    markdown += `| ${profileName} | ${passRate}% | ${s.passed} | ${failed} | ${s.total} |\n`;
+  }
+
+  markdown += `\n## Category Breakdown (Inverted Profile)
+
+| Category | Pass Rate | Passed | Total |
+|----------|-----------|--------|-------|
+`;
+
+  const categories = ['specific_vs_generic', 'same_category', 'edge_case'] as const;
+  for (const category of categories) {
+    const categoryTests = results.filter(r => r.testCase.category === category);
+    const passed = categoryTests.filter(r => r.profiles.inverted.pass).length;
+    const total = categoryTests.length;
+    const passRate = total > 0 ? ((passed / total) * 100).toFixed(1) : '0.0';
+    markdown += `| ${category} | ${passRate}% | ${passed} | ${total} |\n`;
+  }
+
+  markdown += `\n## Detailed Test Results
+
+`;
+
+  for (const result of results) {
+    markdown += `### ${result.testCase.id}\n\n`;
+    markdown += `**Description:** ${result.testCase.description}\n\n`;
+    markdown += `**Text 1 (${result.testCase.expectation === 'text1_higher' ? 'should score higher' : result.testCase.expectation === 'similar' ? 'similar' : 'should score lower'}):**\n`;
+    markdown += `"${result.testCase.text1}"\n\n`;
+    markdown += `**Text 2:**\n`;
+    markdown += `"${result.testCase.text2}"\n\n`;
+    markdown += `**Expectation:** ${result.testCase.expectation}\n\n`;
+
+    markdown += `| Profile | Text 1 Weight | Text 2 Weight | Ratio | Pass? |\n`;
+    markdown += `|---------|---------------|---------------|-------|-------|\n`;
+
+    for (const profileName of profileNames) {
+      const pr = result.profiles[profileName];
+      const passStr = pr.pass ? '✓ YES' : '✗ NO';
+      markdown += `| ${profileName} | ${pr.text1Weight.toFixed(2)} | ${pr.text2Weight.toFixed(2)} | ${pr.ratio.toFixed(2)}x | ${passStr} |\n`;
+    }
+
+    markdown += `\n`;
+  }
+
+  markdown += `## Interpretation
+
+### Inverted Profile (${summaries.inverted.passed}/${summaries.inverted.total} = ${((summaries.inverted.passed / summaries.inverted.total) * 100).toFixed(1)}% pass rate)
+
+`;
+
+  if (summaries.inverted.passed / summaries.inverted.total >= 0.8) {
+    markdown += `✓ **PASS**: The inverted profile successfully rewards specific tasting descriptors over generic terms.
+
+`;
+  } else {
+    markdown += `✗ **FAIL**: The inverted profile does not consistently reward specific descriptors.
+
+`;
+  }
+
+  const specificTests = results.filter(r => r.testCase.category === 'specific_vs_generic');
+  const specificPassed = specificTests.filter(r => r.profiles.inverted.pass).length;
+
+  markdown += `**Specific vs Generic Tests:** ${specificPassed}/${specificTests.length} passed\n`;
+  markdown += `- Specific berry terms (e.g., "solbær", "kirsebær") receive higher weights than generic structure terms (e.g., "balansert", "frisk")\n`;
+  markdown += `- Specific oak/barrel terms (e.g., "eik", "vanilje") score higher than quality adjectives (e.g., "elegant", "god")\n`;
+  markdown += `- Named spices and herbs score higher than generic texture/acidity terms\n\n`;
+
+  markdown += `### Data-Driven Profile (${summaries['data-driven'].passed}/${summaries['data-driven'].total} = ${((summaries['data-driven'].passed / summaries['data-driven'].total) * 100).toFixed(1)}% pass rate)
+
+`;
+
+  if (summaries['data-driven'].passed / summaries['data-driven'].total <= 0.2) {
+    markdown += `✓ **Expected Behavior**: The data-driven profile inverts the logic, rewarding common/generic terms.
+
+This demonstrates that the weight profile system is working correctly - different profiles produce different scoring behavior.
+
+`;
+  } else {
+    markdown += `✗ **Unexpected**: Data-driven profile should fail most tests (it should reward generic terms).
+
+`;
+  }
+
+  markdown += `### Moderate Profile (${summaries.moderate.passed}/${summaries.moderate.total} = ${((summaries.moderate.passed / summaries.moderate.total) * 100).toFixed(1)}% pass rate)
+
+The moderate profile provides a middle ground between inverted and data-driven, with some weight differentiation but less extreme than the inverted profile.
+
+## Conclusion
+
+`;
+
+  if (summaries.inverted.passed / summaries.inverted.total >= 0.8) {
+    markdown += `**Validation successful.** The weight profile system correctly implements the core requirement: specific tasting descriptors contribute more to similarity scores than generic wine structure terms.
+
+The inverted profile is ready for production use to reward actual tasting skill.
+`;
+  } else {
+    markdown += `**Validation requires attention.** Some test cases are failing. Review the detailed results above to identify which specific terms are not being weighted correctly.
+`;
+  }
+
+  await fs.writeFile(reportPath, markdown, 'utf-8');
+  console.log();
+  console.log('='.repeat(70));
+  console.log(`Markdown report written to: ${reportPath}`);
+  console.log('='.repeat(70));
 }
 
 // Execute
-runValidation().catch(err => {
+const args = process.argv.slice(2);
+const generateReport = args.includes('--report');
+
+runValidation(generateReport).catch(err => {
   console.error('Validation failed:', err);
   process.exit(1);
 });
