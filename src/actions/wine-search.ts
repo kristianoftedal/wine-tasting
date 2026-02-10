@@ -1,6 +1,8 @@
 'use server';
 
+import { WINE_SEARCH_LIMIT } from '@/lib/constants';
 import { createClient } from '@/lib/supabase/server';
+import { isValidSearchQuery, sanitizeSearchQuery } from '@/lib/validation';
 
 export type WineSearchResult = {
   id: string;
@@ -15,13 +17,13 @@ export type WineSearchResult = {
   similarity: number;
 };
 
-export async function searchWines(query: string, limit = 20): Promise<WineSearchResult[]> {
-  if (!query || query.trim().length < 2) {
+export async function searchWines(query: string, limit = WINE_SEARCH_LIMIT): Promise<WineSearchResult[]> {
+  if (!isValidSearchQuery(query)) {
     return [];
   }
 
   const supabase = await createClient();
-  const searchTerm = query.trim();
+  const searchTerm = sanitizeSearchQuery(query);
 
   // Use trigram similarity for fuzzy matching
   // This query combines exact matching with fuzzy matching for best results
