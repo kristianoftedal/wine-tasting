@@ -1,5 +1,6 @@
 import { pipeline } from '@xenova/transformers';
 import { stopwords } from './lemmatizeAndWeight';
+import { cosineSimilarity } from './math';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let embedder: any = null;
@@ -10,27 +11,6 @@ async function getEmbedder() {
     embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
   }
   return embedder;
-}
-
-function cosineSimilarity(vecA: number[], vecB: number[]): number {
-  if (vecA.length !== vecB.length) {
-    throw new Error('Vectors must have the same dimensions');
-  }
-
-  // Calculate dot product: A·B = Σ(A[i] * B[i])
-  const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
-
-  // Calculate magnitudes using Math.hypot()
-  const magnitudeA = Math.hypot(...vecA);
-  const magnitudeB = Math.hypot(...vecB);
-
-  // Check for zero magnitude
-  if (magnitudeA === 0 || magnitudeB === 0) {
-    return 0;
-  }
-
-  // Calculate cosine similarity: (A·B) / (|A|*|B|)
-  return dotProduct / (magnitudeA * magnitudeB);
 }
 
 /**
