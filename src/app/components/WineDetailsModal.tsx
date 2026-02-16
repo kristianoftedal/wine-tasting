@@ -195,7 +195,7 @@ export function WineDetailsModal({ wine, isOpen, onClose }: WineDetailsModalProp
             <div className={styles.separator} />
             <div className={styles.actionButtons}>
               <Link
-                href={`/smaking/${wine.product_id}${wine.year ? `?year=${wine.year}` : ''}`}
+                href={`/smaking/${wine.id}`}
                 className={styles.linkButton}>
                 <button className={styles.primaryButton}>Start smaking</button>
               </Link>
