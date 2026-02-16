@@ -44,11 +44,6 @@ function getCategoryAttributes(category: string) {
   }
 }
 
-/**
- * Find wines similar to user's highly-rated wines using SQL-based calculations
- * Leverages database indexes and PostgreSQL functions for efficient querying
- * Handles category-specific attributes (Rödvin has garvestoff, Hvitvin has sødme)
- */
 export async function findSimilarWinesSQL(
   userId: string,
   limit = 10,
@@ -57,10 +52,7 @@ export async function findSimilarWinesSQL(
   category?: "Rödvin" | "Hvitvin" | "Musserende vin",
 ): Promise<{ wines: Wine[]; scores: WineSimilarityScore[] }> {
   try {
-    console.log("[v0] findSimilarWinesSQL called with userId:", userId, "category:", category)
-    
     const supabase = await createClient()
-    console.log("[v0] Supabase client created")
 
     const { data: allTastings, error: tastingError } = await supabase
       .from("tastings")
@@ -74,15 +66,11 @@ export async function findSimilarWinesSQL(
       return { wines: [], scores: [] }
     }
 
-    console.log(`[v0] Fetched ${allTastings?.length || 0} tastings with karakter >= ${thresholds.minKarakter}`)
-
     if (!allTastings || allTastings.length === 0) {
-      console.log("[v0] No tastings found for user")
       return { wines: [], scores: [] }
     }
 
     const wineIds = allTastings.map((t) => t.wine_id).filter(Boolean)
-    console.log(`[v0] Extracted ${wineIds.length} unique wine IDs from tastings`)
 
     const { data: winesData, error: winesError } = await supabase.from("wines").select("id, main_category").in("id", wineIds)
 
@@ -90,8 +78,6 @@ export async function findSimilarWinesSQL(
       console.error("[v0] Error fetching wines data:", winesError)
       return { wines: [], scores: [] }
     }
-
-    console.log(`[v0] Fetched ${winesData?.length || 0} wines data`)
 
     const wineMap = new Map(winesData?.map((w) => [w.id, w]) || [])
 
@@ -102,22 +88,15 @@ export async function findSimilarWinesSQL(
       }))
       .filter((t) => t.wine)
 
-    console.log(`[v0] Enriched ${enrichedTastings.length} tastings with wine data`)
-
     let highRatedTastings = enrichedTastings
 
     if (category && highRatedTastings.length > 0) {
       highRatedTastings = highRatedTastings.filter((t: any) => {
         return t.wine?.main_category === category
       })
-      console.log(`[v0] Filtered to ${highRatedTastings.length} tastings in category ${category}`)
     }
 
-    console.log(`[v0] Finding ${category || "all"} recommendations for user ${userId}`)
-    console.log(`[v0] Found ${highRatedTastings.length} high-rated tastings with karakter >= ${thresholds.minKarakter}`)
-
     if (highRatedTastings.length === 0) {
-      console.log("[v0] No high-rated tastings found after filtering")
       return { wines: [], scores: [] }
     }
 
@@ -146,8 +125,6 @@ export async function findSimilarWinesSQL(
       avgAttributes.sodme /= count
     }
 
-    console.log("[v0] Calculated average attributes:", avgAttributes)
-
     const { data: allUserTastings, error: userTastingsError } = await supabase
       .from("tastings")
       .select("wine_id")
@@ -159,17 +136,6 @@ export async function findSimilarWinesSQL(
     }
 
     const tastedWineIds = allUserTastings?.map((t) => t.wine_id).filter(Boolean) || []
-    console.log(`[v0] User has already tasted ${tastedWineIds.length} wines (excluding from recommendations)`)
-
-    console.log("[v0] Calling find_similar_wines_weighted RPC with params:", {
-      p_fylde: avgAttributes.fylde,
-      p_friskhet: avgAttributes.friskhet,
-      p_garvestoff: avgAttributes.snaerp,
-      p_sodme: avgAttributes.sodme,
-      p_excluded_wine_ids_count: tastedWineIds.length,
-      p_main_category: targetCategory,
-      p_limit: thresholds.candidateLimit || limit * 2,
-    })
 
     const { data: candidateWines, error } = await supabase.rpc("find_similar_wines_weighted", {
       p_fylde: avgAttributes.fylde,
@@ -190,10 +156,7 @@ export async function findSimilarWinesSQL(
       return { wines: [], scores: [] }
     }
 
-    console.log(`[v0] RPC returned ${candidateWines?.length || 0} candidate wines`)
-
     if (!candidateWines || candidateWines.length === 0) {
-      console.log("[v0] No candidate wines returned from RPC")
       return { wines: [], scores: [] }
     }
 
@@ -208,14 +171,10 @@ export async function findSimilarWinesSQL(
       return { wines: [], scores: [] }
     }
 
-    console.log(`[v0] Fetched ${highRatedWines?.length || 0} high-rated wines for semantic analysis`)
-
     const highRatedSmells = highRatedWines?.map((w) => w.smell || "").filter(Boolean) || []
     const highRatedTastes = highRatedWines?.map((w) => w.taste || "").filter(Boolean) || []
     const combinedSmell = highRatedSmells.join(" ")
     const combinedTaste = highRatedTastes.join(" ")
-
-    console.log(`[v0] Combined smell text length: ${combinedSmell.length}, taste text length: ${combinedTaste.length}`)
 
     const scoredWines: WineSimilarityScore[] = []
 
@@ -227,15 +186,11 @@ export async function findSimilarWinesSQL(
         let tasteSimilarity = 50
 
         if (combinedSmell && wine.smell) {
-          console.log(`[v0] Computing smell similarity for wine: ${wine.name}`)
           smellSimilarity = await getSemanticSimilarity(combinedSmell, wine.smell)
-          console.log(`[v0] Smell similarity score: ${smellSimilarity}`)
         }
 
         if (combinedTaste && wine.taste) {
-          console.log(`[v0] Computing taste similarity for wine: ${wine.name}`)
           tasteSimilarity = await getSemanticSimilarity(combinedTaste, wine.taste)
-          console.log(`[v0] Taste similarity score: ${tasteSimilarity}`)
         }
 
         const numericScore = wine.numeric_score || 0
@@ -269,8 +224,6 @@ export async function findSimilarWinesSQL(
           sodmeSimilarity = 100 - Math.min(Math.abs(avgAttributes.sodme - wine.sodme) * 20, 100)
         }
 
-        console.log(`[v0] Wine ${wine.name} overall score: ${overallScore}`)
-
         scoredWines.push({
           wine,
           similarityScore: overallScore,
@@ -292,8 +245,6 @@ export async function findSimilarWinesSQL(
     scoredWines.sort((a, b) => b.similarityScore - a.similarityScore)
 
     const topScored = scoredWines.slice(0, limit)
-    console.log(`[v0] Returning top ${topScored.length} scored wines`)
-    
     return {
       wines: topScored.map((sw) => sw.wine),
       scores: topScored,
