@@ -1,10 +1,8 @@
 "use client"
 
-import { pipeline, type FeatureExtractionPipeline } from '@xenova/transformers';
-
-let embedder: FeatureExtractionPipeline | null = null;
+let embedder: any = null;
 let isLoading = false;
-let loadPromise: Promise<FeatureExtractionPipeline> | null = null;
+let loadPromise: Promise<any> | null = null;
 
 // Norwegian stopwords
 const stopwords = new Set([
@@ -20,8 +18,9 @@ const stopwords = new Set([
 
 /**
  * Lazy load the embedder model (client-side only)
+ * Uses dynamic import to avoid loading @xenova/transformers on server
  */
-async function getEmbedder(): Promise<FeatureExtractionPipeline> {
+async function getEmbedder(): Promise<any> {
   if (embedder) return embedder;
   
   if (loadPromise) return loadPromise;
@@ -39,11 +38,20 @@ async function getEmbedder(): Promise<FeatureExtractionPipeline> {
   }
   
   isLoading = true;
-  loadPromise = pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2') as Promise<FeatureExtractionPipeline>;
-  embedder = await loadPromise;
-  isLoading = false;
   
-  return embedder;
+  try {
+    // Dynamic import to avoid loading on server
+    const { pipeline } = await import('@xenova/transformers');
+    loadPromise = pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+    embedder = await loadPromise;
+    isLoading = false;
+    return embedder;
+  } catch (error) {
+    console.error('Failed to load embedder:', error);
+    isLoading = false;
+    loadPromise = null;
+    throw error;
+  }
 }
 
 function cosineSimilarity(vecA: number[], vecB: number[]): number {
