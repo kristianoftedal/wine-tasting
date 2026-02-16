@@ -165,11 +165,11 @@ export async function findSimilarWinesSQL(
     let tasteSimilarity = 50
 
     if (combinedSmell && wine.smell) {
-      smellSimilarity = await semanticSimilarity(combinedSmell, wine.smell)
+      smellSimilarity = await getSemanticSimilarity(combinedSmell, wine.smell)
     }
 
     if (combinedTaste && wine.taste) {
-      tasteSimilarity = await semanticSimilarity(combinedTaste, wine.taste)
+      tasteSimilarity = await getSemanticSimilarity(combinedTaste, wine.taste)
     }
 
     const numericScore = wine.numeric_score || 0
