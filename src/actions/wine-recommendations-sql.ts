@@ -1,30 +1,23 @@
 'use server';
 
-import { localSemanticSimilarity } from '@/lib/localSemanticSimilarity';
 import type { RecommendationThresholds, RecommendationWeights, WineSimilarityScore } from '@/lib/recommendation-types';
 import { semanticSimilarity } from '@/lib/semanticSimilarity';
 import { createClient } from '@/lib/supabase/server';
 import type { Wine } from '@/lib/types';
 
 /**
- * Check if running on localhost
+ * Get semantic similarity using OpenAI, or dynamically loaded local similarity
  */
-function isLocalhost(): boolean {
-  const host = process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || '';
-  return !host || host.includes('localhost') || host.includes('127.0.0.1');
-}
-
-/**
- * Get semantic similarity using OpenAI on production, local on localhost
- */
-async function getSemanticSimilarity(text1: string, text2: string): Promise<number> {
-  if (isLocalhost() || !process.env.AI_GATEWAY_API_KEY) {
+async function getSemanticSimilarity(text1: string, text2: string, useLocal: boolean): Promise<number> {
+  if (useLocal) {
+    const { localSemanticSimilarity } = await import('@/lib/localSemanticSimilarity');
     return localSemanticSimilarity(text1, text2);
   }
   try {
     return await semanticSimilarity(text1, text2);
   } catch {
     console.warn('[v0] OpenAI embedding failed, falling back to local similarity');
+    const { localSemanticSimilarity } = await import('@/lib/localSemanticSimilarity');
     return localSemanticSimilarity(text1, text2);
   }
 }
@@ -54,7 +47,8 @@ export async function findSimilarWinesSQL(
   limit = 10,
   weights: RecommendationWeights,
   thresholds: RecommendationThresholds,
-  category?: 'Rödvin' | 'Hvitvin' | 'Musserende vin'
+  category?: 'Rödvin' | 'Hvitvin' | 'Musserende vin',
+  useLocalSimilarity = false
 ): Promise<{ wines: Wine[]; scores: WineSimilarityScore[] }> {
   try {
     console.log('[v0] findSimilarWinesSQL called with userId:', userId, 'category:', category);
@@ -233,13 +227,13 @@ export async function findSimilarWinesSQL(
 
         if (combinedSmell && wine.smell) {
           console.log(`[v0] Computing smell similarity for wine: ${wine.name}`);
-          smellSimilarity = await getSemanticSimilarity(combinedSmell, wine.smell);
+          smellSimilarity = await getSemanticSimilarity(combinedSmell, wine.smell, useLocalSimilarity);
           console.log(`[v0] Smell similarity score: ${smellSimilarity}`);
         }
 
         if (combinedTaste && wine.taste) {
           console.log(`[v0] Computing taste similarity for wine: ${wine.name}`);
-          tasteSimilarity = await getSemanticSimilarity(combinedTaste, wine.taste);
+          tasteSimilarity = await getSemanticSimilarity(combinedTaste, wine.taste, useLocalSimilarity);
           console.log(`[v0] Taste similarity score: ${tasteSimilarity}`);
         }
 

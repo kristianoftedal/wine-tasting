@@ -34,6 +34,10 @@ interface CategoryRecommendations {
   loading: boolean;
 }
 
+const useLocalSimilarity =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
 export default function PreferenceTab({ tastings, wines, allWines }: PreferenceTabProps) {
   const [rodvinRecs, setRodvinRecs] = useState<CategoryRecommendations>({ wines: [], scores: [], loading: false });
   const [hvitvinRecs, setHvitvinRecs] = useState<CategoryRecommendations>({ wines: [], scores: [], loading: false });
@@ -90,7 +94,7 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
       setter(prev => ({ ...prev, loading: true }));
 
       try {
-        const result = await findSimilarWinesSQL(userId, 6, weights, thresholds, category);
+        const result = await findSimilarWinesSQL(userId, 6, weights, thresholds, category, useLocalSimilarity);
         setter({ wines: result.wines, scores: result.scores, loading: false });
       } catch (error) {
         console.error(`Error loading ${category} recommendations:`, error);
