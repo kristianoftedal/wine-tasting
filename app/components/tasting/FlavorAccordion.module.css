@@ -48,8 +48,12 @@
   border-top: 1px solid #f3f4f6;
 }
 
+.flavorSubcategory details {
+  margin: 0;
+}
+
 .subcategorySummary {
-  padding: 12px 20px 12px 24px;
+  padding: 12px 20px 12px 20px;
   cursor: pointer;
   font-weight: 500;
   font-size: 13px;
@@ -59,6 +63,8 @@
   color: #374151;
   background: #fafafa;
   transition: background 0.2s ease;
+  border-left: 3px solid #d1d5db;
+  list-style: none;
 }
 
 .subcategorySummary:hover {
@@ -78,8 +84,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding: 12px 20px 16px 24px;
+  padding: 12px 20px 16px 20px;
   background: white;
+  margin: 0;
 }
 
 .flavorPill {
