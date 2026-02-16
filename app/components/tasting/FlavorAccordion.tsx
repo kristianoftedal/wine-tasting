@@ -35,11 +35,13 @@ export const Accordion: React.FC<AccordionProps> = ({
           <div key={subcategory.name + index} className={styles.flavorSubcategory}>
             <details open={subcategories.length === 1}>
               <summary className={styles.subcategorySummary}>
-                <div>
-                  {subcategory.name}
-                  <span className={styles.subcategoryDescription}>{subcategory.description}</span>
+                <div className={styles.subcategoryHeader}>
+                  <div className={styles.subcategoryName}>{subcategory.name}</div>
+                  {subcategory.description && (
+                    <div className={styles.subcategoryDescription}>{subcategory.description}</div>
+                  )}
                 </div>
-                <span>{subcategory.icon}</span>
+                <span className={styles.subcategoryChevron}>▶</span>
               </summary>
               <div className={styles.flavorPills}>
                 {subcategory.flavors.map((flavor: Flavor) => (
