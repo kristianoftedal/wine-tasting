@@ -21,6 +21,42 @@ export const Accordion: React.FC<AccordionProps> = ({
     return selectedFlavors.some((f) => f.name === flavor.name)
   }
 
+  // If only one subcategory, render its flavors directly without nested accordion
+  if (subcategories.length === 1) {
+    const subcategory = subcategories[0]
+    return (
+      <details className={styles.flavorAccordion}>
+        <summary className={styles.flavorCategorySummary}>
+          <div className={styles.categoryTitle}>
+            <div>{category.name}</div>
+            <div className={styles.categoryDescription}>{category.description}</div>
+          </div>
+          <span>{category.icon}</span>
+        </summary>
+        <div className={styles.singleSubcategoryContent}>
+          <div className={styles.subcategoryHeader}>
+            <div className={styles.subcategoryName}>{subcategory.name}</div>
+            {subcategory.description && (
+              <div className={styles.subcategoryDescription}>{subcategory.description}</div>
+            )}
+          </div>
+          <div className={styles.flavorPills}>
+            {subcategory.flavors.map((flavor: Flavor) => (
+              <button
+                key={flavor.name}
+                className={`${styles.flavorPill} ${isFlavorSelected(flavor) ? styles.selected : ""}`}
+                onClick={() => onFlavorClick(category, subcategory, flavor)}
+              >
+                {flavor.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </details>
+    )
+  }
+
+  // Multiple subcategories - render nested accordions
   return (
     <details className={styles.flavorAccordion}>
       <summary className={styles.flavorCategorySummary}>
@@ -33,7 +69,7 @@ export const Accordion: React.FC<AccordionProps> = ({
       <div className={styles.flavorSubcategories}>
         {subcategories.map((subcategory: Subcategory, index: number) => (
           <div key={subcategory.name + index} className={styles.flavorSubcategory}>
-            <details open={subcategories.length === 1}>
+            <details>
               <summary className={styles.subcategorySummary}>
                 <div className={styles.subcategoryHeader}>
                   <div className={styles.subcategoryName}>{subcategory.name}</div>

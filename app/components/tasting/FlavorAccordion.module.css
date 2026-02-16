@@ -106,6 +106,16 @@ details[open] .subcategoryChevron {
   transform: rotate(90deg);
 }
 
+/* Single subcategory content (when there's only one subcategory, no nested accordion) */
+.singleSubcategoryContent {
+  padding: 12px 20px;
+  background: white;
+}
+
+.singleSubcategoryContent .subcategoryHeader {
+  margin-bottom: 12px;
+}
+
 /* Smaller, neutral pill buttons */
 .flavorPills {
   display: flex;
