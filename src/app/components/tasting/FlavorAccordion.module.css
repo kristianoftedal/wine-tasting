@@ -20,6 +20,7 @@
   background: #f9fafb;
   color: #1f2937;
   border-left: 4px solid #8b5cf6;
+  width: 100%;
 }
 
 .flavorCategorySummary:hover {
@@ -48,29 +49,72 @@
   border-top: 1px solid #f3f4f6;
 }
 
+.flavorSubcategory details {
+  margin: 0;
+}
+
 .subcategorySummary {
-  padding: 12px 20px 12px 24px;
+  padding: 12px 20px;
   cursor: pointer;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #374151;
-  background: #fafafa;
-  transition: background 0.2s ease;
+  color: #1f2937;
+  background: white;
+  transition: all 0.2s ease;
+  border: none;
+  border-left: 3px solid #d1d5db;
+  list-style: none;
 }
 
 .subcategorySummary:hover {
-  background: #f3f4f6;
+  background: #f9fafb;
+  border-left-color: #9ca3af;
+}
+
+.subcategoryHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.subcategoryName {
+  font-weight: 500;
+  color: #1f2937;
 }
 
 .subcategoryDescription {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
-  /* Improved contrast from #6b7280 to #4b5563 */
-  color: #4b5563;
-  margin-left: 8px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.subcategoryChevron {
+  display: inline-block;
+  margin-left: 12px;
+  color: #9ca3af;
+  font-size: 11px;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+/* Rotate chevron when details is open */
+details[open] .subcategoryChevron {
+  transform: rotate(90deg);
+}
+
+/* Single subcategory content (when there's only one subcategory, no nested accordion) */
+.singleSubcategoryContent {
+  padding: 12px 20px;
+  background: white;
+}
+
+.singleSubcategoryContent .subcategoryHeader {
+  margin-bottom: 12px;
 }
 
 /* Smaller, neutral pill buttons */
@@ -78,8 +122,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding: 12px 20px 16px 24px;
+  padding: 12px 20px 16px 20px;
   background: white;
+  margin: 0;
 }
 
 .flavorPill {
@@ -98,7 +143,7 @@
 
 .flavorPill:hover {
   background: #f9fafb;
-  border-color: #4b5563;
+  border-color: #9ca3af;
 }
 
 .flavorPill.selected {
