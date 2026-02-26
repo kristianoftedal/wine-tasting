@@ -49,6 +49,8 @@ export const Summary: React.FC = () => {
   const [scores, setScores] = useState(initState());
   const [overallScore, setOverallScore] = useState(0);
   const [isCalculating, setIsCalculating] = useState(true);
+  const [tasteDescToShort, setTasteDescToShort] = useState(false);
+  const [smellDescToShort, setSmellDescToShort] = useState(false);
 
   const isRedWine = wine?.main_category?.toLowerCase().includes('rød');
 
@@ -100,14 +102,20 @@ export const Summary: React.FC = () => {
         setScores(newScores);
 
         const halfWeightProps = ['pris', 'alkoholProsent'];
-        const scoreEntries = Object.entries(newScores).filter(([key, value]) => {
+        const scoreEntries = Object.entries(newScores).filter(([key]) => {
           // Skip characteristics that don't have expert data
           if (key === 'friskhet' && vmpFriskhet === null) return false;
           if (key === 'fylde' && vmpFylde === null) return false;
           if (key === 'snaerp' && vmpSnærp === null) return false;
           if (key === 'sodme' && vmpSødme === null) return false;
+          // Skip smell/taste scores if the wine's description is too short
+          if (key === 'lukt' && (wine.smell ?? '').trim().length < 10) return false;
+          if (key === 'smak' && (wine.taste ?? '').trim().length < 10) return false;
           return true;
         });
+
+        setSmellDescToShort(!scoreEntries.some(([key]) => key === 'lukt'));
+        setTasteDescToShort(!scoreEntries.some(([key]) => key === 'smak'));
 
         const { total, weightSum } = scoreEntries.reduce(
           (acc, [key, value]) => {
@@ -166,9 +174,6 @@ export const Summary: React.FC = () => {
     vmpFriskhet,
     setTastingState
   ]);
-
-  const vmpLuktWords = wine?.smell?.toLowerCase().split(/[\s,]+/) || [];
-  const vmpSmakWords = wine?.taste?.toLowerCase().split(/[\s,]+/) || [];
 
   if (isCalculating)
     return (
@@ -318,7 +323,7 @@ export const Summary: React.FC = () => {
                 {tastingState.lukt}
               </div>
               <div className={styles.attributeValue}>{wine!.smell}</div>
-              <div className={styles.scoreValue}>{scores.lukt}%</div>
+              <div className={styles.scoreValue}>{smellDescToShort ? 'For kort beskrivelse' : `${scores.lukt}%`}</div>
             </div>
 
             <div className={styles.tableRow}>
@@ -336,7 +341,7 @@ export const Summary: React.FC = () => {
                 {tastingState.smak}
               </div>
               <div className={styles.attributeValue}>{wine!.taste}</div>
-              <div className={styles.scoreValue}>{scores.smak}%</div>
+              <div className={styles.scoreValue}>{tasteDescToShort ? 'For kort beskrivelse' : `${scores.smak}%`}</div>
             </div>
 
             <div className={styles.tableRow}>
