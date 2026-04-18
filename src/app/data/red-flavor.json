@@ -3,19 +3,19 @@
     "name": "Frukt og bær",
     "backgroundColor": "#EA2027",
     "description": "Aromaer og smaker som minner om ulike frukter og bær.",
-    "icon": "🍎🍓🍉🍑🍋🥭🍈🫐🍇",
+    "icon": "",
     "subcategories": [
       {
         "name": "Grønn frukt",
-        "description": "Andre fruktflavors som ikke passer i andre nameer.",
-        "icon": "🍏",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#FFC312",
         "flavors": [{ "name": "Grønt eple" }]
       },
       {
         "name": "Rød frukt og bær",
-        "description": "Søte eller syrlige små frukter.",
-        "icon": "🍓",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#ED4C67",
         "flavors": [
           { "name": "Tyttebær" },
@@ -43,14 +43,14 @@
       {
         "name": "Syntetisk",
         "description": "",
-        "icon": "🍇",
+        "icon": "",
         "backgroundColor": "#833471",
         "flavors": [{ "name": "Vingummi" }, { "name": "Skumbanan" }]
       },
       {
         "name": "Kokt",
         "description": "",
-        "icon": "🍇",
+        "icon": "",
         "backgroundColor": "#833471",
         "flavors": [
           { "name": "Jordbærsyltetøy" },
@@ -61,15 +61,15 @@
       },
       {
         "name": "Tørket",
-        "description": "Aromaer og smaker som minner om tørkede frukter.",
-        "icon": "🍇",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#833471",
         "flavors": [{ "name": "Rosin" }, { "name": "Sviske" }, { "name": "Tørket fiken" }]
       },
       {
         "name": "Oksidert frukt",
         "description": "",
-        "icon": "🍇",
+        "icon": "",
         "backgroundColor": "#833471",
         "flavors": [{ "name": "Brun banan" }, { "name": "Slått eple" }]
       }
@@ -113,8 +113,8 @@
     "subcategories": [
       {
         "name": "Treverk",
-        "description": "Subtile, florale aromaer.",
-        "icon": "🌼",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#1e90ff",
         "flavors": [
           { "name": "Sevje" },
@@ -134,8 +134,8 @@
     "subcategories": [
       {
         "name": "Karamellisert",
-        "description": "Subtile, florale aromaer.",
-        "icon": "🌼",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#1e90ff",
         "flavors": [{ "name": "Sjokolade" }, { "name": "Kaffe" }, { "name": "Lakris" }, { "name": "Soyasaus" }]
       }
@@ -149,8 +149,8 @@
     "subcategories": [
       {
         "name": "Animalsk",
-        "description": "Subtile, florale aromaer.",
-        "icon": "🌼",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#1e90ff",
         "flavors": [
           { "name": "Blod" },
@@ -165,8 +165,8 @@
   },
   {
     "name": "Jordaktig",
-    "description": "Aromaer som minner om jord og natur.",
-    "icon": "🪨💦🌍🍄🏺",
+    "description": "",
+    "icon": "",
     "backgroundColor": "#009432",
     "subcategories": [
       {
@@ -208,8 +208,8 @@
     "subcategories": [
       {
         "name": "TCA (kork)",
-        "description": "Subtile, florale aromaer.",
-        "icon": "🌼",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#1e90ff",
         "flavors": [{ "name": "Fuktig kjeller" }, { "name": "Papp" }, { "name": "Mugg" }]
       }
@@ -217,14 +217,14 @@
   },
   {
     "name": "Blomst",
-    "description": "Subtile eller fremtredende toner av blomster som roser, fioler eller lavendel.",
-    "icon": "🌸🌼🌺",
+    "description": "",
+    "icon": "",
     "backgroundColor": "#1e90ff",
     "subcategories": [
       {
         "name": "Blomst",
-        "description": "Subtile, florale aromaer.",
-        "icon": "🌼",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#1e90ff",
         "flavors": [{ "name": "Fiol" }, { "name": "Rose" }]
       }
@@ -232,13 +232,13 @@
   },
   {
     "name": "Urter",
-    "description": "Friske eller krydrede urtearomaer.",
-    "icon": "🌿🍃🌱🪴🍂",
+    "description": "",
+    "icon": "",
     "backgroundColor": "#079992",
     "subcategories": [
       {
         "name": "Ferske",
-        "description": "Friske og grønne urteaktige noter.",
+        "description": "",
         "icon": "",
         "backgroundColor": "#82ccdd",
         "flavors": [
