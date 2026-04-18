@@ -2,6 +2,7 @@
 
 import { openai } from '@ai-sdk/openai';
 import { embed } from 'ai';
+import { sanitizeText } from './lemmatizeAndWeight';
 import { cosineSimilarity } from './math';
 
 /**
@@ -9,17 +10,19 @@ import { cosineSimilarity } from './math';
  * This is serverless-compatible as it uses API calls instead of local ML models.
  */
 export async function semanticSimilarity(text1: string, text2: string): Promise<number> {
-  if (!text1 || !text2) return 0;
+  const cleaned1 = sanitizeText(text1);
+  const cleaned2 = sanitizeText(text2);
+  if (!cleaned1 || !cleaned2) return 0;
 
   try {
     const [result1, result2] = await Promise.all([
       embed({
         model: openai.embedding('text-embedding-3-small'),
-        value: text1
+        value: cleaned1
       }),
       embed({
         model: openai.embedding('text-embedding-3-small'),
-        value: text2
+        value: cleaned2
       })
     ]);
 
@@ -39,10 +42,13 @@ export async function batchSemanticSimilarity(pairs: Array<{ text1: string; text
   if (pairs.length === 0) return [];
 
   try {
-    // Get all unique texts
-    const uniqueTexts = [...new Set(pairs.flatMap(p => [p.text1, p.text2]).filter(Boolean))];
+    const cleanedPairs = pairs.map(({ text1, text2 }) => ({
+      text1: sanitizeText(text1),
+      text2: sanitizeText(text2)
+    }));
 
-    // Get embeddings for all unique texts
+    const uniqueTexts = [...new Set(cleanedPairs.flatMap(p => [p.text1, p.text2]).filter(Boolean))];
+
     const embeddings = await Promise.all(
       uniqueTexts.map(text =>
         embed({
@@ -52,14 +58,12 @@ export async function batchSemanticSimilarity(pairs: Array<{ text1: string; text
       )
     );
 
-    // Create a map of text -> embedding
     const embeddingMap = new Map<string, number[]>();
     uniqueTexts.forEach((text, i) => {
       embeddingMap.set(text, embeddings[i].embedding);
     });
 
-    // Calculate similarities for each pair
-    return pairs.map(({ text1, text2 }) => {
+    return cleanedPairs.map(({ text1, text2 }) => {
       if (!text1 || !text2) return 0;
       const emb1 = embeddingMap.get(text1);
       const emb2 = embeddingMap.get(text2);

@@ -1,5 +1,5 @@
 import { pipeline } from '@xenova/transformers';
-import { stopwords } from './lemmatizeAndWeight';
+import { sanitizeText } from './lemmatizeAndWeight';
 import { cosineSimilarity } from './math';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,19 +19,8 @@ async function getEmbedder() {
 export async function localSemanticSimilarity(text1: string, text2: string): Promise<number> {
   const embed = await getEmbedder();
 
-  const cleanedText1 = text1
-    .toLowerCase()
-    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-    .split(/\s+/)
-    .filter(word => word.length > 0 && !stopwords.has(word))
-    .join(' ');
-
-  const cleanedText2 = text2
-    .toLowerCase()
-    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-    .split(/\s+/)
-    .filter(word => word.length > 0 && !stopwords.has(word))
-    .join(' ');
+  const cleanedText1 = sanitizeText(text1);
+  const cleanedText2 = sanitizeText(text2);
 
   const [out1, out2] = await Promise.all([
     embed(cleanedText1, { pooling: 'mean', normalize: true }),

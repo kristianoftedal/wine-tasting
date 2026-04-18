@@ -1,27 +1,55 @@
 'use server';
 
-import { lemmatizeAndWeight } from '@/lib/lemmatizeAndWeight';
+import { lemmatizeAndWeight, norwegianLemmas } from '@/lib/lemmatizeAndWeight';
 import { semanticSimilarity } from '@/lib/semanticSimilarity';
 
+type LemmaInfo = { lemma: string; weight: number; main?: string; sub?: string };
+
 /**
- * Compute similarity between lemmatized words (0-100)
+ * Extract lemmas with their active-profile weight and hierarchical category.
+ * Dedupes per side by keeping the highest weight when the same lemma appears
+ * twice. Unknown words (category `ukjent`) are skipped so they neither reward
+ * nor penalise the score.
+ */
+function lemmasWithWeight(text: string): Map<string, LemmaInfo> {
+  const data = lemmatizeAndWeight(text);
+  const out = new Map<string, LemmaInfo>();
+  for (const item of data.lemmatized) {
+    if (item.category === 'ukjent') continue;
+    const path = (norwegianLemmas[item.original] ?? norwegianLemmas[item.lemma])?.categoryPath;
+    const existing = out.get(item.lemma);
+    if (!existing || item.weight > existing.weight) {
+      out.set(item.lemma, { lemma: item.lemma, weight: item.weight, main: path?.main, sub: path?.sub });
+    }
+  }
+  return out;
+}
+
+const sumWeights = (m: Map<string, LemmaInfo>) => [...m.values()].reduce((s, v) => s + v.weight, 0);
+
+/**
+ * Weighted lemma overlap. Each lemma contributes its active-profile weight
+ * (specifics like "solbær" weigh 2.0, generics like "balanse" weigh 1.0 on the
+ * inverted profile). A match on a specific descriptor earns more than a match
+ * on a filler word, and matching only on filler words no longer dominates.
+ * Denominator is the smaller side's weighted mass so short, precise user notes
+ * aren't punished for being short.
  */
 export async function lemmaSimpleSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0;
 
   try {
-    const data1 = lemmatizeAndWeight(text1);
-    const data2 = lemmatizeAndWeight(text2);
+    const a = lemmasWithWeight(text1);
+    const b = lemmasWithWeight(text2);
+    if (!a.size || !b.size) return 0;
 
-    const lemmas1 = new Set(data1.lemmatized.map(item => item.lemma));
-    const lemmas2 = new Set(data2.lemmatized.map(item => item.lemma));
-
-    if (lemmas1.size === 0 || lemmas2.size === 0) return 0;
-
-    const intersection = [...lemmas1].filter(lemma => lemmas2.has(lemma)).length;
-    const union = new Set([...lemmas1, ...lemmas2]).size;
-
-    return Math.round((intersection / union) * 100);
+    let interWeight = 0;
+    for (const [lemma, info] of a) {
+      if (b.has(lemma)) interWeight += info.weight;
+    }
+    const smallerWeight = Math.min(sumWeights(a), sumWeights(b));
+    if (smallerWeight === 0) return 0;
+    return Math.round((interWeight / smallerWeight) * 100);
   } catch (error) {
     console.error('Lemma similarity error:', error);
     return 0;
@@ -29,36 +57,37 @@ export async function lemmaSimpleSimilarity(text1: string, text2: string): Promi
 }
 
 /**
- * Compute similarity between category distributions (0-100)
+ * Weighted hierarchical category similarity. Full weight credit when the
+ * (main, sub) path matches; half credit when only the main category matches.
+ * Weighted by active profile so matching on Frukt earns more than matching on
+ * GENERIC, keeping the penalty for "only matched on filler" consistent with
+ * the lemma path.
  */
 async function categorySimpleSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0;
 
   try {
-    const data1 = lemmatizeAndWeight(text1);
-    const data2 = lemmatizeAndWeight(text2);
+    const a = lemmasWithWeight(text1);
+    const b = lemmasWithWeight(text2);
+    if (!a.size || !b.size) return 0;
 
-    const categories1 = new Set(Object.keys(data1.categories));
-    const categories2 = new Set(Object.keys(data2.categories));
+    const mainsB = new Set([...b.values()].map(v => v.main).filter(Boolean));
+    const fullB = new Set([...b.values()].filter(v => v.main && v.sub).map(v => `${v.main}/${v.sub}`));
 
-    if (categories1.size === 0 || categories2.size === 0) return 0;
-
-    const intersection = [...categories1].filter(cat => categories2.has(cat)).length;
-    const union = new Set([...categories1, ...categories2]).size;
-
-    return Math.round((intersection / union) * 100);
+    let credit = 0;
+    for (const info of a.values()) {
+      if (!info.main) continue;
+      const key = info.sub ? `${info.main}/${info.sub}` : null;
+      if (key && fullB.has(key)) credit += info.weight;
+      else if (mainsB.has(info.main)) credit += info.weight * 0.5;
+    }
+    const smallerWeight = Math.min(sumWeights(a), sumWeights(b));
+    if (smallerWeight === 0) return 0;
+    return Math.round((credit / smallerWeight) * 100);
   } catch (error) {
     console.error('Category similarity error:', error);
     return 0;
   }
-}
-
-/**
- * Convert text to its lemmatized form (lemmas joined as space-separated string)
- */
-function toLemmatizedText(text: string): string {
-  const data = lemmatizeAndWeight(text);
-  return data.lemmatized.map(item => item.lemma).join(' ');
 }
 
 /**
@@ -78,47 +107,33 @@ export async function semanticOnlySimilarity(text1: string, text2: string): Prom
 }
 
 /**
- * Calculate similarity between lemmatized text strings using semantic comparison
- */
-async function lemmatizedTextSimilarity(text1: string, text2: string): Promise<number> {
-  if (!text1 || !text2) return 0;
-
-  try {
-    const lemmatizedText1 = toLemmatizedText(text1);
-    const lemmatizedText2 = toLemmatizedText(text2);
-
-    if (!lemmatizedText1 || !lemmatizedText2) return 0;
-
-    const result = await semanticSimilarity(lemmatizedText1, lemmatizedText2);
-    return result;
-  } catch (error) {
-    console.error('Lemmatized text similarity error:', error);
-    return 0;
-  }
-}
-
-/**
- * Calculate comprehensive server-side similarity score using:
- * - Lemma matching (set intersection)
- * - Category matching (set intersection)
- * - Lemmatized text semantic similarity
- * - OpenAI embedding similarity (if AI_GATEWAY_API_KEY is available and not localhost)
- * - Falls back to local semantic similarity on localhost or when API key is missing
- * Final score = average of available scores
+ * Reward-stacking similarity. Semantic embedding is the fair "meaning floor" —
+ * it captures whether the user picked up the broad picture. Lemma overlap and
+ * hierarchical category matches are additive precision bonuses layered on top.
+ *
+ *   score = clamp(semantic + precisionBonus, 0, 100)
+ *   precisionBonus = max(0, precision - threshold) * gain
+ *
+ * The threshold prevents noise from inflating scores; the gain rewards users
+ * who name specific descriptors that match the wine. Lemma/category can never
+ * drag the score *below* the semantic floor — that was the core flaw of the
+ * previous three-way average.
  */
 export async function serverSideSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0;
 
   try {
-    // Calculate all similarity scores in parallel
-    const [lemmaScore, categoryScore, lemmatizedTextScore] = await Promise.all([
+    const [lemmaScore, categoryScore, semanticScore] = await Promise.all([
       lemmaSimpleSimilarity(text1, text2),
       categorySimpleSimilarity(text1, text2),
-      lemmatizedTextSimilarity(text1, text2)
+      semanticOnlySimilarity(text1, text2)
     ]);
 
-    // Average all three scores
-    return Math.round((lemmaScore + categoryScore + lemmatizedTextScore) / 3);
+    const precision = (lemmaScore + categoryScore) / 2;
+    const bonus = Math.max(0, precision - 30) * 0.35;
+    const final = Math.min(100, semanticScore + bonus);
+
+    return Math.round(final);
   } catch (error) {
     console.error('Server-side similarity error:', error);
     return 0;

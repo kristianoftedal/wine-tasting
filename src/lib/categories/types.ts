@@ -1,43 +1,41 @@
 // Main categories aligned with Vinmonopolet aromahjul
 export type MainCategory = 'Frukt' | 'Krydder' | 'Urter' | 'Blomster' | 'Eik/fat' | 'Mineral';
 
-// Subcategories per main category (use 'annet' as catch-all)
-export type FruktSubcategory = 'baer' | 'sitrus' | 'steinfrukt' | 'tropisk' | 'toerket' | 'annet';
-export type KrydderSubcategory = 'soet' | 'varm' | 'annet';
-export type UrterSubcategory = 'groenn' | 'toerket' | 'annet';
-export type BlomsterSubcategory = 'annet';
-export type EikSubcategory = 'fatlagring' | 'ristet' | 'annet';
-export type MineralSubcategory = 'stein' | 'annet';
-
-// Generic structure categories (separate from aroma categories)
-export type GenericCategory = 'structure' | 'quality' | 'finish' | 'body' | 'acidity' | 'sweetness' | 'texture' | 'general';
-
-// Combined subcategory type
+// All valid subcategory slugs across every main category. Kept as a single flat
+// union — the per-main subtypes weren't referenced anywhere and their names
+// didn't prevent invalid combinations (e.g. Blomster/stein) anyway, so they
+// added file surface without buying type safety.
 export type WineSubcategory =
-  | FruktSubcategory
-  | KrydderSubcategory
-  | UrterSubcategory
-  | BlomsterSubcategory
-  | EikSubcategory
-  | MineralSubcategory
-  | GenericCategory;
+  // Frukt
+  | 'baer'
+  | 'sitrus'
+  | 'steinfrukt'
+  | 'tropisk'
+  | 'toerket'
+  // Krydder
+  | 'soet'
+  | 'varm'
+  // Urter
+  | 'groenn'
+  // Eik/fat
+  | 'fatlagring'
+  | 'ristet'
+  // Mineral
+  | 'stein'
+  // GENERIC structure subcategories
+  | 'structure'
+  | 'quality'
+  | 'finish'
+  | 'body'
+  | 'acidity'
+  | 'sweetness'
+  | 'texture'
+  | 'general'
+  // Shared catch-all
+  | 'annet';
 
 // Category path for hierarchical lookups
 export interface CategoryPath {
   main: MainCategory | 'GENERIC';
   sub: WineSubcategory;
-}
-
-// V2 lemma data with hierarchical categories
-export interface LemmaDataV2 {
-  lemma: string;
-  weight: number;
-  category: CategoryPath;
-  abstraction: 'generic' | 'specific';
-}
-
-// Subcategory data structure
-export interface SubcategoryData {
-  terms: readonly string[];
-  weight: number;
 }
