@@ -32,6 +32,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const router = useRouter();
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [index, setIndex] = useState<number>(0);
   const steps = ['Se', 'Aroma', 'Smak', 'Egenskaper', 'Oppsummering'];
 
@@ -76,8 +77,23 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   };
 
   const finish = async () => {
-    await onSave();
-    router.push(eventId ? `/arrangement/${eventId}` : '/');
+    // Guard against double-submits: button stays visually disabled while
+    // the save+redirect is in flight, but React-state-based re-renders are
+    // also gated here so rapid-fire clicks that slip through (e.g. during
+    // the brief synchronous tick before onClick re-evaluates) don't trigger
+    // a second addTasting call.
+    if (isSaving) return;
+    setIsSaving(true);
+    try {
+      await onSave();
+      router.push(eventId ? `/arrangement/${eventId}` : '/');
+    } catch (err) {
+      console.error('Finish failed:', err);
+      setIsSaving(false);
+    }
+    // Deliberately do NOT reset isSaving on success: the router.push above
+    // will unmount this component, and flipping state back would briefly
+    // re-enable the button and allow a trailing click to re-submit.
   };
 
   if (!wine) {
@@ -143,8 +159,9 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
             {index + 1 === steps.length && (
               <button
                 className={styles.nextButton}
-                onClick={async () => await finish()}>
-                Ferdig
+                onClick={finish}
+                disabled={isSaving}>
+                {isSaving ? 'Lagrer…' : 'Ferdig'}
               </button>
             )}
           </footer>
