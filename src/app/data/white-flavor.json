@@ -2,13 +2,13 @@
   {
     "name": "Frukt og bær",
     "backgroundColor": "#EA2027",
-    "description": "Aromaer og smaker som minner om ulike frukter eller bær.",
-    "icon": "🍎🍓🍉🍑🍋🥭🍈🫐🍇",
+    "description": "",
+    "icon": "",
     "subcategories": [
       {
         "name": "Sitrus",
-        "description": "Frisk, syrlig smak fra sitrusfrukter.",
-        "icon": "🍋",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#A3CB38",
         "flavors": [
           { "name": "Sitrus" },
@@ -24,7 +24,7 @@
       {
         "name": "Trefrukt",
         "description": "",
-        "icon": "🍏",
+        "icon": "",
         "backgroundColor": "#FFC312",
         "flavors": [
           { "name": "Trefrukt" },
@@ -45,7 +45,7 @@
       {
         "name": "Tropisk frukt",
         "description": "",
-        "icon": "🥭",
+        "icon": "",
         "backgroundColor": "#F79F1F",
         "flavors": [
           { "name": "Tropisk frukt" },
@@ -60,8 +60,8 @@
       },
       {
         "name": "Rød frukt",
-        "description": "Søte eller syrlige små frukter.",
-        "icon": "🍓",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#ED4C67",
         "flavors": [
           { "name": "Rød frukt" },
@@ -72,8 +72,8 @@
       },
       {
         "name": "Tørket frukt",
-        "description": "Aromaer og smaker som minner om tørkede frukter.",
-        "icon": "🍇",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#833471",
         "flavors": [{ "name": "Tørket fiken" }, { "name": "Tørket aprikos" }, { "name": "Rosin" }]
       }
@@ -81,14 +81,14 @@
   },
   {
     "name": "Blomst",
-    "description": "Subtile eller fremtredende toner av blomster som roser, fioler eller lavendel.",
-    "icon": "🌸🌼🌺",
+    "description": "",
+    "icon": "",
     "backgroundColor": "#1e90ff",
     "subcategories": [
       {
         "name": "Blomst",
-        "description": "Subtile, florale aromaer.",
-        "icon": "🌼",
+        "description": "",
+        "icon": "",
         "backgroundColor": "#1e90ff",
         "flavors": [
           { "name": "Hylleblomst" },
@@ -103,8 +103,8 @@
   },
   {
     "name": "Urteaktig",
-    "description": "Friske eller krydrede urtearomaer.",
-    "icon": "🌿🍃🌱🪴🍂",
+    "description": "",
+    "icon": "",
     "backgroundColor": "#079992",
     "subcategories": [
       {
@@ -141,8 +141,8 @@
   },
   {
     "name": "Jordaktig",
-    "description": "Aromaer som minner om jord og natur.",
-    "icon": "🪨💦🌍🍄🏺",
+    "description": "",
+    "icon": "",
     "backgroundColor": "#009432",
     "subcategories": [
       {
@@ -190,7 +190,7 @@
   },
   {
     "name": "Krydder",
-    "description": "Sødmefull",
+    "description": "",
     "icon": "",
     "backgroundColor": "#b33939",
     "subcategories": [
@@ -219,7 +219,7 @@
   },
   {
     "name": "Nøtt",
-    "description": "Sødmefull",
+    "description": "",
     "icon": "",
     "backgroundColor": "#ff793f",
     "subcategories": [
@@ -240,7 +240,7 @@
   },
   {
     "name": "Ristet",
-    "description": "Sødmefull",
+    "description": "",
     "icon": "",
     "backgroundColor": "#f6b93b",
     "subcategories": [
@@ -255,7 +255,7 @@
   },
   {
     "name": "Andre smaker",
-    "description": "Disse passer ikke inn andre steder",
+    "description": "",
     "icon": "",
     "backgroundColor": "",
     "subcategories": [

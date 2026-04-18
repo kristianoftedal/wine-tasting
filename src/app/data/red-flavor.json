@@ -2,7 +2,7 @@
   {
     "name": "Frukt og bær",
     "backgroundColor": "#EA2027",
-    "description": "Aromaer og smaker som minner om ulike frukter og bær.",
+    "description": "",
     "icon": "",
     "subcategories": [
       {
@@ -29,7 +29,7 @@
       {
         "name": "Mørk frukt",
         "description": "",
-        "icon": "🫐",
+        "icon": "",
         "backgroundColor": "#5758BB",
         "flavors": [
           { "name": "Blå plomme" },
@@ -77,7 +77,7 @@
   },
   {
     "name": "Nøtter",
-    "description": "Sødmefull",
+    "description": "",
     "icon": "",
     "backgroundColor": "#ff793f",
     "subcategories": [

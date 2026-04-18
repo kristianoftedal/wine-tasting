@@ -25,7 +25,8 @@ export const Accordion = memo(
           type="button"
           className={styles.flavorCategorySummary}
           onClick={() => setIsOpen(prev => !prev)}
-          aria-expanded={isOpen}>
+          aria-expanded={isOpen}
+          style={{ borderLeftColor: category.backgroundColor || '#8b5cf6' }}>
           <div className={styles.categoryTitle}>
             <div>{category.name}</div>
             <div className={styles.categoryDescription}>{category.description}</div>
