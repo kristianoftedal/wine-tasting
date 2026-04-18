@@ -32,20 +32,28 @@ interface CategoryRecommendations {
   wines: Wine[];
   scores: WineSimilarityScore[];
   loading: boolean;
+  visibleCount: number;
+  exhausted: boolean;
 }
+
+const INITIAL_RECS: CategoryRecommendations = {
+  wines: [],
+  scores: [],
+  loading: false,
+  visibleCount: 6,
+  exhausted: false
+};
+
+const SHOW_MORE_STEP = 10;
 
 const useLocalSimilarity =
   typeof window !== 'undefined' &&
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
 export default function PreferenceTab({ tastings, wines, allWines }: PreferenceTabProps) {
-  const [rodvinRecs, setRodvinRecs] = useState<CategoryRecommendations>({ wines: [], scores: [], loading: false });
-  const [hvitvinRecs, setHvitvinRecs] = useState<CategoryRecommendations>({ wines: [], scores: [], loading: false });
-  const [musserendeRecs, setMusserendeRecs] = useState<CategoryRecommendations>({
-    wines: [],
-    scores: [],
-    loading: false
-  });
+  const [rodvinRecs, setRodvinRecs] = useState<CategoryRecommendations>(INITIAL_RECS);
+  const [hvitvinRecs, setHvitvinRecs] = useState<CategoryRecommendations>(INITIAL_RECS);
+  const [musserendeRecs, setMusserendeRecs] = useState<CategoryRecommendations>(INITIAL_RECS);
 
   const [showTuningPanel, setShowTuningPanel] = useState(false);
   const [weights, setWeights] = useState<RecommendationWeights>(DEFAULT_WEIGHTS);
@@ -84,24 +92,49 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
   }, [tastings, wines]);
 
   const loadCategoryRecommendations = useCallback(
-    async (category: 'Rødvin' | 'Hvitvin' | 'Musserende vin') => {
+    async (category: 'Rødvin' | 'Hvitvin' | 'Musserende vin', desiredCount = 6) => {
       const userId = tastings[0]?.user_id;
       if (!userId) return;
 
       const setter =
         category === 'Rødvin' ? setRodvinRecs : category === 'Hvitvin' ? setHvitvinRecs : setMusserendeRecs;
 
-      setter(prev => ({ ...prev, loading: true }));
+      setter(prev => ({ ...prev, loading: true, visibleCount: desiredCount }));
 
       try {
-        const result = await findSimilarWinesSQL(userId, 6, weights, thresholds, category, useLocalSimilarity);
-        setter({ wines: result.wines, scores: result.scores, loading: false });
+        const result = await findSimilarWinesSQL(
+          userId,
+          desiredCount,
+          weights,
+          thresholds,
+          category,
+          useLocalSimilarity
+        );
+        // If the backend returned fewer wines than we asked for, there are
+        // no more candidates for this category — hide the "show more" button.
+        const exhausted = result.wines.length < desiredCount;
+        setter({
+          wines: result.wines,
+          scores: result.scores,
+          loading: false,
+          visibleCount: desiredCount,
+          exhausted
+        });
       } catch (error) {
         console.error(`Error loading ${category} recommendations:`, error);
-        setter({ wines: [], scores: [], loading: false });
+        setter({ wines: [], scores: [], loading: false, visibleCount: desiredCount, exhausted: true });
       }
     },
     [tastings, weights, thresholds]
+  );
+
+  const loadMore = useCallback(
+    (category: 'Rødvin' | 'Hvitvin' | 'Musserende vin') => {
+      const current =
+        category === 'Rødvin' ? rodvinRecs : category === 'Hvitvin' ? hvitvinRecs : musserendeRecs;
+      loadCategoryRecommendations(category, current.visibleCount + SHOW_MORE_STEP);
+    },
+    [rodvinRecs, hvitvinRecs, musserendeRecs, loadCategoryRecommendations]
   );
 
   useEffect(() => {
@@ -140,7 +173,17 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
   }, []);
 
   const CategorySection = useCallback(
-    ({ title, recs, color }: { title: string; recs: CategoryRecommendations; color: string }) => (
+    ({
+      title,
+      recs,
+      color,
+      onLoadMore
+    }: {
+      title: string;
+      recs: CategoryRecommendations;
+      color: string;
+      onLoadMore: () => void;
+    }) => (
       <div className={styles.categorySection}>
         <h4
           className={styles.categoryTitle}
@@ -148,7 +191,7 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
           {title}
         </h4>
 
-        {recs.loading ? (
+        {recs.loading && recs.wines.length === 0 ? (
           <div className={styles.loadingRecommendations}>Laster anbefalinger...</div>
         ) : recs.wines.length > 0 ? (
           <>
@@ -201,6 +244,18 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
               })}
             </div>
 
+            {!recs.exhausted && (
+              <div className={styles.loadMoreWrapper}>
+                <button
+                  type="button"
+                  className={styles.applyButton}
+                  onClick={onLoadMore}
+                  disabled={recs.loading}>
+                  {recs.loading ? 'Laster…' : `Vis ${SHOW_MORE_STEP} til`}
+                </button>
+              </div>
+            )}
+
             {recs.scores.length > 0 && showTuningPanel && (
               <div className={styles.scoreBreakdown}>
                 <h5 className={styles.breakdownTitle}>Score-detaljer</h5>
@@ -215,12 +270,12 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
                         {decode(score.wine.name || '')}
                       </span>
                       <div className={styles.breakdownScores}>
-                        <span>Fylde: {score.attributeScores.fylde.toFixed(0)}%</span>
-                        <span>Friskhet: {score.attributeScores.friskhet.toFixed(0)}%</span>
-                        <span>Snærp: {score.attributeScores.snaerp.toFixed(0)}%</span>
-                        <span>Sødme: {score.attributeScores.sodme.toFixed(0)}%</span>
-                        <span>Lukt: {score.attributeScores.smell.toFixed(0)}%</span>
-                        <span>Smak: {score.attributeScores.taste.toFixed(0)}%</span>
+                        <span>Fylde: {score.attributeScores.fylde?.toFixed(0) ?? '—'}%</span>
+                        <span>Friskhet: {score.attributeScores.friskhet?.toFixed(0) ?? '—'}%</span>
+                        <span>Snærp: {score.attributeScores.snaerp?.toFixed(0) ?? '—'}%</span>
+                        <span>Sødme: {score.attributeScores.sodme?.toFixed(0) ?? '—'}%</span>
+                        <span>Lukt: {score.attributeScores.smell?.toFixed(0) ?? '—'}%</span>
+                        <span>Smak: {score.attributeScores.taste?.toFixed(0) ?? '—'}%</span>
                       </div>
                       <span className={styles.breakdownTotal}>Total: {score.similarityScore.toFixed(0)}%</span>
                     </div>
@@ -397,16 +452,19 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
         title="Rødvin"
         recs={rodvinRecs}
         color="#dc2626"
+        onLoadMore={() => loadMore('Rødvin')}
       />
       <CategorySection
         title="Hvitvin"
         recs={hvitvinRecs}
         color="#fbbf24"
+        onLoadMore={() => loadMore('Hvitvin')}
       />
       <CategorySection
         title="Musserende vin"
         recs={musserendeRecs}
         color="#3b82f6"
+        onLoadMore={() => loadMore('Musserende vin')}
       />
 
       <WineDetailsModal

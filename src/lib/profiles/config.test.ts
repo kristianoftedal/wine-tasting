@@ -64,17 +64,6 @@ describe('valid profile selection', () => {
     expect(profile.weights['Frukt']).toBe(1.8)
   })
 
-  it('should return data-driven profile when configured', async () => {
-    vi.stubEnv('NEXT_PUBLIC_WEIGHT_PROFILE', 'data-driven')
-    vi.resetModules()
-
-    const { getActiveProfile } = await import('./config')
-    const profile = getActiveProfile()
-
-    expect(profile.name).toBe('data-driven')
-    expect(profile.weights['GENERIC']).toBe(2.5) // Data-driven inverts: generic = high
-    expect(profile.weights['Frukt']).toBe(2.2)
-  })
 })
 
 describe('invalid profile fallback', () => {
@@ -130,16 +119,16 @@ describe('getCategoryWeight', () => {
     const { getCategoryWeight: getInverted } = await import('./config')
     const invertedGeneric = getInverted('GENERIC')
 
-    // Test data-driven profile
-    vi.stubEnv('NEXT_PUBLIC_WEIGHT_PROFILE', 'data-driven')
+    // Test moderate profile
+    vi.stubEnv('NEXT_PUBLIC_WEIGHT_PROFILE', 'moderate')
     vi.resetModules()
-    const { getCategoryWeight: getDataDriven } = await import('./config')
-    const dataDrivenGeneric = getDataDriven('GENERIC')
+    const { getCategoryWeight: getModerate } = await import('./config')
+    const moderateGeneric = getModerate('GENERIC')
 
-    // Inverted: GENERIC = 1.0, Data-driven: GENERIC = 2.5
+    // Inverted: GENERIC = 1.0, Moderate: GENERIC = 1.2
     expect(invertedGeneric).toBe(1.0)
-    expect(dataDrivenGeneric).toBe(2.5)
-    expect(invertedGeneric).not.toBe(dataDrivenGeneric)
+    expect(moderateGeneric).toBe(1.2)
+    expect(invertedGeneric).not.toBe(moderateGeneric)
   })
 
   it('should return weight for all main categories', async () => {

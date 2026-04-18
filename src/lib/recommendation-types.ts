@@ -18,23 +18,31 @@ export interface RecommendationThresholds {
 export interface WineSimilarityScore {
   wine: import("@/lib/types").Wine
   similarityScore: number
+  // null means the component was skipped (wine or user lacks the data);
+  // display as "—" rather than imputing a middle value.
   attributeScores: {
-    fylde: number
-    friskhet: number
-    snaerp: number
-    sodme: number
-    smell: number
-    taste: number
+    fylde: number | null
+    friskhet: number | null
+    snaerp: number | null
+    sodme: number | null
+    smell: number | null
+    taste: number | null
   }
 }
 
+// Semantic smell/taste is the only signal that meaningfully varies across
+// high-matching candidates — numeric attributes are integers 0–10 and
+// candidates cluster at identical distances from the user's averages. A
+// 70/30 semantic-to-numeric split lets the varying signal drive the ranking
+// instead of being diluted by constants. See recommendation diagnosis
+// 2026-04 for the data.
 export const DEFAULT_WEIGHTS: RecommendationWeights = {
-  fylde: 0.15,
-  friskhet: 0.15,
-  snaerp: 0.15,
-  sodme: 0.15,
-  smell: 0.2,
-  taste: 0.2,
+  fylde: 0.075,
+  friskhet: 0.075,
+  snaerp: 0.075,
+  sodme: 0.075,
+  smell: 0.35,
+  taste: 0.35,
 }
 
 export const DEFAULT_THRESHOLDS: RecommendationThresholds = {

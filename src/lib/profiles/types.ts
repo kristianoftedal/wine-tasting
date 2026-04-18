@@ -10,4 +10,4 @@ export interface WeightProfile {
 }
 
 // Profile name union type for environment variable validation
-export type ProfileName = 'inverted' | 'moderate' | 'data-driven';
+export type ProfileName = 'inverted' | 'moderate';

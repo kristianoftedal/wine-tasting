@@ -35,7 +35,7 @@ const sumWeights = (m: Map<string, LemmaInfo>) => [...m.values()].reduce((s, v) 
  * Denominator is the smaller side's weighted mass so short, precise user notes
  * aren't punished for being short.
  */
-export async function lemmaSimpleSimilarity(text1: string, text2: string): Promise<number> {
+async function lemmaSimpleSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0;
 
   try {

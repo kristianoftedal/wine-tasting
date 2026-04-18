@@ -959,6 +959,12 @@
   box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
 }
 
+.loadMoreWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
 /* Updated tuning actions border */
 .tuningActions {
   display: flex;

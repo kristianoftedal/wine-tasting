@@ -1,12 +1,11 @@
 import type { ProfileName, WeightProfile } from './types';
-import { INVERTED_PROFILE, MODERATE_PROFILE, DATA_DRIVEN_PROFILE } from './weights';
+import { INVERTED_PROFILE, MODERATE_PROFILE } from './weights';
 import type { MainCategory } from '../categories/types';
 
 // Profile registry mapping names to profile objects
 const PROFILES: Record<ProfileName, WeightProfile> = {
   'inverted': INVERTED_PROFILE,
-  'moderate': MODERATE_PROFILE,
-  'data-driven': DATA_DRIVEN_PROFILE
+  'moderate': MODERATE_PROFILE
 };
 
 /**

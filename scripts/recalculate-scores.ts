@@ -16,7 +16,7 @@
  * Environment variables:
  *   SUPABASE_URL or NEXT_PUBLIC_SUPABASE_URL - Supabase project URL
  *   SUPABASE_SERVICE_ROLE_KEY - Service role key for read access
- *   NEXT_PUBLIC_WEIGHT_PROFILE - Profile to use (inverted, moderate, data-driven)
+ *   NEXT_PUBLIC_WEIGHT_PROFILE - Profile to use (inverted, moderate)
  */
 
 import 'dotenv/config'

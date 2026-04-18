@@ -12,7 +12,7 @@
  * Purpose:
  * - Verify inverted profile rewards specific descriptors (berry, oak, spice names)
  * - Verify inverted profile penalizes generic terms (balanced, fresh, elegant)
- * - Compare behavior across all three profiles (inverted, moderate, data-driven)
+ * - Compare behavior across profiles (inverted, moderate)
  * - Provide systematic validation before deploying profile changes
  */
 
@@ -30,7 +30,6 @@ interface TestResult {
   profiles: {
     inverted: ProfileResult;
     moderate: ProfileResult;
-    'data-driven': ProfileResult;
   };
 }
 
@@ -234,15 +233,14 @@ async function runValidation(generateReport: boolean = false): Promise<void> {
   console.log();
 
   const results: TestResult[] = [];
-  const profileNames = ['inverted', 'moderate', 'data-driven'] as const;
+  const profileNames = ['inverted', 'moderate'] as const;
 
   for (const testCase of testCases) {
     const testResult: TestResult = {
       testCase,
       profiles: {
         inverted: { text1Weight: 0, text2Weight: 0, ratio: 0, pass: false },
-        moderate: { text1Weight: 0, text2Weight: 0, ratio: 0, pass: false },
-        'data-driven': { text1Weight: 0, text2Weight: 0, ratio: 0, pass: false }
+        moderate: { text1Weight: 0, text2Weight: 0, ratio: 0, pass: false }
       }
     };
 
@@ -299,8 +297,7 @@ async function runValidation(generateReport: boolean = false): Promise<void> {
   // Summary by profile
   const summaries = {
     inverted: { total: 0, passed: 0 },
-    moderate: { total: 0, passed: 0 },
-    'data-driven': { total: 0, passed: 0 }
+    moderate: { total: 0, passed: 0 }
   };
 
   for (const result of results) {
@@ -378,7 +375,7 @@ async function runValidation(generateReport: boolean = false): Promise<void> {
 
 async function generateMarkdownReport(
   results: TestResult[],
-  summaries: Record<'inverted' | 'moderate' | 'data-driven', { total: number; passed: number }>
+  summaries: Record<'inverted' | 'moderate', { total: number; passed: number }>
 ): Promise<void> {
   const fs = await import('fs/promises');
   const path = await import('path');
@@ -396,7 +393,7 @@ Generated: ${today}
 |---------|-----------|--------|--------|-------|
 `;
 
-  const profileNames = ['inverted', 'moderate', 'data-driven'] as const;
+  const profileNames = ['inverted', 'moderate'] as const;
   for (const profileName of profileNames) {
     const s = summaries[profileName];
     const passRate = ((s.passed / s.total) * 100).toFixed(1);
@@ -468,25 +465,9 @@ Generated: ${today}
   markdown += `- Specific oak/barrel terms (e.g., "eik", "vanilje") score higher than quality adjectives (e.g., "elegant", "god")\n`;
   markdown += `- Named spices and herbs score higher than generic texture/acidity terms\n\n`;
 
-  markdown += `### Data-Driven Profile (${summaries['data-driven'].passed}/${summaries['data-driven'].total} = ${((summaries['data-driven'].passed / summaries['data-driven'].total) * 100).toFixed(1)}% pass rate)
-
-`;
-
-  if (summaries['data-driven'].passed / summaries['data-driven'].total <= 0.2) {
-    markdown += `✓ **Expected Behavior**: The data-driven profile inverts the logic, rewarding common/generic terms.
-
-This demonstrates that the weight profile system is working correctly - different profiles produce different scoring behavior.
-
-`;
-  } else {
-    markdown += `✗ **Unexpected**: Data-driven profile should fail most tests (it should reward generic terms).
-
-`;
-  }
-
   markdown += `### Moderate Profile (${summaries.moderate.passed}/${summaries.moderate.total} = ${((summaries.moderate.passed / summaries.moderate.total) * 100).toFixed(1)}% pass rate)
 
-The moderate profile provides a middle ground between inverted and data-driven, with some weight differentiation but less extreme than the inverted profile.
+The moderate profile applies the same direction as inverted (specifics weigh more than generics) but with gentler differentiation.
 
 ## Conclusion
 
