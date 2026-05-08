@@ -4,7 +4,7 @@ import type { WeightProfile } from './types';
 // Rewards actual tasting skill - identifying specific aromas is harder than generic terms
 export const INVERTED_PROFILE = {
   name: 'inverted',
-  description: 'Specific descriptors valued highly (2.0-2.5), generic terms low (1.0)',
+  description: 'Specific descriptors valued highly (2.0), generic terms low (1.3)',
   weights: {
     Frukt: 2.0,
     Krydder: 2.0,
@@ -12,7 +12,7 @@ export const INVERTED_PROFILE = {
     Blomster: 2.0,
     'Eik/fat': 2.0,
     Mineral: 2.0,
-    GENERIC: 1.0
+    GENERIC: 1.3
   }
 } as const satisfies WeightProfile;
 

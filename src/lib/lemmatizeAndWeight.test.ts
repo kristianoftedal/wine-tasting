@@ -6,6 +6,7 @@ import {
   stopwords,
   type TextAnalysis,
 } from './lemmatizeAndWeight'
+import { PorterStemmerNo } from 'natural'
 
 // Mock alert for Node environment (analyze uses browser alert for empty text)
 const mockAlert = vi.fn()
@@ -47,7 +48,8 @@ describe('lemmatizeAndWeight', () => {
 
       expect(unknown).toBeDefined()
       expect(unknown?.category).toBe('ukjent')
-      expect(unknown?.lemma).toBe('sjokoladebitter') // Unknown keeps original as lemma
+      // Unknown uses Porter stem as lemma so inflected variants match each other
+      expect(unknown?.lemma).toBe(PorterStemmerNo.stem('sjokoladebitter'))
     })
   })
 
@@ -65,16 +67,17 @@ describe('lemmatizeAndWeight', () => {
     it('should apply GENERIC weight to structure terms', () => {
       const result = lemmatizeAndWeight('balansert frisk')
 
-      // Generic terms with inverted profile = 1.0
+      // Generic terms with inverted profile = 1.3 (raised from 1.0 to reward structural precision)
+      // IDF multiplier floored at 1.0 so effective weight >= 1.3
       result.lemmatized.forEach(item => {
-        expect(item.weight).toBe(1.0) // GENERIC weight from inverted profile
+        expect(item.weight).toBeGreaterThanOrEqual(1.3)
       })
     })
 
     it('should apply GENERIC weight to unknown terms', () => {
       const result = lemmatizeAndWeight('ukenteord123')
 
-      expect(result.lemmatized[0].weight).toBe(1.0) // GENERIC weight
+      expect(result.lemmatized[0].weight).toBe(1.3) // GENERIC weight (no IDF boost for unknowns)
       expect(result.lemmatized[0].category).toBe('ukjent')
     })
   })

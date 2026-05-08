@@ -2,16 +2,18 @@
 
 import { openai } from '@ai-sdk/openai';
 import { embed } from 'ai';
-import { sanitizeText } from './lemmatizeAndWeight';
+import { stripGenericTerms } from './lemmatizeAndWeight';
 import { cosineSimilarity } from './math';
 
 /**
  * Compute semantic similarity (0-100) between two texts using OpenAI embeddings.
- * This is serverless-compatible as it uses API calls instead of local ML models.
+ * Strips structural/quality/texture terms (tannins, body, acidity etc.) before
+ * embedding so the comparison focuses on aroma and flavor descriptors only —
+ * structure is already captured by numeric scores.
  */
 export async function semanticSimilarity(text1: string, text2: string): Promise<number> {
-  const cleaned1 = sanitizeText(text1);
-  const cleaned2 = sanitizeText(text2);
+  const cleaned1 = stripGenericTerms(text1);
+  const cleaned2 = stripGenericTerms(text2);
   if (!cleaned1 || !cleaned2) return 0;
 
   try {
@@ -43,8 +45,8 @@ export async function batchSemanticSimilarity(pairs: Array<{ text1: string; text
 
   try {
     const cleanedPairs = pairs.map(({ text1, text2 }) => ({
-      text1: sanitizeText(text1),
-      text2: sanitizeText(text2)
+      text1: stripGenericTerms(text1),
+      text2: stripGenericTerms(text2)
     }));
 
     const uniqueTexts = [...new Set(cleanedPairs.flatMap(p => [p.text1, p.text2]).filter(Boolean))];

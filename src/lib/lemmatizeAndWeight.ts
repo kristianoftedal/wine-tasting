@@ -2,6 +2,13 @@
 import { CategoryPath } from './categories';
 // Import profile-based weight lookup
 import { getCategoryWeight } from './profiles';
+// Norwegian Porter Stemmer — fallback for inflected forms not in the lemma dict
+import { PorterStemmerNo } from 'natural';
+// Pre-computed IDF multipliers from wine corpus (floored at 1.0, so scores never decrease)
+import idfWeights from './idf-weights.generated.json';
+
+const getIdfMultiplier = (lemma: string): number =>
+  (idfWeights as Record<string, number>)[lemma] ?? 1.0;
 
 // Type definitions
 /** @deprecated Use CategoryPath instead - flat categories being phased out */
@@ -219,6 +226,7 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   grapefrukt: { lemma: 'grapefrukt', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
 
   // STEINFRUKTER (medium vekt - 1.5x) - SPECIFIC descriptors
+  steinfrukt: { lemma: 'steinfrukt', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt', sub: 'steinfrukt' } },
   plomme: { lemma: 'plomme', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt', sub: 'steinfrukt' } },
   plommer: { lemma: 'plomme', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt', sub: 'steinfrukt' } },
   fersken: {
@@ -262,6 +270,7 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   // KRYDDER (medium-høy vekt - 1.7x) - SPECIFIC descriptors
   krydder: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
   krydrete: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
+  krydret: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
   pepper: { lemma: 'pepper', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'varm' } },
   nellik: { lemma: 'nellik', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'varm' } },
   kanel: { lemma: 'kanel', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'soet' } },
@@ -335,6 +344,7 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   lær: { lemma: 'lær', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
 
   // TEKSTUR/MUNNFØLELSE (GENERIC - lav vekt 0.8x)
+  munnfølelse: { lemma: 'munnfølelse', weight: 0.8, category: 'tekstur', categoryPath: { main: 'GENERIC', sub: 'texture' } },
   myk: { lemma: 'myk', weight: 0.8, category: 'tekstur', categoryPath: { main: 'GENERIC', sub: 'texture' } },
   myke: { lemma: 'myk', weight: 0.8, category: 'tekstur', categoryPath: { main: 'GENERIC', sub: 'texture' } },
   mykhet: { lemma: 'myk', weight: 0.8, category: 'tekstur', categoryPath: { main: 'GENERIC', sub: 'texture' } },
@@ -354,6 +364,12 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   fasthet: { lemma: 'fast', weight: 0.8, category: 'tekstur', categoryPath: { main: 'GENERIC', sub: 'texture' } },
 
   // GENERELLE DESKRIPTORER (GENERIC - lav vekt 0.8x)
+  ren: { lemma: 'ren', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  rene: { lemma: 'ren', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  rent: { lemma: 'ren', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  utviklet: { lemma: 'utviklet', weight: 0.8, category: 'kvalitet', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  utviklede: { lemma: 'utviklet', weight: 0.8, category: 'kvalitet', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  utgang: { lemma: 'utgang', weight: 0.8, category: 'ettersmak', categoryPath: { main: 'GENERIC', sub: 'finish' } },
   god: { lemma: 'god', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
   godt: { lemma: 'god', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
   gode: { lemma: 'god', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
@@ -393,6 +409,7 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   fruktige: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
   fruktrik: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
   fruktrike: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
+  fruktighet: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
 
   urt: { lemma: 'urt', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
   urtig: { lemma: 'urt', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
@@ -498,6 +515,10 @@ export const stopwords = new Set([
   'litt',
   'noe',
   'mye',
+  'smak',
+  'hint',
+  'toner',
+  'høy',
   // Color adjectives — semantically subsumed by the noun they modify
   // ("røde bær" and "solbær" both mean "red berries"; dropping the adjective
   // removes a mismatch when the wine note doesn't repeat the color).
@@ -544,6 +565,22 @@ export const sanitizeText = (text: string): string => {
     .join(' ');
 };
 
+// All surface forms whose categoryPath.main is 'GENERIC' — used to strip
+// structural/quality/texture terms before semantic embedding so that the
+// embedding comparison focuses on aroma/flavor descriptors only.
+export const genericWords = new Set(
+  Object.entries(norwegianLemmas)
+    .filter(([, v]) => v.categoryPath?.main === 'GENERIC')
+    .map(([k]) => k)
+);
+
+export const stripGenericTerms = (text: string): string => {
+  return sanitizeText(text)
+    .split(' ')
+    .filter(w => !genericWords.has(w))
+    .join(' ');
+};
+
 export const tokenizeSanitized = (text: string): string[] => {
   const cleaned = sanitizeText(text);
   return cleaned ? cleaned.split(' ') : [];
@@ -559,32 +596,37 @@ export const lemmatizeAndWeight = (text: string): TextAnalysis => {
   words.forEach(word => {
     const lemmaData: LemmaData | undefined = norwegianLemmas[word];
     if (lemmaData) {
-      // Use profile weight based on category instead of hardcoded weight
-      // Profile weight REPLACES base weight (not multiplies)
       const profileWeight = lemmaData.categoryPath
         ? getCategoryWeight(lemmaData.categoryPath.main)
         : getCategoryWeight('GENERIC');
+      // IDF multiplier floored at 1.0 — rare descriptors get a boost, nothing decreases
+      const finalWeight = profileWeight * getIdfMultiplier(lemmaData.lemma);
 
-      lemmatized.push({
-        original: word,
-        lemma: lemmaData.lemma,
-        weight: profileWeight,
-        category: lemmaData.category
-      });
-
+      lemmatized.push({ original: word, lemma: lemmaData.lemma, weight: finalWeight, category: lemmaData.category });
       categories[lemmaData.category] = (categories[lemmaData.category] || 0) + 1;
-      weightSum += profileWeight;
+      weightSum += finalWeight;
     } else {
-      // Unknown terms get GENERIC profile weight
-      const genericWeight = getCategoryWeight('GENERIC');
+      // Norwegian Porter Stemmer fallback: normalises inflected forms not in the dict
+      // e.g. "mineralske" → "mineralsk" → found in dict as mineral (specific category)
+      //      "krydderte"  → "krydder"  → found in dict
+      // If stem still not found, use stem as lemma so inflected variants match each other
+      const stem = PorterStemmerNo.stem(word);
+      const stemEntry = stem !== word ? norwegianLemmas[stem] : undefined;
 
-      lemmatized.push({
-        original: word,
-        lemma: word,
-        weight: genericWeight,
-        category: 'ukjent'
-      });
-      weightSum += genericWeight;
+      if (stemEntry) {
+        const profileWeight = stemEntry.categoryPath
+          ? getCategoryWeight(stemEntry.categoryPath.main)
+          : getCategoryWeight('GENERIC');
+        const finalWeight = profileWeight * getIdfMultiplier(stemEntry.lemma);
+        lemmatized.push({ original: word, lemma: stemEntry.lemma, weight: finalWeight, category: stemEntry.category });
+        categories[stemEntry.category] = (categories[stemEntry.category] || 0) + 1;
+        weightSum += finalWeight;
+      } else {
+        const genericWeight = getCategoryWeight('GENERIC');
+        // Use stem (not raw word) so inflected unknowns still match each other
+        lemmatized.push({ original: word, lemma: stem, weight: genericWeight, category: 'ukjent' });
+        weightSum += genericWeight;
+      }
     }
   });
 
