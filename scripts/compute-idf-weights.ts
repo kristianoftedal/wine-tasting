@@ -36,14 +36,19 @@ async function main() {
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   console.log('Fetching wine notes from corpus...');
-  const { data, error } = await supabase
-    .from('wines')
-    .select('taste, smell')
-    .limit(5000);
-
-  if (error || !data) {
-    console.error('Fetch failed:', error);
-    process.exit(1);
+  const PAGE = 1000;
+  const data: { taste: string | null; smell: string | null }[] = [];
+  let from = 0;
+  while (true) {
+    const { data: page, error } = await supabase
+      .from('wines')
+      .select('taste, smell')
+      .range(from, from + PAGE - 1);
+    if (error) { console.error('Fetch failed:', error); process.exit(1); }
+    if (!page || page.length === 0) break;
+    data.push(...page);
+    if (page.length < PAGE) break;
+    from += PAGE;
   }
 
   const docs: Set<string>[] = [];

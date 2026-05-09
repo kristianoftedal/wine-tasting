@@ -112,12 +112,11 @@ export async function semanticOnlySimilarity(text1: string, text2: string): Prom
  * hierarchical category matches are additive precision bonuses layered on top.
  *
  *   score = clamp(semantic + precisionBonus, 0, 100)
- *   precisionBonus = max(0, precision - threshold) * gain
+ *   precisionBonus = precision * gain
  *
- * The threshold prevents noise from inflating scores; the gain rewards users
- * who name specific descriptors that match the wine. Lemma/category can never
- * drag the score *below* the semantic floor — that was the core flaw of the
- * previous three-way average.
+ * No threshold: short but correct notes should be fully rewarded for what they
+ * cover. Lemma/category can never drag the score *below* the semantic floor —
+ * that was the core flaw of the previous three-way average.
  */
 export async function serverSideSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0;
@@ -130,7 +129,7 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
     ]);
 
     const precision = (lemmaScore + categoryScore) / 2;
-    const bonus = Math.max(0, precision - 30) * 0.35;
+    const bonus = precision * 0.35;
     const final = Math.min(100, semanticScore + bonus);
 
     return Math.round(final);

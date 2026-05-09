@@ -464,7 +464,127 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   tre: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
   treaktig: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
   trepreg: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  trekrydder: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'soet' } }
+  trekrydder: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'soet' } },
+
+  // ── CORPUS GAP FILL (from corpus analysis of 49 000 wines) ─────────────────
+
+  // BLOMSTER — singular and floral adjectives missing from original dict
+  blomst: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
+  floral: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
+  florale: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
+  blomsteraktig: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
+
+  // MINERAL — singular + limestone/chalk + smoke + mushroom
+  mineral: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  kalk: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  kalkstein: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  kalkmineraler: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  kalkaktig: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  røyk: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  røykig: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  røykaktig: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  røykete: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  sopp: { lemma: 'sopp', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'annet' } },
+  soppaktig: { lemma: 'sopp', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'annet' } },
+  saltaktig: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+
+  // URTER — camphor + balsam/resin
+  kamfer: { lemma: 'kamfer', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
+  kamferaktig: { lemma: 'kamfer', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
+  balsam: { lemma: 'balsam', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
+  balsamisk: { lemma: 'balsam', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
+  balsamiske: { lemma: 'balsam', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
+
+  // EIK/FAT — cedar + cacao + mocha
+  sedertre: { lemma: 'sedertre', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
+  seder: { lemma: 'sedertre', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
+  kakao: { lemma: 'kakao', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
+  kakaopulver: { lemma: 'kakao', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
+  mokka: { lemma: 'mokka', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
+  syltet: { lemma: 'marmelade', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
+  syltede: { lemma: 'marmelade', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
+
+  // KRYDDER — paprika
+  paprika: { lemma: 'paprika', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'varm' } },
+  kryddertoner: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
+  krydderaktig: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
+
+  // FRUKT/BÆR — missing berries + berry-compound adjectives
+  stikkelsbær: { lemma: 'stikkelsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  stikkelsbæret: { lemma: 'stikkelsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  markjordbær: { lemma: 'jordbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  tranebær: { lemma: 'tranebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  granateple: { lemma: 'granateple', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  nype: { lemma: 'nype', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  nypebær: { lemma: 'nype', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  bærpreget: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  bærpregede: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  bærfrukt: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  rødbær: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  mørkkryddret: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+
+  // FRUKT/SITRUS — orange + citrus compounds
+  appelsin: { lemma: 'appelsin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
+  appelsiner: { lemma: 'appelsin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
+  appelsinskall: { lemma: 'appelsin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
+  sitrusfrukt: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
+  sitruspreget: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
+  sitrusnote: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
+
+  // FRUKT/TROPISK
+  pasjonsfrukt: { lemma: 'pasjonsfrukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'tropisk' } },
+
+  // FRUKT/STEINFRUKT — alternative spelling
+  stenfrukt: { lemma: 'steinfrukt', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt', sub: 'steinfrukt' } },
+
+  // FRUKT/ANNET — quince + fruit-compound adjectives
+  kvede: { lemma: 'kvede', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
+  fruktdrevet: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
+  fruktkonsentrasjon: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
+
+  // AROMA / DUFT — general scent terms (GENERIC — not specific flavor descriptors)
+  aroma: { lemma: 'aroma', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  aromaer: { lemma: 'aroma', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  aromaene: { lemma: 'aroma', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  aromaen: { lemma: 'aroma', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  aromatisk: { lemma: 'aroma', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  aromatiske: { lemma: 'aroma', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  duft: { lemma: 'duft', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  dufter: { lemma: 'duft', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  duften: { lemma: 'duft', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+
+  // GENERIC — quality/structure/body terms missing from original dict
+  tekstur: { lemma: 'tekstur', weight: 0.8, category: 'tekstur', categoryPath: { main: 'GENERIC', sub: 'texture' } },
+  fokusert: { lemma: 'fokusert', weight: 0.8, category: 'kvalitet', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  fokuserte: { lemma: 'fokusert', weight: 0.8, category: 'kvalitet', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  integrert: { lemma: 'integrert', weight: 0.8, category: 'struktur', categoryPath: { main: 'GENERIC', sub: 'structure' } },
+  integrerte: { lemma: 'integrert', weight: 0.8, category: 'struktur', categoryPath: { main: 'GENERIC', sub: 'structure' } },
+  kraftig: { lemma: 'kraftig', weight: 0.8, category: 'fylde', categoryPath: { main: 'GENERIC', sub: 'body' } },
+  kraftige: { lemma: 'kraftig', weight: 0.8, category: 'fylde', categoryPath: { main: 'GENERIC', sub: 'body' } },
+  intensitet: { lemma: 'intens', weight: 0.8, category: 'kvalitet', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  fersk: { lemma: 'fersk', weight: 0.8, category: 'friskhet', categoryPath: { main: 'GENERIC', sub: 'acidity' } },
+  ferske: { lemma: 'fersk', weight: 0.8, category: 'friskhet', categoryPath: { main: 'GENERIC', sub: 'acidity' } },
+  slank: { lemma: 'slank', weight: 0.8, category: 'fylde', categoryPath: { main: 'GENERIC', sub: 'body' } },
+  slanke: { lemma: 'slank', weight: 0.8, category: 'fylde', categoryPath: { main: 'GENERIC', sub: 'body' } },
+  kjølig: { lemma: 'kjølig', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  kjølige: { lemma: 'kjølig', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  delikat: { lemma: 'delikat', weight: 0.8, category: 'kvalitet', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  delikate: { lemma: 'delikat', weight: 0.8, category: 'kvalitet', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  presis: { lemma: 'presis', weight: 0.8, category: 'kvalitet', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  presise: { lemma: 'presis', weight: 0.8, category: 'kvalitet', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  syrlighet: { lemma: 'syre', weight: 0.8, category: 'friskhet', categoryPath: { main: 'GENERIC', sub: 'acidity' } },
+  sødmefull: { lemma: 'søt', weight: 0.8, category: 'sødme', categoryPath: { main: 'GENERIC', sub: 'sweetness' } },
+  sødmefulle: { lemma: 'søt', weight: 0.8, category: 'sødme', categoryPath: { main: 'GENERIC', sub: 'sweetness' } },
+  syrefrisk: { lemma: 'frisk', weight: 0.8, category: 'friskhet', categoryPath: { main: 'GENERIC', sub: 'acidity' } },
+  tanninstruktur: { lemma: 'tannin', weight: 0.8, category: 'struktur', categoryPath: { main: 'GENERIC', sub: 'structure' } },
+  anslag: { lemma: 'anslag', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  nese: { lemma: 'nese', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
+  bitter: { lemma: 'bitter', weight: 0.8, category: 'struktur', categoryPath: { main: 'GENERIC', sub: 'structure' } },
+  bitre: { lemma: 'bitter', weight: 0.8, category: 'struktur', categoryPath: { main: 'GENERIC', sub: 'structure' } },
+  bitterhet: { lemma: 'bitter', weight: 0.8, category: 'struktur', categoryPath: { main: 'GENERIC', sub: 'structure' } },
+  saftige: { lemma: 'saftig', weight: 0.8, category: 'friskhet', categoryPath: { main: 'GENERIC', sub: 'acidity' } },
+  avslutningen: { lemma: 'ettersmak', weight: 0.8, category: 'ettersmak', categoryPath: { main: 'GENERIC', sub: 'finish' } },
+  avslutningene: { lemma: 'ettersmak', weight: 0.8, category: 'ettersmak', categoryPath: { main: 'GENERIC', sub: 'finish' } },
 };
 
 export const stopwords = new Set([
@@ -545,7 +665,20 @@ export const stopwords = new Set([
   'livlig',
   'leskende',
   'nyansert',
-  'nyanserte'
+  'nyanserte',
+  // Conjunctions / prepositions that appear frequently but carry no flavor meaning
+  'samt',
+  'noen',
+  'over',
+  'under',
+  'etter',
+  // Wine-context noise words
+  'preget',   // standalone "characterized" — covered by compound forms like bærpreget
+  'noter',    // "notes of" — the noun itself adds no flavor info
+  'note',
+  'karakter',
+  'stil',
+  'vin',
 ]);
 
 /**
@@ -613,13 +746,21 @@ export const lemmatizeAndWeight = (text: string): TextAnalysis => {
       const stem = PorterStemmerNo.stem(word);
       const stemEntry = stem !== word ? norwegianLemmas[stem] : undefined;
 
-      if (stemEntry) {
-        const profileWeight = stemEntry.categoryPath
-          ? getCategoryWeight(stemEntry.categoryPath.main)
+      // Norwegian char normalization fallback: ae→æ, oe→ø, aa→å
+      // Only activates when both Porter and direct lookup failed, and only when
+      // the normalized form produces a dictionary hit (avoids false positives).
+      const normalized = word.replace(/ae/g, 'æ').replace(/oe/g, 'ø').replace(/aa/g, 'å');
+      const normalizedEntry = normalized !== word ? norwegianLemmas[normalized] : undefined;
+
+      const resolvedEntry = stemEntry ?? normalizedEntry;
+
+      if (resolvedEntry) {
+        const profileWeight = resolvedEntry.categoryPath
+          ? getCategoryWeight(resolvedEntry.categoryPath.main)
           : getCategoryWeight('GENERIC');
-        const finalWeight = profileWeight * getIdfMultiplier(stemEntry.lemma);
-        lemmatized.push({ original: word, lemma: stemEntry.lemma, weight: finalWeight, category: stemEntry.category });
-        categories[stemEntry.category] = (categories[stemEntry.category] || 0) + 1;
+        const finalWeight = profileWeight * getIdfMultiplier(resolvedEntry.lemma);
+        lemmatized.push({ original: word, lemma: resolvedEntry.lemma, weight: finalWeight, category: resolvedEntry.category });
+        categories[resolvedEntry.category] = (categories[resolvedEntry.category] || 0) + 1;
         weightSum += finalWeight;
       } else {
         const genericWeight = getCategoryWeight('GENERIC');

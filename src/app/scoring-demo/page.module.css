@@ -1,0 +1,774 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.4rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ── Demo container ── */
+.demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.examples {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.exampleBtn {
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.exampleBtn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+/* ── Inputs ── */
+.inputGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .inputGrid { grid-template-columns: 1fr; }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.inputLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #111827;
+  background: white;
+  resize: vertical;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.analyzeBtn {
+  align-self: flex-start;
+  padding: 0.65rem 2rem;
+  background: #8b5cf6;
+  color: white;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.analyzeBtn:hover:not(:disabled) {
+  background: #7c3aed;
+}
+
+.analyzeBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+/* ── Results ── */
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.section {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 1rem;
+}
+
+/* ── Score cards ── */
+.scoreGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 800px) {
+  .scoreGrid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 500px) {
+  .scoreGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.scoreCard {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.scoreCardTitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.scoreCardValue {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.scoreCardDesc {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+}
+
+.formula {
+  font-size: 0.75rem;
+  color: #8b5cf6;
+  font-family: monospace;
+  margin-top: 0.25rem;
+}
+
+.barBg {
+  width: 100%;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.barFg {
+  height: 100%;
+  border-radius: 3px;
+}
+
+/* Final card with ring */
+.finalCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+
+.finalFormula {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-family: monospace;
+}
+
+.ringWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ringLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #374151;
+}
+
+.ringSub {
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+/* ── Old vs New comparison ── */
+.compareGrid {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .compareGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.compareCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.compareHeader {
+  background: #f3f4f6;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.compareBody {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.compareRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.compareTotal {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.compareDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diffBadge {
+  font-size: 1.25rem;
+  font-weight: 800;
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+}
+
+.compareNote {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+/* ── IDF cards ── */
+.idfGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.idfCard {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.idfLemma {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.idfMult {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #d97706;
+}
+
+.idfDetail {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  font-family: monospace;
+}
+
+/* ── Term tables ── */
+.termSection {
+  margin-bottom: 1.25rem;
+}
+
+.termSection:last-child {
+  margin-bottom: 0;
+}
+
+.termTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #374151;
+  margin: 0 0 0.5rem;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.table thead tr {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table th {
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.rowMatch {
+  background: #f0fdf4;
+}
+
+.rowMiss {
+  background: white;
+}
+
+.mono {
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+.num {
+  font-family: monospace;
+  text-align: right;
+}
+
+.centered {
+  text-align: center;
+}
+
+.catBadge {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.catBadge[data-main="GENERIC"] {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.catBadge[data-main="Frukt"] {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.catBadge[data-main="Krydder"] {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.catBadge[data-main="Mineral"] {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.catBadge[data-main="Urter"] {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.catBadge[data-main="Blomster"] {
+  background: #fce7f3;
+  color: #be185d;
+}
+
+.catBadge[data-main="Eik/fat"] {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.matchYes {
+  color: #16a34a;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.matchNo {
+  color: #d1d5db;
+}
+
+/* ── Tasting selector ── */
+.selectorWrap {
+  position: relative;
+}
+
+.selectorToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.selectorToggle:hover {
+  border-color: #8b5cf6;
+  background: #faf5ff;
+}
+
+.chevron {
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+.selectorDropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 50;
+  width: 480px;
+  max-width: 90vw;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.selectorSearch {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  color: #111827;
+  background: #f9fafb;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.selectorSearch:focus {
+  background: white;
+}
+
+.selectorList {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.selectorItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.65rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #f3f4f6;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.selectorItem:last-child {
+  border-bottom: none;
+}
+
+.selectorItem:hover {
+  background: #f5f3ff;
+}
+
+.selectorItemMain {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.selectorWineName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.selectorYear {
+  font-size: 0.75rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+.selectorMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.selectorDate {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.selectorPreview {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.selectorEmpty {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+/* ── Selected tasting banner ── */
+.selectedBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  border-radius: 8px;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.selectedInfo {
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.selectedDate {
+  color: #9ca3af;
+  font-size: 0.8125rem;
+}
+
+.noteTypeTabs {
+  display: flex;
+  gap: 0.25rem;
+  background: #ede9fe;
+  padding: 0.2rem;
+  border-radius: 6px;
+}
+
+.noteTab {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.noteTab:hover:not(:disabled) {
+  background: white;
+  color: #374151;
+}
+
+.noteTabActive {
+  background: white !important;
+  color: #7c3aed !important;
+  font-weight: 700;
+}
+
+.noteTab:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Term table header (always visible) ── */
+.termHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0 0.6rem;
+}
+
+.accordionMeta {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.termBadge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* ── Lemma browser ── */
+.lemmaGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lemmaGroup {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.lemmaGroupBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  background: #f9fafb;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.lemmaGroupBtn:hover {
+  background: #f3f4f6;
+}
+
+.lemmaGroupCount {
+  font-size: 0.8125rem;
+  color: #6b7280;
+}
+
+.lemmaGroupContent {
+  padding: 0.75rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  border-top: 1px solid #e5e7eb;
+  background: white;
+}
+
+.lemmaSub {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lemmaSubTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9ca3af;
+}
+
+.lemmaChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.lemmaChip {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  color: #374151;
+}
