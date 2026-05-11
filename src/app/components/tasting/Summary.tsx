@@ -124,15 +124,13 @@ export const Summary: React.FC = () => {
 
   const isRedWine = wine?.main_category?.toLowerCase().includes('rød');
 
-  const userSmellText = [
-    ...tastingState.selectedFlavorsLukt.map(x => x.flavor.name),
-    tastingState.lukt,
-  ].filter(Boolean).join(' ');
+  const userSmellText = [...tastingState.selectedFlavorsLukt.map(x => x.flavor.name), tastingState.lukt]
+    .filter(Boolean)
+    .join(' ');
 
-  const userTasteText = [
-    ...tastingState.selectedFlavorsSmak.map(x => x.flavor.name),
-    tastingState.smak,
-  ].filter(Boolean).join(' ');
+  const userTasteText = [...tastingState.selectedFlavorsSmak.map(x => x.flavor.name), tastingState.smak]
+    .filter(Boolean)
+    .join(' ');
 
   const vmpFylde = wine?.fylde ?? null;
   const vmpFriskhet = wine?.friskhet ?? null;
@@ -144,9 +142,16 @@ export const Summary: React.FC = () => {
       setIsCalculating(true);
       try {
         const [{ colorScore, smellScore, tasteScore }, luktBreak, smakBreak] = await Promise.all([
-          calculateServerSideScores(tastingState.farge, userSmellText, userTasteText, wine.color, wine.smell, wine.taste),
+          calculateServerSideScores(
+            tastingState.farge,
+            userSmellText,
+            userTasteText,
+            wine.color,
+            wine.smell,
+            wine.taste
+          ),
           getTermBreakdown(userSmellText, wine.smell ?? ''),
-          getTermBreakdown(userTasteText, wine.taste ?? ''),
+          getTermBreakdown(userTasteText, wine.taste ?? '')
         ]);
         setLuktBreakdown(luktBreak);
         setSmakBreakdown(smakBreak);
@@ -277,7 +282,10 @@ export const Summary: React.FC = () => {
               <div className={styles.summaryLabel}>Lukt</div>
               <div className={styles.summaryValue}>
                 {userSmellText && <NoteTokenChips breakdown={luktBreakdown} />}
-                <TermAccordion terms={luktBreakdown.terms} label="Termdetaljer" />
+                <TermAccordion
+                  terms={luktBreakdown.terms}
+                  label="Termdetaljer"
+                />
               </div>
             </div>
 
@@ -285,7 +293,10 @@ export const Summary: React.FC = () => {
               <div className={styles.summaryLabel}>Smak</div>
               <div className={styles.summaryValue}>
                 {userTasteText && <NoteTokenChips breakdown={smakBreakdown} />}
-                <TermAccordion terms={smakBreakdown.terms} label="Termdetaljer" />
+                <TermAccordion
+                  terms={smakBreakdown.terms}
+                  label="Termdetaljer"
+                />
               </div>
             </div>
 
@@ -371,7 +382,10 @@ export const Summary: React.FC = () => {
               <div className={styles.attributeName}>Lukt</div>
               <div className={styles.attributeValue}>
                 {userSmellText && <NoteTokenChips breakdown={luktBreakdown} />}
-                <TermAccordion terms={luktBreakdown.terms} label="Termdetaljer" />
+                <TermAccordion
+                  terms={luktBreakdown.terms}
+                  label="Termdetaljer"
+                />
               </div>
               <div className={styles.attributeValue}>{wine!.smell}</div>
               <div className={styles.scoreValue}>{smellDescToShort ? 'For kort beskrivelse' : `${scores.lukt}%`}</div>
@@ -381,7 +395,10 @@ export const Summary: React.FC = () => {
               <div className={styles.attributeName}>Smak</div>
               <div className={styles.attributeValue}>
                 {userTasteText && <NoteTokenChips breakdown={smakBreakdown} />}
-                <TermAccordion terms={smakBreakdown.terms} label="Termdetaljer" />
+                <TermAccordion
+                  terms={smakBreakdown.terms}
+                  label="Termdetaljer"
+                />
               </div>
               <div className={styles.attributeValue}>{wine!.taste}</div>
               <div className={styles.scoreValue}>{tasteDescToShort ? 'For kort beskrivelse' : `${scores.smak}%`}</div>
@@ -430,7 +447,7 @@ export const Summary: React.FC = () => {
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Alkohol</div>
               <div className={styles.attributeValue}>{tastingState.alkohol}%</div>
-              <div className={styles.attributeValue}>{wine?.alcohol || '-'}%</div>
+              <div className={styles.attributeValue}>{wine?.alcohol.replace('prosent', '').trim() || '-'}%</div>
               <div className={styles.scoreValue}>{scores.alkoholProsent}%</div>
             </div>
 
