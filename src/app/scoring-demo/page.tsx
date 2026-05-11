@@ -127,7 +127,12 @@ export default async function ScoringDemoPage() {
           Analyser likheten mellom to smakingsnotater og se hvordan scoren beregnes
         </p>
       </div>
-      <ScoringDemo pastTastings={pastTastings} lemmaGroups={lemmaGroups} />
+      <ScoringDemo
+        pastTastings={pastTastings}
+        lemmaGroups={lemmaGroups}
+        defaultRecall={process.env.SCORING_RECALL_ENABLED === 'true'}
+        defaultFlavorFilter={process.env.SEMANTIC_FLAVOR_FILTER_ENABLED === 'true'}
+      />
     </main>
   );
 }

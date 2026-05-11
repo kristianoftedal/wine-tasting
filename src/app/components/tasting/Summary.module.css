@@ -232,3 +232,106 @@
   color: #1f2937;
   font-weight: 600;
 }
+
+/* ── Note token chips ── */
+.noteChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 6px;
+}
+
+.noteChip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-family: monospace;
+  border: 1px solid transparent;
+}
+
+.chipMatched {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.chipRecognized {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.chipStripped {
+  background: #fef9c3;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.chipUnknown {
+  background: #f3f4f6;
+  color: #9ca3af;
+  border-color: #e5e7eb;
+}
+
+/* ── Term accordion ── */
+.termAccordion {
+  margin-top: 8px;
+}
+
+.termAccordionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 4px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #9ca3af;
+  text-align: left;
+}
+
+.termAccordionBtn:hover {
+  color: #6b7280;
+}
+
+.termAccordionChevron {
+  font-size: 10px;
+}
+
+.termTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.termTable th {
+  text-align: left;
+  padding: 4px 8px;
+  font-weight: 600;
+  color: #6b7280;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.termTable td {
+  padding: 3px 8px;
+  color: #374151;
+  font-family: monospace;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.termTable tr:last-child td {
+  border-bottom: none;
+}
+
+.termMatch {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.termMiss {
+  color: #dc2626;
+}

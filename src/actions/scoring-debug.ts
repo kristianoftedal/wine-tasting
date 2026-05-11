@@ -1,6 +1,6 @@
 'use server';
 
-import { sanitizeText, norwegianLemmas } from '@/lib/lemmatizeAndWeight';
+import { sanitizeText, norwegianLemmas, flavorOnlyText } from '@/lib/lemmatizeAndWeight';
 import { semanticSimilarity } from '@/lib/semanticSimilarity';
 import { getCategoryWeight } from '@/lib/profiles';
 import { PorterStemmerNo } from 'natural';
@@ -9,6 +9,8 @@ import idfRaw from '@/lib/idf-weights.generated.json';
 const idfWeights = idfRaw as Record<string, number>;
 
 const PRECISION_GAIN = 0.35;
+const RECALL_SCORING = process.env.SCORING_RECALL_ENABLED === 'true';
+const FLAVOR_FILTER_ENABLED = process.env.SEMANTIC_FLAVOR_FILTER_ENABLED === 'true';
 
 export type TermDetail = {
   original: string;
@@ -40,6 +42,12 @@ export type ScoringBreakdown = {
   // Term details
   userTerms: TermDetail[];
   wineTerms: TermDetail[];
+  // All tokens after sanitization — includes unrecognized/filtered tokens
+  userRawTokens: string[];
+  wineRawTokens: string[];
+  // Tokens remaining after stripping structural terms (sent to semantic model)
+  userFlavorTokens: string[];
+  wineFlavorTokens: string[];
 };
 
 type InternalTerm = {
@@ -129,16 +137,22 @@ function sumWeightsI(m: Map<string, InternalTerm>) {
   return [...m.values()].reduce((s, v) => s + v.finalWeight, 0);
 }
 
-function computeWeightedLemmaScore(a: Map<string, InternalTerm>, b: Map<string, InternalTerm>): number {
+function denom(a: Map<string, InternalTerm>, b: Map<string, InternalTerm>, recall: boolean): number {
+  return recall
+    ? Math.max(sumWeightsI(a), sumWeightsI(b))
+    : Math.min(sumWeightsI(a), sumWeightsI(b));
+}
+
+function computeWeightedLemmaScore(a: Map<string, InternalTerm>, b: Map<string, InternalTerm>, recall: boolean): number {
   let inter = 0;
   for (const [lemma, info] of a) {
     if (b.has(lemma)) inter += info.finalWeight;
   }
-  const smaller = Math.min(sumWeightsI(a), sumWeightsI(b));
-  return smaller === 0 ? 0 : Math.round((inter / smaller) * 100);
+  const d = denom(a, b, recall);
+  return d === 0 ? 0 : Math.round((inter / d) * 100);
 }
 
-function computeWeightedCategoryScore(a: Map<string, InternalTerm>, b: Map<string, InternalTerm>): number {
+function computeWeightedCategoryScore(a: Map<string, InternalTerm>, b: Map<string, InternalTerm>, recall: boolean): number {
   const mainsB = new Set([...b.values()].map(v => v.main).filter(Boolean));
   const fullB = new Set([...b.values()].filter(v => v.main && v.sub).map(v => `${v.main}/${v.sub}`));
 
@@ -149,18 +163,63 @@ function computeWeightedCategoryScore(a: Map<string, InternalTerm>, b: Map<strin
     if (key && fullB.has(key)) credit += info.finalWeight;
     else if (mainsB.has(info.main)) credit += info.finalWeight * 0.5;
   }
-  const smaller = Math.min(sumWeightsI(a), sumWeightsI(b));
-  return smaller === 0 ? 0 : Math.round((credit / smaller) * 100);
+  const d = denom(a, b, recall);
+  return d === 0 ? 0 : Math.round((credit / d) * 100);
+}
+
+// ── Module-level toDetail helper ────────────────────────────────────────────
+
+function toDetailFn(map: Map<string, InternalTerm>, matched: Set<string>): TermDetail[] {
+  return [...map.values()].map(t => ({
+    original: t.original,
+    lemma: t.lemma,
+    category: t.category,
+    main: t.main,
+    sub: t.sub,
+    baseWeight: parseFloat(t.baseWeight.toFixed(2)),
+    idfMultiplier: parseFloat(t.idfMultiplier.toFixed(3)),
+    finalWeight: parseFloat(t.finalWeight.toFixed(3)),
+    foundViaPorter: t.foundViaPorter,
+    matched: matched.has(t.lemma),
+  }));
+}
+
+// ── Lightweight term breakdown (no semantic/OpenAI call) ─────────────────────
+
+export type NoteTermBreakdown = {
+  rawTokens: string[];
+  terms: TermDetail[];
+  flavorTokens: string[];
+};
+
+export async function getTermBreakdown(
+  userNote: string,
+  wineNote: string
+): Promise<NoteTermBreakdown> {
+  if (!userNote.trim()) return { rawTokens: [], terms: [], flavorTokens: [] };
+  const userMap = extractTerms(userNote);
+  const wineMap = extractTerms(wineNote);
+  const matchedLemmas = new Set([...userMap.keys()].filter(k => wineMap.has(k)));
+  return {
+    rawTokens: sanitizeText(userNote).split(' ').filter(Boolean),
+    terms: toDetailFn(userMap, matchedLemmas),
+    flavorTokens: flavorOnlyText(userNote).split(' ').filter(Boolean),
+  };
 }
 
 // ── Main export ────────────────────────────────────────────────────────────
 
 export async function getScoringBreakdown(
   userNote: string,
-  wineNote: string
+  wineNote: string,
+  options?: { recall?: boolean; flavorFilter?: boolean }
 ): Promise<ScoringBreakdown> {
+  const recallEnabled = options?.recall ?? RECALL_SCORING;
+  const flavorEnabled = options?.flavorFilter ?? FLAVOR_FILTER_ENABLED;
+  const sem1 = flavorEnabled ? flavorOnlyText(userNote) : userNote;
+  const sem2 = flavorEnabled ? flavorOnlyText(wineNote) : wineNote;
   const [semanticScore, userMap, wineMap, userLegacyMap, wineLegacyMap] = await Promise.all([
-    semanticSimilarity(userNote, wineNote),
+    semanticSimilarity(sem1, sem2),
     Promise.resolve(extractTerms(userNote)),
     Promise.resolve(extractTerms(wineNote)),
     Promise.resolve(extractTermsNoIdfNoPorter(userNote)),
@@ -168,34 +227,22 @@ export async function getScoringBreakdown(
   ]);
 
   // Current algorithm
-  const lemmaScore = computeWeightedLemmaScore(userMap, wineMap);
-  const categoryScore = computeWeightedCategoryScore(userMap, wineMap);
+  const lemmaScore = computeWeightedLemmaScore(userMap, wineMap, recallEnabled);
+  const categoryScore = computeWeightedCategoryScore(userMap, wineMap, recallEnabled);
   const precision = (lemmaScore + categoryScore) / 2;
   const precisionBonus = precision * PRECISION_GAIN;
   const currentScore = Math.round(Math.min(100, semanticScore + precisionBonus));
 
   // Previous algorithm (no IDF, no Porter — same semantic + weighted formula)
-  const legacyLemmaScore = computeWeightedLemmaScore(userLegacyMap, wineLegacyMap);
-  const legacyCategoryScore = computeWeightedCategoryScore(userLegacyMap, wineLegacyMap);
+  const legacyLemmaScore = computeWeightedLemmaScore(userLegacyMap, wineLegacyMap, recallEnabled);
+  const legacyCategoryScore = computeWeightedCategoryScore(userLegacyMap, wineLegacyMap, recallEnabled);
   const legacyPrecision = (legacyLemmaScore + legacyCategoryScore) / 2;
   const legacyPrecisionBonus = legacyPrecision * PRECISION_GAIN;
   const legacyScore = Math.round(Math.min(100, semanticScore + legacyPrecisionBonus));
 
   const matchedLemmas = new Set([...userMap.keys()].filter(k => wineMap.has(k)));
 
-  const toDetail = (map: Map<string, InternalTerm>, matched: Set<string>): TermDetail[] =>
-    [...map.values()].map(t => ({
-      original: t.original,
-      lemma: t.lemma,
-      category: t.category,
-      main: t.main,
-      sub: t.sub,
-      baseWeight: parseFloat(t.baseWeight.toFixed(2)),
-      idfMultiplier: parseFloat(t.idfMultiplier.toFixed(3)),
-      finalWeight: parseFloat(t.finalWeight.toFixed(3)),
-      foundViaPorter: t.foundViaPorter,
-      matched: matched.has(t.lemma),
-    }));
+  const toDetail = toDetailFn;
 
   return {
     semanticScore,
@@ -211,5 +258,9 @@ export async function getScoringBreakdown(
     legacyScore,
     userTerms: toDetail(userMap, matchedLemmas),
     wineTerms: toDetail(wineMap, matchedLemmas),
+    userRawTokens: sanitizeText(userNote).split(' ').filter(Boolean),
+    wineRawTokens: sanitizeText(wineNote).split(' ').filter(Boolean),
+    userFlavorTokens: sem1.split(' ').filter(Boolean),
+    wineFlavorTokens: sem2.split(' ').filter(Boolean),
   };
 }

@@ -1,7 +1,14 @@
 'use server';
 
-import { lemmatizeAndWeight, norwegianLemmas } from '@/lib/lemmatizeAndWeight';
+import { lemmatizeAndWeight, norwegianLemmas, flavorOnlyText } from '@/lib/lemmatizeAndWeight';
 import { semanticSimilarity } from '@/lib/semanticSimilarity';
+
+// When true, denominator = max(user, wine) so incomplete notes are penalised.
+// When false, denominator = min(user, wine) so short correct notes aren't penalised.
+const RECALL_SCORING = process.env.SCORING_RECALL_ENABLED === 'true';
+// When true, strip structural/quality terms (fylde, syre, etc.) before sending
+// to the semantic model so embeddings focus on flavour descriptors only.
+const FLAVOR_FILTER_ENABLED = process.env.SEMANTIC_FLAVOR_FILTER_ENABLED === 'true';
 
 type LemmaInfo = { lemma: string; weight: number; main?: string; sub?: string };
 
@@ -47,9 +54,9 @@ async function lemmaSimpleSimilarity(text1: string, text2: string): Promise<numb
     for (const [lemma, info] of a) {
       if (b.has(lemma)) interWeight += info.weight;
     }
-    const smallerWeight = Math.min(sumWeights(a), sumWeights(b));
-    if (smallerWeight === 0) return 0;
-    return Math.round((interWeight / smallerWeight) * 100);
+    const denom = RECALL_SCORING ? Math.max(sumWeights(a), sumWeights(b)) : Math.min(sumWeights(a), sumWeights(b));
+    if (denom === 0) return 0;
+    return Math.round((interWeight / denom) * 100);
   } catch (error) {
     console.error('Lemma similarity error:', error);
     return 0;
@@ -81,9 +88,9 @@ async function categorySimpleSimilarity(text1: string, text2: string): Promise<n
       if (key && fullB.has(key)) credit += info.weight;
       else if (mainsB.has(info.main)) credit += info.weight * 0.5;
     }
-    const smallerWeight = Math.min(sumWeights(a), sumWeights(b));
-    if (smallerWeight === 0) return 0;
-    return Math.round((credit / smallerWeight) * 100);
+    const denom = RECALL_SCORING ? Math.max(sumWeights(a), sumWeights(b)) : Math.min(sumWeights(a), sumWeights(b));
+    if (denom === 0) return 0;
+    return Math.round((credit / denom) * 100);
   } catch (error) {
     console.error('Category similarity error:', error);
     return 0;
@@ -122,10 +129,12 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
   if (!text1 || !text2) return 0;
 
   try {
+    const sem1 = FLAVOR_FILTER_ENABLED ? flavorOnlyText(text1) : text1;
+    const sem2 = FLAVOR_FILTER_ENABLED ? flavorOnlyText(text2) : text2;
     const [lemmaScore, categoryScore, semanticScore] = await Promise.all([
       lemmaSimpleSimilarity(text1, text2),
       categorySimpleSimilarity(text1, text2),
-      semanticOnlySimilarity(text1, text2)
+      semanticOnlySimilarity(sem1, sem2)
     ]);
 
     const precision = (lemmaScore + categoryScore) / 2;

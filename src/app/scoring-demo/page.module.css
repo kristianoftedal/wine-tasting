@@ -45,6 +45,43 @@
   transition: background 0.15s, border-color 0.15s;
 }
 
+.analyzeRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.flagToggles {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.flagToggle {
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  background: white;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.flagToggle:hover {
+  background: #f3f4f6;
+}
+
+.flagToggleOn {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d;
+}
+
+.flagToggleOn:hover {
+  background: #dcfce7;
+}
+
 .exampleBtn:hover {
   background: #f3f4f6;
   border-color: #9ca3af;
@@ -771,4 +808,67 @@
   border-radius: 9999px;
   font-size: 0.8125rem;
   color: #374151;
+}
+
+/* ── Token chips in Komponentscorer ── */
+.tokenRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.tokenRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.tokenRowLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9ca3af;
+  white-space: nowrap;
+  padding-top: 0.2rem;
+  min-width: 4rem;
+}
+
+.tokenChip {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-family: var(--font-mono, monospace);
+  border: 1px solid transparent;
+}
+
+.tokenChipMatched {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.tokenChipRecognized {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.tokenChipUnknown {
+  background: #f3f4f6;
+  color: #9ca3af;
+  border-color: #e5e7eb;
+}
+
+.tokenChipStripped {
+  background: #fef9c3;
+  color: #92400e;
+  border-color: #fde68a;
 }

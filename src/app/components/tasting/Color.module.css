@@ -1,12 +1,12 @@
 .colorContainer {
-  padding: 20px;
+  padding: 4px;
 }
 
 .wineInfoCard {
   background: #f9fafb;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 20px;
+  padding: 12px;
   margin-bottom: 24px;
 }
 

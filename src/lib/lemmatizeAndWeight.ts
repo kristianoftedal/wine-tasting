@@ -714,6 +714,32 @@ export const stripGenericTerms = (text: string): string => {
     .join(' ');
 };
 
+// Sub-categories that map to numeric wine attributes (fylde, friskhet,
+// garvestoff, sødme) — strip these before semantic similarity so the
+// embedding focuses on aroma/flavour descriptors, not structure.
+const STRUCTURAL_SUBS = new Set([
+  'structure', 'body', 'acidity', 'sweetness', 'finish', 'texture', 'quality',
+]);
+
+export function flavorOnlyText(text: string): string {
+  const tokens = sanitizeText(text).split(' ').filter(Boolean);
+  const kept: string[] = [];
+  for (const token of tokens) {
+    let entry = norwegianLemmas[token];
+    if (!entry) {
+      const normalized = token.replace(/ae/g, 'æ').replace(/oe/g, 'ø').replace(/aa/g, 'å');
+      if (normalized !== token) entry = norwegianLemmas[normalized];
+    }
+    if (entry) {
+      const main = entry.categoryPath?.main ?? 'GENERIC';
+      const sub = entry.categoryPath?.sub ?? '';
+      if (main === 'GENERIC' && STRUCTURAL_SUBS.has(sub)) continue;
+    }
+    kept.push(token);
+  }
+  return kept.join(' ');
+}
+
 export const tokenizeSanitized = (text: string): string[] => {
   const cleaned = sanitizeText(text);
   return cleaned ? cleaned.split(' ') : [];

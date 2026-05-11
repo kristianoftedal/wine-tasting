@@ -8,7 +8,7 @@ export type WineSearchResult = {
   id: string;
   product_id: string;
   name: string;
-  year: number | null;
+  year: string | null;
   volume: number | null;
   main_category: string | null;
   main_country: string | null;

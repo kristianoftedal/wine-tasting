@@ -1,6 +1,7 @@
 'use client';
 
 import { calculateServerSideScores } from '@/actions/similarity';
+import { getTermBreakdown, type NoteTermBreakdown, type TermDetail } from '@/actions/scoring-debug';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import type { Wine } from '@/lib/types';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -40,6 +41,65 @@ function calculateNumericSimilarity(
   return score;
 }
 
+function NoteTokenChips({ breakdown }: { breakdown: NoteTermBreakdown }) {
+  if (breakdown.rawTokens.length === 0) return null;
+  const matchedOriginals = new Set(breakdown.terms.filter(t => t.matched).map(t => t.original));
+  const recognizedOriginals = new Set(breakdown.terms.map(t => t.original));
+  const flavorSet = new Set(breakdown.flavorTokens);
+
+  return (
+    <div className={styles.noteChips}>
+      {breakdown.rawTokens.map((tok, i) => {
+        const isStripped = recognizedOriginals.has(tok) && !flavorSet.has(tok);
+        const cls = isStripped
+          ? styles.chipStripped
+          : matchedOriginals.has(tok)
+            ? styles.chipMatched
+            : recognizedOriginals.has(tok)
+              ? styles.chipRecognized
+              : styles.chipUnknown;
+        return <span key={i} className={`${styles.noteChip} ${cls}`}>{tok}</span>;
+      })}
+    </div>
+  );
+}
+
+function TermAccordion({ terms, label }: { terms: TermDetail[]; label: string }) {
+  const [open, setOpen] = useState(false);
+  if (terms.length === 0) return null;
+  return (
+    <div className={styles.termAccordion}>
+      <button className={styles.termAccordionBtn} onClick={() => setOpen(o => !o)}>
+        <span>{label}</span>
+        <span className={styles.termAccordionChevron}>{open ? '▲' : '▼'}</span>
+      </button>
+      {open && (
+        <table className={styles.termTable}>
+          <thead>
+            <tr>
+              <th>Ord</th>
+              <th>Lemma</th>
+              <th>Treff</th>
+            </tr>
+          </thead>
+          <tbody>
+            {terms.map((t, i) => (
+              <tr key={i}>
+                <td>{t.original}</td>
+                <td>{t.lemma !== t.original ? t.lemma : '—'}</td>
+                <td>{t.matched
+                  ? <span className={styles.termMatch}>✓</span>
+                  : <span className={styles.termMiss}>✗</span>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
 export const Summary: React.FC = () => {
   const tastingState = useAtomValue(tastingAtom);
   const setTastingState = useSetAtom(tastingAtom);
@@ -51,6 +111,9 @@ export const Summary: React.FC = () => {
   const [isCalculating, setIsCalculating] = useState(true);
   const [tasteDescToShort, setTasteDescToShort] = useState(false);
   const [smellDescToShort, setSmellDescToShort] = useState(false);
+  const emptyBreakdown: NoteTermBreakdown = { rawTokens: [], terms: [], flavorTokens: [] };
+  const [luktBreakdown, setLuktBreakdown] = useState<NoteTermBreakdown>(emptyBreakdown);
+  const [smakBreakdown, setSmakBreakdown] = useState<NoteTermBreakdown>(emptyBreakdown);
 
   const isRedWine = wine?.main_category?.toLowerCase().includes('rød');
 
@@ -67,14 +130,13 @@ export const Summary: React.FC = () => {
         const userSmellText = `${tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')} ${tastingState.lukt}`;
         const userTasteText = `${tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')} ${tastingState.smak}`;
 
-        const { colorScore, smellScore, tasteScore } = await calculateServerSideScores(
-          tastingState.farge,
-          userSmellText,
-          userTasteText,
-          wine.color,
-          wine.smell,
-          wine.taste
-        );
+        const [{ colorScore, smellScore, tasteScore }, luktBreak, smakBreak] = await Promise.all([
+          calculateServerSideScores(tastingState.farge, userSmellText, userTasteText, wine.color, wine.smell, wine.taste),
+          getTermBreakdown(tastingState.lukt, wine.smell ?? ''),
+          getTermBreakdown(tastingState.smak, wine.taste ?? ''),
+        ]);
+        setLuktBreakdown(luktBreak);
+        setSmakBreakdown(smakBreak);
 
         // Get alcohol value from wine.alcohol field
         const wineAlcohol = wine?.alcohol || '0';
@@ -210,7 +272,8 @@ export const Summary: React.FC = () => {
                     </span>
                   ))}
                 </div>
-                {tastingState.lukt && <p className={styles.commentText}>{tastingState.lukt}</p>}
+                {tastingState.lukt && <NoteTokenChips breakdown={luktBreakdown} />}
+                <TermAccordion terms={luktBreakdown.terms} label="Termdetaljer" />
               </div>
             </div>
 
@@ -226,7 +289,8 @@ export const Summary: React.FC = () => {
                     </span>
                   ))}
                 </div>
-                {tastingState.smak && <p className={styles.commentText}>{tastingState.smak}</p>}
+                {tastingState.smak && <NoteTokenChips breakdown={smakBreakdown} />}
+                <TermAccordion terms={smakBreakdown.terms} label="Termdetaljer" />
               </div>
             </div>
 
