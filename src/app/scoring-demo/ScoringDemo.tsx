@@ -1,22 +1,9 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import dynamic from 'next/dynamic';
 import { getScoringBreakdown, type ScoringBreakdown, type TermDetail } from '@/actions/scoring-debug';
 import type { PastTasting, LemmaGroup } from './page';
 import styles from './page.module.css';
-
-const LemmaGraph = dynamic(() => import('./LemmaGraph'), {
-  ssr: false,
-  loading: () => (
-    <div className={styles.section}>
-      <h3 className={styles.sectionTitle}>Ordbok — alle gjenkjente termer</h3>
-      <div style={{ height: 580, background: '#0f172a', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: '0.875rem' }}>
-        Laster ordkart…
-      </div>
-    </div>
-  ),
-});
 
 const EXAMPLES = [
   {
@@ -159,6 +146,48 @@ function TermTable({ terms, title }: { terms: TermDetail[]; title: string }) {
   );
 }
 
+function LemmaBrowser({ groups }: { groups: LemmaGroup[] }) {
+  const [openMain, setOpenMain] = useState<string | null>(null);
+
+  return (
+    <div className={styles.section}>
+      <h3 className={styles.sectionTitle}>Ordbok — alle gjenkjente termer</h3>
+      <div className={styles.lemmaGroups}>
+        {groups.map(group => {
+          const isOpen = openMain === group.main;
+          return (
+            <div key={group.main} className={styles.lemmaGroup}>
+              <button
+                className={styles.lemmaGroupBtn}
+                onClick={() => setOpenMain(isOpen ? null : group.main)}
+              >
+                <span className={styles.catBadge} data-main={group.main}>{group.main}</span>
+                <span className={styles.lemmaGroupCount}>{group.total} termer</span>
+                <span className={styles.chevron}>{isOpen ? '▲' : '▼'}</span>
+              </button>
+              {isOpen && (
+                <div className={styles.lemmaGroupContent}>
+                  {group.subs.map(sub => (
+                    <div key={sub.name} className={styles.lemmaSub}>
+                      {sub.name && (
+                        <div className={styles.lemmaSubTitle}>{sub.name}</div>
+                      )}
+                      <div className={styles.lemmaChips}>
+                        {sub.terms.map(term => (
+                          <span key={term.lemma} className={styles.lemmaChip}>{term.lemma}</span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function TokenChips({ rawTokens, flavorTokens, terms, label }: {
   rawTokens: string[];
@@ -507,7 +536,7 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, defaultRecall, 
           }
         />
       )}
-      <LemmaGraph groups={lemmaGroups} />
+      <LemmaBrowser groups={lemmaGroups} />
     </div>
   );
 }
