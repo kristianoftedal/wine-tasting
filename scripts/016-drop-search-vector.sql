@@ -1,0 +1,1 @@
+ALTER TABLE wines DROP COLUMN IF EXISTS search_vector;

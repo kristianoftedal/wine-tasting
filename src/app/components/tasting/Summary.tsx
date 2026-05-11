@@ -1,7 +1,7 @@
 'use client';
 
-import { calculateServerSideScores } from '@/actions/similarity';
 import { getTermBreakdown, type NoteTermBreakdown, type TermDetail } from '@/actions/scoring-debug';
+import { calculateServerSideScores } from '@/actions/similarity';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import type { Wine } from '@/lib/types';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -58,7 +58,13 @@ function NoteTokenChips({ breakdown }: { breakdown: NoteTermBreakdown }) {
             : recognizedOriginals.has(tok)
               ? styles.chipRecognized
               : styles.chipUnknown;
-        return <span key={i} className={`${styles.noteChip} ${cls}`}>{tok}</span>;
+        return (
+          <span
+            key={i}
+            className={`${styles.noteChip} ${cls}`}>
+            {tok}
+          </span>
+        );
       })}
     </div>
   );
@@ -69,7 +75,9 @@ function TermAccordion({ terms, label }: { terms: TermDetail[]; label: string })
   if (terms.length === 0) return null;
   return (
     <div className={styles.termAccordion}>
-      <button className={styles.termAccordionBtn} onClick={() => setOpen(o => !o)}>
+      <button
+        className={styles.termAccordionBtn}
+        onClick={() => setOpen(o => !o)}>
         <span>{label}</span>
         <span className={styles.termAccordionChevron}>{open ? '▲' : '▼'}</span>
       </button>
@@ -87,9 +95,8 @@ function TermAccordion({ terms, label }: { terms: TermDetail[]; label: string })
               <tr key={i}>
                 <td>{t.original}</td>
                 <td>{t.lemma !== t.original ? t.lemma : '—'}</td>
-                <td>{t.matched
-                  ? <span className={styles.termMatch}>✓</span>
-                  : <span className={styles.termMiss}>✗</span>}
+                <td>
+                  {t.matched ? <span className={styles.termMatch}>✓</span> : <span className={styles.termMiss}>✗</span>}
                 </td>
               </tr>
             ))}
@@ -117,6 +124,16 @@ export const Summary: React.FC = () => {
 
   const isRedWine = wine?.main_category?.toLowerCase().includes('rød');
 
+  const userSmellText = [
+    ...tastingState.selectedFlavorsLukt.map(x => x.flavor.name),
+    tastingState.lukt,
+  ].filter(Boolean).join(' ');
+
+  const userTasteText = [
+    ...tastingState.selectedFlavorsSmak.map(x => x.flavor.name),
+    tastingState.smak,
+  ].filter(Boolean).join(' ');
+
   const vmpFylde = wine?.fylde ?? null;
   const vmpFriskhet = wine?.friskhet ?? null;
   const vmpSnærp = wine?.garvestoff ?? null;
@@ -126,14 +143,10 @@ export const Summary: React.FC = () => {
     async function calculateScores() {
       setIsCalculating(true);
       try {
-        // Calculate server-side scores (lemma + category + OpenAI embedding)
-        const userSmellText = `${tastingState.selectedFlavorsLukt.map(x => x.flavor.name).join(', ')} ${tastingState.lukt}`;
-        const userTasteText = `${tastingState.selectedFlavorsSmak.map(x => x.flavor.name).join(', ')} ${tastingState.smak}`;
-
         const [{ colorScore, smellScore, tasteScore }, luktBreak, smakBreak] = await Promise.all([
           calculateServerSideScores(tastingState.farge, userSmellText, userTasteText, wine.color, wine.smell, wine.taste),
-          getTermBreakdown(tastingState.lukt, wine.smell ?? ''),
-          getTermBreakdown(tastingState.smak, wine.taste ?? ''),
+          getTermBreakdown(userSmellText, wine.smell ?? ''),
+          getTermBreakdown(userTasteText, wine.taste ?? ''),
         ]);
         setLuktBreakdown(luktBreak);
         setSmakBreakdown(smakBreak);
@@ -263,16 +276,7 @@ export const Summary: React.FC = () => {
             <div className={styles.summaryRow}>
               <div className={styles.summaryLabel}>Lukt</div>
               <div className={styles.summaryValue}>
-                <div className={styles.flavorPills}>
-                  {tastingState.selectedFlavorsLukt.map((x, i) => (
-                    <span
-                      key={i}
-                      className={styles.flavorPill}>
-                      {x.flavor.name}
-                    </span>
-                  ))}
-                </div>
-                {tastingState.lukt && <NoteTokenChips breakdown={luktBreakdown} />}
+                {userSmellText && <NoteTokenChips breakdown={luktBreakdown} />}
                 <TermAccordion terms={luktBreakdown.terms} label="Termdetaljer" />
               </div>
             </div>
@@ -280,16 +284,7 @@ export const Summary: React.FC = () => {
             <div className={styles.summaryRow}>
               <div className={styles.summaryLabel}>Smak</div>
               <div className={styles.summaryValue}>
-                <div className={styles.flavorPills}>
-                  {tastingState.selectedFlavorsSmak.map((x, i) => (
-                    <span
-                      key={i}
-                      className={styles.flavorPill}>
-                      {x.flavor.name}
-                    </span>
-                  ))}
-                </div>
-                {tastingState.smak && <NoteTokenChips breakdown={smakBreakdown} />}
+                {userTasteText && <NoteTokenChips breakdown={smakBreakdown} />}
                 <TermAccordion terms={smakBreakdown.terms} label="Termdetaljer" />
               </div>
             </div>
@@ -375,16 +370,8 @@ export const Summary: React.FC = () => {
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Lukt</div>
               <div className={styles.attributeValue}>
-                <div className={styles.flavorPills}>
-                  {tastingState.selectedFlavorsLukt.map((x, i) => (
-                    <span
-                      key={i}
-                      className={styles.flavorPill}>
-                      {x.flavor.name}
-                    </span>
-                  ))}
-                </div>
-                {tastingState.lukt}
+                {userSmellText && <NoteTokenChips breakdown={luktBreakdown} />}
+                <TermAccordion terms={luktBreakdown.terms} label="Termdetaljer" />
               </div>
               <div className={styles.attributeValue}>{wine!.smell}</div>
               <div className={styles.scoreValue}>{smellDescToShort ? 'For kort beskrivelse' : `${scores.lukt}%`}</div>
@@ -393,16 +380,8 @@ export const Summary: React.FC = () => {
             <div className={styles.tableRow}>
               <div className={styles.attributeName}>Smak</div>
               <div className={styles.attributeValue}>
-                <div className={styles.flavorPills}>
-                  {tastingState.selectedFlavorsSmak.map((x, i) => (
-                    <span
-                      key={i}
-                      className={styles.flavorPill}>
-                      {x.flavor.name}
-                    </span>
-                  ))}
-                </div>
-                {tastingState.smak}
+                {userTasteText && <NoteTokenChips breakdown={smakBreakdown} />}
+                <TermAccordion terms={smakBreakdown.terms} label="Termdetaljer" />
               </div>
               <div className={styles.attributeValue}>{wine!.taste}</div>
               <div className={styles.scoreValue}>{tasteDescToShort ? 'For kort beskrivelse' : `${scores.smak}%`}</div>

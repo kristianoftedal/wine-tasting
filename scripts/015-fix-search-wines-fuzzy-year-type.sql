@@ -1,8 +1,6 @@
--- Fix search_wines_fuzzy: year column is TEXT in the wines table but the
--- function return type declared it INTEGER. Drop and recreate with correct types.
---
--- Also uses CASE to handle main_category/main_country/district which may be
--- either JSONB objects ({ name: ... }) or plain TEXT depending on import path.
+-- Fix search_wines_fuzzy: year column is TEXT, and volume/price/category/country/district
+-- columns may be TEXT (not JSONB) in the live DB. Use ::text casts so this works
+-- regardless of the actual column storage type.
 
 DROP FUNCTION IF EXISTS search_wines_fuzzy(text, integer);
 
@@ -27,23 +25,25 @@ AS $$
     w.name,
     w.year,
     CASE
-      WHEN jsonb_typeof(w.volume) IS NOT NULL THEN (w.volume->>'value')::numeric
+      WHEN (w.volume::text) LIKE '{%' THEN ((w.volume::text)::jsonb->>'value')::numeric
+      WHEN w.volume IS NOT NULL THEN split_part(w.volume::text, ' ', 1)::numeric
       ELSE NULL
     END,
     CASE
-      WHEN jsonb_typeof(w.main_category) IS NOT NULL THEN w.main_category->>'name'
+      WHEN (w.main_category::text) LIKE '{%' THEN (w.main_category::text)::jsonb->>'name'
       ELSE w.main_category::text
     END,
     CASE
-      WHEN jsonb_typeof(w.main_country) IS NOT NULL THEN w.main_country->>'name'
+      WHEN (w.main_country::text) LIKE '{%' THEN (w.main_country::text)::jsonb->>'name'
       ELSE w.main_country::text
     END,
     CASE
-      WHEN jsonb_typeof(w.district) IS NOT NULL THEN w.district->>'name'
+      WHEN (w.district::text) LIKE '{%' THEN (w.district::text)::jsonb->>'name'
       ELSE w.district::text
     END,
     CASE
-      WHEN jsonb_typeof(w.price) IS NOT NULL THEN (w.price->>'value')::numeric
+      WHEN (w.price::text) LIKE '{%' THEN ((w.price::text)::jsonb->>'value')::numeric
+      WHEN w.price IS NOT NULL THEN replace(split_part(w.price::text, ' ', 2), ',', '.')::numeric
       ELSE NULL
     END,
     similarity(w.name, search_query)::float
