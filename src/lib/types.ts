@@ -80,7 +80,7 @@ export type Tasting = {
   friskhet: number | null;
   fylde: number | null;
   sodme: number | null;
-  snaerp: number | null;
+  garvestoffer: number | null;
   karakter: number | null;
 
   // Additional attributes
@@ -95,7 +95,7 @@ export type Tasting = {
   taste_score: number | null;
   percentage_score: number | null;
   price_score: number | null;
-  snaerp_score: number | null;
+  garvestoffer_score: number | null;
   sodme_score: number | null;
   fylde_score: number | null;
   friskhet_score: number | null;
@@ -156,7 +156,7 @@ export type TastingFormData = {
   friskhet: number;
   fylde: number;
   sodme: number;
-  snaerp: number;
+  garvestoffer: number;
   karakter: number;
   egenskaper: string;
   luktIntensitet: Intensitet;
@@ -173,7 +173,7 @@ export type TastingFormData = {
   tasteScore: number;
   percentageScore: number;
   priceScore: number;
-  snaerpScore: number;
+  garvestofferScore: number;
   sodmeScore: number;
   fyldeScore: number;
   friskhetScore: number;
@@ -190,7 +190,7 @@ export const initialTastingForm: TastingFormData = {
   friskhet: 0,
   fylde: 0,
   sodme: 0,
-  snaerp: 0,
+  garvestoffer: 0,
   karakter: 0,
   egenskaper: '',
   selectedFlavorsLukt: [],
@@ -207,7 +207,7 @@ export const initialTastingForm: TastingFormData = {
   tasteScore: 0,
   percentageScore: 0,
   priceScore: 0,
-  snaerpScore: 0,
+  garvestofferScore: 0,
   sodmeScore: 0,
   fyldeScore: 0,
   friskhetScore: 0,

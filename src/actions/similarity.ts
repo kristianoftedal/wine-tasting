@@ -1,7 +1,8 @@
 'use server';
 
-import { lemmatizeAndWeight, norwegianLemmas, flavorOnlyText } from '@/lib/lemmatizeAndWeight';
+import { lemmatizeAndWeight, norwegianLemmas, flavorOnlyText, sanitizeText } from '@/lib/lemmatizeAndWeight';
 import { semanticSimilarity } from '@/lib/semanticSimilarity';
+import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 
 // When true, denominator = max(user, wine) so incomplete notes are penalised.
 // When false, denominator = min(user, wine) so short correct notes aren't penalised.
@@ -129,11 +130,13 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
   if (!text1 || !text2) return 0;
 
   try {
-    const sem1 = FLAVOR_FILTER_ENABLED ? flavorOnlyText(text1) : text1;
-    const sem2 = FLAVOR_FILTER_ENABLED ? flavorOnlyText(text2) : text2;
+    const norm1 = normalizeWineSynonyms(sanitizeText(text1));
+    const norm2 = normalizeWineSynonyms(sanitizeText(text2));
+    const sem1 = FLAVOR_FILTER_ENABLED ? flavorOnlyText(norm1) : norm1;
+    const sem2 = FLAVOR_FILTER_ENABLED ? flavorOnlyText(norm2) : norm2;
     const [lemmaScore, categoryScore, semanticScore] = await Promise.all([
-      lemmaSimpleSimilarity(text1, text2),
-      categorySimpleSimilarity(text1, text2),
+      lemmaSimpleSimilarity(norm1, norm2),
+      categorySimpleSimilarity(norm1, norm2),
       semanticOnlySimilarity(sem1, sem2)
     ]);
 

@@ -26,6 +26,23 @@ const EXAMPLES = [
     user: 'Mørke bær med tydelig laurbær og litt tjære. Balansert med god syre og lang finish.',
     wine: 'Intens mørke frukt, laurbær og tjæreaktige toner. Godt balansert med frisk syre og lang avslutning.',
   },
+  // ── Synonym normalization examples ────────────────────────────────────────
+  // Toggle "Synonymnorm på/av" to see the score change.
+  {
+    label: 'Synonym: OOV (bærete/mineralaktig)',
+    user: 'Bærete med mineralaktig ettersmak. Tanninrik og balansert, lang fruktig avslutning.',
+    wine: 'Bær og mineral. Rik på tannin med god frukt og lang avslutning.',
+  },
+  {
+    label: 'Synonym: -preget former',
+    user: 'Eikepreget med vaniljepreget sødme og sjokoladepreget ettersmak. Urtepreget innslag.',
+    wine: 'Eik og vanilje med sjokolade. Urt og krydder i bakgrunnen.',
+  },
+  {
+    label: 'Synonym: adjektiv-varianter',
+    user: 'Fruktig og bærete nese med syrlig friskhet og mineralaktig, sitrusaktig finish.',
+    wine: 'Frukt og bær med syre og mineral. Sitrus i avslutningen.',
+  },
 ];
 
 function scoreColor(score: number): string {

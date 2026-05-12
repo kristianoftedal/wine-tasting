@@ -14,19 +14,19 @@ export const TastingAttributes: React.FC = () => {
     setTastingState((prev: TastingFormData) => ({ ...prev, [key]: value }));
   };
 
-  let attributes = ['friskhet', 'fylde', 'sodme', 'snaerp', 'karakter'];
+  let attributes = ['friskhet', 'fylde', 'sodme', 'garvestoffer', 'karakter'];
 
   if (wine?.main_category?.toLowerCase().includes('rød')) {
     attributes = attributes.filter(x => x !== 'sodme');
   } else {
-    attributes = attributes.filter(x => x !== 'snaerp');
+    attributes = attributes.filter(x => x !== 'garvestoffer');
   }
 
   const getTastingAttribute = (attribute: string) => {
     if (attribute === 'friskhet') return tastingState.friskhet;
     if (attribute === 'fylde') return tastingState.fylde;
     if (attribute === 'sodme') return tastingState.sodme;
-    if (attribute === 'snaerp') return tastingState.snaerp;
+    if (attribute === 'garvestoffer') return tastingState.garvestoffer;
     if (attribute === 'karakter') return tastingState.karakter;
   };
 
@@ -35,7 +35,7 @@ export const TastingAttributes: React.FC = () => {
       friskhet: 'Friskhet',
       fylde: 'Fylde',
       sodme: 'Sødme',
-      snaerp: 'Snærp',
+      garvestoffer: 'Garvestoffer',
       karakter: 'Karakter'
     };
     return labels[attr] || attr;

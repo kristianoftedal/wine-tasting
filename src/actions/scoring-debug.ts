@@ -5,6 +5,7 @@ import { semanticSimilarity } from '@/lib/semanticSimilarity';
 import { getCategoryWeight } from '@/lib/profiles';
 import { PorterStemmerNo } from 'natural';
 import idfRaw from '@/lib/idf-weights.generated.json';
+import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 
 const idfWeights = idfRaw as Record<string, number>;
 
@@ -216,14 +217,18 @@ export async function getScoringBreakdown(
 ): Promise<ScoringBreakdown> {
   const recallEnabled = options?.recall ?? RECALL_SCORING;
   const flavorEnabled = options?.flavorFilter ?? FLAVOR_FILTER_ENABLED;
-  const sem1 = flavorEnabled ? flavorOnlyText(userNote) : userNote;
-  const sem2 = flavorEnabled ? flavorOnlyText(wineNote) : wineNote;
+
+  const userProcessed = normalizeWineSynonyms(sanitizeText(userNote));
+  const wineProcessed = normalizeWineSynonyms(sanitizeText(wineNote));
+
+  const sem1 = flavorEnabled ? flavorOnlyText(userProcessed) : userProcessed;
+  const sem2 = flavorEnabled ? flavorOnlyText(wineProcessed) : wineProcessed;
   const [semanticScore, userMap, wineMap, userLegacyMap, wineLegacyMap] = await Promise.all([
     semanticSimilarity(sem1, sem2),
-    Promise.resolve(extractTerms(userNote)),
-    Promise.resolve(extractTerms(wineNote)),
-    Promise.resolve(extractTermsNoIdfNoPorter(userNote)),
-    Promise.resolve(extractTermsNoIdfNoPorter(wineNote)),
+    Promise.resolve(extractTerms(userProcessed)),
+    Promise.resolve(extractTerms(wineProcessed)),
+    Promise.resolve(extractTermsNoIdfNoPorter(userProcessed)),
+    Promise.resolve(extractTermsNoIdfNoPorter(wineProcessed)),
   ]);
 
   // Current algorithm

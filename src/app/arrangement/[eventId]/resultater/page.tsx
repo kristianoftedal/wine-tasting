@@ -28,7 +28,7 @@ export default async function EventScoresPage({ params }: { params: Promise<{ ev
   const { data: initialTastings } = await supabase
     .from('tastings')
     .select(
-      'id, wine_id, user_id, overall_score, color_score, smell_score, taste_score, friskhet_score, fylde_score, sodme_score, snaerp_score, karakter, farge, lukt, smak, friskhet, fylde, sodme, snaerp'
+      'id, wine_id, user_id, overall_score, color_score, smell_score, taste_score, friskhet_score, fylde_score, sodme_score, garvestoffer_score, karakter, farge, lukt, smak, friskhet, fylde, sodme, garvestoffer'
     )
     .eq('event_id', eventId);
 

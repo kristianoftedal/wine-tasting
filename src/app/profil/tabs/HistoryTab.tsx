@@ -172,18 +172,18 @@ export default function HistoryTab({ tastings, wines }: HistoryTabProps) {
                           <span className={styles.historyScoreNumber}>{tasting.sodme}/12</span>
                         </div>
                       )}
-                      {tasting.snaerp !== null && (
+                      {tasting.garvestoffer !== null && (
                         <div className={styles.historyScoreItem}>
                           <span className={styles.historyScoreLabel}>
-                            Snerphet {tasting.snaerp_score && <span>({tasting.snaerp_score})</span>}
+                            Garvestoffer {tasting.garvestoffer_score && <span>({tasting.garvestoffer_score})</span>}
                           </span>
                           <div className={styles.historyScoreBarTrack}>
                             <div
                               className={styles.historyScoreBarFill}
-                              style={{ width: `${(tasting.snaerp / 12) * 100}%` }}
+                              style={{ width: `${(tasting.garvestoffer / 12) * 100}%` }}
                             />
                           </div>
-                          <span className={styles.historyScoreNumber}>{tasting.snaerp}/12</span>
+                          <span className={styles.historyScoreNumber}>{tasting.garvestoffer}/12</span>
                         </div>
                       )}
                       {tasting.karakter !== null && (

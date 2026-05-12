@@ -33,7 +33,7 @@ type TastingRow = {
   friskhet: number | null;
   fylde: number | null;
   sodme: number | null;
-  snaerp: number | null;
+  garvestoffer: number | null;
   alkohol: string | null;
   pris: number | string | null;
   color_score: number | null;
@@ -42,7 +42,7 @@ type TastingRow = {
   friskhet_score: number | null;
   fylde_score: number | null;
   sodme_score: number | null;
-  snaerp_score: number | null;
+  garvestoffer_score: number | null;
   percentage_score: number | null;
   price_score: number | null;
   overall_score: number | null;
@@ -72,7 +72,7 @@ function computeOverall(
     smak: number;
     friskhet: number | null;
     fylde: number | null;
-    snaerp: number | null;
+    garvestoffer: number | null;
     sodme: number | null;
     pris: number | null;
     alkoholProsent: number | null;
@@ -86,7 +86,7 @@ function computeOverall(
   if ((wine.taste ?? '').trim().length >= 10) entries.push(['smak', scores.smak]);
   if (wine.friskhet !== null && scores.friskhet !== null) entries.push(['friskhet', scores.friskhet]);
   if (wine.fylde !== null && scores.fylde !== null) entries.push(['fylde', scores.fylde]);
-  if (wine.garvestoff !== null && scores.snaerp !== null) entries.push(['snaerp', scores.snaerp]);
+  if (wine.garvestoff !== null && scores.garvestoffer !== null) entries.push(['garvestoffer', scores.garvestoffer]);
   if (wine.sodme !== null && scores.sodme !== null) entries.push(['sodme', scores.sodme]);
   if (scores.pris !== null) entries.push(['pris', scores.pris]);
   if (scores.alkoholProsent !== null) entries.push(['alkoholProsent', scores.alkoholProsent]);
@@ -127,7 +127,7 @@ async function main() {
   const { data: tastings, error: tErr } = await supabase
     .from('tastings')
     .select(
-      'id, wine_id, farge, lukt, smak, friskhet, fylde, sodme, snaerp, alkohol, pris, color_score, smell_score, taste_score, friskhet_score, fylde_score, sodme_score, snaerp_score, percentage_score, price_score, overall_score, karakter, created_at'
+      'id, wine_id, farge, lukt, smak, friskhet, fylde, sodme, garvestoffer, alkohol, pris, color_score, smell_score, taste_score, friskhet_score, fylde_score, sodme_score, garvestoffer_score, percentage_score, price_score, overall_score, karakter, created_at'
     )
     .eq('user_id', profile.id)
     .order('created_at', { ascending: false });
@@ -177,7 +177,7 @@ async function main() {
       smak: tasteScore,
       friskhet: t.friskhet_score,
       fylde: t.fylde_score,
-      snaerp: t.snaerp_score,
+      garvestoffer: t.garvestoffer_score,
       sodme: t.sodme_score,
       pris: t.price_score,
       alkoholProsent: t.percentage_score

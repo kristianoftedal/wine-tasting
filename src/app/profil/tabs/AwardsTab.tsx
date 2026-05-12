@@ -55,7 +55,7 @@ export default function AwardsTab({ tastings, wines }: AwardsTabProps) {
         .filter((t) => {
           const wine = wines.find((w) => w.id === t.wine_id)
           const categoryName = wine?.main_category
-          const avgAttributeScore = (((t.friskhet || 0) + (t.fylde || 0) + (t.sodme || 0) + (t.snaerp || 0)) / 4) * 10
+          const avgAttributeScore = (((t.friskhet || 0) + (t.fylde || 0) + (t.sodme || 0) + (t.garvestoffer || 0)) / 4) * 10
           return categoryName === wineType && avgAttributeScore >= 70
         })
         .slice(0, 5)

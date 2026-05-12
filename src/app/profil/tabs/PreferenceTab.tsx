@@ -272,7 +272,7 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
                       <div className={styles.breakdownScores}>
                         <span>Fylde: {score.attributeScores.fylde?.toFixed(0) ?? '—'}%</span>
                         <span>Friskhet: {score.attributeScores.friskhet?.toFixed(0) ?? '—'}%</span>
-                        <span>Snærp: {score.attributeScores.snaerp?.toFixed(0) ?? '—'}%</span>
+                        <span>Garvestoffer: {score.attributeScores.garvestoffer?.toFixed(0) ?? '—'}%</span>
                         <span>Sødme: {score.attributeScores.sodme?.toFixed(0) ?? '—'}%</span>
                         <span>Lukt: {score.attributeScores.smell?.toFixed(0) ?? '—'}%</span>
                         <span>Smak: {score.attributeScores.taste?.toFixed(0) ?? '—'}%</span>
@@ -337,7 +337,7 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
         <div>
           <h3 className={styles.sectionTitle}>Anbefalte viner for deg</h3>
           <p className={styles.sectionDescription}>
-            Basert på likhet med viner du har gitt høy karakter (fylde, friskhet, snærp, sødme, smak og lukt)
+            Basert på likhet med viner du har gitt høy karakter (fylde, friskhet, garvestoffer, sødme, smak og lukt)
           </p>
         </div>
         <button

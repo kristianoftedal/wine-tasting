@@ -4,7 +4,7 @@
 export interface RecommendationWeights {
   fylde: number
   friskhet: number
-  snaerp: number
+  garvestoffer: number
   sodme: number
   smell: number
   taste: number
@@ -23,7 +23,7 @@ export interface WineSimilarityScore {
   attributeScores: {
     fylde: number | null
     friskhet: number | null
-    snaerp: number | null
+    garvestoffer: number | null
     sodme: number | null
     smell: number | null
     taste: number | null
@@ -39,7 +39,7 @@ export interface WineSimilarityScore {
 export const DEFAULT_WEIGHTS: RecommendationWeights = {
   fylde: 0.075,
   friskhet: 0.075,
-  snaerp: 0.075,
+  garvestoffer: 0.075,
   sodme: 0.075,
   smell: 0.35,
   taste: 0.35,

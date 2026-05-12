@@ -134,7 +134,7 @@ export const Summary: React.FC = () => {
 
   const vmpFylde = wine?.fylde ?? null;
   const vmpFriskhet = wine?.friskhet ?? null;
-  const vmpSnærp = wine?.garvestoff ?? null;
+  const vmpGarvestoffer = wine?.garvestoff ?? null;
   const vmpSødme = wine?.sodme ?? null;
 
   useEffect(() => {
@@ -162,7 +162,7 @@ export const Summary: React.FC = () => {
 
         const priceScore = calculateNumericSimilarity(tastingState.pris?.toString(), wine?.price);
 
-        const snærpScore = vmpSnærp ? calculateNumericSimilarity(tastingState.snaerp, vmpSnærp) : 0;
+        const garvestofferScore = vmpGarvestoffer ? calculateNumericSimilarity(tastingState.garvestoffer, vmpGarvestoffer) : 0;
         const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme) : 0;
         const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde) : 0;
         const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet) : 0;
@@ -173,7 +173,7 @@ export const Summary: React.FC = () => {
           smak: tasteScore,
           friskhet: friskhetScore,
           fylde: fyldeScore,
-          snaerp: snærpScore,
+          garvestoffer: garvestofferScore,
           sodme: sødmeScore,
           alkoholProsent: prosentScore,
           pris: priceScore
@@ -186,7 +186,7 @@ export const Summary: React.FC = () => {
           // Skip characteristics that don't have expert data
           if (key === 'friskhet' && vmpFriskhet === null) return false;
           if (key === 'fylde' && vmpFylde === null) return false;
-          if (key === 'snaerp' && vmpSnærp === null) return false;
+          if (key === 'garvestoffer' && vmpGarvestoffer === null) return false;
           if (key === 'sodme' && vmpSødme === null) return false;
           // Skip smell/taste scores if the wine's description is too short
           if (key === 'lukt' && (wine.smell ?? '').trim().length < 10) return false;
@@ -219,7 +219,7 @@ export const Summary: React.FC = () => {
           tasteScore: tasteScore,
           percentageScore: prosentScore,
           priceScore: priceScore,
-          snaerpScore: snærpScore,
+          garvestofferScore: garvestofferScore,
           sodmeScore: sødmeScore,
           fyldeScore: fyldeScore,
           friskhetScore: friskhetScore,
@@ -243,12 +243,12 @@ export const Summary: React.FC = () => {
     tastingState.selectedFlavorsSmak,
     tastingState.smak,
     tastingState.pris,
-    tastingState.snaerp,
+    tastingState.garvestoffer,
     tastingState.sodme,
     tastingState.fylde,
     tastingState.friskhet,
     wine,
-    vmpSnærp,
+    vmpGarvestoffer,
     vmpSødme,
     vmpFylde,
     vmpFriskhet,
@@ -312,8 +312,8 @@ export const Summary: React.FC = () => {
 
             {isRedWine && (
               <div className={styles.summaryRow}>
-                <div className={styles.summaryLabel}>Snærp</div>
-                <div className={styles.summaryValue}>{tastingState.snaerp || '-'}</div>
+                <div className={styles.summaryLabel}>Garvestoffer</div>
+                <div className={styles.summaryValue}>{tastingState.garvestoffer || '-'}</div>
               </div>
             )}
 
@@ -424,12 +424,12 @@ export const Summary: React.FC = () => {
 
             {isRedWine && (
               <div className={styles.tableRow}>
-                <div className={styles.attributeName}>Snærp</div>
-                <div className={styles.attributeValue}>{tastingState.snaerp || '-'}</div>
+                <div className={styles.attributeName}>Garvestoffer</div>
+                <div className={styles.attributeValue}>{tastingState.garvestoffer || '-'}</div>
                 <div className={styles.attributeValue}>
-                  {vmpSnærp != null ? vmpSnærp.toString() : 'Ikke tilgjengelig'}
+                  {vmpGarvestoffer != null ? vmpGarvestoffer.toString() : 'Ikke tilgjengelig'}
                 </div>
-                <div className={styles.scoreValue}>{vmpSnærp != null ? `${scores.snaerp}%` : '-'}</div>
+                <div className={styles.scoreValue}>{vmpGarvestoffer != null ? `${scores.garvestoffer}%` : '-'}</div>
               </div>
             )}
 
@@ -486,7 +486,7 @@ function initState() {
     smak: 0,
     friskhet: 0,
     fylde: 0,
-    snaerp: 0,
+    garvestoffer: 0,
     sodme: 0,
     alkoholProsent: 0,
     pris: 0

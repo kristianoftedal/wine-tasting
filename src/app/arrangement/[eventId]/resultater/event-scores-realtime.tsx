@@ -18,7 +18,7 @@ type TastingScore = {
   friskhet_score: number | null;
   fylde_score: number | null;
   sodme_score: number | null;
-  snaerp_score: number | null;
+  garvestoffer_score: number | null;
   attribute_score: number | null;
   karakter: number | null;
   farge: string | null;
@@ -27,7 +27,7 @@ type TastingScore = {
   friskhet: number | null;
   fylde: number | null;
   sodme: number | null;
-  snaerp: number | null;
+  garvestoffer: number | null;
 };
 
 type Props = {
@@ -104,7 +104,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
         avgFriskhet: null,
         avgFylde: null,
         avgSodme: null,
-        avgSnaerp: null,
+        avgGarvestoffer: null,
         count: 0,
         tastings: [] as Array<TastingScore & { userName: string }>
       };
@@ -122,13 +122,13 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
       avgFriskhet: sum('friskhet_score') / count,
       avgFylde: sum('fylde_score') / count,
       avgSodme: sum('sodme_score') / count,
-      avgSnaerp: sum('snaerp_score') / count,
+      avgGarvestoffer: sum('garvestoffer_score') / count,
       count,
       tastings: wineTastings.map(t => ({
         ...t,
         userName: profileMap[t.user_id] || 'Ukjent',
         attribute_score:
-          ((t.friskhet_score || 0) + (t.fylde_score || 0) + (t.snaerp_score || 0) + (t.sodme_score || 0)) / 3
+          ((t.friskhet_score || 0) + (t.fylde_score || 0) + (t.garvestoffer_score || 0) + (t.sodme_score || 0)) / 3
       }))
     };
   });
@@ -584,9 +584,9 @@ function ParticipantAccordionList({
                       )}
                       {wine?.main_category?.toLowerCase().includes('rød') && (
                         <div className={styles.tastingNoteField}>
-                          <span className={styles.tastingNoteLabel}>Snærp:</span>
+                          <span className={styles.tastingNoteLabel}>Garvestoffer:</span>
                           <span className={styles.tastingNoteValue}>
-                            {tasting.snaerp || '-'}/12 → {tasting.snaerp_score?.toFixed(0) || '-'}/100
+                            {tasting.garvestoffer || '-'}/12 → {tasting.garvestoffer_score?.toFixed(0) || '-'}/100
                           </span>
                         </div>
                       )}

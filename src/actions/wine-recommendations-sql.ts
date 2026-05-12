@@ -194,7 +194,7 @@ export async function findSimilarWinesSQL(
     const avgAttributes = {
       fylde: 0,
       friskhet: 0,
-      snaerp: 0,
+      garvestoffer: 0,
       sodme: 0
     };
 
@@ -202,7 +202,7 @@ export async function findSimilarWinesSQL(
     highRatedTastings.forEach(t => {
       if (t.fylde !== null) avgAttributes.fylde += t.fylde;
       if (t.friskhet !== null) avgAttributes.friskhet += t.friskhet;
-      if (t.snaerp !== null) avgAttributes.snaerp += t.snaerp;
+      if (t.garvestoffer !== null) avgAttributes.garvestoffer += t.garvestoffer;
       if (t.sodme !== null) avgAttributes.sodme += t.sodme;
       count++;
     });
@@ -210,7 +210,7 @@ export async function findSimilarWinesSQL(
     if (count > 0) {
       avgAttributes.fylde /= count;
       avgAttributes.friskhet /= count;
-      avgAttributes.snaerp /= count;
+      avgAttributes.garvestoffer /= count;
       avgAttributes.sodme /= count;
     }
 
@@ -232,7 +232,7 @@ export async function findSimilarWinesSQL(
     console.log('[v0] Calling find_similar_wines_weighted RPC with params:', {
       p_fylde: avgAttributes.fylde,
       p_friskhet: avgAttributes.friskhet,
-      p_garvestoff: avgAttributes.snaerp,
+      p_garvestoff: avgAttributes.garvestoffer,
       p_sodme: avgAttributes.sodme,
       p_excluded_wine_ids_count: tastedWineIds.length,
       p_main_category: targetCategory,
@@ -242,7 +242,7 @@ export async function findSimilarWinesSQL(
     const { data: candidateWines, error } = await supabase.rpc('find_similar_wines_weighted', {
       p_fylde: avgAttributes.fylde,
       p_friskhet: avgAttributes.friskhet,
-      p_garvestoff: avgAttributes.snaerp,
+      p_garvestoff: avgAttributes.garvestoffer,
       p_sodme: avgAttributes.sodme,
       p_excluded_wine_ids: tastedWineIds,
       p_main_category: targetCategory,
@@ -308,8 +308,8 @@ export async function findSimilarWinesSQL(
       // we don't synthesise a middle value because that homogenises rankings.
       const fyldeSim = numericSimilarity(avgAttributes.fylde, wine.fylde ?? null);
       const friskhetSim = numericSimilarity(avgAttributes.friskhet, wine.friskhet ?? null);
-      const snaerpSim = categoryAttrs.useGarvestoff
-        ? numericSimilarity(avgAttributes.snaerp, wine.garvestoff ?? null)
+      const garvestofferSim = categoryAttrs.useGarvestoff
+        ? numericSimilarity(avgAttributes.garvestoffer, wine.garvestoff ?? null)
         : null;
       const sodmeSim = categoryAttrs.useSodme ? numericSimilarity(avgAttributes.sodme, wine.sodme ?? null) : null;
       const smellSim = smellScores[idx];
@@ -321,7 +321,7 @@ export async function findSimilarWinesSQL(
       const overallScore = weightedAverage([
         { score: fyldeSim, weight: weights.fylde },
         { score: friskhetSim, weight: weights.friskhet },
-        { score: snaerpSim, weight: categoryAttrs.useGarvestoff ? weights.snaerp : 0 },
+        { score: garvestofferSim, weight: categoryAttrs.useGarvestoff ? weights.garvestoffer : 0 },
         { score: sodmeSim, weight: categoryAttrs.useSodme ? weights.sodme : 0 },
         { score: smellSim, weight: weights.smell },
         { score: tasteSim, weight: weights.taste }
@@ -333,7 +333,7 @@ export async function findSimilarWinesSQL(
         attributeScores: {
           fylde: fyldeSim,
           friskhet: friskhetSim,
-          snaerp: snaerpSim,
+          garvestoffer: garvestofferSim,
           sodme: sodmeSim,
           smell: smellSim,
           taste: tasteSim

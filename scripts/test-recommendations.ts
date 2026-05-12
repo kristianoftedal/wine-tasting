@@ -74,7 +74,7 @@ async function runCase(
     const name = (s.wine.name || '').slice(0, 46).padEnd(46);
     const a = s.attributeScores;
     console.log(
-      `${name}  ${fmt(a.fylde)}  ${fmt(a.friskhet)}  ${fmt(a.snaerp)}  ${fmt(a.sodme)}  ${fmt(a.smell)}  ${fmt(a.taste)}  ${fmt(s.similarityScore)}`
+      `${name}  ${fmt(a.fylde)}  ${fmt(a.friskhet)}  ${fmt(a.garvestoffer)}  ${fmt(a.sodme)}  ${fmt(a.smell)}  ${fmt(a.taste)}  ${fmt(s.similarityScore)}`
     );
   }
 
