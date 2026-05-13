@@ -133,7 +133,7 @@ AS $$
     w.year,
     CASE
       WHEN (w.volume::text) LIKE '{%' THEN ((w.volume::text)::jsonb->>'value')::numeric
-      WHEN w.volume IS NOT NULL        THEN split_part(w.volume::text, ' ', 1)::numeric
+      WHEN w.volume IS NOT NULL        THEN NULLIF(split_part(w.volume::text, ' ', 1), '')::numeric
       ELSE NULL
     END,
     CASE
@@ -150,7 +150,7 @@ AS $$
     END,
     CASE
       WHEN (w.price::text) LIKE '{%' THEN ((w.price::text)::jsonb->>'value')::numeric
-      WHEN w.price IS NOT NULL         THEN replace(split_part(w.price::text, ' ', 2), ',', '.')::numeric
+      WHEN w.price IS NOT NULL         THEN NULLIF(replace(split_part(w.price::text, ' ', 2), ',', '.'), '')::numeric
       ELSE NULL
     END,
     GREATEST(
