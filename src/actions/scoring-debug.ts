@@ -1,7 +1,8 @@
 'use server';
 
 import { sanitizeText, norwegianLemmas, flavorOnlyText } from '@/lib/lemmatizeAndWeight';
-import { semanticSimilarity } from '@/lib/semanticSimilarity';
+import { semanticSimilarity, bertScoreTokenSimilarity } from '@/lib/semanticSimilarity';
+import { categorySemanticSimilarity } from '@/actions/similarity';
 import { getCategoryWeight } from '@/lib/profiles';
 import { PorterStemmerNo } from 'natural';
 import idfRaw from '@/lib/idf-weights.generated.json';
@@ -29,8 +30,11 @@ export type TermDetail = {
 export type ScoringBreakdown = {
   // Current algorithm: semantic + weighted lemma/category with IDF + Porter
   semanticScore: number;
+  blendedSemanticScore: number;
+  bertScoreValue: number | null;
   lemmaScore: number;
   categoryScore: number;
+  categorySemanticScore: number | null;
   precision: number;
   precisionBonus: number;
   currentScore: number;
@@ -213,30 +217,46 @@ export async function getTermBreakdown(
 export async function getScoringBreakdown(
   userNote: string,
   wineNote: string,
-  options?: { recall?: boolean; flavorFilter?: boolean }
+  options?: { recall?: boolean; flavorFilter?: boolean; bertScore?: boolean; categorySemantic?: boolean }
 ): Promise<ScoringBreakdown> {
   const recallEnabled = options?.recall ?? RECALL_SCORING;
   const flavorEnabled = options?.flavorFilter ?? FLAVOR_FILTER_ENABLED;
+  const bertScoreEnabled = options?.bertScore ?? false;
+  const categorySemanticEnabled = options?.categorySemantic ?? false;
 
   const userProcessed = normalizeWineSynonyms(sanitizeText(userNote));
   const wineProcessed = normalizeWineSynonyms(sanitizeText(wineNote));
 
   const sem1 = flavorEnabled ? flavorOnlyText(userProcessed) : userProcessed;
   const sem2 = flavorEnabled ? flavorOnlyText(wineProcessed) : wineProcessed;
-  const [semanticScore, userMap, wineMap, userLegacyMap, wineLegacyMap] = await Promise.all([
+
+  const [semanticScore, bertScoreVal, catSemanticVal, userMap, wineMap, userLegacyMap, wineLegacyMap] = await Promise.all([
     semanticSimilarity(sem1, sem2),
+    bertScoreEnabled ? bertScoreTokenSimilarity(sem1, sem2) : Promise.resolve(null as null),
+    categorySemanticEnabled ? categorySemanticSimilarity(userProcessed, wineProcessed) : Promise.resolve(null as null),
     Promise.resolve(extractTerms(userProcessed)),
     Promise.resolve(extractTerms(wineProcessed)),
     Promise.resolve(extractTermsNoIdfNoPorter(userProcessed)),
     Promise.resolve(extractTermsNoIdfNoPorter(wineProcessed)),
   ]);
 
+  const blendedSemanticScore = bertScoreVal !== null
+    ? Math.round(0.65 * semanticScore + 0.35 * bertScoreVal)
+    : semanticScore;
+
   // Current algorithm
   const lemmaScore = computeWeightedLemmaScore(userMap, wineMap, recallEnabled);
-  const categoryScore = computeWeightedCategoryScore(userMap, wineMap, recallEnabled);
-  const precision = (lemmaScore + categoryScore) / 2;
+  const categoryScore = catSemanticVal !== null
+    ? catSemanticVal
+    : computeWeightedCategoryScore(userMap, wineMap, recallEnabled);
+  // BERTScore already rewards near-synonym proximity at token level — the same
+  // signal category score captures. Drop category from precision when BERTScore
+  // is active to avoid double-rewarding the same near-miss.
+  const precision = bertScoreEnabled
+    ? lemmaScore
+    : (lemmaScore + categoryScore) / 2;
   const precisionBonus = precision * PRECISION_GAIN;
-  const currentScore = Math.round(Math.min(100, semanticScore + precisionBonus));
+  const currentScore = Math.round(Math.min(100, blendedSemanticScore + precisionBonus));
 
   // Previous algorithm (no IDF, no Porter — same semantic + weighted formula)
   const legacyLemmaScore = computeWeightedLemmaScore(userLegacyMap, wineLegacyMap, recallEnabled);
@@ -247,12 +267,13 @@ export async function getScoringBreakdown(
 
   const matchedLemmas = new Set([...userMap.keys()].filter(k => wineMap.has(k)));
 
-  const toDetail = toDetailFn;
-
   return {
     semanticScore,
+    blendedSemanticScore,
+    bertScoreValue: bertScoreVal,
     lemmaScore,
     categoryScore,
+    categorySemanticScore: catSemanticVal,
     precision: parseFloat(precision.toFixed(1)),
     precisionBonus: parseFloat(precisionBonus.toFixed(1)),
     currentScore,
@@ -261,8 +282,8 @@ export async function getScoringBreakdown(
     legacyPrecision: parseFloat(legacyPrecision.toFixed(1)),
     legacyPrecisionBonus: parseFloat(legacyPrecisionBonus.toFixed(1)),
     legacyScore,
-    userTerms: toDetail(userMap, matchedLemmas),
-    wineTerms: toDetail(wineMap, matchedLemmas),
+    userTerms: toDetailFn(userMap, matchedLemmas),
+    wineTerms: toDetailFn(wineMap, matchedLemmas),
     userRawTokens: sanitizeText(userNote).split(' ').filter(Boolean),
     wineRawTokens: sanitizeText(wineNote).split(' ').filter(Boolean),
     userFlavorTokens: sem1.split(' ').filter(Boolean),

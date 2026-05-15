@@ -238,6 +238,7 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
   const formulaStr = `${data.precision} × 0.35 = +${data.precisionBonus}`;
   const idfBoosted = data.userTerms.filter(t => t.idfMultiplier > 1.0 && t.matched);
   const diff = storedScore !== null ? data.currentScore - storedScore : null;
+  const semanticFloor = data.blendedSemanticScore;
 
   return (
     <div className={styles.results}>
@@ -249,9 +250,18 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
           <TokenChips rawTokens={data.wineRawTokens} flavorTokens={data.wineFlavorTokens} terms={data.wineTerms} label="Vinnota" />
         </div>
         <div className={styles.scoreGrid}>
-          <ScoreCard title="Semantisk" value={data.semanticScore} description="OpenAI embedding cosine (gulv)" />
+          <ScoreCard title="Semantisk" value={data.semanticScore} description="OpenAI embedding cosine" />
+          {data.bertScoreValue !== null && (
+            <ScoreCard title="BERTScore" value={data.bertScoreValue} description="Token-nivå F1 (nærsynonymer)" />
+          )}
+          {data.bertScoreValue !== null && (
+            <ScoreCard title="Blandet sem." value={semanticFloor} description="0.65 × sem + 0.35 × BERT (gulv)" />
+          )}
           <ScoreCard title="Lemma-treff" value={data.lemmaScore} description="Vektet ordoverlapps-presisjon" />
-          <ScoreCard title="Kategori-treff" value={data.categoryScore} description="Hierarkisk kategorikreditt" />
+          {data.categorySemanticScore !== null
+            ? <ScoreCard title="Kat.semantikk" value={data.categorySemanticScore} description="Per-kategori embedding" />
+            : <ScoreCard title="Kategori-treff" value={data.categoryScore} description="Hierarkisk kategorikreditt" />
+          }
           <div className={styles.scoreCard}>
             <div className={styles.scoreCardTitle}>Presisjonsbonus</div>
             <div className={styles.scoreCardValue} style={{ color: '#8b5cf6' }}>+{data.precisionBonus.toFixed(1)}</div>
@@ -261,7 +271,7 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
           <div className={styles.finalCard}>
             <ScoreRing value={data.currentScore} label="Totalscore" sub="beregnet nå" />
             <div className={styles.finalFormula}>
-              {data.semanticScore} + {data.precisionBonus.toFixed(1)} = {data.currentScore}
+              {semanticFloor} + {data.precisionBonus.toFixed(1)} = {data.currentScore}
             </div>
           </div>
         </div>
@@ -405,11 +415,13 @@ function TastingSelector({
   );
 }
 
-export default function ScoringDemo({ pastTastings, lemmaGroups, defaultRecall, defaultFlavorFilter }: {
+export default function ScoringDemo({ pastTastings, lemmaGroups, defaultRecall, defaultFlavorFilter, defaultBertScore, defaultCategorySemantic }: {
   pastTastings: PastTasting[];
   lemmaGroups: LemmaGroup[];
   defaultRecall: boolean;
   defaultFlavorFilter: boolean;
+  defaultBertScore: boolean;
+  defaultCategorySemantic: boolean;
 }) {
   const [userNote, setUserNote] = useState('');
   const [wineNote, setWineNote] = useState('');
@@ -420,13 +432,15 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, defaultRecall, 
   const [isPending, startTransition] = useTransition();
   const [recall, setRecall] = useState(defaultRecall);
   const [flavorFilter, setFlavorFilter] = useState(defaultFlavorFilter);
+  const [bertScore, setBertScore] = useState(defaultBertScore);
+  const [categorySemantic, setCategorySemantic] = useState(defaultCategorySemantic);
 
   const analyze = () => {
     if (!userNote.trim() || !wineNote.trim()) return;
     setError(null);
     startTransition(async () => {
       try {
-        const data = await getScoringBreakdown(userNote, wineNote, { recall, flavorFilter });
+        const data = await getScoringBreakdown(userNote, wineNote, { recall, flavorFilter, bertScore, categorySemantic });
         setResult(data);
       } catch (e) {
         setError('Analyse feilet. Sjekk at OpenAI API-nøkkelen er satt.');
@@ -538,6 +552,20 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, defaultRecall, 
             title="Fjern strukturtermer (fylde, syre, osv.) fra semantisk sammenligning"
           >
             Smakfilter {flavorFilter ? 'på' : 'av'}
+          </button>
+          <button
+            className={`${styles.flagToggle} ${bertScore ? styles.flagToggleOn : ''}`}
+            onClick={() => setBertScore(b => !b)}
+            title="Blend setningsembedding med token-nivå BERTScore (65% + 35%) — fanger nærsynonymer bedre"
+          >
+            BERTScore {bertScore ? 'på' : 'av'}
+          </button>
+          <button
+            className={`${styles.flagToggle} ${categorySemantic ? styles.flagToggleOn : ''}`}
+            onClick={() => setCategorySemantic(c => !c)}
+            title="Bruk semantisk embedding per smakskategori i stedet for hierarkisk lemmatreff"
+          >
+            Kat.semantikk {categorySemantic ? 'på' : 'av'}
           </button>
         </div>
       </div>

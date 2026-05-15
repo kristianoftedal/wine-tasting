@@ -1,7 +1,7 @@
 'use server';
 
 import { lemmatizeAndWeight, norwegianLemmas, flavorOnlyText, sanitizeText } from '@/lib/lemmatizeAndWeight';
-import { semanticSimilarity } from '@/lib/semanticSimilarity';
+import { semanticSimilarity, bertScoreTokenSimilarity, rawSemanticSimilarity } from '@/lib/semanticSimilarity';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 
 // When true, denominator = max(user, wine) so incomplete notes are penalised.
@@ -10,6 +10,12 @@ const RECALL_SCORING = process.env.SCORING_RECALL_ENABLED === 'true';
 // When true, strip structural/quality terms (fylde, syre, etc.) before sending
 // to the semantic model so embeddings focus on flavour descriptors only.
 const FLAVOR_FILTER_ENABLED = process.env.SEMANTIC_FLAVOR_FILTER_ENABLED === 'true';
+// When true, blend sentence-level embedding score with BERTScore-style token similarity.
+// Adds ~N extra embedding API calls (one per unique token in both texts combined).
+const BERTSCORE_ENABLED = process.env.BERTSCORE_ENABLED === 'true';
+// When true, replace categorySimpleSimilarity with per-category semantic embedding comparison.
+// Adds up to 6 extra embedding pairs (one per flavor category present in the reference).
+const CATEGORY_SEMANTIC_ENABLED = process.env.CATEGORY_SEMANTIC_ENABLED === 'true';
 
 type LemmaInfo = { lemma: string; weight: number; main?: string; sub?: string };
 
@@ -98,20 +104,99 @@ async function categorySimpleSimilarity(text1: string, text2: string): Promise<n
   }
 }
 
+import redFlavors from '@/app/data/red-flavor.json';
+import whiteFlavors from '@/app/data/white-flavor.json';
+
+// Maps JSON top-level category names (flavor wheel) to internal categoryPath.main
+// keys used in norwegianLemmas. Categories without a mapping have no lemma coverage
+// and are silently skipped. Multiple JSON names can resolve to the same lemma key
+// (e.g. both "Treverk" and "Karamellisert" live under "Eik/fat") — deduplication
+// happens below so each lemma key is scored only once.
+const JSON_CATEGORY_TO_LEMMA_MAIN: Record<string, string> = {
+  'Frukt og bær': 'Frukt og bær',
+  'Krydder': 'Krydder',
+  'Treverk': 'Treverk',
+  'Karamellisert': 'Karamellisert',
+  'Nøtter': 'Nøtter',
+  'Nøtt': 'Nøtter',
+  'Ristet': 'Treverk',
+  'Jordaktig': 'Jordaktig',
+  'Blomst': 'Blomst',
+  'Urter': 'Urter',
+  'Urteaktig': 'Urter',
+  'Animalsk': 'Animalsk',
+  'Grønnsaker': 'Grønnsaker',
+  'Søt': 'Karamellisert',
+};
+
+// Union of first-level flavor wheel names from both red and white, mapped to unique
+// internal lemma keys. This drives which categories are scored in categorySemanticSimilarity.
+const SEMANTIC_FLAVOR_CATEGORIES: readonly string[] = [
+  ...new Set(
+    [...redFlavors, ...whiteFlavors]
+      .map(c => JSON_CATEGORY_TO_LEMMA_MAIN[c.name])
+      .filter((v): v is string => !!v)
+  ),
+];
+
+function extractCategoryLemmaText(lemmas: Map<string, LemmaInfo>, lemmaMain: string): string {
+  return [...lemmas.values()]
+    .filter(v => v.main === lemmaMain)
+    .map(v => v.lemma)
+    .join(' ');
+}
+
 /**
- * Calculate semantic similarity score only (for color comparison)
- * Uses OpenAI embeddings
+ * Per-category semantic similarity. For each flavor category present in the
+ * reference text, embeds the user's and reference's category-specific lemmas
+ * and scores them individually, weighted by how many reference tokens belong
+ * to that category.
+ *
+ * A user who correctly identifies "Frukt" flavors but misses "Eik/fat" scores
+ * lower than one who covers all categories — even when overall sentence cosine
+ * is similar because both texts are "about wine".
  */
-export async function semanticOnlySimilarity(text1: string, text2: string): Promise<number> {
+export async function categorySemanticSimilarity(text1: string, text2: string): Promise<number> {
   if (!text1 || !text2) return 0;
 
   try {
-    const result = await semanticSimilarity(text1, text2);
-    return result;
+    const a = lemmasWithWeight(text1);
+    const b = lemmasWithWeight(text2);
+    if (!a.size || !b.size) return 0;
+
+    const pairs: Array<{ userText: string; refText: string; refWeight: number }> = [];
+    for (const cat of SEMANTIC_FLAVOR_CATEGORIES) {
+      const refText = extractCategoryLemmaText(b, cat);
+      if (!refText) continue;
+      const userText = extractCategoryLemmaText(a, cat);
+      pairs.push({ userText, refText, refWeight: refText.split(' ').length });
+    }
+
+    if (!pairs.length) return 0;
+
+    const scores = await Promise.all(
+      pairs.map(({ userText, refText }) =>
+        userText ? semanticSimilarity(userText, refText) : Promise.resolve(0)
+      )
+    );
+
+    const totalWeight = pairs.reduce((s, p) => s + p.refWeight, 0);
+    const weightedSum = pairs.reduce((s, p, i) => s + scores[i] * p.refWeight, 0);
+    return Math.round(weightedSum / totalWeight);
   } catch (error) {
-    console.error('Semantic similarity error:', error);
+    console.error('Category semantic error:', error);
     return 0;
   }
+}
+
+/**
+ * Color comparison: embed text directly without any term stripping.
+ * Color descriptors ("lys rubinrød", "dyp gylden") would be corrupted by
+ * the generic-term filter used for smell/taste.
+ */
+export async function semanticOnlySimilarity(text1: string, text2: string): Promise<number> {
+  if (!text1 || !text2) return 0;
+  return rawSemanticSimilarity(text1, text2);
 }
 
 /**
@@ -134,15 +219,25 @@ export async function serverSideSimilarity(text1: string, text2: string): Promis
     const norm2 = normalizeWineSynonyms(sanitizeText(text2));
     const sem1 = FLAVOR_FILTER_ENABLED ? flavorOnlyText(norm1) : norm1;
     const sem2 = FLAVOR_FILTER_ENABLED ? flavorOnlyText(norm2) : norm2;
-    const [lemmaScore, categoryScore, semanticScore] = await Promise.all([
+    const [lemmaScore, categoryScore, semanticScore, bertScore] = await Promise.all([
       lemmaSimpleSimilarity(norm1, norm2),
-      categorySimpleSimilarity(norm1, norm2),
-      semanticOnlySimilarity(sem1, sem2)
+      CATEGORY_SEMANTIC_ENABLED ? categorySemanticSimilarity(norm1, norm2) : categorySimpleSimilarity(norm1, norm2),
+      semanticOnlySimilarity(sem1, sem2),
+      BERTSCORE_ENABLED ? bertScoreTokenSimilarity(sem1, sem2) : Promise.resolve(0),
     ]);
 
-    const precision = (lemmaScore + categoryScore) / 2;
+    const blendedSemantic = BERTSCORE_ENABLED
+      ? Math.round(0.65 * semanticScore + 0.35 * bertScore)
+      : semanticScore;
+
+    // When BERTScore is on it already rewards near-synonym proximity at token
+    // level — the same signal category score captures. Using both would
+    // double-reward the same near-miss. Drop category from precision in that case.
+    const precision = BERTSCORE_ENABLED
+      ? lemmaScore
+      : (lemmaScore + categoryScore) / 2;
     const bonus = precision * 0.35;
-    const final = Math.min(100, semanticScore + bonus);
+    const final = Math.min(100, blendedSemantic + bonus);
 
     return Math.round(final);
   } catch (error) {

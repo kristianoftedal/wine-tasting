@@ -100,7 +100,7 @@ describe('getCategoryWeight', () => {
 
     const { getCategoryWeight } = await import('./config')
 
-    expect(getCategoryWeight('Frukt')).toBe(2.0) // Inverted profile
+    expect(getCategoryWeight('Frukt og bær')).toBe(2.0) // Inverted profile
   })
 
   it('should return correct weight for GENERIC from inverted profile', async () => {
@@ -138,7 +138,7 @@ describe('getCategoryWeight', () => {
     const { getCategoryWeight } = await import('./config')
 
     // Test all main categories exist and return numbers
-    const categories = ['Frukt', 'Krydder', 'Urter', 'Blomster', 'Eik/fat', 'Mineral', 'GENERIC'] as const
+    const categories = ['Frukt og bær', 'Krydder', 'Urter', 'Blomst', 'Treverk', 'Karamellisert', 'Nøtter', 'Jordaktig', 'Animalsk', 'Grønnsaker', 'GENERIC'] as const
     categories.forEach(category => {
       const weight = getCategoryWeight(category)
       expect(typeof weight).toBe('number')

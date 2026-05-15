@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Comparison Techniques</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #0d0d1a;
+  color: #e0e0ee;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+#progress {
+  position: fixed; top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #7c3aed, #ec4899);
+  transition: width 0.35s ease;
+  z-index: 999;
+}
+
+.deck { position: relative; width: 100vw; height: 100vh; }
+
+.slide {
+  display: none;
+  position: absolute; inset: 0;
+  padding: 56px 80px;
+  flex-direction: column;
+  justify-content: center;
+}
+.slide.active { display: flex; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.nav {
+  position: fixed; bottom: 28px; right: 36px;
+  display: flex; gap: 10px; z-index: 200;
+}
+.nav button {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff; padding: 9px 22px;
+  border-radius: 6px; cursor: pointer;
+  font-size: 15px; transition: background 0.2s;
+}
+.nav button:hover { background: rgba(255,255,255,0.2); }
+
+.slide-counter { position: fixed; bottom: 36px; left: 36px; color: rgba(255,255,255,0.3); font-size: 13px; }
+.kbd-hint { position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.18); font-size: 12px; }
+
+h1 { font-size: 3.4rem; font-weight: 800; line-height: 1.1; }
+h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 20px; color: #a78bfa; }
+h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; color: #f9a8d4; }
+p  { font-size: 1.05rem; line-height: 1.75; color: #b0b0c8; }
+
+.tag {
+  display: inline-block;
+  background: rgba(124,58,237,0.25);
+  border: 1px solid rgba(124,58,237,0.5);
+  color: #a78bfa; padding: 3px 12px;
+  border-radius: 20px; font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 14px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 14px; }
+
+.card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px; padding: 18px 22px;
+}
+.card.accent { border-color: rgba(167,139,250,0.35); background: rgba(124,58,237,0.07); }
+.card.green  { border-color: rgba(134,239,172,0.3);  background: rgba(16,185,129,0.06); }
+.card.yellow { border-color: rgba(251,191,36,0.3);   background: rgba(234,179,8,0.06); }
+.card.pink   { border-color: rgba(249,168,212,0.3);  background: rgba(236,72,153,0.06); }
+
+.formula {
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(167,139,250,0.25);
+  border-left: 3px solid #7c3aed;
+  border-radius: 8px; padding: 14px 24px;
+  margin: 12px 0; text-align: center;
+  font-family: Georgia, serif; font-size: 1.25rem;
+  color: #ddd8f0; letter-spacing: 0.02em;
+}
+
+.code {
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px; padding: 14px 18px;
+  margin: 10px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.92rem; color: #86efac;
+  line-height: 1.6;
+}
+
+ul { list-style: none; margin-top: 6px; }
+ul li { padding: 5px 0 5px 22px; color: #b0b0c8; font-size: 1rem; position: relative; line-height: 1.5; }
+ul li::before { content: '›'; position: absolute; left: 0; color: #a78bfa; font-size: 1.1rem; }
+
+.badge { display: inline-block; padding: 1px 9px; border-radius: 10px; font-size: 0.72rem; font-weight: 600; margin-left: 7px; vertical-align: middle; }
+.bg { background: rgba(134,239,172,0.12); color: #86efac; border: 1px solid rgba(134,239,172,0.3); }
+.bw { background: rgba(251,191,36,0.12);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.bi { background: rgba(147,197,253,0.12); color: #93c5fd; border: 1px solid rgba(147,197,253,0.3); }
+.bn { background: rgba(249,168,212,0.12); color: #f9a8d4; border: 1px solid rgba(249,168,212,0.3); }
+
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.92rem; }
+th { background: rgba(124,58,237,0.18); padding: 9px 14px; text-align: left; color: #a78bfa; font-weight: 600; }
+td { padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #b0b0c8; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+.s-title {
+  background: radial-gradient(ellipse at 25% 50%, rgba(124,58,237,0.18) 0%, transparent 55%),
+              radial-gradient(ellipse at 75% 50%, rgba(236,72,153,0.1) 0%, transparent 55%);
+}
+.s-section {
+  background: radial-gradient(ellipse at center, rgba(124,58,237,0.22) 0%, transparent 65%);
+  text-align: center; align-items: center; justify-content: center;
+}
+.s-einstein {
+  background: radial-gradient(ellipse at 15% 85%, rgba(234,179,8,0.1) 0%, transparent 50%),
+              radial-gradient(ellipse at 85% 15%, rgba(124,58,237,0.08) 0%, transparent 50%);
+}
+.s-arch {
+  background: radial-gradient(ellipse at 85% 15%, rgba(16,185,129,0.08) 0%, transparent 50%);
+}
+.section-num { font-size: 5rem; font-weight: 900; color: rgba(124,58,237,0.2); line-height: 1; }
+
+.cv { color: #a78bfa; font-weight: 600; }
+.cp { color: #f9a8d4; font-weight: 600; }
+.cg { color: #86efac; font-weight: 600; }
+.cy { color: #fbbf24; font-weight: 600; }
+.cb { color: #93c5fd; font-weight: 600; }
+
+.pipeline { display: flex; align-items: stretch; gap: 0; margin: 20px 0; }
+.pipe-step {
+  background: rgba(124,58,237,0.12);
+  border: 1px solid rgba(124,58,237,0.35);
+  border-radius: 8px; padding: 10px 12px;
+  text-align: center; flex: 1; min-width: 0;
+  font-size: 0.82rem; color: #a78bfa; font-weight: 600;
+}
+.pipe-step .sub { font-size: 0.68rem; color: #6b6b88; font-weight: 400; margin-top: 3px; }
+.pipe-arr { color: #7c3aed; font-size: 1.3rem; padding: 0 4px; align-self: center; flex-shrink: 0; }
+
+.eq { background: rgba(0,0,0,0.3); border: 1px solid rgba(167,139,250,0.3); border-radius: 10px; padding: 18px 28px; text-align: center; font-size: 1rem; margin: 12px 0; color: #ddd8f0; line-height: 2; }
+.eq-var { color: #a78bfa; font-weight: 700; }
+.eq-op  { color: #f9a8d4; }
+
+.diagram { display: flex; justify-content: center; align-items: center; margin: 10px 0; }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="deck">
+
+<!-- ═══════════════════════════════════════════════════════
+  01  Problem intro + outline
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-title active" id="s1">
+  <div class="two-col" style="margin-top:0;align-items:center;">
+    <div>
+      <div style="font-size:0.8rem;letter-spacing:0.15em;color:#6b6b88;text-transform:uppercase;margin-bottom:16px;">The Core Problem</div>
+      <h1 style="font-size:3.2rem;">How do you measure<br><span style="color:#a78bfa;">meaning similarity</span><br>in text?</h1>
+      <p style="margin-top:20px;font-size:1.1rem;color:#7070a0;max-width:440px;">
+        Two phrases can express identical ideas with zero shared words.
+        How do machines decide they're the same?
+      </p>
+      <div class="card" style="margin-top:24px;border-color:rgba(167,139,250,0.2);">
+        <div style="font-size:0.85rem;color:#93c5fd;">"Berries and mineral notes with a long oak finish"</div>
+        <div style="font-size:0.82rem;color:#666688;margin:6px 0;">vs</div>
+        <div style="font-size:0.85rem;color:#86efac;">"Bærete med mineralpreg og lang eikepreget avslutning"</div>
+        <div style="font-size:0.78rem;color:#555577;margin-top:8px;">Zero overlapping tokens — but identical meaning</div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:0.8rem;letter-spacing:0.1em;color:#6b6b88;text-transform:uppercase;margin-bottom:14px;">What we'll cover</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="card" style="padding:12px 16px;border-color:rgba(147,197,253,0.2);">
+          <span class="cb">①</span> <span style="color:#b0b0c8;font-size:0.95rem;">Exact matching — tokens, edits, patterns</span>
+        </div>
+        <div class="card" style="padding:12px 16px;border-color:rgba(251,191,36,0.2);">
+          <span class="cy">②</span> <span style="color:#b0b0c8;font-size:0.95rem;">Statistical weighting — TF-IDF, BM25, cosine</span>
+        </div>
+        <div class="card" style="padding:12px 16px;border-color:rgba(234,179,8,0.25);">
+          <span class="cy">✦</span> <span style="color:#fbbf24;font-size:0.95rem;">Why geometry is the right abstraction</span>
+        </div>
+        <div class="card" style="padding:12px 16px;border-color:rgba(167,139,250,0.25);">
+          <span class="cv">③</span> <span style="color:#b0b0c8;font-size:0.95rem;">Semantic methods — embeddings, transformers</span>
+        </div>
+        <div class="card" style="padding:12px 16px;border-color:rgba(16,185,129,0.25);">
+          <span class="cg">④</span> <span style="color:#b0b0c8;font-size:0.95rem;">A real hybrid system — wine tasting app</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  02  Overview map
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="tag">Overview</div>
+  <h2>Six Families of Techniques</h2>
+  <p style="margin-bottom:10px;font-size:0.95rem;color:#7070a0;">Ordered from most literal to most semantic — each layer understands more about meaning.</p>
+  <div class="three-col">
+    <div class="card accent">
+      <h3>① Token overlap</h3>
+      <ul>
+        <li>Jaccard Similarity</li>
+        <li>Dice Coefficient</li>
+        <li>Overlap Coefficient</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>② String transformation</h3>
+      <ul>
+        <li>Levenshtein / Damerau</li>
+        <li>Jaro-Winkler</li>
+        <li>Hamming / LCS</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>③ Sub-word patterns</h3>
+      <ul>
+        <li>N-grams / Shingling</li>
+        <li>MinHash &amp; SimHash</li>
+        <li>Phonetic (Soundex)</li>
+      </ul>
+    </div>
+    <div class="card yellow">
+      <h3>④ Statistical weighting</h3>
+      <ul>
+        <li>TF-IDF + Cosine</li>
+        <li>BM25</li>
+        <li>IDF-weighted lemma</li>
+      </ul>
+    </div>
+    <div class="card pink">
+      <h3>⑤ Semantic meaning</h3>
+      <ul>
+        <li>Word Embeddings / WMD</li>
+        <li>Sentence Embeddings</li>
+        <li>Transformer models</li>
+      </ul>
+    </div>
+    <div class="card green">
+      <h3>⑥ Hybrid systems</h3>
+      <ul>
+        <li>BM25 + embedding recall</li>
+        <li>Cross-encoder reranking</li>
+        <li>RAG pipelines</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  03  Jaccard
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="tag">① Token Overlap</div>
+  <h2>Jaccard Similarity</h2>
+  <p>Measures the ratio of shared tokens to total unique tokens between two texts.</p>
+  <div class="formula">J(A, B) = |A ∩ B| / |A ∪ B|</div>
+  <div class="two-col" style="margin-top:4px;">
+    <div>
+      <div class="code">Text A: "machine learning is fun"<br>Text B: "learning machine is powerful"<br><br>Intersection = {machine, learning, is} = 3<br>Union        = 5 unique tokens<br><br>J = 3/5 = <span style="color:#fbbf24;">0.60</span></div>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Good for</h3>
+        <ul>
+          <li>Duplicate detection</li>
+          <li>Tag and keyword matching</li>
+          <li>Search index deduplication</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Key weakness</h3>
+        <p style="font-size:0.93rem;">"car" and "automobile" score <strong>0</strong>. No understanding of meaning — only of token identity.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  04  Dice + Overlap
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="tag">① Token Overlap</div>
+  <h2>Dice Coefficient &amp; Overlap Coefficient</h2>
+  <div class="two-col">
+    <div>
+      <h3>Dice — weights intersection more</h3>
+      <div class="formula" style="font-size:1.1rem;">Dice(A,B) = 2|A ∩ B| / (|A| + |B|)</div>
+      <div class="code">A = {machine, learning, is, fun}<br>B = {learning, machine, is, powerful}<br><br>Dice = 2×3 / (4+4) = <span style="color:#fbbf24;">0.75</span><br>Jaccard was 0.60 — Dice always ≥ Jaccard</div>
+    </div>
+    <div>
+      <h3>Overlap — detects containment</h3>
+      <div class="formula" style="font-size:1.1rem;">Overlap(A,B) = |A ∩ B| / min(|A|, |B|)</div>
+      <div class="code">A = {cat, sat, on}           (3 tokens)<br>B = {the, cat, sat, on, mat} (5 tokens)<br><br>Overlap = 3 / 3 = <span style="color:#86efac;">1.0</span><br>← A is fully contained in B</div>
+      <p style="font-size:0.88rem;color:#7070a0;margin-top:8px;">Used in ontology matching and query-in-document detection.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  05  Levenshtein
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="tag">② Edit Distance</div>
+  <h2>Levenshtein Distance</h2>
+  <p>Minimum number of <span class="cv">insertions</span>, <span class="cp">deletions</span>, and <span class="cy">substitutions</span> to transform one string into another.</p>
+  <div class="two-col" style="margin-top:8px;">
+    <div>
+      <div class="code">"kitten" → "sitting"<br><br>  k → s  (substitution)<br>  e → i  (substitution)<br>  + g     (insertion)<br><br>Distance = <span style="color:#fbbf24;">3</span><br>Similarity = 1 − 3/7 ≈ <span style="color:#fbbf24;">0.57</span></div>
+    </div>
+    <div>
+      <h3>Damerau-Levenshtein</h3>
+      <p style="font-size:0.95rem;">Adds <span class="cv">transposition</span> — better models real typing errors.</p>
+      <div class="code">"hte" → "the"<br>Levenshtein = 2<br>Damerau     = <span style="color:#86efac;">1</span>  (swap h and t)</div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Good for</h3>
+        <ul>
+          <li>Spell checking and autocorrect</li>
+          <li>OCR post-processing</li>
+          <li>Fuzzy product-code matching</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  06  Jaro-Winkler
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="tag">② Edit Distance</div>
+  <h2>Jaro-Winkler Similarity</h2>
+  <p>Optimised for short strings like names. Rewards matching characters in proximity and boosts a shared <span class="cv">prefix</span>.</p>
+  <div class="two-col" style="margin-top:12px;">
+    <div>
+      <div class="formula" style="font-size:0.93rem;">
+        Jaro = ⅓ · (m/|s₁| + m/|s₂| + (m−t/2)/m)<br>
+        <span style="font-size:0.82rem;color:#8888aa;">m = matching chars · t = transpositions/2</span>
+      </div>
+      <div class="formula" style="font-size:0.93rem;margin-top:8px;">
+        Jaro-Winkler = Jaro + p·ℓ·(1−Jaro)<br>
+        <span style="font-size:0.82rem;color:#8888aa;">ℓ = shared prefix (max 4) · p = 0.1</span>
+      </div>
+    </div>
+    <div>
+      <div class="code">"MARTHA" vs "MARHTA"<br>Jaro   ≈ 0.944<br>Jaro-W ≈ <span style="color:#fbbf24;">0.961</span>  ← prefix "MAR" bonus</div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Good for</h3>
+        <ul>
+          <li>Person and company name matching</li>
+          <li>Record linkage across databases</li>
+          <li>Short identifier deduplication</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  07  Hamming + LCS
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="tag">② Edit Distance</div>
+  <h2>Hamming Distance &amp; LCS</h2>
+  <div class="two-col">
+    <div>
+      <h3>Hamming — positional differences</h3>
+      <p style="font-size:0.93rem;">Counts positions where two <em>equal-length</em> strings differ. Used in error-correcting codes.</p>
+      <div class="code">1011101<br>1001001<br>  x  x    distance = <span style="color:#fbbf24;">2</span></div>
+    </div>
+    <div>
+      <h3>Longest Common Subsequence</h3>
+      <p style="font-size:0.93rem;">Longest ordered token sequence shared by both texts — gaps allowed. Foundation of <span class="cv">git diff</span>.</p>
+      <div class="code">A: "the cat sat on the mat"<br>B: "the dog sat on a hat"<br><br>LCS: "the sat on"  (3 tokens)<br>Similarity = 2×3 / (6+6) = <span style="color:#fbbf24;">0.50</span></div>
+      <div class="card" style="margin-top:10px;">
+        <ul>
+          <li>Diff and merge tools</li>
+          <li>Plagiarism detection</li>
+          <li>DNA sequence comparison</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  08  N-grams + MinHash + SimHash
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="tag">③ Sub-Word Patterns</div>
+  <h2>N-grams, MinHash &amp; SimHash</h2>
+  <div class="three-col">
+    <div class="card">
+      <h3>N-grams / Shingling</h3>
+      <p style="font-size:0.88rem;">Break text into overlapping windows of <em>n</em> characters or words, then compare the sets. Tolerant of typos and minor reorderings.</p>
+      <div class="code" style="font-size:0.8rem;">char bigrams("hello"):<br>he · el · ll · lo</div>
+      <ul>
+        <li>Typo-tolerant search</li>
+        <li>Language detection</li>
+        <li>Plagiarism checking</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>MinHash</h3>
+      <p style="font-size:0.88rem;">Approximates Jaccard using random hash functions. Compresses a document to a compact <em>signature</em> — no need to compare full token sets.</p>
+      <p style="font-size:0.82rem;color:#7070a0;margin-top:6px;">P(minhash match) = Jaccard similarity</p>
+      <ul>
+        <li>Web-scale near-duplicate detection</li>
+        <li>Locality-Sensitive Hashing</li>
+      </ul>
+    </div>
+    <div class="card pink">
+      <h3>SimHash</h3>
+      <p style="font-size:0.88rem;">Maps text to a fixed-length bit vector. Hamming distance between SimHashes estimates document similarity in O(1). Used by Google's crawl dedup pipeline.</p>
+      <div class="code" style="font-size:0.8rem;">doc_A: 10110011<br>doc_B: 10110001<br>diff:        xx  → dist = 2</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  09  Phonetic + Sequence Alignment
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="tag">③ Sub-Word Patterns</div>
+  <h2>Phonetic Similarity &amp; Sequence Alignment</h2>
+  <div class="two-col">
+    <div>
+      <h3>Phonetic — compare by sound</h3>
+      <p style="font-size:0.93rem;">Converts words to pronunciation codes, then compares codes. Spelling differences that don't affect sound are ignored.</p>
+      <div class="code" style="margin-top:10px;">Soundex("Smith")  = S530<br>Soundex("Smyth")  = S530  ← match<br>Soundex("Smythe") = S530  ← match</div>
+      <div class="card" style="margin-top:10px;">
+        <ul>
+          <li>Healthcare patient record linkage</li>
+          <li>Name search across transliterations</li>
+          <li>Speech-to-text post-correction</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h3>Sequence Alignment — borrowed from bioinformatics</h3>
+      <p style="font-size:0.93rem;">Find the optimal alignment with configurable gap and mismatch penalties.</p>
+      <div class="card" style="margin-top:10px;">
+        <ul>
+          <li><span class="cp">Needleman-Wunsch</span> — global alignment end-to-end</li>
+          <li><span class="cp">Smith-Waterman</span> — local alignment, best sub-region</li>
+        </ul>
+      </div>
+      <p style="font-size:0.88rem;color:#7070a0;margin-top:12px;">Applied to DNA, proteins, and advanced fuzzy matching where gaps carry domain-specific costs.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  10  TF-IDF
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="tag">④ Statistical Weighting</div>
+  <h2>TF-IDF</h2>
+  <p>The first step toward <em>importance</em> — not just presence. Rare, specific words carry more signal than common ones.</p>
+  <div class="formula">TF-IDF(t, d) = count(t)/|d| &nbsp;×&nbsp; log(N / df(t))</div>
+  <div class="two-col" style="margin-top:4px;">
+    <div class="card">
+      <h3>Intuition</h3>
+      <ul>
+        <li>"the", "is", "and" → weight ≈ 0</li>
+        <li>"transformer", "backpropagation" → high weight</li>
+        <li>A word rare across the corpus is diagnostic</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Usage</h3>
+      <p style="font-size:0.93rem;">Convert each document to a TF-IDF vector — one dimension per vocabulary term. Compare documents using cosine similarity on those vectors.</p>
+      <p style="font-size:0.88rem;color:#7070a0;margin-top:8px;">Standard for information retrieval since the 1970s. Sparse, fast, no training required.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  11  BM25
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="tag">④ Statistical Weighting</div>
+  <h2>BM25 — Okapi Best Match 25</h2>
+  <p>The successor to TF-IDF. Default ranker in Elasticsearch, Solr, Lucene. Fixes two known failure modes.</p>
+  <div class="two-col" style="margin-top:14px;">
+    <div>
+      <div class="card">
+        <h3>TF saturation</h3>
+        <p style="font-size:0.93rem;">In TF-IDF, a word appearing 100× scores 10× better than 10×. In BM25, returns diminish — keyword stuffing no longer inflates scores.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Length normalisation</h3>
+        <p style="font-size:0.93rem;">A short, precise document isn't penalised for having lower raw term counts than a longer one.</p>
+      </div>
+    </div>
+    <div class="card green">
+      <h3>Where BM25 dominates</h3>
+      <ul>
+        <li>Keyword search over large corpora</li>
+        <li>First-stage candidate recall in RAG pipelines</li>
+        <li>Legal and academic document retrieval</li>
+      </ul>
+      <p style="font-size:0.88rem;color:#7070a0;margin-top:12px;">BM25 retrieves the top-1 000 candidates cheaply. Embeddings then rerank the top-100 accurately. This two-stage pattern is the industry standard.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  12  Cosine Similarity
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="tag">④ Statistical Weighting</div>
+  <h2>Cosine Similarity</h2>
+  <p>Represents documents as vectors and measures the <span class="cv">angle</span> between them — not their distance. Two documents with the same word distribution but different lengths score 1.0.</p>
+  <div class="formula">cos(θ) = (A · B) / (‖A‖ · ‖B‖)</div>
+  <div class="two-col" style="margin-top:8px;">
+    <div>
+      <table>
+        <tr><th>Angle θ</th><th>Cosine</th><th>Meaning</th></tr>
+        <tr><td>0°</td><td style="color:#86efac;">1.0</td><td>Identical direction</td></tr>
+        <tr><td>45°</td><td style="color:#fbbf24;">0.71</td><td>Similar</td></tr>
+        <tr><td>90°</td><td style="color:#f9a8d4;">0.0</td><td>Orthogonal — unrelated</td></tr>
+        <tr><td>180°</td><td style="color:#ef4444;">−1.0</td><td>Opposite</td></tr>
+      </table>
+      <p style="font-size:0.87rem;color:#7070a0;margin-top:10px;">Works identically whether vectors are TF-IDF sparse or dense neural embeddings.</p>
+    </div>
+    <div class="card accent">
+      <h3>This raises a question</h3>
+      <p style="font-size:1rem;line-height:1.7;">Why does representing text as a <span class="cv">point in geometric space</span> and measuring an <span class="cv">angle</span> give us meaningful similarity?</p>
+      <p style="font-size:0.93rem;color:#7070a0;margin-top:10px;">It works. But <em>why</em> is geometry the right language for this problem at all?</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  13  Einstein — The Problem
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-einstein" id="s13">
+  <div class="tag" style="background:rgba(234,179,8,0.15);border-color:rgba(234,179,8,0.4);color:#fbbf24;">Historical Parallel · Part 1</div>
+  <h2 style="color:#fbbf24;">Einstein Had the Physics — But Not the Language</h2>
+  <div class="two-col" style="margin-top:14px;align-items:start;">
+    <div>
+      <p style="font-size:1.05rem;">By 1907, Einstein had a clear physical intuition:</p>
+      <div class="card yellow" style="margin-top:14px;">
+        <p style="font-size:1rem;line-height:1.8;">Gravity is not a force acting through space. It is the <strong>curvature of spacetime itself</strong>. A planet orbiting the sun is simply moving in a straight line through curved geometry.</p>
+      </div>
+      <p style="font-size:1.05rem;margin-top:20px;">The physics was clear. The problem was writing it down.</p>
+    </div>
+    <div>
+      <div class="card">
+        <h3>The obstacle</h3>
+        <p style="font-size:0.95rem;line-height:1.7;">Newton's equations are written for flat, 3D space with a fixed coordinate system. Einstein needed laws that worked in <span class="cy">any coordinate system</span> — flat, curved, accelerating.</p>
+        <p style="font-size:0.95rem;margin-top:10px;">Classical math had no way to express this. He was stuck for <strong>five years</strong>.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>The question</h3>
+        <p style="font-size:0.95rem;">What mathematical language lets you describe a law that holds regardless of how you choose to describe space?</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  14  Einstein — The Discovery
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-einstein" id="s14">
+  <div class="tag" style="background:rgba(234,179,8,0.15);border-color:rgba(234,179,8,0.4);color:#fbbf24;">Historical Parallel · Part 2</div>
+  <h2 style="color:#fbbf24;">A Physical Problem Was a Geometric Problem All Along</h2>
+  <div class="two-col" style="margin-top:14px;align-items:start;">
+    <div>
+      <p style="font-size:0.97rem;">In 1912, Einstein's mathematician friend <span class="cv">Marcel Grossmann</span> showed him Bernhard Riemann's 1854 work on curved geometry, and the tensor calculus of Ricci and Levi-Civita.</p>
+      <p style="font-size:0.97rem;margin-top:12px;">Tensors are coordinate-independent by construction — exactly the language Einstein needed. Within three years he had the field equations:</p>
+      <div class="formula" style="margin-top:14px;">G<sub>μν</sub> = (8πG / c⁴) · T<sub>μν</sub></div>
+      <p style="font-size:0.85rem;color:#7070a0;margin-top:4px;text-align:center;">Curvature of spacetime = energy–momentum of matter</p>
+    </div>
+    <div>
+      <div class="card yellow">
+        <h3>What changed</h3>
+        <p style="font-size:0.95rem;line-height:1.7;">A problem stated in the language of <span class="cy">physics</span> — forces, masses, trajectories — turned out to be a problem about the <span class="cv">geometry of a manifold</span>.</p>
+        <p style="font-size:0.95rem;margin-top:10px;">Once expressed geometrically, the solution was inevitable. The right abstraction unlocked everything.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>The lesson</h3>
+        <p style="font-size:0.93rem;">Some problems look hard in their native domain, but become tractable — even elegant — when <strong>reframed geometrically</strong>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  15  Language as Geometry — the analogy
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="tag">The Parallel</div>
+  <h2>NLP Made the Same Move</h2>
+  <p style="font-size:1.05rem;">Measuring meaning similarity is hard in the language domain. It becomes tractable when reframed as a <span class="cv">geometric problem</span>.</p>
+  <div class="two-col" style="margin-top:14px;">
+    <div class="card yellow">
+      <h3>Einstein's reframing</h3>
+      <table style="margin-top:6px;font-size:0.9rem;">
+        <tr><th>Physics</th><th>→</th><th>Geometry</th></tr>
+        <tr><td>Gravity</td><td>→</td><td>Curvature of spacetime</td></tr>
+        <tr><td>Mass / Energy</td><td>→</td><td>Metric tensor g<sub>μν</sub></td></tr>
+        <tr><td>Trajectory</td><td>→</td><td>Geodesic path</td></tr>
+        <tr><td>Proximity</td><td>→</td><td>Spacetime interval ds²</td></tr>
+      </table>
+    </div>
+    <div class="card accent">
+      <h3>NLP's reframing</h3>
+      <table style="margin-top:6px;font-size:0.9rem;">
+        <tr><th>Language</th><th>→</th><th>Geometry</th></tr>
+        <tr><td>Word / sentence</td><td>→</td><td>Point in vector space</td></tr>
+        <tr><td>Meaning</td><td>→</td><td>Position of the vector</td></tr>
+        <tr><td>Semantic similarity</td><td>→</td><td>Angle between vectors</td></tr>
+        <tr><td>Analogy (king → queen)</td><td>→</td><td>Translation in space</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  16  Why geometry wins
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div class="tag">The Parallel</div>
+  <h2>Why the Geometric Approach Wins</h2>
+  <p>The reframing unlocks capabilities that are impossible in the original token-matching approach.</p>
+  <div class="three-col" style="margin-top:14px;">
+    <div class="card accent">
+      <h3>Synonyms are free</h3>
+      <p style="font-size:0.93rem;">Words with similar meaning land near each other in space — no thesaurus or synonym list required. The geometry learns the relationships from text.</p>
+      <div class="code" style="font-size:0.8rem;margin-top:8px;">car ≈ automobile ≈ vehicle<br>(nearby vectors, no rules)</div>
+    </div>
+    <div class="card accent">
+      <h3>Language-independent</h3>
+      <p style="font-size:0.93rem;">The same geometric position can be reached from different surface forms — English, Norwegian, slang, formal register. Meaning transcends spelling.</p>
+      <div class="code" style="font-size:0.8rem;margin-top:8px;">"bær" ≈ "berries" ≈ "bærete"<br>(close vectors, different words)</div>
+    </div>
+    <div class="card accent">
+      <h3>Composition is natural</h3>
+      <p style="font-size:0.93rem;">Multiple descriptors combine in vector space. A phrase embedding is a point that captures the joint meaning of its parts — not just their intersection.</p>
+    </div>
+    <div class="card">
+      <h3>Structure emerges</h3>
+      <p style="font-size:0.93rem;">Relations become arithmetic: king − man + woman ≈ queen. The geometry captures structure that was never explicitly programmed.</p>
+    </div>
+    <div class="card">
+      <h3>Computationally efficient</h3>
+      <p style="font-size:0.93rem;">Once text is a vector, comparison is a dot product — fast on modern hardware. Billions of comparisons per second via approximate nearest-neighbour (ANN) search.</p>
+    </div>
+    <div class="card">
+      <h3>Graceful degradation</h3>
+      <p style="font-size:0.93rem;">No shared words needed — even two completely different wordings of the same idea produce nearby vectors. Token-based methods would score zero.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  17  Vectors & Angle (SVG diagram)
+      Now placed after the motivation — the concrete payoff
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div class="tag">④ Cosine in Vector Space</div>
+  <h2>Seeing the Angle</h2>
+  <div class="two-col" style="align-items:center;">
+    <div class="diagram">
+      <svg width="340" height="300" viewBox="0 0 340 300">
+        <line x1="50" y1="250" x2="310" y2="250" stroke="#222244" stroke-width="1.5"/>
+        <line x1="50" y1="10"  x2="50"  y2="250" stroke="#222244" stroke-width="1.5"/>
+        <text x="316" y="254" fill="#444466" font-size="12">x</text>
+        <text x="44"  y="7"   fill="#444466" font-size="12">y</text>
+        <path d="M 112 214 A 68 68 0 0 1 158 190" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="119" y="205" fill="#fbbf24" font-size="14" font-style="italic">θ</text>
+        <line x1="50" y1="250" x2="228" y2="62" stroke="#a78bfa" stroke-width="3"/>
+        <polygon points="228,62 219,76 235,73" fill="#a78bfa"/>
+        <text x="232" y="58" fill="#a78bfa" font-size="15" font-weight="bold">A</text>
+        <text x="232" y="72" fill="#6b5ba0" font-size="10">"berries, mineral, oak"</text>
+        <line x1="50" y1="250" x2="293" y2="132" stroke="#86efac" stroke-width="3"/>
+        <polygon points="293,132 276,133 284,145" fill="#86efac"/>
+        <text x="296" y="130" fill="#86efac" font-size="15" font-weight="bold">B</text>
+        <text x="296" y="144" fill="#4a9968" font-size="10">"bær, eik, mineral"</text>
+        <circle cx="50" cy="250" r="5" fill="#7c3aed"/>
+        <text x="34" y="268" fill="#666688" font-size="11">origin</text>
+        <text x="80" y="288" fill="#fbbf24" font-size="12">cos(θ) = A·B / ‖A‖·‖B‖ → small θ = similar</text>
+      </svg>
+    </div>
+    <div>
+      <div class="card accent">
+        <h3>The key insight</h3>
+        <p style="font-size:0.95rem;">Two identical documents of different lengths produce <span class="cv">parallel vectors</span>. Their distance differs — but their <span class="cv">angle is 0°</span>, so cosine = 1.0. Direction encodes topic; magnitude encodes length.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>In 1 536 dimensions</h3>
+        <p style="font-size:0.93rem;">OpenAI's embedding model produces vectors with <span class="cy">1 536 dimensions</span>. We cannot visualise them — but the same cosine formula applies exactly. Small angle = similar meaning.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Scale</h3>
+        <ul>
+          <li>cos(θ) = 1 → identical meaning</li>
+          <li>cos(θ) = 0 → completely unrelated</li>
+          <li>cos(θ) = −1 → opposite meaning</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  18  Word Embeddings
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div class="tag">⑤ Semantic Similarity</div>
+  <h2>Word Embeddings</h2>
+  <p>Each word becomes a <span class="cv">dense vector</span> in a learned space where distance encodes meaning. Trained on billions of tokens — the geometry emerges from context patterns.</p>
+  <div class="two-col" style="margin-top:10px;">
+    <div>
+      <div class="code">vector("king") − vector("man")<br>              + vector("woman")<br>           ≈  vector(<span style="color:#fbbf24;">"queen"</span>)<br><br>vector("Paris") − vector("France")<br>               + vector("Germany")<br>           ≈  vector(<span style="color:#86efac;">"Berlin"</span>)</div>
+      <p style="font-size:0.88rem;color:#7070a0;margin-top:8px;">Semantic relations are geometric translations — never explicitly programmed.</p>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Key architectures</h3>
+        <ul>
+          <li><span class="cv">Word2Vec</span> — skip-gram / CBOW (Google, 2013)</li>
+          <li><span class="cv">GloVe</span> — co-occurrence matrix factorisation</li>
+          <li><span class="cv">FastText</span> — subword n-grams, handles OOV words</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Key limitation</h3>
+        <p style="font-size:0.93rem;">One fixed vector per word regardless of context. "Apple" has the same vector for fruit and for the tech company. Transformers solved this.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  19  Word Mover's Distance
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s19">
+  <div class="tag">⑤ Semantic Similarity</div>
+  <h2>Word Mover's Distance</h2>
+  <p>How much geometric "work" is needed to move all words in one document to match the distribution of another? Based on <span class="cv">optimal transport theory</span>.</p>
+  <div class="two-col" style="margin-top:10px;">
+    <div>
+      <div class="code">D1: "Obama speaks to the media"<br>D2: "The president greets the press"<br><br>  obama   → president   (short hop)<br>  speaks  → greets      (short hop)<br>  media   → press       (short hop)<br><br>WMD = <span style="color:#86efac;">low</span>  — synonymous, similar meaning</div>
+    </div>
+    <div>
+      <div class="card accent">
+        <h3>Why it's powerful</h3>
+        <p style="font-size:0.93rem;">No shared words needed. Two documents with <em>zero lexical overlap</em> can score very similar — handled by routing word vectors through space optimally.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Tradeoffs</h3>
+        <ul>
+          <li><span class="cg">No lexical overlap needed</span></li>
+          <li><span class="cy">Expensive</span>: O(p³ log p) — slow on long documents</li>
+          <li>Requires pre-trained word vectors</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  20  Sentence Embeddings
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s20">
+  <div class="tag">⑤ Semantic Similarity</div>
+  <h2>Sentence &amp; Document Embeddings</h2>
+  <p>Encode an entire sentence into a single <span class="cv">dense vector</span> — the state of the art for most similarity tasks.</p>
+  <div class="two-col" style="margin-top:10px;">
+    <div>
+      <div class="code">"I love programming"<br>"Coding is enjoyable"<br>→ nearby vectors, high cosine<br><br>"I love programming"<br>"The weather is cold"<br>→ distant vectors, low cosine</div>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Key models</h3>
+        <ul>
+          <li><span class="cv">Sentence-BERT</span> — bi-encoder, fast inference</li>
+          <li><span class="cv">Universal Sentence Encoder</span> — multilingual</li>
+          <li><span class="cv">OpenAI text-embedding-3-small/large</span> — 1 536 / 3 072 dims</li>
+          <li><span class="cv">E5, BGE, GTE</span> — open-source SOTA</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Approach</h3>
+        <ol style="list-style:decimal;margin-left:18px;">
+          <li style="color:#b0b0c8;padding:3px 0;">Send text to embedding model</li>
+          <li style="color:#b0b0c8;padding:3px 0;">Compute cosine similarity</li>
+          <li style="color:#b0b0c8;padding:3px 0;">Scale to 0–100 for display</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  21  Transformers
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s21">
+  <div class="tag">⑤ Transformer Models</div>
+  <h2>Transformer-Based Similarity</h2>
+  <p>Transformers produce <span class="cv">contextual representations</span> — the same word gets a different vector in different sentences.</p>
+  <div class="two-col" style="margin-top:10px;">
+    <div>
+      <div class="code">"<span style="color:#fbbf24;">Apple</span> released a phone"<br>→ Apple ≈ [tech, company, iOS …]<br><br>"<span style="color:#86efac;">Apple</span> pie tastes good"<br>→ Apple ≈ [food, fruit, sweet …]</div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Bi-encoder vs Cross-encoder</h3>
+        <ul>
+          <li><span class="cv">Bi-encoder</span> — encode each text independently; fast; used for ANN search</li>
+          <li><span class="cp">Cross-encoder</span> — encode the pair together; sees interaction; much more accurate; used for reranking</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card accent">
+        <h3>Key models</h3>
+        <ul>
+          <li>BERT / RoBERTa — masked language model</li>
+          <li>MiniLM — lightweight, fast bi-encoder</li>
+          <li>ColBERT — late interaction</li>
+          <li>GPT / Claude — generative models as encoders</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Understands</h3>
+        <ul>
+          <li>Context and grammatical nuance</li>
+          <li>Ambiguity and polysemy</li>
+          <li>Cross-lingual semantic equivalence</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  22  Hybrid / AI Retrieval
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s22">
+  <div class="tag">⑥ Hybrid Systems</div>
+  <h2>Hybrid Retrieval Pipelines</h2>
+  <p>Modern production search chains techniques — each stage narrows the candidate set, trading recall for precision.</p>
+  <div class="pipeline" style="margin-top:20px;">
+    <div class="pipe-step" style="background:rgba(147,197,253,0.08);border-color:rgba(147,197,253,0.3);color:#93c5fd;">Query<div class="sub">raw user text</div></div>
+    <div class="pipe-arr">→</div>
+    <div class="pipe-step" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">BM25<div class="sub">keyword recall<br>top 1 000</div></div>
+    <div class="pipe-arr">→</div>
+    <div class="pipe-step" style="background:rgba(124,58,237,0.12);border-color:rgba(124,58,237,0.35);color:#a78bfa;">Bi-encoder<div class="sub">ANN embedding<br>top 100</div></div>
+    <div class="pipe-arr">→</div>
+    <div class="pipe-step" style="background:rgba(236,72,153,0.12);border-color:rgba(236,72,153,0.35);color:#f9a8d4;">Cross-encoder<div class="sub">reranking<br>top 10</div></div>
+    <div class="pipe-arr">→</div>
+    <div class="pipe-step" style="background:rgba(234,179,8,0.1);border-color:rgba(234,179,8,0.3);color:#fbbf24;">Result</div>
+  </div>
+  <div class="two-col" style="margin-top:12px;">
+    <div class="card green">
+      <h3>Where this is used</h3>
+      <ul>
+        <li>Semantic search engines</li>
+        <li>RAG (Retrieval-Augmented Generation)</li>
+        <li>Vector databases (Pinecone, Weaviate, pgvector)</li>
+        <li>Enterprise knowledge bases</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why chain them?</h3>
+      <p style="font-size:0.93rem;">BM25 guarantees exact keyword recall. Embeddings capture synonymy. Cross-encoders understand nuance. Each stage leverages one technique's strength without paying its cost at full corpus scale.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  23  App — section divider
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-section" id="s23">
+  <div class="section-num">≋</div>
+  <h2 style="font-size:2.8rem;color:#6ee7b7;margin-top:8px;">A Real-World Application</h2>
+  <p style="font-size:1.15rem;color:#6b6b88;max-width:540px;margin-top:8px;">A Norwegian wine tasting app — comparing user notes to expert descriptions using a hybrid NLP pipeline</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  24  App — Context and challenge
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s24">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
+  <h2>The Problem</h2>
+  <div class="two-col" style="align-items:start;">
+    <div>
+      <p style="font-size:1.05rem;">Users taste wines at events and write free-text notes. The system scores how closely their description matches the <span class="cg">official producer description</span>.</p>
+      <div class="card" style="margin-top:20px;">
+        <div style="font-size:0.8rem;color:#6b6b88;text-transform:uppercase;margin-bottom:8px;">User writes</div>
+        <div style="font-size:0.95rem;color:#93c5fd;">"Bærete med mineralaktig ettersmak, tanninrik og balansert"</div>
+        <div style="border-top:1px solid rgba(255,255,255,0.06);margin:12px 0;"></div>
+        <div style="font-size:0.8rem;color:#6b6b88;text-transform:uppercase;margin-bottom:8px;">Official description</div>
+        <div style="font-size:0.95rem;color:#6ee7b7;">"Bær og mineral. Rik på tannin med god frukt og lang avslutning"</div>
+        <div style="font-size:0.78rem;color:#555577;margin-top:10px;">Very few shared tokens — but clearly describing the same wine</div>
+      </div>
+    </div>
+    <div>
+      <div class="card yellow">
+        <h3>Why pure semantic similarity isn't enough</h3>
+        <p style="font-size:0.93rem;line-height:1.7;">Embeddings give a high score to anything that's roughly about wine. But the goal is also to reward users who use <strong>specific, precise wine vocabulary</strong> — "solbær" over "frukt", "grafitt" over "mineral".</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Why pure token matching isn't enough</h3>
+        <p style="font-size:0.93rem;">Norwegian wine notes use many morphological variants — "bærete", "mineralaktig", "eikepreget" — that share zero tokens with the canonical forms in the official description.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  25  App — The pipeline (high-level)
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s25">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
+  <h2>The Pipeline</h2>
+  <div class="pipeline" style="margin-top:20px;">
+    <div class="pipe-step" style="background:rgba(147,197,253,0.08);border-color:rgba(147,197,253,0.3);color:#93c5fd;">Raw note<div class="sub">free-text</div></div>
+    <div class="pipe-arr">→</div>
+    <div class="pipe-step">Clean &amp; normalise<div class="sub">lowercase, strip noise,<br>bridge variant forms</div></div>
+    <div class="pipe-arr">→</div>
+    <div class="pipe-step" style="background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.3);color:#fbbf24;">Vocabulary match<div class="sub">expert word list,<br>weighted by rarity</div></div>
+    <div class="pipe-arr">→</div>
+    <div class="pipe-step" style="background:rgba(124,58,237,0.12);border-color:rgba(124,58,237,0.35);color:#a78bfa;">Semantic embed<div class="sub">meaning as<br>a vector</div></div>
+    <div class="pipe-arr">→</div>
+    <div class="pipe-step" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Combine<div class="sub">hybrid score<br>0–100</div></div>
+  </div>
+  <div class="three-col" style="margin-top:12px;">
+    <div class="card">
+      <h3>Clean &amp; normalise</h3>
+      <p style="font-size:0.9rem;">Remove noise and standardise Norwegian wine vocabulary. "Bærete", "bærfrukt", "bærrik" all map to the canonical form "bær" before any scoring.</p>
+    </div>
+    <div class="card yellow">
+      <h3>Vocabulary match</h3>
+      <p style="font-size:0.9rem;">Compare against ~200 expert wine descriptors. Each match is weighted by rarity — uncommon, precise terms earn more credit than generic ones.</p>
+    </div>
+    <div class="card accent">
+      <h3>Semantic embed</h3>
+      <p style="font-size:0.9rem;">Encode the cleaned text as a 1 536-dim vector using an embedding model. Measure cosine similarity. Captures meaning even when words don't overlap.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  26  App — Two scoring tracks
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s26">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
+  <h2>Two Complementary Scoring Tracks</h2>
+  <div class="two-col" style="margin-top:14px;align-items:start;">
+    <div class="card accent">
+      <h3>Track A — Semantic</h3>
+      <p style="font-size:0.95rem;line-height:1.75;">Encodes the cleaned note as a high-dimensional vector and measures the cosine angle against the official description's vector.</p>
+      <p style="font-size:0.93rem;margin-top:10px;color:#8888aa;">Rewards: overall meaning, paraphrasing, capturing the spirit of the wine even with different words.</p>
+      <div class="code" style="margin-top:10px;font-size:0.85rem;">base score = cosine(embed(userNote),<br>                    embed(officialDesc))<br>             × 100</div>
+    </div>
+    <div class="card green">
+      <h3>Track B — Lexical precision</h3>
+      <p style="font-size:0.95rem;line-height:1.75;">Counts how many expert wine descriptors appear in both texts — weighted by how rare and specific each term is across the wine corpus.</p>
+      <p style="font-size:0.93rem;margin-top:10px;color:#8888aa;">Rewards: using precise vocabulary — "solbær" over "frukt", "grafitt" over "mineral".</p>
+      <div class="code" style="margin-top:10px;font-size:0.85rem;">precision = IDF-weighted overlap<br>            of matched wine terms</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;border-color:rgba(251,191,36,0.3);background:rgba(234,179,8,0.04);text-align:center;">
+    <p style="font-size:0.93rem;">The tracks are complementary. Semantic alone rewards vague notes. Lexical alone misses paraphrases. Together they reward notes that are both <span class="cv">meaningful</span> and <span class="cg">precise</span>.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  27  App — The final score
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s27">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
+  <h2>The Scoring Formula</h2>
+  <div class="eq" style="margin-top:20px;">
+    <span class="eq-var">score</span> <span class="eq-op">=</span> min(100,&nbsp; <span class="eq-var">semanticScore</span> <span class="eq-op">+</span> 0.35 &nbsp;<span class="eq-op">×</span>&nbsp; <span class="eq-var">precision</span>)
+  </div>
+  <div class="eq">
+    <span class="eq-var">precision</span> <span class="eq-op">=</span> (<span class="eq-var">vocabularyOverlap</span> <span class="eq-op">+</span> <span class="eq-var">categoryOverlap</span>) <span class="eq-op">/</span> 2
+  </div>
+  <div class="three-col" style="margin-top:16px;">
+    <div class="card accent">
+      <h3>semanticScore (0–100)</h3>
+      <p style="font-size:0.9rem;">Cosine similarity of embedding vectors. Captures overall meaning — paraphrases, synonyms, different languages.</p>
+    </div>
+    <div class="card">
+      <h3>vocabularyOverlap</h3>
+      <p style="font-size:0.9rem;">IDF-weighted Jaccard on matched wine descriptors. Rare terms score higher than generic ones.</p>
+    </div>
+    <div class="card">
+      <h3>categoryOverlap</h3>
+      <p style="font-size:0.9rem;">Partial credit for matching the right flavour category even without the exact term — "bær" vs "kirsebær" both belong to Frukt/bær.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;border-color:rgba(167,139,250,0.2);text-align:center;">
+    <p style="font-size:0.9rem;">Vocabulary precision adds up to <span class="cy">+35 points</span> on top of the semantic base — rewarding specific vocabulary while the embedding base ensures paraphrases still score well.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  28  Summary table
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s28">
+  <div class="tag">Summary</div>
+  <h2>Which Technique for Which Goal?</h2>
+  <table>
+    <tr>
+      <th>Goal</th>
+      <th>Recommended technique</th>
+      <th>Understands meaning?</th>
+      <th>Typo-tolerant?</th>
+      <th>Speed</th>
+    </tr>
+    <tr><td>Exact duplicate detection</td><td>Jaccard / SimHash</td><td style="color:#ef4444;">No</td><td style="color:#fbbf24;">Slightly</td><td style="color:#86efac;">Very fast</td></tr>
+    <tr><td>Typo / spell correction</td><td>Levenshtein / Jaro-Winkler</td><td style="color:#ef4444;">No</td><td style="color:#86efac;">Yes</td><td style="color:#fbbf24;">Medium</td></tr>
+    <tr><td>Name matching</td><td>Jaro-Winkler / Soundex</td><td style="color:#ef4444;">No</td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Fast</td></tr>
+    <tr><td>Keyword search ranking</td><td>BM25 + TF-IDF</td><td style="color:#fbbf24;">Limited</td><td style="color:#ef4444;">No</td><td style="color:#86efac;">Fast</td></tr>
+    <tr><td>Paraphrase / meaning</td><td>Sentence Embeddings + Cosine</td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Yes</td><td style="color:#fbbf24;">Medium</td></tr>
+    <tr><td>Semantic search at scale</td><td>Bi-encoder ANN</td><td style="color:#86efac;">Best</td><td style="color:#86efac;">Yes</td><td style="color:#fbbf24;">Medium</td></tr>
+    <tr><td>Highest accuracy reranking</td><td>Cross-encoder</td><td style="color:#86efac;">Best</td><td style="color:#86efac;">Yes</td><td style="color:#ef4444;">Slow</td></tr>
+    <tr><td>Domain vocabulary scoring</td><td>IDF-weighted lemma + Semantic</td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Yes</td><td style="color:#fbbf24;">Medium</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  29  Libraries
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s29">
+  <div class="tag">Resources</div>
+  <h2>Common Libraries &amp; Tools</h2>
+  <div class="three-col">
+    <div class="card">
+      <h3>Python</h3>
+      <ul>
+        <li><span class="cv">scikit-learn</span> — TF-IDF, cosine similarity</li>
+        <li><span class="cv">sentence-transformers</span> — SBERT, bi-encoders</li>
+        <li><span class="cv">spaCy</span> — NLP pipeline, lemmatization</li>
+        <li><span class="cv">RapidFuzz</span> — Levenshtein, Jaro-Winkler</li>
+        <li><span class="cv">rank-bm25</span> — BM25 scoring</li>
+        <li><span class="cv">gensim</span> — Word2Vec, FastText, WMD</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>JavaScript / TypeScript</h3>
+      <ul>
+        <li><span class="cv">natural.js</span> — Porter Stemmer, Jaro-Winkler, Levenshtein</li>
+        <li><span class="cv">Fuse.js</span> — fuzzy search, n-gram scoring</li>
+        <li><span class="cv">ai (Vercel SDK)</span> — embedding model providers</li>
+        <li><span class="cv">@xenova/transformers</span> — in-browser ONNX</li>
+        <li><span class="cv">minisearch</span> — lightweight BM25 for browser</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>Vector DBs &amp; APIs</h3>
+      <ul>
+        <li><span class="cv">pgvector</span> — Postgres extension</li>
+        <li><span class="cv">Pinecone / Weaviate</span> — managed ANN search</li>
+        <li><span class="cv">OpenAI Embeddings API</span> — text-embedding-3-small/large</li>
+        <li><span class="cv">Cohere Embed</span> — multilingual</li>
+        <li><span class="cv">Hugging Face Inference</span> — open models</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav">
+  <button onclick="prev()">← Prev</button>
+  <button onclick="next()">Next →</button>
+</div>
+<div class="slide-counter" id="counter"></div>
+<div class="kbd-hint">← → arrow keys to navigate</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let cur = 0;
+
+function show(n) {
+  slides[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(n, total - 1));
+  slides[cur].classList.add('active');
+  document.getElementById('counter').textContent = (cur + 1) + ' / ' + total;
+  document.getElementById('progress').style.width = ((cur + 1) / total * 100) + '%';
+}
+
+function next() { show(cur + 1); }
+function prev() { show(cur - 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); prev(); }
+});
+
+show(0);
+</script>
+</body>
+</html>

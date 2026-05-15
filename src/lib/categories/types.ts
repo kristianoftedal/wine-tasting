@@ -1,12 +1,18 @@
-// Main categories aligned with Vinmonopolet aromahjul
-export type MainCategory = 'Frukt' | 'Krydder' | 'Urter' | 'Blomster' | 'Eik/fat' | 'Mineral';
+// Main categories aligned with flavor wheel (red-flavor.json + white-flavor.json)
+export type MainCategory =
+  | 'Frukt og bær'
+  | 'Krydder'
+  | 'Urter'
+  | 'Blomst'
+  | 'Treverk'
+  | 'Karamellisert'
+  | 'Nøtter'
+  | 'Jordaktig'
+  | 'Animalsk'
+  | 'Grønnsaker';
 
-// All valid subcategory slugs across every main category. Kept as a single flat
-// union — the per-main subtypes weren't referenced anywhere and their names
-// didn't prevent invalid combinations (e.g. Blomster/stein) anyway, so they
-// added file surface without buying type safety.
 export type WineSubcategory =
-  // Frukt
+  // Frukt og bær
   | 'baer'
   | 'sitrus'
   | 'steinfrukt'
@@ -17,11 +23,9 @@ export type WineSubcategory =
   | 'varm'
   // Urter
   | 'groenn'
-  // Eik/fat
-  | 'fatlagring'
-  | 'ristet'
-  // Mineral
+  // Jordaktig
   | 'stein'
+  | 'jord'
   // GENERIC structure subcategories
   | 'structure'
   | 'quality'
@@ -34,7 +38,6 @@ export type WineSubcategory =
   // Shared catch-all
   | 'annet';
 
-// Category path for hierarchical lookups
 export interface CategoryPath {
   main: MainCategory | 'GENERIC';
   sub: WineSubcategory;

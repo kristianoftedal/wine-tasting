@@ -1,7 +1,7 @@
 'use server';
 
 import { openai } from '@ai-sdk/openai';
-import { embed } from 'ai';
+import { embed, embedMany } from 'ai';
 import { stripGenericTerms } from './lemmatizeAndWeight';
 import { cosineSimilarity } from './math';
 
@@ -32,6 +32,24 @@ export async function semanticSimilarity(text1: string, text2: string): Promise<
     return Math.round(similarity * 100);
   } catch (error) {
     console.error('Semantic similarity error:', error);
+    return 0;
+  }
+}
+
+/**
+ * Embed two texts directly and return cosine similarity (0-100) with no preprocessing.
+ * Used for color comparison where stripping structural terms would corrupt the input.
+ */
+export async function rawSemanticSimilarity(text1: string, text2: string): Promise<number> {
+  if (!text1.trim() || !text2.trim()) return 0;
+  try {
+    const [r1, r2] = await Promise.all([
+      embed({ model: openai.embedding('text-embedding-3-small'), value: text1 }),
+      embed({ model: openai.embedding('text-embedding-3-small'), value: text2 }),
+    ]);
+    return Math.round(cosineSimilarity(r1.embedding, r2.embedding) * 100);
+  } catch (error) {
+    console.error('Raw semantic similarity error:', error);
     return 0;
   }
 }
@@ -75,5 +93,50 @@ export async function batchSemanticSimilarity(pairs: Array<{ text1: string; text
   } catch (error) {
     console.error('Batch semantic similarity error:', error);
     return pairs.map(() => 0);
+  }
+}
+
+/**
+ * BERTScore-style token-level similarity.
+ *
+ * Embeds each unique word from both texts individually, then computes:
+ *   precision = avg over user tokens of max cosine to any reference token
+ *   recall    = avg over reference tokens of max cosine to any user token
+ *   score     = F1(precision, recall) × 100
+ *
+ * Captures partial credit for near-synonym matches (e.g. "solbær" vs "bær")
+ * that sentence-level cosine handles less precisely because the signal is
+ * diluted across the whole sentence vector.
+ */
+export async function bertScoreTokenSimilarity(text1: string, text2: string): Promise<number> {
+  const tokens1 = [...new Set(stripGenericTerms(text1).split(' ').filter(Boolean))];
+  const tokens2 = [...new Set(stripGenericTerms(text2).split(' ').filter(Boolean))];
+  if (!tokens1.length || !tokens2.length) return 0;
+
+  const allTokens = [...new Set([...tokens1, ...tokens2])];
+
+  try {
+    const { embeddings } = await embedMany({
+      model: openai.embedding('text-embedding-3-small'),
+      values: allTokens,
+    });
+
+    const embMap = new Map<string, number[]>();
+    allTokens.forEach((t, i) => embMap.set(t, embeddings[i]));
+
+    const embs1 = tokens1.map(t => embMap.get(t)!);
+    const embs2 = tokens2.map(t => embMap.get(t)!);
+
+    const precision = embs1.reduce((sum, e1) =>
+      sum + Math.max(...embs2.map(e2 => cosineSimilarity(e1, e2))), 0) / embs1.length;
+
+    const recall = embs2.reduce((sum, e2) =>
+      sum + Math.max(...embs1.map(e1 => cosineSimilarity(e2, e1))), 0) / embs2.length;
+
+    if (precision + recall === 0) return 0;
+    return Math.round((2 * precision * recall) / (precision + recall) * 100);
+  } catch (error) {
+    console.error('BERTScore error:', error);
+    return 0;
   }
 }

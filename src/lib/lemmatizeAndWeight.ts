@@ -209,63 +209,63 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   halvtørr: { lemma: 'halvtørr', weight: 0.8, category: 'sødme', categoryPath: { main: 'GENERIC', sub: 'sweetness' } },
 
   // BÆR (MERGED: mørke bær 1.7 + røde bær 1.5 → average 1.6x) - SPECIFIC descriptors
-  solbær: { lemma: 'solbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  bjørnebær: { lemma: 'bjørnebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  blåbær: { lemma: 'blåbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  moreller: { lemma: 'morell', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  morell: { lemma: 'morell', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  kirsebær: { lemma: 'kirsebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  jordbær: { lemma: 'jordbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  bringebær: { lemma: 'bringebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  rips: { lemma: 'rips', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  solbær: { lemma: 'solbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  bjørnebær: { lemma: 'bjørnebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  blåbær: { lemma: 'blåbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  moreller: { lemma: 'morell', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  morell: { lemma: 'morell', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  kirsebær: { lemma: 'kirsebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  jordbær: { lemma: 'jordbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  bringebær: { lemma: 'bringebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  rips: { lemma: 'rips', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
 
   // SITRUS (medium vekt - 1.5x) - SPECIFIC descriptors
-  sitrus: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
-  sitron: { lemma: 'sitron', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
-  lime: { lemma: 'lime', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
-  grapefrukt: { lemma: 'grapefrukt', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
+  sitrus: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  sitron: { lemma: 'sitron', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  lime: { lemma: 'lime', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  grapefrukt: { lemma: 'grapefrukt', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
 
   // STEINFRUKTER (medium vekt - 1.5x) - SPECIFIC descriptors
-  steinfrukt: { lemma: 'steinfrukt', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt', sub: 'steinfrukt' } },
-  plomme: { lemma: 'plomme', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt', sub: 'steinfrukt' } },
-  plommer: { lemma: 'plomme', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt', sub: 'steinfrukt' } },
+  steinfrukt: { lemma: 'steinfrukt', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt og bær', sub: 'steinfrukt' } },
+  plomme: { lemma: 'plomme', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt og bær', sub: 'steinfrukt' } },
+  plommer: { lemma: 'plomme', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt og bær', sub: 'steinfrukt' } },
   fersken: {
     lemma: 'fersken',
     weight: 1.5,
     category: 'steinfrukt',
-    categoryPath: { main: 'Frukt', sub: 'steinfrukt' }
+    categoryPath: { main: 'Frukt og bær', sub: 'steinfrukt' }
   },
   aprikos: {
     lemma: 'aprikos',
     weight: 1.5,
     category: 'steinfrukt',
-    categoryPath: { main: 'Frukt', sub: 'steinfrukt' }
+    categoryPath: { main: 'Frukt og bær', sub: 'steinfrukt' }
   },
 
   // ANNEN FRUKT (medium vekt - 1.4x) - SPECIFIC descriptors
-  eple: { lemma: 'eple', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  epler: { lemma: 'eple', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  eplet: { lemma: 'eple', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  pære: { lemma: 'pære', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  pærer: { lemma: 'pære', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  tropisk: { lemma: 'tropisk', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'tropisk' } },
-  tropiske: { lemma: 'tropisk', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'tropisk' } },
-  mango: { lemma: 'mango', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'tropisk' } },
-  ananas: { lemma: 'ananas', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'tropisk' } },
-  melon: { lemma: 'melon', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'tropisk' } },
+  eple: { lemma: 'eple', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  epler: { lemma: 'eple', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  eplet: { lemma: 'eple', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  pære: { lemma: 'pære', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  pærer: { lemma: 'pære', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  tropisk: { lemma: 'tropisk', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+  tropiske: { lemma: 'tropisk', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+  mango: { lemma: 'mango', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+  ananas: { lemma: 'ananas', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+  melon: { lemma: 'melon', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
 
   // MODNE/TØRKEDE FRUKTER (medium vekt - 1.6x) - SPECIFIC descriptors
-  moden: { lemma: 'moden', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  modne: { lemma: 'moden', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  tørket: { lemma: 'tørket', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  tørkede: { lemma: 'tørket', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  svisker: { lemma: 'sviske', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  sviske: { lemma: 'sviske', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  fiken: { lemma: 'fiken', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  dadler: { lemma: 'daddel', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  daddel: { lemma: 'daddel', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  rosiner: { lemma: 'rosin', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  rosin: { lemma: 'rosin', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
+  moden: { lemma: 'moden', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  modne: { lemma: 'moden', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  tørket: { lemma: 'tørket', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  tørkede: { lemma: 'tørket', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  svisker: { lemma: 'sviske', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  sviske: { lemma: 'sviske', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  fiken: { lemma: 'fiken', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  dadler: { lemma: 'daddel', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  daddel: { lemma: 'daddel', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  rosiner: { lemma: 'rosin', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  rosin: { lemma: 'rosin', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
 
   // KRYDDER (medium-høy vekt - 1.7x) - SPECIFIC descriptors
   krydder: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
@@ -276,42 +276,42 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   kanel: { lemma: 'kanel', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'soet' } },
   anis: { lemma: 'anis', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
 
-  // EIK/FAT (medium-høy vekt - 1.8x) - SPECIFIC descriptors
-  eik: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  eiken: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  fat: { lemma: 'fat', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  fatet: { lemma: 'fat', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  fatpreg: { lemma: 'fatpreg', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  fatlagret: { lemma: 'fatlagret', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
+  // TREVERK (medium-høy vekt - 1.8x) - SPECIFIC descriptors
+  eik: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  eiken: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  fat: { lemma: 'fat', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  fatet: { lemma: 'fat', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  fatpreg: { lemma: 'fatpreg', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  fatlagret: { lemma: 'fatlagret', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
   vanilje: { lemma: 'vanilje', weight: 1.8, category: 'eik', categoryPath: { main: 'Krydder', sub: 'soet' } },
-  toast: { lemma: 'toast', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'ristet' } },
-  ristet: { lemma: 'ristet', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'ristet' } },
-  ristede: { lemma: 'ristet', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'ristet' } },
+  toast: { lemma: 'toast', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  ristet: { lemma: 'ristet', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  ristede: { lemma: 'ristet', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
 
   // MINERALITET (medium vekt - 1.5x) - SPECIFIC descriptors
-  mineralsk: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  mineralske: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  mineralitet: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  mineraler: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  stein: { lemma: 'stein', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  steinet: { lemma: 'stein', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  flint: { lemma: 'flint', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  mineralsk: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  mineralske: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  mineralitet: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  mineraler: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  stein: { lemma: 'stein', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  steinet: { lemma: 'stein', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  flint: { lemma: 'flint', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
 
   // BLOMSTER (medium vekt - 1.3x) - SPECIFIC descriptors
-  blomster: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
-  blomsten: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
-  blomsteret: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
-  blomstrete: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
+  blomster: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  blomsten: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  blomsteret: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  blomstrete: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
   blomsterpreget: {
     lemma: 'blomst',
     weight: 1.3,
     category: 'blomst',
-    categoryPath: { main: 'Blomster', sub: 'annet' }
+    categoryPath: { main: 'Blomst', sub: 'annet' }
   },
-  roser: { lemma: 'rose', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
-  rose: { lemma: 'rose', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
-  fioler: { lemma: 'fiol', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
-  fiol: { lemma: 'fiol', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
+  roser: { lemma: 'rose', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  rose: { lemma: 'rose', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  fioler: { lemma: 'fiol', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  fiol: { lemma: 'fiol', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
 
   // URTER (medium vekt - 1.3x) - SPECIFIC descriptors
   urter: { lemma: 'urt', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
@@ -327,21 +327,21 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   eukalyptus: { lemma: 'eukalyptus', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
 
   // ANDRE AROMAER (medium vekt - 1.4x) - SPECIFIC descriptors
-  nøtter: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  nøtt: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  kaffe: { lemma: 'kaffe', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  sjokolade: { lemma: 'sjokolade', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  lakris: { lemma: 'lakris', weight: 1.4, category: 'annet', categoryPath: { main: 'Krydder', sub: 'annet' } },
-  honning: { lemma: 'honning', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  karamell: { lemma: 'karamell', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  smør: { lemma: 'smør', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  kjeks: { lemma: 'kjeks', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  brød: { lemma: 'brød', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  brøddeig: { lemma: 'brøddeig', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  brioche: { lemma: 'brioche', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  tjære: { lemma: 'tjære', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  tobakk: { lemma: 'tobakk', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  lær: { lemma: 'lær', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
+  nøtter: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+  nøtt: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+  kaffe: { lemma: 'kaffe', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  sjokolade: { lemma: 'sjokolade', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  lakris: { lemma: 'lakris', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  honning: { lemma: 'honning', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  karamell: { lemma: 'karamell', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  smør: { lemma: 'smør', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  kjeks: { lemma: 'kjeks', weight: 1.4, category: 'annet', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  brød: { lemma: 'brød', weight: 1.4, category: 'annet', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  brøddeig: { lemma: 'brøddeig', weight: 1.4, category: 'annet', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  brioche: { lemma: 'brioche', weight: 1.4, category: 'annet', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  tjære: { lemma: 'tjære', weight: 1.4, category: 'annet', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  tobakk: { lemma: 'tobakk', weight: 1.4, category: 'annet', categoryPath: { main: 'Urter', sub: 'toerket' } },
+  lær: { lemma: 'lær', weight: 1.4, category: 'annet', categoryPath: { main: 'Animalsk', sub: 'annet' } },
 
   // TEKSTUR/MUNNFØLELSE (GENERIC - lav vekt 0.8x)
   munnfølelse: { lemma: 'munnfølelse', weight: 0.8, category: 'tekstur', categoryPath: { main: 'GENERIC', sub: 'texture' } },
@@ -394,64 +394,64 @@ export const norwegianLemmas: Record<string, LemmaData> = {
 
   // GENERIC HYPERNYMS — broad terms users actually type. Map to hierarchical categories
   // so "mørke bær" vs "solbær" share main:Frukt/sub:baer and earn category credit.
-  bær: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  bæret: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  bærene: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  bærrik: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  skogsbær: { lemma: 'skogsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  skogsbæra: { lemma: 'skogsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  krekling: { lemma: 'krekling', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  tyttebær: { lemma: 'tyttebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  bær: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  bæret: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  bærene: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  bærrik: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  skogsbær: { lemma: 'skogsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  skogsbæra: { lemma: 'skogsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  krekling: { lemma: 'krekling', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  tyttebær: { lemma: 'tyttebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
 
-  frukt: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  frukten: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  fruktig: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  fruktige: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  fruktrik: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  fruktrike: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  fruktighet: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
+  frukt: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  frukten: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  fruktig: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  fruktige: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  fruktrik: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  fruktrike: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  fruktighet: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
 
   urt: { lemma: 'urt', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
   urtig: { lemma: 'urt', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
   urtaktig: { lemma: 'urt', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
 
   // MINERAL / TERROIR (jord, salt, sjø, svovel, skogbunn)
-  jord: { lemma: 'jord', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'annet' } },
-  jordet: { lemma: 'jord', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'annet' } },
-  jordig: { lemma: 'jord', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'annet' } },
-  jordpreg: { lemma: 'jord', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'annet' } },
-  skogbunn: { lemma: 'skogbunn', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'annet' } },
-  svovel: { lemma: 'svovel', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  svovelet: { lemma: 'svovel', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  svovelpreg: { lemma: 'svovel', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  salt: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  saltet: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  salte: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  havsalt: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  sjøaktig: { lemma: 'sjø', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  sjø: { lemma: 'sjø', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  jord: { lemma: 'jord', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  jordet: { lemma: 'jord', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  jordig: { lemma: 'jord', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  jordpreg: { lemma: 'jord', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  skogbunn: { lemma: 'skogbunn', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  svovel: { lemma: 'svovel', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  svovelet: { lemma: 'svovel', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  svovelpreg: { lemma: 'svovel', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  salt: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  saltet: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  salte: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  havsalt: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  sjøaktig: { lemma: 'sjø', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  sjø: { lemma: 'sjø', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
 
   // NUTS (mandler, mandel → nøtt family)
-  mandel: { lemma: 'mandel', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  mandler: { lemma: 'mandel', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  hasselnøtt: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  hasselnøtter: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  valnøtt: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
+  mandel: { lemma: 'mandel', weight: 1.4, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+  mandler: { lemma: 'mandel', weight: 1.4, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+  hasselnøtt: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+  hasselnøtter: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+  valnøtt: { lemma: 'nøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
 
   // DRIED / JAMMY FRUIT
   marmelade: {
     lemma: 'marmelade',
     weight: 1.6,
     category: 'moden-frukt',
-    categoryPath: { main: 'Frukt', sub: 'toerket' }
+    categoryPath: { main: 'Frukt og bær', sub: 'toerket' }
   },
   syltetøy: {
     lemma: 'marmelade',
     weight: 1.6,
     category: 'moden-frukt',
-    categoryPath: { main: 'Frukt', sub: 'toerket' }
+    categoryPath: { main: 'Frukt og bær', sub: 'toerket' }
   },
-  modent: { lemma: 'moden', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
+  modent: { lemma: 'moden', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
 
   // TEXTURE / BODY colloquials
   juicy: { lemma: 'saftig', weight: 0.8, category: 'friskhet', categoryPath: { main: 'GENERIC', sub: 'acidity' } },
@@ -461,32 +461,32 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   feite: { lemma: 'fyldig', weight: 0.8, category: 'fylde', categoryPath: { main: 'GENERIC', sub: 'body' } },
 
   // Common wood/oak variants
-  tre: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  treaktig: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  trepreg: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
+  tre: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  treaktig: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  trepreg: { lemma: 'eik', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
   trekrydder: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'soet' } },
 
   // ── CORPUS GAP FILL (from corpus analysis of 49 000 wines) ─────────────────
 
   // BLOMSTER — singular and floral adjectives missing from original dict
-  blomst: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
-  floral: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
-  florale: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
-  blomsteraktig: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomster', sub: 'annet' } },
+  blomst: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  floral: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  florale: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  blomsteraktig: { lemma: 'blomst', weight: 1.3, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
 
   // MINERAL — singular + limestone/chalk + smoke + mushroom
-  mineral: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  kalk: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  kalkstein: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  kalkmineraler: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  kalkaktig: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  røyk: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  røykig: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  røykaktig: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  røykete: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
-  sopp: { lemma: 'sopp', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'annet' } },
-  soppaktig: { lemma: 'sopp', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'annet' } },
-  saltaktig: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Mineral', sub: 'stein' } },
+  mineral: { lemma: 'mineral', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  kalk: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  kalkstein: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  kalkmineraler: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  kalkaktig: { lemma: 'kalk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  røyk: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  røykig: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  røykaktig: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  røykete: { lemma: 'røyk', weight: 1.5, category: 'mineral', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  sopp: { lemma: 'sopp', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  soppaktig: { lemma: 'sopp', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  saltaktig: { lemma: 'salt', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
 
   // URTER — camphor + balsam/resin
   kamfer: { lemma: 'kamfer', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
@@ -495,52 +495,52 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   balsamisk: { lemma: 'balsam', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
   balsamiske: { lemma: 'balsam', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
 
-  // EIK/FAT — cedar + cacao + mocha
-  sedertre: { lemma: 'sedertre', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  seder: { lemma: 'sedertre', weight: 1.8, category: 'eik', categoryPath: { main: 'Eik/fat', sub: 'fatlagring' } },
-  kakao: { lemma: 'kakao', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  kakaopulver: { lemma: 'kakao', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  mokka: { lemma: 'mokka', weight: 1.4, category: 'annet', categoryPath: { main: 'Eik/fat', sub: 'annet' } },
-  syltet: { lemma: 'marmelade', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
-  syltede: { lemma: 'marmelade', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt', sub: 'toerket' } },
+  // TREVERK / KARAMELLISERT — cedar + cacao + mocha
+  sedertre: { lemma: 'sedertre', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  seder: { lemma: 'sedertre', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  kakao: { lemma: 'kakao', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  kakaopulver: { lemma: 'kakao', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  mokka: { lemma: 'mokka', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  syltet: { lemma: 'marmelade', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
+  syltede: { lemma: 'marmelade', weight: 1.6, category: 'moden-frukt', categoryPath: { main: 'Frukt og bær', sub: 'toerket' } },
 
   // KRYDDER — paprika
-  paprika: { lemma: 'paprika', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'varm' } },
+  paprika: { lemma: 'paprika', weight: 1.7, category: 'annet', categoryPath: { main: 'Grønnsaker', sub: 'annet' } },
   kryddertoner: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
   krydderaktig: { lemma: 'krydder', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
 
   // FRUKT/BÆR — missing berries + berry-compound adjectives
-  stikkelsbær: { lemma: 'stikkelsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  stikkelsbæret: { lemma: 'stikkelsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  markjordbær: { lemma: 'jordbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  tranebær: { lemma: 'tranebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  granateple: { lemma: 'granateple', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  nype: { lemma: 'nype', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  nypebær: { lemma: 'nype', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  bærpreget: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  bærpregede: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  bærfrukt: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  rødbær: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
-  mørkkryddret: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt', sub: 'baer' } },
+  stikkelsbær: { lemma: 'stikkelsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  stikkelsbæret: { lemma: 'stikkelsbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  markjordbær: { lemma: 'jordbær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  tranebær: { lemma: 'tranebær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  granateple: { lemma: 'granateple', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  nype: { lemma: 'nype', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  nypebær: { lemma: 'nype', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  bærpreget: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  bærpregede: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  bærfrukt: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  rødbær: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
+  mørkkryddret: { lemma: 'bær', weight: 1.6, category: 'bær', categoryPath: { main: 'Frukt og bær', sub: 'baer' } },
 
   // FRUKT/SITRUS — orange + citrus compounds
-  appelsin: { lemma: 'appelsin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
-  appelsiner: { lemma: 'appelsin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
-  appelsinskall: { lemma: 'appelsin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
-  sitrusfrukt: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
-  sitruspreget: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
-  sitrusnote: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt', sub: 'sitrus' } },
+  appelsin: { lemma: 'appelsin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  appelsiner: { lemma: 'appelsin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  appelsinskall: { lemma: 'appelsin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  sitrusfrukt: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  sitruspreget: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  sitrusnote: { lemma: 'sitrus', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
 
   // FRUKT/TROPISK
-  pasjonsfrukt: { lemma: 'pasjonsfrukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'tropisk' } },
+  pasjonsfrukt: { lemma: 'pasjonsfrukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
 
   // FRUKT/STEINFRUKT — alternative spelling
-  stenfrukt: { lemma: 'steinfrukt', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt', sub: 'steinfrukt' } },
+  stenfrukt: { lemma: 'steinfrukt', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt og bær', sub: 'steinfrukt' } },
 
   // FRUKT/ANNET — quince + fruit-compound adjectives
-  kvede: { lemma: 'kvede', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  fruktdrevet: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
-  fruktkonsentrasjon: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt', sub: 'annet' } },
+  kvede: { lemma: 'kvede', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  fruktdrevet: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  fruktkonsentrasjon: { lemma: 'frukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
 
   // AROMA / DUFT — general scent terms (GENERIC — not specific flavor descriptors)
   aroma: { lemma: 'aroma', weight: 0.8, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'general' } },
@@ -585,6 +585,75 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   saftige: { lemma: 'saftig', weight: 0.8, category: 'friskhet', categoryPath: { main: 'GENERIC', sub: 'acidity' } },
   avslutningen: { lemma: 'ettersmak', weight: 0.8, category: 'ettersmak', categoryPath: { main: 'GENERIC', sub: 'finish' } },
   avslutningene: { lemma: 'ettersmak', weight: 0.8, category: 'ettersmak', categoryPath: { main: 'GENERIC', sub: 'finish' } },
+
+  // ── FLAVOR WHEEL ADDITIONS ──────────────────────────────────────────────────
+
+  // TREVERK — wood/oak notes from flavor wheel
+  sevje: { lemma: 'sevje', weight: 1.6, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  høvelspon: { lemma: 'høvelspon', weight: 1.5, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  blyanspiss: { lemma: 'blyanspiss', weight: 1.6, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+
+  // KARAMELLISERT — sweet/caramelised notes
+  toffee: { lemma: 'toffee', weight: 1.5, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  soyasaus: { lemma: 'soyasaus', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  bievoks: { lemma: 'bievoks', weight: 1.4, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+
+  // NØTTER — nut notes
+  kokos: { lemma: 'kokos', weight: 1.5, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+  marsipan: { lemma: 'marsipan', weight: 1.5, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+  paranøtt: { lemma: 'paranøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+  paranøtter: { lemma: 'paranøtt', weight: 1.4, category: 'annet', categoryPath: { main: 'Nøtter', sub: 'annet' } },
+
+  // ANIMALSK — animal/leather notes
+  stall: { lemma: 'stall', weight: 1.4, category: 'annet', categoryPath: { main: 'Animalsk', sub: 'annet' } },
+  fjøs: { lemma: 'fjøs', weight: 1.4, category: 'annet', categoryPath: { main: 'Animalsk', sub: 'annet' } },
+  blod: { lemma: 'blod', weight: 1.3, category: 'annet', categoryPath: { main: 'Animalsk', sub: 'annet' } },
+  skinke: { lemma: 'skinke', weight: 1.3, category: 'annet', categoryPath: { main: 'Animalsk', sub: 'annet' } },
+
+  // JORDAKTIG — earthy/mineral notes from flavor wheel
+  rødbete: { lemma: 'rødbete', weight: 1.4, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  høstløv: { lemma: 'høstløv', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  buljong: { lemma: 'buljong', weight: 1.4, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  torv: { lemma: 'torv', weight: 1.5, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  oliven: { lemma: 'oliven', weight: 1.4, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  olivenaktig: { lemma: 'oliven', weight: 1.4, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  støv: { lemma: 'støv', weight: 1.3, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+
+  // BLOMST — flower notes from flavor wheel
+  hylleblomst: { lemma: 'hylleblomst', weight: 1.5, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  jasmin: { lemma: 'jasmin', weight: 1.4, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  syrin: { lemma: 'syrin', weight: 1.4, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+  lavendel: { lemma: 'lavendel', weight: 1.4, category: 'blomst', categoryPath: { main: 'Blomst', sub: 'annet' } },
+
+  // URTER — herb notes from flavor wheel
+  barnål: { lemma: 'barnål', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
+  dill: { lemma: 'dill', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
+  fennikel: { lemma: 'fennikel', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
+  selleri: { lemma: 'selleri', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
+  sitrongress: { lemma: 'sitrongress', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
+  oregano: { lemma: 'oregano', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'groenn' } },
+  te: { lemma: 'te', weight: 1.3, category: 'urt', categoryPath: { main: 'Urter', sub: 'toerket' } },
+
+  // KRYDDER — spice notes from flavor wheel
+  allehånde: { lemma: 'allehånde', weight: 1.6, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'varm' } },
+  ingefær: { lemma: 'ingefær', weight: 1.6, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'varm' } },
+  safran: { lemma: 'safran', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
+
+  // FRUKT OG BÆR — fruit notes from flavor wheel not yet in dict
+  klementin: { lemma: 'klementin', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  limeskall: { lemma: 'limeskall', weight: 1.5, category: 'sitrus', categoryPath: { main: 'Frukt og bær', sub: 'sitrus' } },
+  nektarin: { lemma: 'nektarin', weight: 1.5, category: 'steinfrukt', categoryPath: { main: 'Frukt og bær', sub: 'steinfrukt' } },
+  lychee: { lemma: 'lychee', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+  litchi: { lemma: 'lychee', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+  guava: { lemma: 'guava', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+  honningmelon: { lemma: 'honningmelon', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  jackfrukt: { lemma: 'jackfrukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+  jackfruit: { lemma: 'jackfrukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+
+  // GRØNNSAKER — vegetable notes from flavor wheel
+  kål: { lemma: 'kål', weight: 1.3, category: 'annet', categoryPath: { main: 'Grønnsaker', sub: 'annet' } },
+  mais: { lemma: 'mais', weight: 1.3, category: 'annet', categoryPath: { main: 'Grønnsaker', sub: 'annet' } },
+  asparges: { lemma: 'asparges', weight: 1.3, category: 'annet', categoryPath: { main: 'Grønnsaker', sub: 'annet' } },
 };
 
 export const stopwords = new Set([

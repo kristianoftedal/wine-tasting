@@ -40,7 +40,7 @@ const SUB_LABELS: Record<string, string> = {
   toerket: 'Tørket/modent', annet: 'Annet',
   varm: 'Varme krydder', soet: 'Søte krydder',
   fatlagring: 'Fatlagring', ristet: 'Ristet',
-  stein: 'Stein/mineraler',
+  stein: 'Stein/mineraler', jord: 'Jord/skogbunn',
   groenn: 'Grønne urter',
   structure: 'Struktur', quality: 'Kvalitet', finish: 'Finish',
   body: 'Fylde', acidity: 'Syre', sweetness: 'Sødme',
@@ -62,7 +62,7 @@ function computeLemmaGroups(): LemmaGroup[] {
     subMap.get(sub)!.push({ lemma: entry.lemma, sub, category: entry.category });
   }
 
-  const ORDER = ['Frukt', 'Krydder', 'Eik/fat', 'Mineral', 'Urter', 'Blomster', 'GENERIC'];
+  const ORDER = ['Frukt og bær', 'Krydder', 'Urter', 'Blomst', 'Treverk', 'Karamellisert', 'Nøtter', 'Jordaktig', 'Animalsk', 'Grønnsaker', 'GENERIC'];
 
   return [...grouped.entries()]
     .map(([main, subMap]) => ({
@@ -132,6 +132,8 @@ export default async function ScoringDemoPage() {
         lemmaGroups={lemmaGroups}
         defaultRecall={process.env.SCORING_RECALL_ENABLED === 'true'}
         defaultFlavorFilter={process.env.SEMANTIC_FLAVOR_FILTER_ENABLED === 'true'}
+        defaultBertScore={process.env.BERTSCORE_ENABLED === 'true'}
+        defaultCategorySemantic={process.env.CATEGORY_SEMANTIC_ENABLED === 'true'}
       />
     </main>
   );

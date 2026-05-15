@@ -105,6 +105,7 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
         avgFylde: null,
         avgSodme: null,
         avgGarvestoffer: null,
+        avgAttribute: null,
         count: 0,
         tastings: [] as Array<TastingScore & { userName: string }>
       };
@@ -123,6 +124,9 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
       avgFylde: sum('fylde_score') / count,
       avgSodme: sum('sodme_score') / count,
       avgGarvestoffer: sum('garvestoffer_score') / count,
+      avgAttribute:
+        (sum('friskhet_score') + sum('fylde_score') + sum('garvestoffer_score') + sum('sodme_score')) /
+        (3 * count),
       count,
       tastings: wineTastings.map(t => ({
         ...t,
@@ -230,6 +234,22 @@ export function EventScoresRealtime({ eventId, wines, initialTastings, initialPr
                     <div className={styles.quickScore}>
                       <strong>{wine.avgKarakter?.toFixed(1)}</strong>
                       <span className={styles.quickScoreLabel}>Karakter</span>
+                    </div>
+                    <div className={styles.quickScore}>
+                      <strong>{wine.avgColor?.toFixed(1)}</strong>
+                      <span className={styles.quickScoreLabel}>Farge</span>
+                    </div>
+                    <div className={styles.quickScore}>
+                      <strong>{wine.avgSmell?.toFixed(1)}</strong>
+                      <span className={styles.quickScoreLabel}>Lukt</span>
+                    </div>
+                    <div className={styles.quickScore}>
+                      <strong>{wine.avgTaste?.toFixed(1)}</strong>
+                      <span className={styles.quickScoreLabel}>Smak</span>
+                    </div>
+                    <div className={styles.quickScore}>
+                      <strong>{wine.avgAttribute?.toFixed(1)}</strong>
+                      <span className={styles.quickScoreLabel}>Attributter</span>
                     </div>
                     <span className={styles.quickScoreCount}>
                       {wine.count} {wine.count === 1 ? 'vurdering' : 'vurderinger'}

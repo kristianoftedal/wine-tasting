@@ -162,7 +162,9 @@ export const Summary: React.FC = () => {
 
         const priceScore = calculateNumericSimilarity(tastingState.pris?.toString(), wine?.price);
 
-        const garvestofferScore = vmpGarvestoffer ? calculateNumericSimilarity(tastingState.garvestoffer, vmpGarvestoffer) : 0;
+        const garvestofferScore = vmpGarvestoffer
+          ? calculateNumericSimilarity(tastingState.garvestoffer, vmpGarvestoffer)
+          : 0;
         const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme) : 0;
         const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde) : 0;
         const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet) : 0;
@@ -181,7 +183,7 @@ export const Summary: React.FC = () => {
 
         setScores(newScores);
 
-        const halfWeightProps = ['pris', 'alkoholProsent'];
+        const twentyPercentWeightProps = ['pris', 'alkoholProsent', 'farge'];
         const scoreEntries = Object.entries(newScores).filter(([key]) => {
           // Skip characteristics that don't have expert data
           if (key === 'friskhet' && vmpFriskhet === null) return false;
@@ -189,8 +191,8 @@ export const Summary: React.FC = () => {
           if (key === 'garvestoffer' && vmpGarvestoffer === null) return false;
           if (key === 'sodme' && vmpSødme === null) return false;
           // Skip smell/taste scores if the wine's description is too short
-          if (key === 'lukt' && (wine.smell ?? '').trim().length < 10) return false;
-          if (key === 'smak' && (wine.taste ?? '').trim().length < 10) return false;
+          if (key === 'lukt' && (wine.smell ?? '').trim().length < 6) return false;
+          if (key === 'smak' && (wine.taste ?? '').trim().length < 6) return false;
           return true;
         });
 
@@ -199,7 +201,7 @@ export const Summary: React.FC = () => {
 
         const { total, weightSum } = scoreEntries.reduce(
           (acc, [key, value]) => {
-            const weight = halfWeightProps.includes(key) ? 0.2 : 1;
+            const weight = twentyPercentWeightProps.includes(key) ? 0.2 : 1;
             return {
               total: acc.total + value * weight,
               weightSum: acc.weightSum + weight

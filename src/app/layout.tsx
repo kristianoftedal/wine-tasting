@@ -34,6 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="no">
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
       <Provider>
         <body className={`font-sans antialiased`}>
           <AppBar />

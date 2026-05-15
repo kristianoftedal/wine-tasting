@@ -1,0 +1,324 @@
+1. Set-Based Similarity
+
+These compare overlap between words, tokens, or character groups.
+
+Jaccard Similarity
+
+You mentioned “Jaccard.” It measures overlap between two sets.
+
+J(A,B)=
+∣A∪B∣
+∣A∩B∣
+	​
+
+
+J(A,B)=
+∣A∪B∣
+∣A∩B∣
+	​
+
+
+Example
+
+Text A:
+
+"machine learning is fun"
+
+Text B:
+
+"learning machine is powerful"
+
+Token sets:
+
+A = {machine, learning, is, fun}
+B = {learning, machine, is, powerful}
+
+Intersection = 3
+Union = 5
+
+Similarity = 3/5 = 0.6
+
+Good for
+Duplicate detection
+Search indexing
+Tag matching
+Near-identical documents
+Weakness
+
+Doesn’t understand meaning.
+
+“car” and “automobile” look unrelated.
+
+Dice Coefficient
+
+Similar to Jaccard but weighted differently.
+
+Dice(A,B)=
+∣A∣+∣B∣
+2∣A∩B∣
+	​
+
+
+Dice(A,B)=
+∣A∣+∣B∣
+2∣A∩B∣
+	​
+
+
+Often used in NLP and fuzzy matching.
+
+2. Edit Distance Techniques
+
+These measure how many changes are needed to transform one text into another.
+
+Levenshtein Distance
+
+Counts insertions, deletions, substitutions.
+
+Example
+
+"kitten" → "sitting"
+
+Operations:
+
+kitten → sitten
+sitten → sittin
+sittin → sitting
+
+Distance = 3
+
+Good for
+Spell checking
+OCR correction
+Username matching
+Fuzzy search
+Damerau-Levenshtein
+
+Adds transposition support.
+
+Example:
+
+"hte" → "the"
+
+Very useful for typo detection.
+
+Hamming Distance
+
+Counts differing characters at same positions.
+
+Only works for equal-length strings.
+
+Example:
+
+1011101
+1001001
+
+Distance = 2
+
+3. Vector Space / Statistical Methods
+
+These convert text into numerical vectors.
+
+Cosine Similarity
+
+One of the most common NLP similarity methods.
+
+Measures angle between vectors.
+
+cos(θ)=
+∣∣A∣∣ ∣∣B∣∣
+A⋅B
+	​
+
+
+cos(θ)=
+∣∣A∣∣ ∣∣B∣∣
+A⋅B
+	​
+
+
+Usually used with
+TF-IDF vectors
+Bag-of-words
+Embeddings
+Good for
+Document similarity
+Search engines
+Recommendation systems
+TF-IDF
+
+Weights words by importance.
+
+Rare words matter more than common words.
+
+Example:
+
+“the” gets low weight
+“transformer” gets high weight
+
+Often combined with cosine similarity.
+
+4. Semantic Similarity (Meaning-Based)
+
+These try to understand meaning rather than exact wording.
+
+Word Embeddings
+
+Words become vectors in high-dimensional space.
+
+Examples:
+
+Word2Vec
+GloVe
+FastText
+
+Interesting property:
+
+vector("king")−vector("man")+vector("woman")≈vector("queen")
+Good for
+Semantic search
+Recommendation
+Clustering
+Sentence Embeddings
+
+Modern NLP usually compares sentence embeddings.
+
+Models:
+
+Sentence-BERT
+Universal Sentence Encoder
+OpenAI embeddings
+
+Example:
+
+“I love programming”
+“Coding is enjoyable”
+
+These become nearby vectors even with different words.
+
+Common approach
+Convert text → embeddings
+Compute cosine similarity
+5. Transformer-Based Similarity
+
+Modern state-of-the-art NLP.
+
+Uses contextual understanding.
+
+Models:
+
+BERT
+RoBERTa
+GPT embeddings
+MiniLM
+
+These understand:
+
+context
+grammar
+semantics
+ambiguity
+
+Example:
+
+“Apple released a phone”
+“Apple pie tastes good”
+
+Transformer embeddings distinguish company vs fruit.
+
+6. Character-Based Similarity
+
+Useful for noisy or short text.
+
+N-grams / Shingling
+
+Break text into chunks.
+
+Example bigrams for “hello”:
+
+he
+el
+ll
+lo
+
+Then compare overlap.
+
+Useful for:
+
+plagiarism detection
+typo tolerance
+language detection
+7. Phonetic Similarity
+
+Compares pronunciation.
+
+Algorithms:
+
+Soundex
+Metaphone
+Double Metaphone
+
+Useful for:
+
+name matching
+speech systems
+
+Example:
+
+“Smith”
+“Smyth”
+8. Sequence Alignment Techniques
+
+Borrowed from bioinformatics.
+
+Algorithms:
+
+Needleman-Wunsch
+Smith-Waterman
+
+Useful for:
+
+DNA-like sequence comparison
+advanced fuzzy matching
+9. Hybrid / AI Retrieval Methods
+
+Modern search systems combine techniques.
+
+Typical pipeline:
+
+BM25 keyword retrieval
+Embedding similarity
+Reranking with transformers
+
+Used in:
+
+semantic search
+RAG systems
+vector databases
+Which Technique Should You Use?
+Goal	Recommended Technique
+Exact duplicate detection	Jaccard
+Typo correction	Levenshtein
+Search engine ranking	TF-IDF + Cosine
+Meaning similarity	Sentence embeddings
+Semantic search	Transformer embeddings
+Short noisy text	N-grams
+Name matching	Soundex / Metaphone
+AI retrieval systems	Embeddings + reranking
+Common Libraries
+Python
+scikit-learn
+sentence-transformers
+spaCy
+RapidFuzz
+NLTK
+JavaScript
+natural.js
+Fuse.js
+Simple Mental Model
+Technique Type	Understands Meaning?	Handles Typos?	Fast?
+Jaccard	No	Slightly	Very fast
+Levenshtein	No	Yes	Medium
+TF-IDF	Limited	No	Fast
+Embeddings	Yes	Yes	Medium
+Transformers	Best	Yes	Slower
