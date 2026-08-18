@@ -1,13 +1,17 @@
 #!/usr/bin/env npx tsx
 /**
  * Recalculate smell_score, taste_score, color_score, and overall_score for
- * every tasting belonging to the target user using the current production
- * similarity pipeline.
+ * tastings using the current production similarity pipeline.
+ *
+ * Scoped to a single user by default. Pass --all to cover every tasting in the
+ * table — needed after a scoring change, since leaving other users on the old
+ * algorithm makes cross-user comparisons meaningless.
  *
  * Dry-run by default. Pass --execute to write back to the database.
  *
  *   npx tsx scripts/recalculate-user-tasting-scores.ts
- *   npx tsx scripts/recalculate-user-tasting-scores.ts --execute
+ *   npx tsx scripts/recalculate-user-tasting-scores.ts --all
+ *   npx tsx scripts/recalculate-user-tasting-scores.ts --all --execute
  *
  * The overall_score recomputation mirrors the weighted average in
  * src/app/components/tasting/Summary.tsx: full weight for color/smell/taste
@@ -23,6 +27,7 @@ import { calculateServerSideScores } from '../src/actions/similarity';
 
 const EMAIL = 'oftedal.kristian@gmail.com';
 const execute = process.argv.includes('--execute');
+const allUsers = process.argv.includes('--all');
 
 type TastingRow = {
   id: string;
@@ -122,22 +127,26 @@ async function main() {
   }
   const supabase = createClient(url, key);
 
-  const { data: profile, error: profErr } = await supabase
-    .from('profiles')
-    .select('id, email, name')
-    .eq('email', EMAIL)
-    .single();
-  if (profErr || !profile) {
-    console.error('Profile lookup failed:', profErr?.message);
-    process.exit(1);
+  let profile: { id: string; email: string; name: string } | null = null;
+  if (!allUsers) {
+    const { data, error: profErr } = await supabase
+      .from('profiles')
+      .select('id, email, name')
+      .eq('email', EMAIL)
+      .single();
+    if (profErr || !data) {
+      console.error('Profile lookup failed:', profErr?.message);
+      process.exit(1);
+    }
+    profile = data;
   }
 
-  const { data: tastings, error: tErr } = await supabase
+  const baseQuery = supabase
     .from('tastings')
     .select(
-      'id, wine_id, farge, lukt, smak, friskhet, fylde, sodme, garvestoffer, alkohol, pris, color_score, smell_score, taste_score, friskhet_score, fylde_score, sodme_score, garvestoffer_score, percentage_score, price_score, overall_score, karakter, created_at'
-    )
-    .eq('user_id', profile.id)
+      'id, user_id, wine_id, farge, lukt, smak, friskhet, fylde, sodme, garvestoffer, alkohol, pris, color_score, smell_score, taste_score, friskhet_score, fylde_score, sodme_score, garvestoffer_score, percentage_score, price_score, overall_score, karakter, created_at'
+    );
+  const { data: tastings, error: tErr } = await (profile ? baseQuery.eq('user_id', profile.id) : baseQuery)
     .order('created_at', { ascending: false });
   if (tErr || !tastings?.length) {
     console.error('No tastings:', tErr?.message);
@@ -151,7 +160,7 @@ async function main() {
     .in('id', wineIds);
   const wineById = new Map(((wines as WineRow[] | null) ?? []).map(w => [w.id, w]));
 
-  console.log(`User: ${profile.name} <${profile.email}>`);
+  console.log(profile ? `User: ${profile.name} <${profile.email}>` : 'Scope: ALL USERS');
   console.log(`Mode: ${execute ? 'EXECUTE (will write)' : 'DRY RUN'}`);
   console.log(`Tastings: ${tastings.length}\n`);
 

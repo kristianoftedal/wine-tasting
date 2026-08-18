@@ -902,14 +902,14 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <h2>The Problem</h2>
   <div class="two-col" style="align-items:start;">
     <div>
-      <p style="font-size:1.05rem;">Users taste wines at events and write free-text notes. The system scores how well they <span class="cg">picked out the aromas actually present</span> — measuring tasting skill, not writing volume.</p>
+      <p style="font-size:1.05rem;">Users taste wines at events and write free-text notes. The system scores how well they <span class="cg">picked out the aromas actually present</span> — a measure of tasting skill.</p>
       <div class="card" style="margin-top:20px;">
         <div style="font-size:0.8rem;color:#6b6b88;text-transform:uppercase;margin-bottom:8px;">User writes</div>
         <div style="font-size:0.95rem;color:#93c5fd;">"Pepper, mørke bær."</div>
         <div style="border-top:1px solid rgba(255,255,255,0.06);margin:12px 0;"></div>
         <div style="font-size:0.8rem;color:#6b6b88;text-transform:uppercase;margin-bottom:8px;">Official description</div>
         <div style="font-size:0.95rem;color:#6ee7b7;">"Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer."</div>
-        <div style="font-size:0.78rem;color:#555577;margin-top:10px;">Two correct calls out of a long list — that is good tasting, not a 26% answer</div>
+        <div style="font-size:0.78rem;color:#555577;margin-top:10px;">Two confident, correct calls out of a long list — a short note, but good tasting</div>
       </div>
     </div>
     <div>
@@ -919,8 +919,8 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <p style="font-size:0.9rem;margin-top:10px;color:#8888aa;">The official note is a <span class="cy">lookup table</span>, never a denominator. That one sentence determines the entire architecture.</p>
       </div>
       <div class="card yellow" style="margin-top:12px;">
-        <h3>Why this is harder than it looks</h3>
-        <p style="font-size:0.9rem;">Most similarity measures are <strong>symmetric</strong>. Symmetry is exactly what the objective forbids: it makes an unmentioned aroma count against you.</p>
+        <h3>What makes it interesting</h3>
+        <p style="font-size:0.9rem;">Most similarity measures are <strong>symmetric</strong> — they ask how alike two texts are. This asks a one-way question: of the things you named, how many were really there?</p>
       </div>
     </div>
   </div>
@@ -931,24 +931,29 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 ════════════════════════════════════════════════════════════ -->
 <div class="slide s-arch" id="s25">
   <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
-  <h2>Symmetric Measures Fail the Objective</h2>
-  <p style="font-size:1rem;color:#8888aa;margin-top:6px;">Measured on 152 controlled perturbations of real tastings. <span class="cy">MISS</span> = score change when the <em>reference</em> note gains aromas the taster never mentioned. It should be zero.</p>
-  <div class="three-col" style="margin-top:18px;">
-    <div class="card pink">
-      <h3>Sentence cosine <span style="color:#ef4444;">MISS −3.3</span></h3>
-      <p style="font-size:0.9rem;">Mean-pooling three tokens versus ten differs <em>because</em> of what is missing. The omission penalty is baked into the pooling step and cannot be tuned out.</p>
+  <h2>Asymmetry Is a Loop Direction</h2>
+  <p style="font-size:1rem;color:#8888aa;margin-top:6px;">The objective is enforced by <em>what the algorithm iterates over</em>, not by a coefficient that has to be tuned.</p>
+  <div class="two-col" style="margin-top:18px;align-items:start;">
+    <div class="card green">
+      <h3>Iterate over the taster's words</h3>
+      <div class="code" style="font-size:0.88rem;line-height:1.9;margin-top:8px;">for each term the <span style="color:#86efac;">user</span> wrote:<br>&nbsp;&nbsp;credit += bestMatch(term, reference)</div>
+      <p style="font-size:0.92rem;margin-top:12px;line-height:1.7;">Reference terms the taster never mentioned are <strong>never visited</strong>. An omission cannot subtract from a sum it never enters.</p>
+      <p style="font-size:0.9rem;margin-top:8px;color:#8888aa;">This holds by construction — no threshold to calibrate, no coefficient that drifts as the corpus changes.</p>
     </div>
-    <div class="card pink">
-      <h3>BERTScore F1 <span style="color:#ef4444;">MISS −2.2</span></h3>
-      <p style="font-size:0.9rem;">The recall half asks "for each reference token, how well did the user cover it" — the omission penalty, written as a formula.</p>
+    <div>
+      <div class="card accent">
+        <h3>The denominator is the taster's own note</h3>
+        <p style="font-size:0.9rem;">Normalising by anything on the wine's side reintroduces the reference into the score. Using the user's own weighted mass keeps the measure independent of how verbose the official note happens to be.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Precision, not F1</h3>
+        <p style="font-size:0.9rem;">Token-level MaxSim asks, for each word the taster wrote, how close the nearest thing the wine shows is. Running the loop the other way as well — the recall half of an F1 — would ask how fully the taster covered the wine, which is the question the objective rules out.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Why not sentence embeddings here</h3>
+        <p style="font-size:0.9rem;">Mean-pooling three tokens and mean-pooling ten produce different vectors <em>because</em> of what is absent. Comparing at the token level keeps the measure indifferent to length.</p>
+      </div>
     </div>
-    <div class="card pink">
-      <h3>max() denominator <span style="color:#ef4444;">MISS −2.3</span></h3>
-      <p style="font-size:0.9rem;">Normalising by the longer text makes a verbose reference note lower the score. It also made <em>wrong guesses pay</em>: +1.1 per padded descriptor.</p>
-    </div>
-  </div>
-  <div class="card green" style="margin-top:16px;text-align:center;">
-    <p style="font-size:0.97rem;">The fix is a <span class="cg">loop direction</span>, not a coefficient. Iterate over what the <strong>user wrote</strong>; use the reference only for lookup. Reference tokens the taster never mentioned are never visited, so they cannot subtract.</p>
   </div>
 </div>
 
@@ -972,43 +977,43 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <div class="three-col" style="margin-top:12px;">
     <div class="card">
       <h3>Clean &amp; normalise</h3>
-      <p style="font-size:0.9rem;">"Bærete", "bærfrukt", "bærrik" collapse to "bær". Compound forms the house style favours — "bærpreg", "mineraltoner" — are split against the dictionary rather than enumerated.</p>
+      <p style="font-size:0.9rem;">"Bærete", "bærfrukt", "bærrik" collapse to "bær". Compound forms the house style favours — "bærpreg", "mineraltoner" — are split against the dictionary, so coverage grows without enumerating every variant.</p>
     </div>
     <div class="card yellow">
       <h3>Expand reference</h3>
-      <p style="font-size:0.9rem;">The reference set grows to include what it <em>implies</em>: oak implies vanilla, "frukt" covers "solbær". Only the reference expands — never the user's note.</p>
+      <p style="font-size:0.9rem;">The reference set grows to include what it <em>implies</em>: oak implies vanilla, "frukt" covers "solbær". Only the reference expands — keeping the expansion one-sided preserves the asymmetry.</p>
     </div>
     <div class="card accent">
       <h3>Credit ladder</h3>
-      <p style="font-size:0.9rem;">Each descriptor the taster wrote earns credit at the best tier it reaches. Nothing else is iterated, so omissions are structurally invisible.</p>
+      <p style="font-size:0.9rem;">Each descriptor the taster wrote earns credit at the best tier it reaches. One pass over the user's terms produces both the score and a per-term explanation of why it was earned.</p>
     </div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-  27  App — Domain knowledge embeddings can't learn
+  27  App — Domain knowledge
 ════════════════════════════════════════════════════════════ -->
 <div class="slide s-arch" id="s27">
   <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
   <h2>Knowledge No Embedding Learns</h2>
   <div class="two-col" style="align-items:start;">
     <div>
-      <p style="font-size:1.02rem;">Oak barrels release <span class="cy">vanillin</span>, oak lactones and furfural. A taster writing "vanilje" on a barrel-aged wine has perceived correctly — that is the skill being measured.</p>
+      <p style="font-size:1.02rem;">Oak barrels release <span class="cy">vanillin</span>, oak lactones and furfural. A taster writing "vanilje" on a barrel-aged wine has perceived correctly — and that inference is precisely the skill worth rewarding.</p>
       <div class="card" style="margin-top:16px;">
-        <div style="font-size:0.82rem;color:#6b6b88;text-transform:uppercase;margin-bottom:10px;">Neither mechanism catches it</div>
-        <div class="code" style="font-size:0.86rem;line-height:1.9;">fat      → Treverk / annet<br>vanilje  → Krydder  / soet<br><span style="color:#ef4444;">category credit  = 0.0</span> — different branches<br><br>cos(fat, vanilje)   = <span style="color:#ef4444;">0.09</span><br>cos(fat, fersken)   = 0.26  <span style="color:#6b6b88;">← unrelated pair</span><br><span style="color:#ef4444;">a correct inference ranks below an unrelated one</span></div>
+        <div style="font-size:0.82rem;color:#6b6b88;text-transform:uppercase;margin-bottom:10px;">Two mechanisms, neither sufficient</div>
+        <div class="code" style="font-size:0.86rem;line-height:1.9;">fat      → Treverk / annet<br>vanilje  → Krydder  / soet<br><span style="color:#8888aa;">taxonomies place them on separate branches</span><br><br>cos(fat, vanilje)   = <span style="color:#fbbf24;">0.09</span><br>cos(fat, fersken)   = 0.26  <span style="color:#6b6b88;">← unrelated pair</span><br><span style="color:#8888aa;">distributional similarity does not encode causation</span></div>
       </div>
     </div>
     <div>
       <div class="card yellow">
-        <h3>Why embeddings miss it</h3>
-        <p style="font-size:0.92rem;line-height:1.7;">The link from barrel to vanillin is <strong>wine chemistry</strong>, not distributional semantics. It never appears in the surface text of retail tasting notes, so no general-purpose model can learn it.</p>
-        <p style="font-size:0.88rem;margin-top:8px;color:#8888aa;">Aggregate separation looked healthy (d = 2.6) — but that was carried by morphology: bringebær→bær 0.77, krydret→krydder 0.62.</p>
+        <h3>Why the gap exists</h3>
+        <p style="font-size:0.92rem;line-height:1.7;">The link from barrel to vanillin is <strong>wine chemistry</strong>. It never appears in the surface text of retail tasting notes, so no amount of scale in a general-purpose model recovers it.</p>
+        <p style="font-size:0.88rem;margin-top:8px;color:#8888aa;">Embeddings excel at morphology and taxonomy — bringebær→bær 0.77, krydret→krydder 0.62. Causal domain links are a different kind of knowledge.</p>
       </div>
       <div class="card green" style="margin-top:12px;">
         <h3>A directed derivation map</h3>
         <div class="code" style="font-size:0.84rem;margin-top:6px;">fat → vanilje, kokos, karamell,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ristet, røyk, sedertre, mokka</div>
-        <p style="font-size:0.88rem;margin-top:10px;">~60 hand-encoded edges. Zero runtime cost, zero API calls, and it fixed <span class="cy">27%</span> of oaked-wine tastings that were scored as wrong guesses.</p>
+        <p style="font-size:0.88rem;margin-top:10px;">~60 hand-encoded edges cover the inferences that matter. Zero runtime cost, zero API calls, fully auditable — and it makes the score agree with a sommelier on the single most common inference in wine tasting.</p>
       </div>
     </div>
   </div>
@@ -1022,22 +1027,22 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <h2>Cosine Has a Floor Under It</h2>
   <div class="two-col" style="align-items:start;">
     <div>
-      <p style="font-size:1.02rem;">Embeddings do not spread over the sphere. They occupy a <span class="cy">narrow cone</span> — every wine note points substantially the same way.</p>
-      <div class="code" style="margin-top:14px;font-size:0.92rem;line-height:2;">|mean unit vector| = <span style="color:#fbbf24;">0.68</span><br><span style="color:#6b6b88;">0 = isotropic · 1 = total collapse</span><br><br>cos(two UNRELATED wine notes)<br>&nbsp;&nbsp;before  <span style="color:#ef4444;">0.459 ± 0.159</span><br>&nbsp;&nbsp;after   <span style="color:#86efac;">−0.004 ± 0.156</span></div>
-      <p style="font-size:0.9rem;color:#8888aa;margin-top:12px;">The offset vanishes; the spread survives intact.</p>
+      <p style="font-size:1.02rem;">Embedding vectors do not spread over the sphere. They occupy a <span class="cy">narrow cone</span> — within one domain, every document points substantially the same way.</p>
+      <div class="code" style="margin-top:14px;font-size:0.92rem;line-height:2;">|mean unit vector| = <span style="color:#fbbf24;">0.58</span><br><span style="color:#6b6b88;">0 = isotropic · 1 = total collapse</span><br><br>cos(two UNRELATED wine notes)<br>&nbsp;&nbsp;raw       <span style="color:#fbbf24;">0.459 ± 0.159</span><br>&nbsp;&nbsp;centered  <span style="color:#86efac;">−0.004 ± 0.156</span></div>
+      <p style="font-size:0.9rem;color:#8888aa;margin-top:12px;">The offset disappears; the spread survives intact. All of the signal, none of the constant.</p>
     </div>
     <div>
       <div class="card accent">
         <h3>Mean-centering</h3>
         <div class="code" style="font-size:0.86rem;margin-top:6px;">mean = avg(normalize(v)) over corpus<br>centered(v) = normalize(v) − mean</div>
-        <p style="font-size:0.9rem;margin-top:10px;">One 1 536-float constant, computed once offline. That 0.46 was the model noting both texts are Norwegian wine prose — true of all 50 057 wines, so it carries no information about tasting accuracy.</p>
+        <p style="font-size:0.9rem;margin-top:10px;">One 1 536-float constant, computed once offline. That 0.46 was the model observing that both texts are Norwegian wine prose — true of all 50 057 wines, so it says nothing about tasting accuracy.</p>
       </div>
       <div class="card" style="margin-top:12px;">
-        <h3>Why not whitening?</h3>
-        <p style="font-size:0.89rem;">Whitening also decorrelates dimensions, but a stable 1 536×1 536 covariance needs far more samples than the corpus supports. A badly conditioned whitening matrix amplifies noise. Centering captures most of the gain for a subtraction.</p>
+        <h3>Centering, not whitening</h3>
+        <p style="font-size:0.89rem;">Whitening also decorrelates dimensions, but a stable 1 536×1 536 covariance needs far more samples than a domain corpus supports, and a badly conditioned matrix amplifies noise. Centering captures most of the benefit for the cost of a subtraction.</p>
       </div>
       <div class="card green" style="margin-top:12px;">
-        <p style="font-size:0.9rem;">Upgrading <span class="cv">3-small → 3-large</span> bought <strong>+0.02</strong> discrimination at 6.5× the price. Centering bought <strong>+35%</strong> for free.</p>
+        <p style="font-size:0.9rem;">Worth knowing where the leverage is: moving <span class="cv">3-small → 3-large</span> is worth <strong>+0.02</strong> discrimination at 6.5× the price. Centering is worth <strong>+35%</strong> for free.</p>
       </div>
     </div>
   </div>
@@ -1050,7 +1055,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
   <h2>The Scoring Formula</h2>
   <div class="eq" style="margin-top:14px;">
-    <span class="eq-var">hitMass</span> <span class="eq-op">=</span> Σ <span class="eq-var">weight</span>(term) <span class="eq-op">×</span> <span class="eq-var">credit</span>(term) &nbsp;<span style="color:#6b6b88;font-size:0.8em;">over the user's terms only</span>
+    <span class="eq-var">hitMass</span> <span class="eq-op">=</span> Σ <span class="eq-var">weight</span>(term) <span class="eq-op">×</span> <span class="eq-var">credit</span>(term) &nbsp;<span style="color:#6b6b88;font-size:0.8em;">over the taster's terms only</span>
   </div>
   <div class="eq">
     <span class="eq-var">score</span> <span class="eq-op">=</span> [ 0.55 <span class="eq-op">×</span> 100(1 <span class="eq-op">−</span> e<sup>−hitMass/τ</sup>) <span class="eq-op">+</span> 0.45 <span class="eq-op">×</span> <span class="eq-var">maxSim</span> ] <span class="eq-op">×</span> <span class="eq-var">precisionFactor</span>
@@ -1059,72 +1064,78 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="card accent">
       <h3>Credit ladder — best tier wins</h3>
       <div class="code" style="font-size:0.85rem;line-height:1.85;margin-top:6px;">direct       1.00  <span style="color:#6b6b88;">reference names it</span><br>derived      1.00  <span style="color:#6b6b88;">fat → vanilje</span><br>specific     0.85  <span style="color:#6b6b88;">frukt → solbær</span><br>subcategory  0.60  <span style="color:#6b6b88;">right family</span><br>category     0.30  <span style="color:#6b6b88;">right branch</span></div>
+      <p style="font-size:0.88rem;margin-top:10px;">Every tier is a defensible answer to "how right were they?", and each match carries its tier, so the UI can explain the score term by term.</p>
     </div>
     <div>
       <div class="card green">
         <h3>Saturation, not a ratio</h3>
-        <p style="font-size:0.9rem;">1 correct descriptor → 49 · 2 → 74 · 3 → 87 · 4 → 93. Monotonic in how many aromas you caught, with <strong>no wine-side denominator at all</strong>.</p>
+        <p style="font-size:0.9rem;">1 correct descriptor → 49 · 2 → 74 · 3 → 87 · 4 → 93. Monotonic in how many aromas the taster caught, with <strong>no wine-side denominator at all</strong> — the shape encodes diminishing returns rather than a share of a total.</p>
       </div>
       <div class="card yellow" style="margin-top:12px;">
-        <h3>maxSim — directional</h3>
-        <p style="font-size:0.9rem;">For each token the taster wrote, the best centered cosine to any reference token. Precision only; the recall half of BERTScore is deliberately dropped.</p>
+        <h3>maxSim — near-synonym credit</h3>
+        <p style="font-size:0.9rem;">For each token the taster wrote, the best centered cosine to any reference token. Catches the near-misses the dictionary has no edge for, so vocabulary gaps degrade gracefully instead of scoring zero.</p>
       </div>
       <div class="card" style="margin-top:12px;">
         <h3>precisionFactor</h3>
-        <p style="font-size:0.9rem;">0.6 + 0.4 × (hitMass / userMass). Discourages padding without punishing a taster whose inference was sound.</p>
+        <p style="font-size:0.9rem;">0.6 + 0.4 × (hitMass / userMass). Keeps a padded note from outscoring a considered one, while the high floor protects a taster whose inference was sound.</p>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-  30  App — Measured results
+  30  App — Properties the design guarantees
 ════════════════════════════════════════════════════════════ -->
 <div class="slide s-arch" id="s30">
   <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
-  <h2>Measured, Not Assumed</h2>
-  <p style="font-size:1rem;color:#8888aa;margin-top:4px;">152 controlled perturbations of real tastings, each scored against the wine tasted and 100 random wines.</p>
-  <table style="margin-top:14px;">
+  <h2>Measure the Properties, Not the Score</h2>
+  <p style="font-size:1rem;color:#8888aa;margin-top:4px;">A scoring function has no ground truth to fit. What it does have are <em>invariants</em> — and those can be measured directly, with controlled perturbations of real tastings.</p>
+  <table style="margin-top:16px;">
     <tr>
-      <th>Algorithm</th>
-      <th>+HIT<div style="font-weight:400;font-size:0.75rem;color:#6b6b88;">added a correct term</div></th>
-      <th>+WRONG<div style="font-weight:400;font-size:0.75rem;color:#6b6b88;">added a wrong term</div></th>
-      <th>MISS<div style="font-weight:400;font-size:0.75rem;color:#6b6b88;">reference gains aromas</div></th>
-      <th>r(length)</th>
-      <th>discrimination d</th>
-      <th>top-1 %</th>
+      <th>Property the objective demands</th>
+      <th>How it is measured</th>
+      <th>Target</th>
+      <th>Measured</th>
     </tr>
     <tr>
-      <td>Previous — symmetric</td>
-      <td style="color:#86efac;">+10.3</td>
-      <td style="color:#ef4444;">+0.8</td>
-      <td style="color:#ef4444;">−2.1</td>
-      <td style="color:#ef4444;">0.41</td>
-      <td style="color:#fbbf24;">0.80</td>
-      <td style="color:#fbbf24;">9</td>
-    </tr>
-    <tr>
-      <td><strong>Current — directional</strong></td>
+      <td>Naming another correct aroma raises the score</td>
+      <td>Add a descriptor the wine <em>does</em> have</td>
+      <td>clearly &gt; 0</td>
       <td style="color:#86efac;">+11.2</td>
+    </tr>
+    <tr>
+      <td>Guessing does not pay</td>
+      <td>Add a genuinely wrong descriptor</td>
+      <td>≤ 0</td>
       <td style="color:#86efac;">−4.3</td>
+    </tr>
+    <tr>
+      <td><strong>Omissions never cost</strong></td>
+      <td>Reference gains aromas the taster never wrote</td>
+      <td>~0</td>
       <td style="color:#86efac;">+2.6</td>
+    </tr>
+    <tr>
+      <td>Measures skill, not verbosity</td>
+      <td>Correlation of score with note length</td>
+      <td>~0</td>
       <td style="color:#86efac;">0.12</td>
-      <td style="color:#86efac;">1.62</td>
-      <td style="color:#86efac;">30</td>
+    </tr>
+    <tr>
+      <td>Still tells wines apart</td>
+      <td>Real wine vs 100 random wines</td>
+      <td>high</td>
+      <td style="color:#86efac;">d 1.62 · top-1 30%</td>
     </tr>
   </table>
-  <div class="three-col" style="margin-top:16px;">
-    <div class="card green">
-      <h3>Omissions stop costing</h3>
-      <p style="font-size:0.89rem;">MISS moves from −2.1 to +2.6. A longer reference note can now only offer more ways to be right.</p>
+  <div class="two-col" style="margin-top:16px;">
+    <div class="card yellow">
+      <h3>The sampler is the hard part</h3>
+      <p style="font-size:0.89rem;">A "wrong" descriptor must be genuinely wrong. Drawing any term absent from the reference silently includes valid inferences — a wine noted as "fat" really does show vanilla — so candidates exclude the reference's derivations and subcategories too.</p>
     </div>
     <div class="card green">
-      <h3>Padding stops paying</h3>
-      <p style="font-size:0.89rem;">+WRONG moves from +0.8 to −4.3. Shotgunning one term per flavour family no longer inflates the score.</p>
-    </div>
-    <div class="card green">
-      <h3>It measures skill, not length</h3>
-      <p style="font-size:0.89rem;">Correlation with note length drops 0.41 → 0.12, while discrimination doubles and top-1 more than triples.</p>
+      <h3>Invariants make good tests</h3>
+      <p style="font-size:0.89rem;">Each row is also a unit test. They fail loudly if a future change reintroduces a reference-side denominator, so the objective stays enforced rather than remembered.</p>
     </div>
   </div>
 </div>
