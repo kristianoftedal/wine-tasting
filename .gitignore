@@ -4,3 +4,5 @@ node_modules
 # contentlayer
 .contentlayer
 .env.local
+# Local data snapshots taken before destructive score migrations
+backups/
