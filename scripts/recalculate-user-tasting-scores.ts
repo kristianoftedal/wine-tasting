@@ -68,8 +68,8 @@ function computeOverall(
   wine: WineRow,
   scores: {
     farge: number;
-    lukt: number;
-    smak: number;
+    lukt: number | null;
+    smak: number | null;
     friskhet: number | null;
     fylde: number | null;
     garvestoffer: number | null;
@@ -82,8 +82,11 @@ function computeOverall(
   const entries: Array<[string, number]> = [];
 
   entries.push(['farge', scores.farge]);
-  if ((wine.smell ?? '').trim().length >= 10) entries.push(['lukt', scores.lukt]);
-  if ((wine.taste ?? '').trim().length >= 10) entries.push(['smak', scores.smak]);
+  // A null lukt/smak means the wine's own note names no aroma, so there is
+  // nothing for the taster to identify — drop the component instead of
+  // averaging in a zero they did not earn.
+  if ((wine.smell ?? '').trim().length >= 10 && scores.lukt !== null) entries.push(['lukt', scores.lukt]);
+  if ((wine.taste ?? '').trim().length >= 10 && scores.smak !== null) entries.push(['smak', scores.smak]);
   if (wine.friskhet !== null && scores.friskhet !== null) entries.push(['friskhet', scores.friskhet]);
   if (wine.fylde !== null && scores.fylde !== null) entries.push(['fylde', scores.fylde]);
   if (wine.garvestoff !== null && scores.garvestoffer !== null) entries.push(['garvestoffer', scores.garvestoffer]);
@@ -103,6 +106,11 @@ function computeOverall(
 
 function fmt(n: number | null | undefined): string {
   return n === null || n === undefined ? ' -- ' : String(n).padStart(3);
+}
+
+/** A null delta means the component is unscoreable, not that it fell to zero. */
+function delta(d: number | null): string {
+  return d === null ? '(n/a)'.padStart(6) : `(${d >= 0 ? '+' : ''}${d})`.padStart(6);
 }
 
 async function main() {
@@ -183,16 +191,18 @@ async function main() {
       alkoholProsent: t.percentage_score
     });
 
-    const dSmell = smellScore - (t.smell_score ?? 0);
-    const dTaste = tasteScore - (t.taste_score ?? 0);
+    // Unscoreable components are excluded from the delta statistics rather
+    // than counted as a drop to zero.
+    const dSmell = smellScore === null ? null : smellScore - (t.smell_score ?? 0);
+    const dTaste = tasteScore === null ? null : tasteScore - (t.taste_score ?? 0);
     const dOverall = newOverall - (t.overall_score ?? 0);
-    deltas.smell.push(dSmell);
-    deltas.taste.push(dTaste);
+    if (dSmell !== null) deltas.smell.push(dSmell);
+    if (dTaste !== null) deltas.taste.push(dTaste);
     deltas.overall.push(dOverall);
 
     const name = wine.name.slice(0, 44).padEnd(44);
     console.log(
-      `${name} ${fmt(t.color_score)}→${fmt(colorScore)}  ${fmt(t.smell_score)}→${fmt(smellScore)} (${dSmell >= 0 ? '+' : ''}${dSmell})  ${fmt(t.taste_score)}→${fmt(tasteScore)} (${dTaste >= 0 ? '+' : ''}${dTaste})  ${fmt(t.overall_score)}→${fmt(newOverall)} (${dOverall >= 0 ? '+' : ''}${dOverall})`
+      `${name} ${fmt(t.color_score)}→${fmt(colorScore)}  ${fmt(t.smell_score)}→${fmt(smellScore)} ${delta(dSmell)}  ${fmt(t.taste_score)}→${fmt(tasteScore)} ${delta(dTaste)}  ${fmt(t.overall_score)}→${fmt(newOverall)} (${dOverall >= 0 ? '+' : ''}${dOverall})`
     );
 
     if (execute) {

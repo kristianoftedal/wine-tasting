@@ -1,8 +1,9 @@
 'use server';
 
 import { sanitizeText, norwegianLemmas, flavorOnlyText } from '@/lib/lemmatizeAndWeight';
-import { semanticSimilarity, bertScoreTokenSimilarity } from '@/lib/semanticSimilarity';
-import { categorySemanticSimilarity } from '@/actions/similarity';
+import { semanticSimilarity } from '@/lib/semanticSimilarity';
+import { scoreFlavourNote } from '@/actions/similarity';
+import type { TermMatch } from '@/lib/flavourScoring';
 import { getCategoryWeight } from '@/lib/profiles';
 import { PorterStemmerNo } from 'natural';
 import idfRaw from '@/lib/idf-weights.generated.json';
@@ -28,16 +29,17 @@ export type TermDetail = {
 };
 
 export type ScoringBreakdown = {
-  // Current algorithm: semantic + weighted lemma/category with IDF + Porter
-  semanticScore: number;
-  blendedSemanticScore: number;
-  bertScoreValue: number | null;
-  lemmaScore: number;
-  categoryScore: number;
-  categorySemanticScore: number | null;
+  // Current algorithm: directional flavour scoring (see src/lib/scoringConfig.ts)
+  hitMass: number;
+  userMass: number;
+  hitScore: number;
+  softScore: number;
   precision: number;
-  precisionBonus: number;
   currentScore: number;
+  matches: TermMatch[];
+  // Sentence-level cosine, reported for comparison only. It is no longer part
+  // of the smell/taste score: mean-pooling penalises omissions structurally.
+  semanticScore: number;
   // Previous algorithm: same formula but no IDF multipliers, no Porter Stemmer
   legacyLemmaScore: number;
   legacyCategoryScore: number;
@@ -217,12 +219,10 @@ export async function getTermBreakdown(
 export async function getScoringBreakdown(
   userNote: string,
   wineNote: string,
-  options?: { recall?: boolean; flavorFilter?: boolean; bertScore?: boolean; categorySemantic?: boolean }
+  options?: { recall?: boolean; flavorFilter?: boolean }
 ): Promise<ScoringBreakdown> {
   const recallEnabled = options?.recall ?? RECALL_SCORING;
   const flavorEnabled = options?.flavorFilter ?? FLAVOR_FILTER_ENABLED;
-  const bertScoreEnabled = options?.bertScore ?? false;
-  const categorySemanticEnabled = options?.categorySemantic ?? false;
 
   const userProcessed = normalizeWineSynonyms(sanitizeText(userNote));
   const wineProcessed = normalizeWineSynonyms(sanitizeText(wineNote));
@@ -230,33 +230,14 @@ export async function getScoringBreakdown(
   const sem1 = flavorEnabled ? flavorOnlyText(userProcessed) : userProcessed;
   const sem2 = flavorEnabled ? flavorOnlyText(wineProcessed) : wineProcessed;
 
-  const [semanticScore, bertScoreVal, catSemanticVal, userMap, wineMap, userLegacyMap, wineLegacyMap] = await Promise.all([
+  const [semanticScore, flavour, userMap, wineMap, userLegacyMap, wineLegacyMap] = await Promise.all([
     semanticSimilarity(sem1, sem2),
-    bertScoreEnabled ? bertScoreTokenSimilarity(sem1, sem2) : Promise.resolve(null as null),
-    categorySemanticEnabled ? categorySemanticSimilarity(userProcessed, wineProcessed) : Promise.resolve(null as null),
+    scoreFlavourNote(userNote, wineNote),
     Promise.resolve(extractTerms(userProcessed)),
     Promise.resolve(extractTerms(wineProcessed)),
     Promise.resolve(extractTermsNoIdfNoPorter(userProcessed)),
     Promise.resolve(extractTermsNoIdfNoPorter(wineProcessed)),
   ]);
-
-  const blendedSemanticScore = bertScoreVal !== null
-    ? Math.round(0.65 * semanticScore + 0.35 * bertScoreVal)
-    : semanticScore;
-
-  // Current algorithm
-  const lemmaScore = computeWeightedLemmaScore(userMap, wineMap, recallEnabled);
-  const categoryScore = catSemanticVal !== null
-    ? catSemanticVal
-    : computeWeightedCategoryScore(userMap, wineMap, recallEnabled);
-  // BERTScore already rewards near-synonym proximity at token level — the same
-  // signal category score captures. Drop category from precision when BERTScore
-  // is active to avoid double-rewarding the same near-miss.
-  const precision = bertScoreEnabled
-    ? lemmaScore
-    : (lemmaScore + categoryScore) / 2;
-  const precisionBonus = precision * PRECISION_GAIN;
-  const currentScore = Math.round(Math.min(100, blendedSemanticScore + precisionBonus));
 
   // Previous algorithm (no IDF, no Porter — same semantic + weighted formula)
   const legacyLemmaScore = computeWeightedLemmaScore(userLegacyMap, wineLegacyMap, recallEnabled);
@@ -268,15 +249,14 @@ export async function getScoringBreakdown(
   const matchedLemmas = new Set([...userMap.keys()].filter(k => wineMap.has(k)));
 
   return {
+    hitMass: parseFloat(flavour.hitMass.toFixed(2)),
+    userMass: parseFloat(flavour.userMass.toFixed(2)),
+    hitScore: parseFloat(flavour.hitScore.toFixed(1)),
+    softScore: parseFloat(flavour.softScore.toFixed(1)),
+    precision: parseFloat(flavour.precision.toFixed(3)),
+    currentScore: flavour.score,
+    matches: flavour.matches,
     semanticScore,
-    blendedSemanticScore,
-    bertScoreValue: bertScoreVal,
-    lemmaScore,
-    categoryScore,
-    categorySemanticScore: catSemanticVal,
-    precision: parseFloat(precision.toFixed(1)),
-    precisionBonus: parseFloat(precisionBonus.toFixed(1)),
-    currentScore,
     legacyLemmaScore,
     legacyCategoryScore,
     legacyPrecision: parseFloat(legacyPrecision.toFixed(1)),

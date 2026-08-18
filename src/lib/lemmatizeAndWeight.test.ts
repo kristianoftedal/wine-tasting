@@ -43,13 +43,39 @@ describe('lemmatizeAndWeight', () => {
     })
 
     it('should keep unknown words with ukjent category', () => {
-      const result = lemmatizeAndWeight('sjokoladebitter og solbær')
-      const unknown = result.lemmatized.find(w => w.original === 'sjokoladebitter')
+      const result = lemmatizeAndWeight('sykkelverksted og solbær')
+      const unknown = result.lemmatized.find(w => w.original === 'sykkelverksted')
 
       expect(unknown).toBeDefined()
       expect(unknown?.category).toBe('ukjent')
       // Unknown uses Porter stem as lemma so inflected variants match each other
-      expect(unknown?.lemma).toBe(PorterStemmerNo.stem('sjokoladebitter'))
+      expect(unknown?.lemma).toBe(PorterStemmerNo.stem('sykkelverksted'))
+    })
+
+    it('should resolve compound descriptors to their dictionary head', () => {
+      // Vinmonopolet house style ("bærpreg", "mineraltoner") is the largest OOV
+      // class in the reference corpus. Enumerating the forms is hopeless, so
+      // the lemmatizer splits them against the dictionary instead.
+      const cases: Array<[string, string]> = [
+        ['bærpreg', 'bær'],
+        ['eikepreg', 'eik'],
+        ['mineraltoner', 'mineral'],
+        ['fruktkarakter', 'frukt'],
+        ['sjokoladebitter', 'sjokolade'],
+      ]
+      for (const [input, expected] of cases) {
+        const word = lemmatizeAndWeight(input).lemmatized[0]
+        expect(word?.lemma, `${input} should resolve to ${expected}`).toBe(expected)
+        expect(word?.category).not.toBe('ukjent')
+      }
+    })
+
+    it('should not force a compound split on non-wine vocabulary', () => {
+      // Longest-prefix matching must not manufacture flavour terms out of
+      // ordinary Norwegian words that happen to share a leading substring.
+      for (const word of ['parkeringsplass', 'datamaskin', 'sykkelverksted']) {
+        expect(lemmatizeAndWeight(word).lemmatized[0]?.category).toBe('ukjent')
+      }
     })
   })
 

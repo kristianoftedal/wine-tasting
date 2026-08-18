@@ -132,8 +132,6 @@ export default async function ScoringDemoPage() {
         lemmaGroups={lemmaGroups}
         defaultRecall={process.env.SCORING_RECALL_ENABLED === 'true'}
         defaultFlavorFilter={process.env.SEMANTIC_FLAVOR_FILTER_ENABLED === 'true'}
-        defaultBertScore={process.env.BERTSCORE_ENABLED === 'true'}
-        defaultCategorySemantic={process.env.CATEGORY_SEMANTIC_ENABLED === 'true'}
       />
     </main>
   );

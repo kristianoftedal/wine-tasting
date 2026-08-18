@@ -654,6 +654,88 @@ export const norwegianLemmas: Record<string, LemmaData> = {
   kål: { lemma: 'kål', weight: 1.3, category: 'annet', categoryPath: { main: 'Grønnsaker', sub: 'annet' } },
   mais: { lemma: 'mais', weight: 1.3, category: 'annet', categoryPath: { main: 'Grønnsaker', sub: 'annet' } },
   asparges: { lemma: 'asparges', weight: 1.3, category: 'annet', categoryPath: { main: 'Grønnsaker', sub: 'annet' } },
+
+  // ── OOV gaps found by scripts/audit-oov.ts against 16 000 reference notes ──
+  // These appear in Vinmonopolet notes but resolved to `ukjent`, so the lemma
+  // layer could not see descriptors the reference text actually names.
+
+  // Lees contact / autolysis — sparkling and sur-lie whites
+  gjær: { lemma: 'gjær', weight: 1.6, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  gjærbakst: { lemma: 'gjærbakst', weight: 1.7, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  bakverk: { lemma: 'bakverk', weight: 1.6, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  bakst: { lemma: 'bakverk', weight: 1.6, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  meieri: { lemma: 'meieri', weight: 1.5, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  fløte: { lemma: 'fløte', weight: 1.5, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  kandisert: { lemma: 'kandisert', weight: 1.5, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+
+  // Barrel treatment named as process rather than aroma
+  treverk: { lemma: 'treverk', weight: 1.7, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  fatkrydder: { lemma: 'fatkrydder', weight: 1.8, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+  brent: { lemma: 'brent', weight: 1.6, category: 'eik', categoryPath: { main: 'Treverk', sub: 'annet' } },
+
+  // Earth / minerality
+  jordsmonn: { lemma: 'jordsmonn', weight: 1.7, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  underskog: { lemma: 'underskog', weight: 1.8, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  trøffel: { lemma: 'trøffel', weight: 1.9, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'jord' } },
+  skifer: { lemma: 'skifer', weight: 1.8, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  kritt: { lemma: 'kritt', weight: 1.8, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  krutt: { lemma: 'krutt', weight: 1.8, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+  skjell: { lemma: 'skjell', weight: 1.7, category: 'mineral', categoryPath: { main: 'Jordaktig', sub: 'stein' } },
+
+  // Herbs / vegetal
+  nesle: { lemma: 'nesle', weight: 1.8, category: 'urt', categoryPath: { main: 'Urter', sub: 'annet' } },
+
+  // Spice / condiment
+  balsamico: { lemma: 'balsamico', weight: 1.7, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'annet' } },
+  pepret: { lemma: 'pepper', weight: 1.8, category: 'krydder', categoryPath: { main: 'Krydder', sub: 'varm' } },
+
+  // Fruit
+  kjernefrukt: { lemma: 'kjernefrukt', weight: 1.4, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  banan: { lemma: 'banan', weight: 1.5, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'tropisk' } },
+  drops: { lemma: 'drops', weight: 1.5, category: 'frukt', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+
+  // Animal
+  kjøtt: { lemma: 'kjøtt', weight: 1.7, category: 'annet', categoryPath: { main: 'Animalsk', sub: 'annet' } },
+
+  // Winemaking process terms — derivation-map keys, rarely written by tasters
+  edelråte: { lemma: 'edelråte', weight: 1.9, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  botrytis: { lemma: 'edelråte', weight: 1.9, category: 'annet', categoryPath: { main: 'Karamellisert', sub: 'annet' } },
+  karbonsyremaserasjon: { lemma: 'karbonsyremaserasjon', weight: 1.9, category: 'annet', categoryPath: { main: 'Frukt og bær', sub: 'annet' } },
+  lagret: { lemma: 'lagret', weight: 1.3, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+  modenhet: { lemma: 'moden', weight: 1.3, category: 'generell', categoryPath: { main: 'GENERIC', sub: 'quality' } },
+};
+
+/**
+ * Compound heads used by Vinmonopolet's house style: "bærpreg", "eikepreg",
+ * "mineraltoner", "fruktkarakter". These are the single largest OOV class in
+ * the reference corpus — enumerating them is hopeless, so `resolveCompound`
+ * splits them instead. Kept separate from the dictionary because the *head*
+ * carries no flavour meaning; only the modifier does.
+ */
+const COMPOUND_MIN_LENGTH = 7;
+const COMPOUND_STEM_MIN = 3;
+
+/**
+ * Resolve a compound token to the dictionary entry of its longest matching
+ * prefix, falling back to its longest matching suffix.
+ *
+ * "bærpreg" → bær, "mineraltoner" → mineral, "kjernefrukt" → frukt (suffix).
+ * Longest-match matters: "jordbærsyltetøy" must resolve to jordbær, not jord.
+ * Suffix matching requires 4+ characters because 3-letter suffixes produce
+ * false positives ("fedme" → "eik" style collisions).
+ */
+const resolveCompound = (word: string): LemmaData | undefined => {
+  if (word.length < COMPOUND_MIN_LENGTH) return undefined;
+
+  for (let end = word.length - 1; end >= COMPOUND_STEM_MIN; end--) {
+    const entry = norwegianLemmas[word.slice(0, end)];
+    if (entry) return entry;
+  }
+  for (let start = 1; start <= word.length - 4; start++) {
+    const entry = norwegianLemmas[word.slice(start)];
+    if (entry) return entry;
+  }
+  return undefined;
 };
 
 export const stopwords = new Set([
@@ -847,7 +929,8 @@ export const lemmatizeAndWeight = (text: string): TextAnalysis => {
       const normalized = word.replace(/ae/g, 'æ').replace(/oe/g, 'ø').replace(/aa/g, 'å');
       const normalizedEntry = normalized !== word ? norwegianLemmas[normalized] : undefined;
 
-      const resolvedEntry = stemEntry ?? normalizedEntry;
+      // Compound split is the last resort: "bærpreg" → bær, "mineraltoner" → mineral.
+      const resolvedEntry = stemEntry ?? normalizedEntry ?? resolveCompound(word);
 
       if (resolvedEntry) {
         const profileWeight = resolvedEntry.categoryPath

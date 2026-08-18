@@ -74,6 +74,22 @@ export const WINE_SYNONYMS: Record<string, string> = {
   solbærpreget: 'solbær',        // OOV
   røykpreget: 'røyk',            // OOV
   røykaktig: 'røyk',
+
+  // ── User-side spelling variants ───────────────────────────────────────────
+  // Found by scripts/audit-oov.ts against the tasting corpus. Unlike the
+  // entries above (which normalise Vinmonopolet's prose), these correct what
+  // people actually type: English spellings and common misspellings. Left
+  // unmapped they score zero, so a correct observation is read as a miss.
+  citrus: 'sitrus',              // English spelling — 6.6% of user notes
+  citrusfrukt: 'sitrus',
+  taniner: 'tannin',             // misspelling — 4.0% of user notes
+  tanin: 'tannin',
+  tannin: 'tannin',
+  meineralsk: 'mineral',         // misspelling
+  minralsk: 'mineral',
+  jordbærsyltetøy: 'jordbær',
+  vanilla: 'vanilje',            // English
+  oak: 'eik',                    // English
 };
 
 /**

@@ -902,33 +902,60 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <h2>The Problem</h2>
   <div class="two-col" style="align-items:start;">
     <div>
-      <p style="font-size:1.05rem;">Users taste wines at events and write free-text notes. The system scores how closely their description matches the <span class="cg">official producer description</span>.</p>
+      <p style="font-size:1.05rem;">Users taste wines at events and write free-text notes. The system scores how well they <span class="cg">picked out the aromas actually present</span> — measuring tasting skill, not writing volume.</p>
       <div class="card" style="margin-top:20px;">
         <div style="font-size:0.8rem;color:#6b6b88;text-transform:uppercase;margin-bottom:8px;">User writes</div>
-        <div style="font-size:0.95rem;color:#93c5fd;">"Bærete med mineralaktig ettersmak, tanninrik og balansert"</div>
+        <div style="font-size:0.95rem;color:#93c5fd;">"Pepper, mørke bær."</div>
         <div style="border-top:1px solid rgba(255,255,255,0.06);margin:12px 0;"></div>
         <div style="font-size:0.8rem;color:#6b6b88;text-transform:uppercase;margin-bottom:8px;">Official description</div>
-        <div style="font-size:0.95rem;color:#6ee7b7;">"Bær og mineral. Rik på tannin med god frukt og lang avslutning"</div>
-        <div style="font-size:0.78rem;color:#555577;margin-top:10px;">Very few shared tokens — but clearly describing the same wine</div>
+        <div style="font-size:0.95rem;color:#6ee7b7;">"Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer."</div>
+        <div style="font-size:0.78rem;color:#555577;margin-top:10px;">Two correct calls out of a long list — that is good tasting, not a 26% answer</div>
       </div>
     </div>
     <div>
-      <div class="card yellow">
-        <h3>Why pure semantic similarity isn't enough</h3>
-        <p style="font-size:0.93rem;line-height:1.7;">Embeddings give a high score to anything that's roughly about wine. But the goal is also to reward users who use <strong>specific, precise wine vocabulary</strong> — "solbær" over "frukt", "grafitt" over "mineral".</p>
+      <div class="card green">
+        <h3>The objective, stated precisely</h3>
+        <p style="font-size:0.95rem;line-height:1.7;">Reward the taster for descriptors they <strong>correctly picked out</strong>. Never penalise them for descriptors they <strong>did not mention</strong>.</p>
+        <p style="font-size:0.9rem;margin-top:10px;color:#8888aa;">The official note is a <span class="cy">lookup table</span>, never a denominator. That one sentence determines the entire architecture.</p>
       </div>
-      <div class="card" style="margin-top:12px;">
-        <h3>Why pure token matching isn't enough</h3>
-        <p style="font-size:0.93rem;">Norwegian wine notes use many morphological variants — "bærete", "mineralaktig", "eikepreget" — that share zero tokens with the canonical forms in the official description.</p>
+      <div class="card yellow" style="margin-top:12px;">
+        <h3>Why this is harder than it looks</h3>
+        <p style="font-size:0.9rem;">Most similarity measures are <strong>symmetric</strong>. Symmetry is exactly what the objective forbids: it makes an unmentioned aroma count against you.</p>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-  25  App — The pipeline (high-level)
+  25  App — Directional scoring
 ════════════════════════════════════════════════════════════ -->
 <div class="slide s-arch" id="s25">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
+  <h2>Symmetric Measures Fail the Objective</h2>
+  <p style="font-size:1rem;color:#8888aa;margin-top:6px;">Measured on 152 controlled perturbations of real tastings. <span class="cy">MISS</span> = score change when the <em>reference</em> note gains aromas the taster never mentioned. It should be zero.</p>
+  <div class="three-col" style="margin-top:18px;">
+    <div class="card pink">
+      <h3>Sentence cosine <span style="color:#ef4444;">MISS −3.3</span></h3>
+      <p style="font-size:0.9rem;">Mean-pooling three tokens versus ten differs <em>because</em> of what is missing. The omission penalty is baked into the pooling step and cannot be tuned out.</p>
+    </div>
+    <div class="card pink">
+      <h3>BERTScore F1 <span style="color:#ef4444;">MISS −2.2</span></h3>
+      <p style="font-size:0.9rem;">The recall half asks "for each reference token, how well did the user cover it" — the omission penalty, written as a formula.</p>
+    </div>
+    <div class="card pink">
+      <h3>max() denominator <span style="color:#ef4444;">MISS −2.3</span></h3>
+      <p style="font-size:0.9rem;">Normalising by the longer text makes a verbose reference note lower the score. It also made <em>wrong guesses pay</em>: +1.1 per padded descriptor.</p>
+    </div>
+  </div>
+  <div class="card green" style="margin-top:16px;text-align:center;">
+    <p style="font-size:0.97rem;">The fix is a <span class="cg">loop direction</span>, not a coefficient. Iterate over what the <strong>user wrote</strong>; use the reference only for lookup. Reference tokens the taster never mentioned are never visited, so they cannot subtract.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  26  App — The pipeline
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s26">
   <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
   <h2>The Pipeline</h2>
   <div class="pipeline" style="margin-top:20px;">
@@ -936,88 +963,176 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="pipe-arr">→</div>
     <div class="pipe-step">Clean &amp; normalise<div class="sub">lowercase, strip noise,<br>bridge variant forms</div></div>
     <div class="pipe-arr">→</div>
-    <div class="pipe-step" style="background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.3);color:#fbbf24;">Vocabulary match<div class="sub">expert word list,<br>weighted by rarity</div></div>
+    <div class="pipe-step" style="background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.3);color:#fbbf24;">Expand reference<div class="sub">derivations +<br>hypernyms</div></div>
     <div class="pipe-arr">→</div>
-    <div class="pipe-step" style="background:rgba(124,58,237,0.12);border-color:rgba(124,58,237,0.35);color:#a78bfa;">Semantic embed<div class="sub">meaning as<br>a vector</div></div>
+    <div class="pipe-step" style="background:rgba(124,58,237,0.12);border-color:rgba(124,58,237,0.35);color:#a78bfa;">Credit ladder<div class="sub">per user term,<br>best match wins</div></div>
     <div class="pipe-arr">→</div>
-    <div class="pipe-step" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Combine<div class="sub">hybrid score<br>0–100</div></div>
+    <div class="pipe-step" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Saturate + blend<div class="sub">score<br>0–100</div></div>
   </div>
   <div class="three-col" style="margin-top:12px;">
     <div class="card">
       <h3>Clean &amp; normalise</h3>
-      <p style="font-size:0.9rem;">Remove noise and standardise Norwegian wine vocabulary. "Bærete", "bærfrukt", "bærrik" all map to the canonical form "bær" before any scoring.</p>
+      <p style="font-size:0.9rem;">"Bærete", "bærfrukt", "bærrik" collapse to "bær". Compound forms the house style favours — "bærpreg", "mineraltoner" — are split against the dictionary rather than enumerated.</p>
     </div>
     <div class="card yellow">
-      <h3>Vocabulary match</h3>
-      <p style="font-size:0.9rem;">Compare against ~200 expert wine descriptors. Each match is weighted by rarity — uncommon, precise terms earn more credit than generic ones.</p>
+      <h3>Expand reference</h3>
+      <p style="font-size:0.9rem;">The reference set grows to include what it <em>implies</em>: oak implies vanilla, "frukt" covers "solbær". Only the reference expands — never the user's note.</p>
     </div>
     <div class="card accent">
-      <h3>Semantic embed</h3>
-      <p style="font-size:0.9rem;">Encode the cleaned text as a 1 536-dim vector using an embedding model. Measure cosine similarity. Captures meaning even when words don't overlap.</p>
+      <h3>Credit ladder</h3>
+      <p style="font-size:0.9rem;">Each descriptor the taster wrote earns credit at the best tier it reaches. Nothing else is iterated, so omissions are structurally invisible.</p>
     </div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-  26  App — Two scoring tracks
-════════════════════════════════════════════════════════════ -->
-<div class="slide s-arch" id="s26">
-  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
-  <h2>Two Complementary Scoring Tracks</h2>
-  <div class="two-col" style="margin-top:14px;align-items:start;">
-    <div class="card accent">
-      <h3>Track A — Semantic</h3>
-      <p style="font-size:0.95rem;line-height:1.75;">Encodes the cleaned note as a high-dimensional vector and measures the cosine angle against the official description's vector.</p>
-      <p style="font-size:0.93rem;margin-top:10px;color:#8888aa;">Rewards: overall meaning, paraphrasing, capturing the spirit of the wine even with different words.</p>
-      <div class="code" style="margin-top:10px;font-size:0.85rem;">base score = cosine(embed(userNote),<br>                    embed(officialDesc))<br>             × 100</div>
-    </div>
-    <div class="card green">
-      <h3>Track B — Lexical precision</h3>
-      <p style="font-size:0.95rem;line-height:1.75;">Counts how many expert wine descriptors appear in both texts — weighted by how rare and specific each term is across the wine corpus.</p>
-      <p style="font-size:0.93rem;margin-top:10px;color:#8888aa;">Rewards: using precise vocabulary — "solbær" over "frukt", "grafitt" over "mineral".</p>
-      <div class="code" style="margin-top:10px;font-size:0.85rem;">precision = IDF-weighted overlap<br>            of matched wine terms</div>
-    </div>
-  </div>
-  <div class="card" style="margin-top:16px;border-color:rgba(251,191,36,0.3);background:rgba(234,179,8,0.04);text-align:center;">
-    <p style="font-size:0.93rem;">The tracks are complementary. Semantic alone rewards vague notes. Lexical alone misses paraphrases. Together they reward notes that are both <span class="cv">meaningful</span> and <span class="cg">precise</span>.</p>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════
-  27  App — The final score
+  27  App — Domain knowledge embeddings can't learn
 ════════════════════════════════════════════════════════════ -->
 <div class="slide s-arch" id="s27">
   <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
-  <h2>The Scoring Formula</h2>
-  <div class="eq" style="margin-top:20px;">
-    <span class="eq-var">score</span> <span class="eq-op">=</span> min(100,&nbsp; <span class="eq-var">semanticScore</span> <span class="eq-op">+</span> 0.35 &nbsp;<span class="eq-op">×</span>&nbsp; <span class="eq-var">precision</span>)
-  </div>
-  <div class="eq">
-    <span class="eq-var">precision</span> <span class="eq-op">=</span> (<span class="eq-var">vocabularyOverlap</span> <span class="eq-op">+</span> <span class="eq-var">categoryOverlap</span>) <span class="eq-op">/</span> 2
-  </div>
-  <div class="three-col" style="margin-top:16px;">
-    <div class="card accent">
-      <h3>semanticScore (0–100)</h3>
-      <p style="font-size:0.9rem;">Cosine similarity of embedding vectors. Captures overall meaning — paraphrases, synonyms, different languages.</p>
+  <h2>Knowledge No Embedding Learns</h2>
+  <div class="two-col" style="align-items:start;">
+    <div>
+      <p style="font-size:1.02rem;">Oak barrels release <span class="cy">vanillin</span>, oak lactones and furfural. A taster writing "vanilje" on a barrel-aged wine has perceived correctly — that is the skill being measured.</p>
+      <div class="card" style="margin-top:16px;">
+        <div style="font-size:0.82rem;color:#6b6b88;text-transform:uppercase;margin-bottom:10px;">Neither mechanism catches it</div>
+        <div class="code" style="font-size:0.86rem;line-height:1.9;">fat      → Treverk / annet<br>vanilje  → Krydder  / soet<br><span style="color:#ef4444;">category credit  = 0.0</span> — different branches<br><br>cos(fat, vanilje)   = <span style="color:#ef4444;">0.09</span><br>cos(fat, fersken)   = 0.26  <span style="color:#6b6b88;">← unrelated pair</span><br><span style="color:#ef4444;">a correct inference ranks below an unrelated one</span></div>
+      </div>
     </div>
-    <div class="card">
-      <h3>vocabularyOverlap</h3>
-      <p style="font-size:0.9rem;">IDF-weighted Jaccard on matched wine descriptors. Rare terms score higher than generic ones.</p>
+    <div>
+      <div class="card yellow">
+        <h3>Why embeddings miss it</h3>
+        <p style="font-size:0.92rem;line-height:1.7;">The link from barrel to vanillin is <strong>wine chemistry</strong>, not distributional semantics. It never appears in the surface text of retail tasting notes, so no general-purpose model can learn it.</p>
+        <p style="font-size:0.88rem;margin-top:8px;color:#8888aa;">Aggregate separation looked healthy (d = 2.6) — but that was carried by morphology: bringebær→bær 0.77, krydret→krydder 0.62.</p>
+      </div>
+      <div class="card green" style="margin-top:12px;">
+        <h3>A directed derivation map</h3>
+        <div class="code" style="font-size:0.84rem;margin-top:6px;">fat → vanilje, kokos, karamell,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ristet, røyk, sedertre, mokka</div>
+        <p style="font-size:0.88rem;margin-top:10px;">~60 hand-encoded edges. Zero runtime cost, zero API calls, and it fixed <span class="cy">27%</span> of oaked-wine tastings that were scored as wrong guesses.</p>
+      </div>
     </div>
-    <div class="card">
-      <h3>categoryOverlap</h3>
-      <p style="font-size:0.9rem;">Partial credit for matching the right flavour category even without the exact term — "bær" vs "kirsebær" both belong to Frukt/bær.</p>
-    </div>
-  </div>
-  <div class="card" style="margin-top:14px;border-color:rgba(167,139,250,0.2);text-align:center;">
-    <p style="font-size:0.9rem;">Vocabulary precision adds up to <span class="cy">+35 points</span> on top of the semantic base — rewarding specific vocabulary while the embedding base ensures paraphrases still score well.</p>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-  28  Summary table
+  28  App — Anisotropy
 ════════════════════════════════════════════════════════════ -->
-<div class="slide" id="s28">
+<div class="slide s-arch" id="s28">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
+  <h2>Cosine Has a Floor Under It</h2>
+  <div class="two-col" style="align-items:start;">
+    <div>
+      <p style="font-size:1.02rem;">Embeddings do not spread over the sphere. They occupy a <span class="cy">narrow cone</span> — every wine note points substantially the same way.</p>
+      <div class="code" style="margin-top:14px;font-size:0.92rem;line-height:2;">|mean unit vector| = <span style="color:#fbbf24;">0.68</span><br><span style="color:#6b6b88;">0 = isotropic · 1 = total collapse</span><br><br>cos(two UNRELATED wine notes)<br>&nbsp;&nbsp;before  <span style="color:#ef4444;">0.459 ± 0.159</span><br>&nbsp;&nbsp;after   <span style="color:#86efac;">−0.004 ± 0.156</span></div>
+      <p style="font-size:0.9rem;color:#8888aa;margin-top:12px;">The offset vanishes; the spread survives intact.</p>
+    </div>
+    <div>
+      <div class="card accent">
+        <h3>Mean-centering</h3>
+        <div class="code" style="font-size:0.86rem;margin-top:6px;">mean = avg(normalize(v)) over corpus<br>centered(v) = normalize(v) − mean</div>
+        <p style="font-size:0.9rem;margin-top:10px;">One 1 536-float constant, computed once offline. That 0.46 was the model noting both texts are Norwegian wine prose — true of all 50 057 wines, so it carries no information about tasting accuracy.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Why not whitening?</h3>
+        <p style="font-size:0.89rem;">Whitening also decorrelates dimensions, but a stable 1 536×1 536 covariance needs far more samples than the corpus supports. A badly conditioned whitening matrix amplifies noise. Centering captures most of the gain for a subtraction.</p>
+      </div>
+      <div class="card green" style="margin-top:12px;">
+        <p style="font-size:0.9rem;">Upgrading <span class="cv">3-small → 3-large</span> bought <strong>+0.02</strong> discrimination at 6.5× the price. Centering bought <strong>+35%</strong> for free.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  29  App — The final score
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s29">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
+  <h2>The Scoring Formula</h2>
+  <div class="eq" style="margin-top:14px;">
+    <span class="eq-var">hitMass</span> <span class="eq-op">=</span> Σ <span class="eq-var">weight</span>(term) <span class="eq-op">×</span> <span class="eq-var">credit</span>(term) &nbsp;<span style="color:#6b6b88;font-size:0.8em;">over the user's terms only</span>
+  </div>
+  <div class="eq">
+    <span class="eq-var">score</span> <span class="eq-op">=</span> [ 0.55 <span class="eq-op">×</span> 100(1 <span class="eq-op">−</span> e<sup>−hitMass/τ</sup>) <span class="eq-op">+</span> 0.45 <span class="eq-op">×</span> <span class="eq-var">maxSim</span> ] <span class="eq-op">×</span> <span class="eq-var">precisionFactor</span>
+  </div>
+  <div class="two-col" style="margin-top:16px;align-items:start;">
+    <div class="card accent">
+      <h3>Credit ladder — best tier wins</h3>
+      <div class="code" style="font-size:0.85rem;line-height:1.85;margin-top:6px;">direct       1.00  <span style="color:#6b6b88;">reference names it</span><br>derived      1.00  <span style="color:#6b6b88;">fat → vanilje</span><br>specific     0.85  <span style="color:#6b6b88;">frukt → solbær</span><br>subcategory  0.60  <span style="color:#6b6b88;">right family</span><br>category     0.30  <span style="color:#6b6b88;">right branch</span></div>
+    </div>
+    <div>
+      <div class="card green">
+        <h3>Saturation, not a ratio</h3>
+        <p style="font-size:0.9rem;">1 correct descriptor → 49 · 2 → 74 · 3 → 87 · 4 → 93. Monotonic in how many aromas you caught, with <strong>no wine-side denominator at all</strong>.</p>
+      </div>
+      <div class="card yellow" style="margin-top:12px;">
+        <h3>maxSim — directional</h3>
+        <p style="font-size:0.9rem;">For each token the taster wrote, the best centered cosine to any reference token. Precision only; the recall half of BERTScore is deliberately dropped.</p>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>precisionFactor</h3>
+        <p style="font-size:0.9rem;">0.6 + 0.4 × (hitMass / userMass). Discourages padding without punishing a taster whose inference was sound.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  30  App — Measured results
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s30">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application</div>
+  <h2>Measured, Not Assumed</h2>
+  <p style="font-size:1rem;color:#8888aa;margin-top:4px;">152 controlled perturbations of real tastings, each scored against the wine tasted and 100 random wines.</p>
+  <table style="margin-top:14px;">
+    <tr>
+      <th>Algorithm</th>
+      <th>+HIT<div style="font-weight:400;font-size:0.75rem;color:#6b6b88;">added a correct term</div></th>
+      <th>+WRONG<div style="font-weight:400;font-size:0.75rem;color:#6b6b88;">added a wrong term</div></th>
+      <th>MISS<div style="font-weight:400;font-size:0.75rem;color:#6b6b88;">reference gains aromas</div></th>
+      <th>r(length)</th>
+      <th>discrimination d</th>
+      <th>top-1 %</th>
+    </tr>
+    <tr>
+      <td>Previous — symmetric</td>
+      <td style="color:#86efac;">+10.3</td>
+      <td style="color:#ef4444;">+0.8</td>
+      <td style="color:#ef4444;">−2.1</td>
+      <td style="color:#ef4444;">0.41</td>
+      <td style="color:#fbbf24;">0.80</td>
+      <td style="color:#fbbf24;">9</td>
+    </tr>
+    <tr>
+      <td><strong>Current — directional</strong></td>
+      <td style="color:#86efac;">+11.2</td>
+      <td style="color:#86efac;">−4.3</td>
+      <td style="color:#86efac;">+2.6</td>
+      <td style="color:#86efac;">0.12</td>
+      <td style="color:#86efac;">1.62</td>
+      <td style="color:#86efac;">30</td>
+    </tr>
+  </table>
+  <div class="three-col" style="margin-top:16px;">
+    <div class="card green">
+      <h3>Omissions stop costing</h3>
+      <p style="font-size:0.89rem;">MISS moves from −2.1 to +2.6. A longer reference note can now only offer more ways to be right.</p>
+    </div>
+    <div class="card green">
+      <h3>Padding stops paying</h3>
+      <p style="font-size:0.89rem;">+WRONG moves from +0.8 to −4.3. Shotgunning one term per flavour family no longer inflates the score.</p>
+    </div>
+    <div class="card green">
+      <h3>It measures skill, not length</h3>
+      <p style="font-size:0.89rem;">Correlation with note length drops 0.41 → 0.12, while discrimination doubles and top-1 more than triples.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  31  Summary table
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s31">
   <div class="tag">Summary</div>
   <h2>Which Technique for Which Goal?</h2>
   <table>
@@ -1036,13 +1151,14 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <tr><td>Semantic search at scale</td><td>Bi-encoder ANN</td><td style="color:#86efac;">Best</td><td style="color:#86efac;">Yes</td><td style="color:#fbbf24;">Medium</td></tr>
     <tr><td>Highest accuracy reranking</td><td>Cross-encoder</td><td style="color:#86efac;">Best</td><td style="color:#86efac;">Yes</td><td style="color:#ef4444;">Slow</td></tr>
     <tr><td>Domain vocabulary scoring</td><td>IDF-weighted lemma + Semantic</td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Yes</td><td style="color:#fbbf24;">Medium</td></tr>
+    <tr><td>Asymmetric skill scoring<br><span style="font-size:0.8rem;color:#6b6b88;">reward hits, ignore omissions</span></td><td>Directional MaxSim + credit ladder<br><span style="font-size:0.8rem;color:#6b6b88;">+ domain derivation map</span></td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Fast<span style="font-size:0.8rem;color:#6b6b88;"> (cached)</span></td></tr>
   </table>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-  29  Libraries
+  32  Libraries
 ════════════════════════════════════════════════════════════ -->
-<div class="slide" id="s29">
+<div class="slide" id="s32">
   <div class="tag">Resources</div>
   <h2>Common Libraries &amp; Tools</h2>
   <div class="three-col">

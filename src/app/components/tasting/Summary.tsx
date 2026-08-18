@@ -169,10 +169,13 @@ export const Summary: React.FC = () => {
         const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde) : 0;
         const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet) : 0;
 
+        // smellScore/tasteScore are null when the wine's own note names no
+        // aroma — there is nothing to identify, so the component is dropped
+        // from the average below rather than counted as a zero.
         const newScores = {
           farge: colorScore,
-          lukt: smellScore,
-          smak: tasteScore,
+          lukt: smellScore ?? 0,
+          smak: tasteScore ?? 0,
           friskhet: friskhetScore,
           fylde: fyldeScore,
           garvestoffer: garvestofferScore,
@@ -190,9 +193,10 @@ export const Summary: React.FC = () => {
           if (key === 'fylde' && vmpFylde === null) return false;
           if (key === 'garvestoffer' && vmpGarvestoffer === null) return false;
           if (key === 'sodme' && vmpSødme === null) return false;
-          // Skip smell/taste scores if the wine's description is too short
-          if (key === 'lukt' && (wine.smell ?? '').trim().length < 6) return false;
-          if (key === 'smak' && (wine.taste ?? '').trim().length < 6) return false;
+          // Skip smell/taste scores if the wine's description is too short, or
+          // if it describes only structure and names no aroma to identify.
+          if (key === 'lukt' && ((wine.smell ?? '').trim().length < 6 || smellScore === null)) return false;
+          if (key === 'smak' && ((wine.taste ?? '').trim().length < 6 || tasteScore === null)) return false;
           return true;
         });
 
@@ -217,8 +221,8 @@ export const Summary: React.FC = () => {
         setTastingState(prev => ({
           ...prev,
           colorScore: colorScore,
-          smellScore: smellScore,
-          tasteScore: tasteScore,
+          smellScore: smellScore ?? 0,
+          tasteScore: tasteScore ?? 0,
           percentageScore: prosentScore,
           priceScore: priceScore,
           garvestofferScore: garvestofferScore,
