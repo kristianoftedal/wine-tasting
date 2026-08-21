@@ -27,7 +27,14 @@ export type FoodArticleCitation = {
   summary: string;
   food_tags: string[];
   occasion_tags: string[];
-  similarity: number;
+  /**
+   * Cosine similarity to the query, or null when the article was retrieved by
+   * an exact tag overlap and never scored. Reporting 1.0 for those would claim
+   * a perfect semantic match the article was never measured for.
+   */
+  similarity: number | null;
+  /** Which curated theme/course tags matched, for explaining the citation. */
+  matchedTags: string[];
 };
 
 export type FoodPairingResult = {
@@ -106,7 +113,14 @@ type WineRaw = {
 
 const MIN_QUERY_LENGTH = 2;
 const ARTICLE_MATCH_COUNT = 4;
-const TAG_ARTICLE_LIMIT = 3;   // per tag channel; exact hits, so a small cap is enough
+const TAG_ARTICLE_LIMIT = 3;   // per tag channel, so one channel cannot crowd out the other
+// Total articles fed to the LLM. Bounds prompt cost predictably rather than
+// growing with however many tag hits happen to come back.
+const MAX_ARTICLES = 6;
+// Slots held for tag-retrieved articles. Reserving capacity is the point of the
+// tag channel: for a seasonal query the cosine scores are all mediocre, so
+// ranking alone would drop exactly the articles the tag overlap found.
+const TAG_RESERVED_SLOTS = 3;
 const ARTICLE_CONTENT_TRUNCATE = 700;
 const WINE_LIMIT = 14;
 const FOOD_QUERY_LIMIT = 150;
@@ -159,7 +173,10 @@ export async function searchFoodPairing(query: string): Promise<FoodPairingResul
     value: trimmed,
   });
 
-  type ArticleMatch = { id: string; url: string; title: string; content: string; summary: string; similarity: number };
+  type ArticleMatch = {
+    id: string; url: string; title: string; content: string; summary: string;
+    similarity: number | null; matchedTags: string[];
+  };
 
   // Two retrieval paths, unioned. Cosine alone is unreliable for occasion
   // queries: "julemat" and "påskelam" name a season rather than a flavour, so
@@ -173,18 +190,40 @@ export async function searchFoodPairing(query: string): Promise<FoodPairingResul
       match_threshold: 0.25,
       match_count: ARTICLE_MATCH_COUNT,
     }),
-    fetchArticlesByTags(supabase, tagTerms),
+    fetchArticlesByTags(supabase, tagTerms, embedding),
   ]);
 
   if (semanticResult.error) console.error('[food-pairing] match_wine_articles error:', semanticResult.error.message);
 
-  const semanticArticles: ArticleMatch[] = semanticResult.data ?? [];
+  const semanticArticles: ArticleMatch[] = (semanticResult.data ?? []).map(
+    (a: { id: string; url: string; title: string; content: string | null; summary: string | null; similarity: number }) => ({
+      id: a.id, url: a.url, title: a.title, content: a.content ?? '', summary: a.summary ?? '',
+      similarity: a.similarity, matchedTags: [],
+    }),
+  );
+
+  // Tag overlap decides *candidacy*; cosine decides *ranking*. Ordering tag hits
+  // ahead of everything looked reasonable but reads badly in practice — for
+  // "ribbe" it put "Akevitt til julemat" above "Drikke til ribbe". Tag hits are
+  // scored on the same scale as semantic ones and keep reserved capacity so a
+  // seasonal query still gets its themed articles.
   const byId = new Map<string, ArticleMatch>();
-  // Tag hits go in first so an exact occasion match survives the slice below,
-  // then semantic hits fill the remaining slots.
   for (const a of tagArticles) byId.set(a.id, a);
-  for (const a of semanticArticles) if (!byId.has(a.id)) byId.set(a.id, a);
-  const articles: ArticleMatch[] = [...byId.values()].slice(0, ARTICLE_MATCH_COUNT + tagArticles.length);
+  for (const a of semanticArticles) {
+    const existing = byId.get(a.id);
+    if (existing) existing.matchedTags = [...new Set([...existing.matchedTags, ...a.matchedTags])];
+    else byId.set(a.id, a);
+  }
+
+  const byScore = (a: ArticleMatch, b: ArticleMatch) => (b.similarity ?? 0) - (a.similarity ?? 0);
+  const tagged = [...byId.values()].filter(a => a.matchedTags.length > 0).sort(byScore);
+  const untagged = [...byId.values()].filter(a => a.matchedTags.length === 0).sort(byScore);
+
+  const articles: ArticleMatch[] = [
+    ...tagged.slice(0, TAG_RESERVED_SLOTS),
+    ...untagged,
+    ...tagged.slice(TAG_RESERVED_SLOTS),
+  ].slice(0, MAX_ARTICLES).sort(byScore);
 
   const articleIds = articles.map(a => a.id);
   const tagMap = new Map<string, { food_tags: string[]; occasion_tags: string[] }>();
@@ -309,6 +348,7 @@ export async function searchFoodPairing(query: string): Promise<FoodPairingResul
     food_tags: tagMap.get(a.id)?.food_tags ?? [],
     occasion_tags: tagMap.get(a.id)?.occasion_tags ?? [],
     similarity: a.similarity,
+    matchedTags: a.matchedTags,
   }));
 
   return {
@@ -333,36 +373,54 @@ export async function searchFoodPairing(query: string): Promise<FoodPairingResul
  * the column whose contents it actually describes. Returns [] when the query
  * resolved to no tags, which is the common case for a plain ingredient search.
  */
+type TagArticle = {
+  id: string; url: string; title: string; content: string; summary: string;
+  similarity: number | null; matchedTags: string[];
+};
+
 async function fetchArticlesByTags(
   supabase: Awaited<ReturnType<typeof createClient>>,
   terms: { theme: string[]; course: string[] },
-): Promise<Array<{ id: string; url: string; title: string; content: string; summary: string; similarity: number }>> {
-  const queries: Array<PromiseLike<{ data: unknown[] | null; error: { message: string } | null }>> = [];
-  if (terms.theme.length > 0) {
-    queries.push(supabase.from('wine_articles')
-      .select('id, url, title, content, summary')
-      .overlaps('food_tags', terms.theme)
-      .limit(TAG_ARTICLE_LIMIT));
-  }
-  if (terms.course.length > 0) {
-    queries.push(supabase.from('wine_articles')
-      .select('id, url, title, content, summary')
-      .overlaps('occasion_tags', terms.course)
-      .limit(TAG_ARTICLE_LIMIT));
-  }
-  if (queries.length === 0) return [];
+  queryEmbedding: number[],
+): Promise<TagArticle[]> {
+  type Row = {
+    id: string; url: string; title: string; content: string | null; summary: string | null;
+    food_tags: string[] | null; occasion_tags: string[] | null; embedding: string | number[] | null;
+  };
 
-  const results = await Promise.all(queries);
-  const out = new Map<string, { id: string; url: string; title: string; content: string; summary: string; similarity: number }>();
-  for (const { data, error } of results) {
-    if (error) { console.error('[food-pairing] tag article query error:', error.message); continue; }
-    for (const row of (data ?? []) as Array<{ id: string; url: string; title: string; content: string | null; summary: string | null }>) {
-      // An exact tag hit is a stronger signal than a borderline cosine score,
-      // but it carries no similarity of its own — surface it as 1 so ordering
-      // and the citation UI stay coherent.
-      if (!out.has(row.id)) {
-        out.set(row.id, { id: row.id, url: row.url, title: row.title, content: row.content ?? '', summary: row.summary ?? '', similarity: 1 });
+  const channels: Array<{ column: 'food_tags' | 'occasion_tags'; wanted: string[] }> = [];
+  if (terms.theme.length > 0) channels.push({ column: 'food_tags', wanted: terms.theme });
+  if (terms.course.length > 0) channels.push({ column: 'occasion_tags', wanted: terms.course });
+  if (channels.length === 0) return [];
+
+  const results = await Promise.all(channels.map(({ column, wanted }) =>
+    Promise.resolve(
+      supabase.from('wine_articles')
+        .select('id, url, title, content, summary, food_tags, occasion_tags, embedding')
+        .overlaps(column, wanted)
+        .limit(TAG_ARTICLE_LIMIT),
+    ).then(({ data, error }) => ({ column, wanted, data: (data ?? []) as Row[], error })),
+  ));
+
+  const out = new Map<string, TagArticle>();
+  for (const { column, wanted, data, error } of results) {
+    if (error) { console.error(`[food-pairing] tag article query (${column}) error:`, error.message); continue; }
+    for (const row of data) {
+      const matched = (row[column] ?? []).filter(t => wanted.includes(t));
+      const existing = out.get(row.id);
+      if (existing) {
+        // Hit on both channels — record every reason it was cited.
+        for (const t of matched) if (!existing.matchedTags.includes(t)) existing.matchedTags.push(t);
+        continue;
       }
+      out.set(row.id, {
+        id: row.id, url: row.url, title: row.title,
+        content: row.content ?? '', summary: row.summary ?? '',
+        // Scored on the same scale as the semantic path so the two can be
+        // ranked together. Null only if the article has no stored embedding.
+        similarity: articleSimilarity(row.embedding, queryEmbedding),
+        matchedTags: matched,
+      });
     }
   }
   return [...out.values()];
@@ -390,6 +448,32 @@ async function extractCriteria(
     console.error('[food-pairing] LLM extraction failed:', err);
     return EMPTY_CRITERIA;
   }
+}
+
+/**
+ * Cosine similarity between a stored article embedding and the query vector.
+ *
+ * pgvector columns arrive from PostgREST as a JSON-ish string ("[0.1,-0.2,…]"),
+ * so parse defensively and fall back to null rather than guessing a score.
+ */
+function articleSimilarity(stored: string | number[] | null, query: number[]): number | null {
+  if (!stored) return null;
+  let vec: number[];
+  try {
+    vec = Array.isArray(stored) ? stored : (JSON.parse(stored) as number[]);
+  } catch {
+    return null;
+  }
+  if (!Array.isArray(vec) || vec.length !== query.length) return null;
+
+  let dot = 0, normA = 0, normB = 0;
+  for (let i = 0; i < vec.length; i++) {
+    dot += vec[i] * query[i];
+    normA += vec[i] * vec[i];
+    normB += query[i] * query[i];
+  }
+  if (normA === 0 || normB === 0) return null;
+  return dot / Math.sqrt(normA * normB);
 }
 
 // "Kr 159,00" → 159 (Norwegian comma decimal)
