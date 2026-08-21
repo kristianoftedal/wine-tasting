@@ -10,6 +10,9 @@
     "analyze": "tsx scripts/analyze-wine-vocabulary.ts",
     "recalculate-scores": "tsx scripts/recalculate-scores.ts",
     "validate-scoring": "tsx scripts/validate-scoring.ts",
+    "benchmark-search": "tsx scripts/benchmark-search.ts",
+    "verify-search-migration": "tsx scripts/verify-search-migration.ts",
+    "verify-search-production": "tsx scripts/verify-search-production.ts",
     "test": "vitest",
     "test:run": "vitest run"
   },

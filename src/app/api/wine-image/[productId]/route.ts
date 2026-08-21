@@ -27,7 +27,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      return new NextResponse(null, { status: 404 });
+      // Cache misses as well: without this, a wine with no product shot costs a
+      // fresh upstream fetch on every single render of the dropdown.
+      return new NextResponse(null, {
+        status: 404,
+        headers: { 'Cache-Control': 'public, max-age=86400, s-maxage=86400' }
+      });
     }
 
     const imageBuffer = await response.arrayBuffer();
@@ -35,7 +40,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     return new NextResponse(imageBuffer, {
       headers: {
         'Content-Type': 'image/jpeg',
-        'Cache-Control': 'public, max-age=86400'
+        // Product shots never change for a given product id, so this is safe to
+        // treat as immutable. Each miss costs a server-side round trip to
+        // vinmonopolet, and the search dropdown renders up to 20 of these.
+        'Cache-Control': 'public, max-age=31536000, s-maxage=31536000, immutable'
       }
     });
   } catch (error) {
