@@ -1,3 +1,4 @@
+import { FoodPairingSearch } from './components/FoodPairingSearch';
 import { Search } from './components/Search';
 import { UpcomingEvents } from './components/UpcomingEvents';
 import styles from './page.module.css';
@@ -15,6 +16,11 @@ export default async function Home() {
       <div className={styles.searchSection}>
         <h2 className={styles.searchTitle}>Søk etter vin</h2>
         <Search />
+      </div>
+
+      <div className={styles.searchSection}>
+        <h2 className={styles.searchTitle}>Finn vin til maten</h2>
+        <FoodPairingSearch />
       </div>
 
       <UpcomingEvents />
