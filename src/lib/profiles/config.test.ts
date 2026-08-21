@@ -48,8 +48,8 @@ describe('valid profile selection', () => {
     const profile = getActiveProfile()
 
     expect(profile.name).toBe('inverted')
-    expect(profile.weights['GENERIC']).toBe(1.0)
-    expect(profile.weights['Frukt']).toBe(2.0)
+    expect(profile.weights['GENERIC']).toBe(1.3)
+    expect(profile.weights['Frukt og bær']).toBe(2.0)
   })
 
   it('should return moderate profile when configured', async () => {
@@ -61,7 +61,7 @@ describe('valid profile selection', () => {
 
     expect(profile.name).toBe('moderate')
     expect(profile.weights['GENERIC']).toBe(1.2)
-    expect(profile.weights['Frukt']).toBe(1.8)
+    expect(profile.weights['Frukt og bær']).toBe(1.8)
   })
 
 })
@@ -109,7 +109,7 @@ describe('getCategoryWeight', () => {
 
     const { getCategoryWeight } = await import('./config')
 
-    expect(getCategoryWeight('GENERIC')).toBe(1.0) // Inverted profile
+    expect(getCategoryWeight('GENERIC')).toBe(1.3) // Inverted profile
   })
 
   it('should return different weights for same category across profiles', async () => {
@@ -125,8 +125,8 @@ describe('getCategoryWeight', () => {
     const { getCategoryWeight: getModerate } = await import('./config')
     const moderateGeneric = getModerate('GENERIC')
 
-    // Inverted: GENERIC = 1.0, Moderate: GENERIC = 1.2
-    expect(invertedGeneric).toBe(1.0)
+    // Inverted: GENERIC = 1.3, Moderate: GENERIC = 1.2
+    expect(invertedGeneric).toBe(1.3)
     expect(moderateGeneric).toBe(1.2)
     expect(invertedGeneric).not.toBe(moderateGeneric)
   })

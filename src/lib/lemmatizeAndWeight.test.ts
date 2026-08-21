@@ -109,11 +109,11 @@ describe('lemmatizeAndWeight', () => {
   })
 
   describe('category assignment', () => {
-    it('should assign eik category and Eik/fat categoryPath to eik term', () => {
+    it('should assign eik category and Treverk categoryPath to eik term', () => {
       const eikData = norwegianLemmas['eik']
 
       expect(eikData.category).toBe('eik')
-      expect(eikData.categoryPath?.main).toBe('Eik/fat')
+      expect(eikData.categoryPath?.main).toBe('Treverk')
     })
 
     it('should assign struktur category and GENERIC categoryPath to balansert', () => {
@@ -221,7 +221,7 @@ describe('norwegianLemmas dictionary', () => {
     berryTerms.forEach(term => {
       const data = norwegianLemmas[term]
       expect(data).toBeDefined()
-      expect(data?.categoryPath?.main).toBe('Frukt')
+      expect(data?.categoryPath?.main).toBe('Frukt og bær')
     })
   })
 
