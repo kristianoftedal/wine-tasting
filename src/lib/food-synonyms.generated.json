@@ -1,0 +1,1776 @@
+{
+  "generated_at": "2026-08-21T06:38:51.659Z",
+  "vocabularies": {
+    "food": [
+      "Fisk",
+      "Lyst kjøtt",
+      "Skalldyr",
+      "Storfe",
+      "Lam og sau",
+      "Aperitiff",
+      "Småvilt",
+      "Storvilt",
+      "Ost",
+      "Svin",
+      "Grønnsaker",
+      "Dessert"
+    ],
+    "theme": [
+      "Kjøtt",
+      "Sjømat",
+      "Vegetar",
+      "Norsk",
+      "Jul og nyttår",
+      "Fugl",
+      "Asiatisk",
+      "Pizza og pasta",
+      "Grillmat",
+      "17. mai",
+      "Thanksgiving",
+      "Påske"
+    ],
+    "course": [
+      "Hovedrett",
+      "Forrett",
+      "Smårett",
+      "Gryter",
+      "Kaker og desserter",
+      "Tilbehør",
+      "Meny"
+    ]
+  },
+  "lemma_counts": {
+    "food": 233,
+    "theme": 204,
+    "course": 124
+  },
+  "maps": {
+    "food": {
+      "aperitiff": [
+        "Aperitiff"
+      ],
+      "asparges": [
+        "Grønnsaker"
+      ],
+      "aubergine": [
+        "Grønnsaker"
+      ],
+      "bacon": [
+        "Svin"
+      ],
+      "beef stroganoff": [
+        "Storfe"
+      ],
+      "biff med grønnsaker": [
+        "Storfe"
+      ],
+      "biff med poteter": [
+        "Storfe"
+      ],
+      "biff med ris": [
+        "Storfe"
+      ],
+      "biff med salat": [
+        "Storfe"
+      ],
+      "biff med soppsaus": [
+        "Storfe"
+      ],
+      "biff tartar": [
+        "Storfe"
+      ],
+      "biff wellington": [
+        "Storfe"
+      ],
+      "biff": [
+        "Storfe"
+      ],
+      "biffsnadder": [
+        "Storfe"
+      ],
+      "blomkål": [
+        "Grønnsaker"
+      ],
+      "blåmuggost": [
+        "Ost"
+      ],
+      "blåskjell": [
+        "Skalldyr"
+      ],
+      "boller": [
+        "Dessert"
+      ],
+      "brie": [
+        "Ost"
+      ],
+      "brisket": [
+        "Storfe"
+      ],
+      "brokkoli": [
+        "Grønnsaker"
+      ],
+      "brownies": [
+        "Dessert"
+      ],
+      "bruschetta": [
+        "Aperitiff"
+      ],
+      "bønner": [
+        "Grønnsaker"
+      ],
+      "camembert": [
+        "Ost"
+      ],
+      "cheddar": [
+        "Ost"
+      ],
+      "cheesecake": [
+        "Dessert"
+      ],
+      "chevre": [
+        "Ost"
+      ],
+      "chips": [
+        "Aperitiff"
+      ],
+      "dampet fisk": [
+        "Fisk"
+      ],
+      "dessert": [
+        "Dessert"
+      ],
+      "dipp": [
+        "Aperitiff"
+      ],
+      "elg": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "entrecôte": [
+        "Storfe"
+      ],
+      "eplekake": [
+        "Dessert"
+      ],
+      "erter": [
+        "Grønnsaker"
+      ],
+      "fajitas med storfe": [
+        "Storfe"
+      ],
+      "fasan": [
+        "Småvilt"
+      ],
+      "feta": [
+        "Ost"
+      ],
+      "fingermat": [
+        "Aperitiff"
+      ],
+      "fisk": [
+        "Fisk"
+      ],
+      "fiskeboller": [
+        "Fisk"
+      ],
+      "fiskefilet": [
+        "Fisk"
+      ],
+      "fiskekaker": [
+        "Fisk"
+      ],
+      "fiskepinner": [
+        "Fisk"
+      ],
+      "fiskerett": [
+        "Fisk"
+      ],
+      "fiskesalat": [
+        "Fisk"
+      ],
+      "fiskesandwich": [
+        "Fisk"
+      ],
+      "fiskesuppe": [
+        "Fisk",
+        "Skalldyr"
+      ],
+      "fisketaco": [
+        "Fisk"
+      ],
+      "fruktsalat": [
+        "Dessert"
+      ],
+      "frukttærte": [
+        "Dessert"
+      ],
+      "fylte svinekoteletter": [
+        "Svin"
+      ],
+      "gorgonzola": [
+        "Ost"
+      ],
+      "grillbiff": [
+        "Storfe"
+      ],
+      "grillet fisk": [
+        "Fisk"
+      ],
+      "grillet reke": [
+        "Skalldyr"
+      ],
+      "grillost": [
+        "Ost"
+      ],
+      "grissini": [
+        "Aperitiff"
+      ],
+      "gruyère": [
+        "Ost"
+      ],
+      "grønnkål": [
+        "Grønnsaker"
+      ],
+      "grønnsaker": [
+        "Aperitiff",
+        "Grønnsaker"
+      ],
+      "gulrøtter": [
+        "Grønnsaker"
+      ],
+      "hamburger": [
+        "Storfe"
+      ],
+      "hjort": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "hummer": [
+        "Skalldyr"
+      ],
+      "indrefilet": [
+        "Storfe"
+      ],
+      "iskrem": [
+        "Dessert"
+      ],
+      "kake": [
+        "Dessert"
+      ],
+      "kalkun": [
+        "Lyst kjøtt"
+      ],
+      "kalkunburger": [
+        "Lyst kjøtt"
+      ],
+      "kalkunfilet": [
+        "Lyst kjøtt"
+      ],
+      "kamskjell": [
+        "Skalldyr"
+      ],
+      "kanin": [
+        "Småvilt"
+      ],
+      "kaviar": [
+        "Aperitiff"
+      ],
+      "kebab": [
+        "Storfe"
+      ],
+      "kikerter": [
+        "Grønnsaker"
+      ],
+      "kjøttdeig": [
+        "Storfe"
+      ],
+      "kjøttgryte": [
+        "Storfe"
+      ],
+      "kjøttkaker": [
+        "Storfe"
+      ],
+      "klippfiskkake": [
+        "Dessert"
+      ],
+      "krabbe": [
+        "Skalldyr"
+      ],
+      "krem": [
+        "Dessert"
+      ],
+      "kremkaramell": [
+        "Dessert"
+      ],
+      "kylling": [
+        "Lyst kjøtt"
+      ],
+      "kyllingboller": [
+        "Lyst kjøtt"
+      ],
+      "kyllingbryst": [
+        "Lyst kjøtt"
+      ],
+      "kyllingcurry": [
+        "Lyst kjøtt"
+      ],
+      "kyllingesalat": [
+        "Lyst kjøtt"
+      ],
+      "kyllingfajitas": [
+        "Lyst kjøtt"
+      ],
+      "kyllingfilet": [
+        "Lyst kjøtt"
+      ],
+      "kyllinggryte": [
+        "Lyst kjøtt"
+      ],
+      "kyllingkjøttdeig": [
+        "Lyst kjøtt"
+      ],
+      "kyllinglår": [
+        "Lyst kjøtt"
+      ],
+      "kyllinglårfilet": [
+        "Lyst kjøtt"
+      ],
+      "kyllingnuggets": [
+        "Lyst kjøtt"
+      ],
+      "kyllingpasta": [
+        "Lyst kjøtt"
+      ],
+      "kyllingrullader": [
+        "Lyst kjøtt"
+      ],
+      "kyllingvinger": [
+        "Lyst kjøtt"
+      ],
+      "kyllingwok": [
+        "Lyst kjøtt"
+      ],
+      "kyllingwrap": [
+        "Lyst kjøtt"
+      ],
+      "kålrot": [
+        "Grønnsaker"
+      ],
+      "laks": [
+        "Fisk"
+      ],
+      "lam og sau": [
+        "Lam og sau"
+      ],
+      "lam": [
+        "Lam og sau"
+      ],
+      "lammecurry": [
+        "Lam og sau"
+      ],
+      "lammefilet": [
+        "Lam og sau"
+      ],
+      "lammegryte": [
+        "Lam og sau"
+      ],
+      "lammekebab": [
+        "Lam og sau"
+      ],
+      "lammekjøtt": [
+        "Lam og sau"
+      ],
+      "lammekjøttdeig": [
+        "Lam og sau"
+      ],
+      "lammekoteletter": [
+        "Lam og sau"
+      ],
+      "lammelår": [
+        "Lam og sau"
+      ],
+      "lammepølse": [
+        "Lam og sau"
+      ],
+      "lammeskank": [
+        "Lam og sau"
+      ],
+      "lammestek": [
+        "Lam og sau"
+      ],
+      "lammestuing": [
+        "Lam og sau"
+      ],
+      "lettvint mat": [
+        "Aperitiff"
+      ],
+      "lyst kjøtt": [
+        "Lyst kjøtt"
+      ],
+      "løk": [
+        "Grønnsaker"
+      ],
+      "makrell": [
+        "Fisk"
+      ],
+      "makroner": [
+        "Dessert"
+      ],
+      "marengs": [
+        "Dessert"
+      ],
+      "mini-burgere": [
+        "Aperitiff"
+      ],
+      "mousse": [
+        "Dessert"
+      ],
+      "mozzarella": [
+        "Ost"
+      ],
+      "muslinger": [
+        "Skalldyr"
+      ],
+      "nøtter": [
+        "Aperitiff"
+      ],
+      "oliven": [
+        "Aperitiff"
+      ],
+      "ost": [
+        "Aperitiff",
+        "Ost"
+      ],
+      "ostefat": [
+        "Ost"
+      ],
+      "ostefondue": [
+        "Ost"
+      ],
+      "ostekake": [
+        "Ost"
+      ],
+      "ostesaus": [
+        "Ost"
+      ],
+      "osteservering": [
+        "Ost"
+      ],
+      "pai": [
+        "Dessert"
+      ],
+      "pannekake": [
+        "Dessert"
+      ],
+      "paprika": [
+        "Grønnsaker"
+      ],
+      "parmesan": [
+        "Ost"
+      ],
+      "paté": [
+        "Aperitiff"
+      ],
+      "pizzaost": [
+        "Ost"
+      ],
+      "pudding": [
+        "Dessert"
+      ],
+      "pulled pork": [
+        "Svin"
+      ],
+      "purre": [
+        "Grønnsaker"
+      ],
+      "pølse": [
+        "Aperitiff",
+        "Svin"
+      ],
+      "raclette": [
+        "Ost"
+      ],
+      "reinsdyr": [
+        "Storvilt"
+      ],
+      "ribbe": [
+        "Svin"
+      ],
+      "rype": [
+        "Småvilt"
+      ],
+      "rødbeter": [
+        "Grønnsaker"
+      ],
+      "røkt storfe": [
+        "Storfe"
+      ],
+      "røye": [
+        "Fisk"
+      ],
+      "salat": [
+        "Grønnsaker"
+      ],
+      "salsa": [
+        "Aperitiff"
+      ],
+      "sashimi": [
+        "Skalldyr"
+      ],
+      "sau": [
+        "Lam og sau"
+      ],
+      "sauelår": [
+        "Lam og sau"
+      ],
+      "sauemiddag": [
+        "Lam og sau"
+      ],
+      "saueribbe": [
+        "Lam og sau"
+      ],
+      "sauestek": [
+        "Lam og sau"
+      ],
+      "saufilet": [
+        "Lam og sau"
+      ],
+      "saukjøtt": [
+        "Lam og sau"
+      ],
+      "schnitzel": [
+        "Svin"
+      ],
+      "selleri": [
+        "Grønnsaker"
+      ],
+      "sild": [
+        "Fisk"
+      ],
+      "sjokolade": [
+        "Dessert"
+      ],
+      "sjøgress": [
+        "Skalldyr"
+      ],
+      "sjøkreps": [
+        "Skalldyr"
+      ],
+      "skalldyr": [
+        "Fisk",
+        "Skalldyr"
+      ],
+      "skalldyrgryte": [
+        "Skalldyr"
+      ],
+      "skalldyrpasta": [
+        "Skalldyr"
+      ],
+      "skalldyrpizza": [
+        "Skalldyr"
+      ],
+      "skalldyrsalat": [
+        "Skalldyr"
+      ],
+      "skalldyrskål": [
+        "Skalldyr"
+      ],
+      "skalldyrtaco": [
+        "Skalldyr"
+      ],
+      "skinke": [
+        "Aperitiff",
+        "Svin"
+      ],
+      "skivet ost": [
+        "Ost"
+      ],
+      "småvilt": [
+        "Småvilt"
+      ],
+      "smøreost": [
+        "Ost"
+      ],
+      "sopp": [
+        "Grønnsaker"
+      ],
+      "sorbet": [
+        "Dessert"
+      ],
+      "spareribs": [
+        "Svin"
+      ],
+      "spinat": [
+        "Grønnsaker"
+      ],
+      "stek": [
+        "Storfe"
+      ],
+      "stekt fisk": [
+        "Fisk"
+      ],
+      "storfe": [
+        "Storfe"
+      ],
+      "storfekjøtt": [
+        "Storfe"
+      ],
+      "storvilt": [
+        "Storvilt"
+      ],
+      "sushi": [
+        "Skalldyr"
+      ],
+      "svin": [
+        "Svin"
+      ],
+      "svinebog": [
+        "Svin"
+      ],
+      "svinefett": [
+        "Svin"
+      ],
+      "svinefilet": [
+        "Svin"
+      ],
+      "svinegryte": [
+        "Svin"
+      ],
+      "svinekam": [
+        "Svin"
+      ],
+      "svinekjøtt": [
+        "Svin"
+      ],
+      "svinekjøttboller": [
+        "Svin"
+      ],
+      "svinekjøttdeig": [
+        "Svin"
+      ],
+      "svinekoteletter": [
+        "Svin"
+      ],
+      "svinepasta": [
+        "Svin"
+      ],
+      "svinestek": [
+        "Svin"
+      ],
+      "søtpotet": [
+        "Grønnsaker"
+      ],
+      "taco med storfe": [
+        "Storfe"
+      ],
+      "tacoost": [
+        "Ost"
+      ],
+      "tang": [
+        "Skalldyr"
+      ],
+      "tapas": [
+        "Aperitiff"
+      ],
+      "tiramisu": [
+        "Dessert"
+      ],
+      "tomater": [
+        "Grønnsaker"
+      ],
+      "torsk": [
+        "Fisk"
+      ],
+      "viltbiff": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltburger": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltfarsedisk": [
+        "Storvilt"
+      ],
+      "viltfilleter": [
+        "Storvilt"
+      ],
+      "viltfugl": [
+        "Småvilt"
+      ],
+      "viltfyll": [
+        "Småvilt"
+      ],
+      "viltgryte": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltgryterett": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltkarbonader": [
+        "Storvilt"
+      ],
+      "viltkjøtt": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltkjøttboller": [
+        "Småvilt"
+      ],
+      "viltkjøttkaker": [
+        "Storvilt"
+      ],
+      "viltkoteletter": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltlasagne": [
+        "Storvilt"
+      ],
+      "viltmarinade": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltpasta": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltpizza": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltpølse": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltstek": [
+        "Småvilt",
+        "Storvilt"
+      ],
+      "viltwok": [
+        "Storvilt"
+      ],
+      "viltwraps": [
+        "Småvilt"
+      ],
+      "zucchini": [
+        "Grønnsaker"
+      ],
+      "ørret": [
+        "Fisk"
+      ],
+      "østers": [
+        "Skalldyr"
+      ]
+    },
+    "theme": {
+      "17 mai": [
+        "17. mai"
+      ],
+      "17 mai-aktiviteter": [
+        "17. mai"
+      ],
+      "17 mai-buffet": [
+        "17. mai"
+      ],
+      "17 mai-drikke": [
+        "17. mai"
+      ],
+      "17 mai-familie": [
+        "17. mai"
+      ],
+      "17 mai-feiring": [
+        "17. mai"
+      ],
+      "17 mai-fest": [
+        "17. mai"
+      ],
+      "17 mai-frokost": [
+        "17. mai"
+      ],
+      "17 mai-glede": [
+        "17. mai"
+      ],
+      "17 mai-kake": [
+        "17. mai"
+      ],
+      "17 mai-lunsj": [
+        "17. mai"
+      ],
+      "17 mai-middag": [
+        "17. mai"
+      ],
+      "17 mai-parade": [
+        "17. mai"
+      ],
+      "17 mai-piknik": [
+        "17. mai"
+      ],
+      "17 mai-samling": [
+        "17. mai"
+      ],
+      "17 mai-selskap": [
+        "17. mai"
+      ],
+      "17 mai-tradisjon": [
+        "17. mai"
+      ],
+      "17 mai-venner": [
+        "17. mai"
+      ],
+      "17. mai": [
+        "17. mai",
+        "Norsk"
+      ],
+      "asiatisk mat": [
+        "Asiatisk"
+      ],
+      "asiatisk middag": [
+        "Asiatisk"
+      ],
+      "asiatisk": [
+        "Asiatisk"
+      ],
+      "bakekake": [
+        "Norsk"
+      ],
+      "balkonggrill": [
+        "Grillmat"
+      ],
+      "bbq": [
+        "Grillmat"
+      ],
+      "bento": [
+        "Asiatisk"
+      ],
+      "biffmiddag": [
+        "Kjøtt"
+      ],
+      "bryllup": [
+        "Kjøtt"
+      ],
+      "bryllupsmiddag": [
+        "Fugl"
+      ],
+      "bunad": [
+        "17. mai"
+      ],
+      "båttur": [
+        "Sjømat"
+      ],
+      "dumplings": [
+        "Asiatisk"
+      ],
+      "familietradisjoner": [
+        "Thanksgiving"
+      ],
+      "feiring": [
+        "Thanksgiving"
+      ],
+      "ferie": [
+        "Sjømat"
+      ],
+      "feriemiddag": [
+        "Fugl"
+      ],
+      "fest": [
+        "Norsk"
+      ],
+      "festlig anledning": [
+        "Thanksgiving"
+      ],
+      "festligheter": [
+        "Kjøtt"
+      ],
+      "festmat": [
+        "Grillmat"
+      ],
+      "festmiddag": [
+        "Kjøtt",
+        "Norsk"
+      ],
+      "filmkveld": [
+        "Pizza og pasta"
+      ],
+      "fingermat": [
+        "Asiatisk"
+      ],
+      "fiskemiddag": [
+        "Norsk",
+        "Sjømat"
+      ],
+      "fiskesuppe": [
+        "Sjømat"
+      ],
+      "fisketaco": [
+        "Sjømat"
+      ],
+      "fugl": [
+        "Fugl"
+      ],
+      "fuglegryte": [
+        "Fugl"
+      ],
+      "fuglemeny": [
+        "Fugl"
+      ],
+      "fuglemiddag": [
+        "Fugl"
+      ],
+      "fugleoppskrift": [
+        "Fugl"
+      ],
+      "fuglerett": [
+        "Fugl"
+      ],
+      "grillbuffet": [
+        "Grillmat"
+      ],
+      "grilldessert": [
+        "Grillmat"
+      ],
+      "grillgrønnsaker": [
+        "Grillmat"
+      ],
+      "grilling": [
+        "Grillmat"
+      ],
+      "grillkjøtt": [
+        "Grillmat"
+      ],
+      "grillkveld": [
+        "Grillmat"
+      ],
+      "grillmarinade": [
+        "Grillmat"
+      ],
+      "grillmat": [
+        "Grillmat",
+        "Sjømat"
+      ],
+      "grillopplevelse": [
+        "Grillmat"
+      ],
+      "grillparty": [
+        "Grillmat"
+      ],
+      "grillpølser": [
+        "Grillmat"
+      ],
+      "grillspyd": [
+        "Grillmat"
+      ],
+      "grilltilbehør": [
+        "Grillmat"
+      ],
+      "grønnsaksrett": [
+        "Vegetar"
+      ],
+      "hagefest": [
+        "Grillmat"
+      ],
+      "helgemiddag": [
+        "Pizza og pasta"
+      ],
+      "hjemmelaget pizza": [
+        "Pizza og pasta"
+      ],
+      "hot pot": [
+        "Asiatisk"
+      ],
+      "høstdekorasjoner": [
+        "Thanksgiving"
+      ],
+      "høstferie": [
+        "Thanksgiving"
+      ],
+      "høstmiddag": [
+        "Fugl",
+        "Thanksgiving"
+      ],
+      "høsttakkefest": [
+        "Thanksgiving"
+      ],
+      "italiensk aften": [
+        "Pizza og pasta"
+      ],
+      "italiensk middag": [
+        "Pizza og pasta"
+      ],
+      "jaktfest": [
+        "Fugl"
+      ],
+      "japansk": [
+        "Asiatisk"
+      ],
+      "jul og nyttår": [
+        "Jul og nyttår"
+      ],
+      "julebakst": [
+        "Jul og nyttår"
+      ],
+      "julebord": [
+        "Jul og nyttår",
+        "Norsk"
+      ],
+      "julebrunch": [
+        "Jul og nyttår"
+      ],
+      "juledekorasjoner": [
+        "Jul og nyttår"
+      ],
+      "julefeiring": [
+        "Jul og nyttår"
+      ],
+      "julefest": [
+        "Jul og nyttår"
+      ],
+      "julefrokost": [
+        "Jul og nyttår"
+      ],
+      "julegave": [
+        "Jul og nyttår"
+      ],
+      "juleglede": [
+        "Jul og nyttår"
+      ],
+      "julehygge": [
+        "Jul og nyttår"
+      ],
+      "julekos": [
+        "Jul og nyttår"
+      ],
+      "julelunsj": [
+        "Jul og nyttår"
+      ],
+      "julelys": [
+        "Jul og nyttår"
+      ],
+      "julemiddag": [
+        "Kjøtt"
+      ],
+      "julemusikk": [
+        "Jul og nyttår"
+      ],
+      "juletradisjon": [
+        "Jul og nyttår"
+      ],
+      "juleøl": [
+        "Jul og nyttår"
+      ],
+      "kinesisk": [
+        "Asiatisk"
+      ],
+      "kjøtt": [
+        "Kjøtt"
+      ],
+      "klippfisk": [
+        "Norsk"
+      ],
+      "koldtbord": [
+        "Kjøtt",
+        "Norsk"
+      ],
+      "konfirmasjon": [
+        "Kjøtt",
+        "Norsk"
+      ],
+      "koreansk": [
+        "Asiatisk"
+      ],
+      "kos": [
+        "Pizza og pasta"
+      ],
+      "kosekveld": [
+        "Fugl",
+        "Kjøtt"
+      ],
+      "kosemat": [
+        "Kjøtt"
+      ],
+      "krydret mat": [
+        "Asiatisk"
+      ],
+      "kystmat": [
+        "Sjømat"
+      ],
+      "lunsj": [
+        "Sjømat"
+      ],
+      "lutefisk": [
+        "Norsk"
+      ],
+      "matlagingskveld": [
+        "Pizza og pasta"
+      ],
+      "middagsselskap": [
+        "Kjøtt",
+        "Thanksgiving"
+      ],
+      "måltid med venner": [
+        "Thanksgiving"
+      ],
+      "nasjonaldag": [
+        "17. mai"
+      ],
+      "norsk mat": [
+        "Norsk"
+      ],
+      "norsk": [
+        "Norsk"
+      ],
+      "nuddler": [
+        "Asiatisk"
+      ],
+      "nyttårsfeiring": [
+        "Jul og nyttår"
+      ],
+      "nyttårsfest": [
+        "Jul og nyttår"
+      ],
+      "nyttårsmiddag": [
+        "Jul og nyttår"
+      ],
+      "pastakveld": [
+        "Pizza og pasta"
+      ],
+      "pizza kveld": [
+        "Pizza og pasta"
+      ],
+      "pizza og pasta": [
+        "Pizza og pasta"
+      ],
+      "påske": [
+        "Påske"
+      ],
+      "påskebakst": [
+        "Påske"
+      ],
+      "påskebord": [
+        "Påske"
+      ],
+      "påskebrygg": [
+        "Påske"
+      ],
+      "påskedessert": [
+        "Påske"
+      ],
+      "påskeegg": [
+        "Påske"
+      ],
+      "påskefeiring": [
+        "Påske"
+      ],
+      "påskeferie": [
+        "Påske"
+      ],
+      "påskefest": [
+        "Påske"
+      ],
+      "påskeforret": [
+        "Påske"
+      ],
+      "påskefrokost": [
+        "Fugl",
+        "Påske"
+      ],
+      "påskegodteri": [
+        "Påske"
+      ],
+      "påskekos": [
+        "Påske"
+      ],
+      "påskekylling": [
+        "Påske"
+      ],
+      "påskelam": [
+        "Påske"
+      ],
+      "påskelunsj": [
+        "Påske"
+      ],
+      "påskemiddag": [
+        "Påske"
+      ],
+      "påskeselskap": [
+        "Påske"
+      ],
+      "påskesnacks": [
+        "Påske"
+      ],
+      "påskesuppe": [
+        "Påske"
+      ],
+      "påsketradisjoner": [
+        "Påske"
+      ],
+      "påskevin": [
+        "Påske"
+      ],
+      "pølsefest": [
+        "Kjøtt"
+      ],
+      "rakfisk": [
+        "Norsk"
+      ],
+      "ramen": [
+        "Asiatisk"
+      ],
+      "restaurant": [
+        "Sjømat"
+      ],
+      "risretter": [
+        "Asiatisk"
+      ],
+      "romantisk middag": [
+        "Sjømat"
+      ],
+      "romjulsfeiring": [
+        "Jul og nyttår"
+      ],
+      "rømmegrøt": [
+        "Norsk"
+      ],
+      "selskapsmat": [
+        "Fugl",
+        "Kjøtt"
+      ],
+      "sjømat": [
+        "Norsk",
+        "Sjømat"
+      ],
+      "sjømatbuffet": [
+        "Sjømat"
+      ],
+      "sjømatfest": [
+        "Sjømat"
+      ],
+      "sjømatplatå": [
+        "Sjømat"
+      ],
+      "sjømatrestaurant": [
+        "Sjømat"
+      ],
+      "skalldyr": [
+        "Sjømat"
+      ],
+      "smalahove": [
+        "Norsk"
+      ],
+      "sommermiddag": [
+        "Grillmat"
+      ],
+      "sommersamling": [
+        "Kjøtt"
+      ],
+      "steke": [
+        "Kjøtt"
+      ],
+      "street food": [
+        "Asiatisk"
+      ],
+      "sushi": [
+        "Asiatisk"
+      ],
+      "szechuan": [
+        "Asiatisk"
+      ],
+      "takeaway": [
+        "Pizza og pasta"
+      ],
+      "takkefest": [
+        "Thanksgiving"
+      ],
+      "teriyaki": [
+        "Asiatisk"
+      ],
+      "thailandsk": [
+        "Asiatisk"
+      ],
+      "thanksgiving": [
+        "Thanksgiving"
+      ],
+      "tradisjonell mat": [
+        "Norsk"
+      ],
+      "tradisjonell middag": [
+        "Thanksgiving"
+      ],
+      "uformell middag": [
+        "Pizza og pasta"
+      ],
+      "utendørs grilling": [
+        "Fugl",
+        "Grillmat"
+      ],
+      "utendørs middag": [
+        "Grillmat"
+      ],
+      "utendørsservering": [
+        "Sjømat"
+      ],
+      "vegetar": [
+        "Vegetar"
+      ],
+      "vegetarisk brunch": [
+        "Vegetar"
+      ],
+      "vegetarisk buffet": [
+        "Vegetar"
+      ],
+      "vegetarisk feiring": [
+        "Vegetar"
+      ],
+      "vegetarisk fest": [
+        "Vegetar"
+      ],
+      "vegetarisk grill": [
+        "Vegetar"
+      ],
+      "vegetarisk hverdag": [
+        "Vegetar"
+      ],
+      "vegetarisk høytid": [
+        "Vegetar"
+      ],
+      "vegetarisk kos": [
+        "Vegetar"
+      ],
+      "vegetarisk lunsj": [
+        "Vegetar"
+      ],
+      "vegetarisk matlagning": [
+        "Vegetar"
+      ],
+      "vegetarisk middag": [
+        "Vegetar"
+      ],
+      "vegetarisk middagsselskap": [
+        "Vegetar"
+      ],
+      "vegetarisk piknik": [
+        "Vegetar"
+      ],
+      "vegetarisk påske": [
+        "Vegetar"
+      ],
+      "vegetarisk selskap": [
+        "Vegetar"
+      ],
+      "vegetarisk sommer": [
+        "Vegetar"
+      ],
+      "vegetarisk tapas": [
+        "Vegetar"
+      ],
+      "vegetarisk vinter": [
+        "Vegetar"
+      ],
+      "vegetarretter": [
+        "Vegetar"
+      ],
+      "vennefest": [
+        "Pizza og pasta"
+      ],
+      "vennegrill": [
+        "Grillmat"
+      ],
+      "vennesamling": [
+        "Thanksgiving"
+      ],
+      "vietnamesisk": [
+        "Asiatisk"
+      ],
+      "viltkjøtt": [
+        "Fugl",
+        "Kjøtt"
+      ],
+      "vintermat": [
+        "Norsk"
+      ],
+      "wok": [
+        "Asiatisk"
+      ]
+    },
+    "course": {
+      "appetizer": [
+        "Forrett"
+      ],
+      "bakevarer": [
+        "Kaker og desserter"
+      ],
+      "buffet": [
+        "Smårett"
+      ],
+      "bursdagskake": [
+        "Kaker og desserter"
+      ],
+      "delikatesse": [
+        "Smårett"
+      ],
+      "dessert": [
+        "Kaker og desserter"
+      ],
+      "dessertalternativ": [
+        "Kaker og desserter"
+      ],
+      "dessertservering": [
+        "Kaker og desserter"
+      ],
+      "dessertvin": [
+        "Kaker og desserter"
+      ],
+      "etterrett": [
+        "Kaker og desserter"
+      ],
+      "familiesamling": [
+        "Gryter"
+      ],
+      "festmat": [
+        "Gryter",
+        "Kaker og desserter"
+      ],
+      "festmiddag": [
+        "Meny"
+      ],
+      "fingerfood": [
+        "Smårett"
+      ],
+      "forrett": [
+        "Forrett",
+        "Smårett"
+      ],
+      "forrettsarrangement": [
+        "Forrett"
+      ],
+      "forrettsbeskrivelse": [
+        "Forrett"
+      ],
+      "forrettsbesøk": [
+        "Forrett"
+      ],
+      "forrettsdrikke": [
+        "Forrett"
+      ],
+      "forrettsmat": [
+        "Forrett"
+      ],
+      "forrettsmeny": [
+        "Forrett"
+      ],
+      "forrettsopplevelse": [
+        "Forrett"
+      ],
+      "forrettsoppskrift": [
+        "Forrett"
+      ],
+      "forrettsplan": [
+        "Forrett"
+      ],
+      "forrettsrett": [
+        "Forrett"
+      ],
+      "forrettsretter": [
+        "Forrett"
+      ],
+      "forrettsrettigheter": [
+        "Forrett"
+      ],
+      "forrettsservering": [
+        "Forrett"
+      ],
+      "forrettsvalg": [
+        "Forrett"
+      ],
+      "første rett": [
+        "Forrett"
+      ],
+      "gryter": [
+        "Gryter"
+      ],
+      "gryterett": [
+        "Gryter"
+      ],
+      "hjemmelaget": [
+        "Gryter"
+      ],
+      "hoveddel": [
+        "Hovedrett"
+      ],
+      "hovedkomponent": [
+        "Hovedrett"
+      ],
+      "hovedrettalternativer": [
+        "Hovedrett"
+      ],
+      "hovedretten": [
+        "Hovedrett"
+      ],
+      "hovedretter": [
+        "Hovedrett"
+      ],
+      "hovedrettsbeskrivelse": [
+        "Hovedrett"
+      ],
+      "hovedrettsideer": [
+        "Hovedrett"
+      ],
+      "hovedrettskurs": [
+        "Hovedrett"
+      ],
+      "hovedrettsmeny": [
+        "Hovedrett"
+      ],
+      "hovedrettsopplevelse": [
+        "Hovedrett"
+      ],
+      "hovedrettsoppskrift": [
+        "Hovedrett"
+      ],
+      "hovedrettsplan": [
+        "Hovedrett"
+      ],
+      "hovedrettsservering": [
+        "Hovedrett"
+      ],
+      "hovedrettsvalg": [
+        "Hovedrett"
+      ],
+      "hovedservering": [
+        "Hovedrett"
+      ],
+      "hygge": [
+        "Gryter"
+      ],
+      "høstmat": [
+        "Gryter"
+      ],
+      "kaffedessert": [
+        "Kaker og desserter"
+      ],
+      "kaffemat": [
+        "Kaker og desserter"
+      ],
+      "kake": [
+        "Kaker og desserter"
+      ],
+      "kakeanledning": [
+        "Kaker og desserter"
+      ],
+      "kakeanretning": [
+        "Kaker og desserter"
+      ],
+      "kakebord": [
+        "Kaker og desserter"
+      ],
+      "kakefest": [
+        "Kaker og desserter"
+      ],
+      "kakeoppskrift": [
+        "Kaker og desserter"
+      ],
+      "kaker og desserter": [
+        "Kaker og desserter"
+      ],
+      "kakeutvalg": [
+        "Kaker og desserter"
+      ],
+      "kakevalg": [
+        "Kaker og desserter"
+      ],
+      "koldtbord": [
+        "Smårett"
+      ],
+      "komfortmat": [
+        "Gryter"
+      ],
+      "komplement": [
+        "Tilbehør"
+      ],
+      "komplett middag": [
+        "Meny"
+      ],
+      "kosemat": [
+        "Gryter"
+      ],
+      "kveldsmat": [
+        "Gryter"
+      ],
+      "langtidskokt": [
+        "Gryter"
+      ],
+      "lett middag": [
+        "Smårett"
+      ],
+      "mellommåltid": [
+        "Smårett"
+      ],
+      "meny": [
+        "Meny"
+      ],
+      "middagretter": [
+        "Meny"
+      ],
+      "middagseremoni": [
+        "Meny"
+      ],
+      "middagservering": [
+        "Meny"
+      ],
+      "middagspesialitet": [
+        "Meny"
+      ],
+      "middagsselskap": [
+        "Meny"
+      ],
+      "middagstallerken": [
+        "Hovedrett",
+        "Meny"
+      ],
+      "middagstid": [
+        "Meny"
+      ],
+      "middagstilbud": [
+        "Meny"
+      ],
+      "middagstund": [
+        "Meny"
+      ],
+      "måltid": [
+        "Meny"
+      ],
+      "måltidsopplevelse": [
+        "Meny"
+      ],
+      "retter": [
+        "Meny"
+      ],
+      "samling": [
+        "Gryter"
+      ],
+      "servering": [
+        "Meny",
+        "Smårett"
+      ],
+      "siderett": [
+        "Tilbehør"
+      ],
+      "smårett": [
+        "Smårett"
+      ],
+      "småretter til dessert": [
+        "Smårett"
+      ],
+      "småretter til frokost": [
+        "Smårett"
+      ],
+      "småretter til lunsj": [
+        "Smårett"
+      ],
+      "småretter til middag": [
+        "Smårett"
+      ],
+      "småretter til sammenkomst": [
+        "Smårett"
+      ],
+      "småretter til selskap": [
+        "Smårett"
+      ],
+      "småretter til vin": [
+        "Smårett"
+      ],
+      "snacks til fest": [
+        "Smårett"
+      ],
+      "starter": [
+        "Forrett"
+      ],
+      "storfamilie": [
+        "Gryter"
+      ],
+      "søndagsmiddag": [
+        "Gryter"
+      ],
+      "søte fristelser": [
+        "Kaker og desserter"
+      ],
+      "søte måltider": [
+        "Kaker og desserter"
+      ],
+      "søte retter": [
+        "Kaker og desserter"
+      ],
+      "søtsaker": [
+        "Kaker og desserter"
+      ],
+      "søtt": [
+        "Kaker og desserter"
+      ],
+      "tapas": [
+        "Smårett"
+      ],
+      "tilbehør til brunsj": [
+        "Tilbehør"
+      ],
+      "tilbehør til buffet": [
+        "Tilbehør"
+      ],
+      "tilbehør til dessert": [
+        "Tilbehør"
+      ],
+      "tilbehør til fest": [
+        "Tilbehør"
+      ],
+      "tilbehør til fisk": [
+        "Tilbehør"
+      ],
+      "tilbehør til frokost": [
+        "Tilbehør"
+      ],
+      "tilbehør til grillmat": [
+        "Tilbehør"
+      ],
+      "tilbehør til hovedrett": [
+        "Tilbehør"
+      ],
+      "tilbehør til kjøtt": [
+        "Tilbehør"
+      ],
+      "tilbehør til lunsj": [
+        "Tilbehør"
+      ],
+      "tilbehør til middag": [
+        "Tilbehør"
+      ],
+      "tilbehør til ost": [
+        "Tilbehør"
+      ],
+      "tilbehør til pasta": [
+        "Tilbehør"
+      ],
+      "tilbehør til salat": [
+        "Tilbehør"
+      ],
+      "tilbehør til tapas": [
+        "Tilbehør"
+      ],
+      "tilbehør": [
+        "Tilbehør"
+      ],
+      "tradisjonell middag": [
+        "Gryter"
+      ],
+      "varmrett": [
+        "Gryter"
+      ],
+      "vennemiddag": [
+        "Gryter"
+      ],
+      "vintermat": [
+        "Gryter"
+      ]
+    }
+  }
+}
