@@ -1,27 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
-import type { Event, Wine } from '@/lib/types';
+import type { Event } from '@/lib/types';
 import { parseISO } from 'date-fns';
 import { redirect } from 'next/navigation';
 import CreateEventForm from './CreateEvent';
 import styles from './page.module.css';
-
-async function searchWines(query: string) {
-  'use server';
-
-  if (!query || query.length < 2) {
-    return [];
-  }
-
-  const supabase = await createClient();
-  const { data: wines, error } = await supabase.from('wines').select('name, id').ilike('name', `%${query}%`).limit(20);
-
-  if (error) {
-    console.error('[v0] Wine search error:', error);
-    return [];
-  }
-
-  return (wines as Pick<Wine, 'name' | 'id'>[]) || [];
-}
 
 async function createEvent(formData: FormData): Promise<Event> {
   'use server';
@@ -124,7 +106,6 @@ export default async function CreateEventPage({ params }: { params: Promise<{ id
       <section className={styles.section}>
         <CreateEventForm
           createEvent={createEvent}
-          searchWines={searchWines}
           groupId={id}
         />
       </section>

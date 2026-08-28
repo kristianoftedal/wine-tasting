@@ -29,6 +29,16 @@ type WineSearchProps = {
  * Typing "andre clouet" and backspacing to "andre" re-asks for a prefix we
  * already have, and folding means "André" and "andre" share one entry.
  */
+/**
+ * Norwegian price formatting. price_nok is a NUMERIC, so React renders 284.4 as
+ * "284.4" — a decimal point and a missing second decimal, where Vinmonopolet
+ * writes "284,40".
+ */
+const priceFormatter = new Intl.NumberFormat('nb-NO', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+
 function createQueryCache(max: number) {
   const entries = new Map<string, WineSearchResult[]>();
   return {
@@ -138,6 +148,10 @@ export function WineSearch({
         return;
       }
 
+      // With WINE_SEARCH_DEBOUNCE_MS at 0 this fires on the next tick rather than
+      // after a delay. Kept as a timer so the pending search is still
+      // cancellable by the next keystroke, and so restoring a delay is one
+      // constant away.
       debounceRef.current = setTimeout(() => runSearch(searchQuery), WINE_SEARCH_DEBOUNCE_MS);
     },
     [runSearch]
@@ -314,7 +328,7 @@ export function WineSearch({
                   {wine.district && <span className={styles.metaTag}>{wine.district}</span>}
                   {wine.year && <span className={styles.metaTag}>{wine.year}</span>}
                   {wine.volume && <span className={styles.metaTag}>{wine.volume} cl</span>}
-                  {wine.price && <span className={styles.metaTag}>Kr {wine.price}</span>}
+                  {wine.price !== null && <span className={styles.metaTag}>Kr {priceFormatter.format(wine.price)}</span>}
                   {wine.main_category && (
                     <span className={`${styles.metaTag} ${styles.categoryTag}`}>{wine.main_category}</span>
                   )}

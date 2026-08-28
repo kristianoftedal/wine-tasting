@@ -6,3 +6,5 @@ node_modules
 .env.local
 # Local data snapshots taken before destructive score migrations
 backups/
+.probe*.mjs
+recordings/
