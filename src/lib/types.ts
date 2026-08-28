@@ -24,6 +24,18 @@ export type GroupMember = {
   joined_at: string;
 };
 
+export type GroupInvite = {
+  id: string;
+  group_id: string;
+  token: string;
+  created_by: string;
+  created_at: string;
+  expires_at: string | null;
+  revoked_at: string | null;
+  uses: number;
+  last_used_at: string | null;
+};
+
 export type Wine = {
   id: string;
   product_id: string;

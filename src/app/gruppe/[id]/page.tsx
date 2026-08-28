@@ -1,8 +1,10 @@
+import { getActiveInvite } from '@/actions/group-invites';
 import { createClient } from '@/lib/supabase/server';
 import type { Event, Group, Profile } from '@/lib/types';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import InviteLink from './InviteLink';
 import Member from './Member';
 import styles from './page.module.css';
 
@@ -44,6 +46,9 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
   // Get events for this group
   const { data: events } = await supabase.from('events').select('*').eq('group_id', id);
 
+  // Only members can see (or create) the invite link
+  const activeInvite = isMember ? await getActiveInvite(id) : null;
+
   const addUser = async () => {
     'use server';
     const supabase = await createClient();
@@ -81,6 +86,17 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
           groupId={group.id}
         />
       </section>
+
+      {isMember && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Inviter venner</h2>
+          <InviteLink
+            groupId={group.id}
+            groupName={group.name}
+            initialInvite={activeInvite}
+          />
+        </section>
+      )}
 
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
