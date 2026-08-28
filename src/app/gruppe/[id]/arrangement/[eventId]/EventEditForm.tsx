@@ -111,9 +111,9 @@ export default function EventEditForm({
 
       <section className={styles.section}>
         <div className={styles.formGroup}>
-          <label className={styles.label}>Dato</label>
+          <label className={styles.label}>Dato og tid</label>
           <input
-            type="date"
+            type="datetime-local"
             value={date}
             onChange={e => setDate(e.target.value)}
             className={styles.dateInput}

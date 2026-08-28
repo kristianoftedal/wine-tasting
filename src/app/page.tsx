@@ -1,4 +1,4 @@
-import { FoodPairingSearch } from './components/FoodPairingSearch';
+import Link from 'next/link';
 import { Search } from './components/Search';
 import { UpcomingEvents } from './components/UpcomingEvents';
 import styles from './page.module.css';
@@ -9,18 +9,18 @@ export default async function Home() {
       <div className={styles.hero}>
         <h1 className={styles.title}>Velkommen til Smak Vin!</h1>
         <p className={styles.subtitle}>
-          Din personlige guide til vinsmaking. Utforsk, vurdere og forstå vin på en enkel og morsom måte.
+          Smaksnotater for vinklubben. Planlegg smakingene, vurder vinene sammen og se hva dere likte best.
         </p>
       </div>
 
       <div className={styles.searchSection}>
         <h2 className={styles.searchTitle}>Søk etter vin</h2>
         <Search />
-      </div>
-
-      <div className={styles.searchSection}>
-        <h2 className={styles.searchTitle}>Finn vin til maten</h2>
-        <FoodPairingSearch />
+        <Link
+          href="/mat-og-vin"
+          className={styles.searchLink}>
+          Vet du ikke hva du leter etter? Finn vin til maten →
+        </Link>
       </div>
 
       <UpcomingEvents />

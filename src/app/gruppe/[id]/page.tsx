@@ -44,7 +44,12 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
   const isMember = user ? userIds.includes(user.id) : false;
 
   // Get events for this group
-  const { data: events } = await supabase.from('events').select('*').eq('group_id', id);
+  // Newest first
+  const { data: events } = await supabase
+    .from('events')
+    .select('*')
+    .eq('group_id', id)
+    .order('date', { ascending: false });
 
   // Only members can see (or create) the invite link
   const activeInvite = isMember ? await getActiveInvite(id) : null;

@@ -33,6 +33,7 @@ export default async function Page() {
     .from("events")
     .select("*")
     .in("group_id", groupIds.length > 0 ? groupIds : ["00000000-0000-0000-0000-000000000000"])
+    .order("date", { ascending: false })
 
   const { data: tastings, error: tastingsError } = await supabase.from("tastings").select("*").eq("user_id", user.id)
 

@@ -22,6 +22,8 @@ export default function CreateEventForm({
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [wines, setWines] = useState<WineSelection[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string>();
   const router = useRouter();
 
   const addWine = (wine: WineSearchResult) => {
@@ -36,15 +38,25 @@ export default function CreateEventForm({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError(undefined);
+
     const formData = new FormData();
     formData.append('name', groupName);
     formData.append('description', description);
     formData.append('date', date);
     formData.append('groupId', groupId);
     wines.forEach(wine => formData.append('wines', wine.id));
-    const event = await createEvent(formData);
-    router.push(`/gruppe/${groupId}/arrangement/${event.id}`);
-    router.refresh();
+
+    try {
+      const event = await createEvent(formData);
+      // Straight into edit mode so wines and details can be adjusted right away
+      router.push(`/gruppe/${groupId}/arrangement/${event.id}?rediger=1`);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Kunne ikke opprette arrangementet');
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -77,6 +89,7 @@ export default function CreateEventForm({
           onChange={e => setDate(e.target.value)}
           placeholder="Dato"
           className={styles.input}
+          required
         />
       </div>
       <div className={styles.field}>
@@ -112,10 +125,12 @@ export default function CreateEventForm({
           </ul>
         </div>
       )}
+      {error && <p className={styles.error}>{error}</p>}
       <button
         type="submit"
-        className={`${styles.button} ${styles.submitButton}`}>
-        Opprett
+        className={`${styles.button} ${styles.submitButton}`}
+        disabled={isSubmitting}>
+        {isSubmitting ? 'Oppretter...' : 'Opprett'}
       </button>
     </form>
   );

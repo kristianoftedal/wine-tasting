@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import JoinGroup from './JoinGroup';
 import styles from './page.module.css';
@@ -16,6 +17,30 @@ const INVALID_MESSAGES: Record<string, string> = {
   expired: 'Denne invitasjonen har utløpt. Be om en ny lenke fra gruppen.',
   revoked: 'Denne invitasjonen er deaktivert. Be om en ny lenke fra gruppen.'
 };
+
+// Names the group in link previews, so a pasted invite reads as an invitation
+export async function generateMetadata({ params }: { params: Promise<{ token: string }> }): Promise<Metadata> {
+  const { token } = await params;
+  const supabase = await createClient();
+  if (!supabase) return {};
+
+  const { data } = await supabase.rpc('resolve_group_invite', { p_token: token });
+  const invite = (data as ResolvedInvite[])?.[0];
+
+  if (!invite || invite.status !== 'valid') {
+    return { title: 'Invitasjon – Smak Vin' };
+  }
+
+  const title = `Bli med i ${invite.group_name} på Smak Vin`;
+  const description = 'Du er invitert til vinklubben. Opprett konto, så er du med i gruppen med én gang.';
+
+  return {
+    title,
+    description,
+    openGraph: { title, description, type: 'website', locale: 'nb_NO', images: ['/images/wineclub.jpg'] },
+    twitter: { card: 'summary', title, description, images: ['/images/wineclub.jpg'] }
+  };
+}
 
 export default async function InvitePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;

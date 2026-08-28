@@ -4,17 +4,28 @@ import { createClient } from '@/lib/supabase/client';
 import type { Event, Wine } from '@/lib/types';
 import { decode } from 'he';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 import EventEditForm from './EventEditForm';
 import styles from './page.module.css';
 
-export default function EditArrangement({ params }: { params: Promise<{ id: string; eventId: string }> }) {
+/** Format an ISO timestamp for <input type="datetime-local"> in local time. */
+function toDateTimeLocal(iso: string | null): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function EventDetail({ params }: { params: Promise<{ id: string; eventId: string }> }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  // Set when arriving straight from "Opprett arrangement"
+  const startInEditMode = searchParams.get('rediger') === '1';
   const [event, setEvent] = useState<Event | null>(null);
   const [wines, setWines] = useState<Wine[]>([]);
   const [allWines, setAllWines] = useState<Wine[]>([]);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(startInEditMode);
   const [isDeleting, setIsDeleting] = useState(false);
   const [groupId, setGroupId] = useState('');
   const [eventId, setEventId] = useState('');
@@ -75,7 +86,7 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
       .update({
         name: data.name,
         description: data.description,
-        date: data.date ? new Date(data.date).toISOString() : null,
+        date: data.date ? new Date(data.date).toISOString() : event.date,
         wines: data.wines
       })
       .eq('id', eventId);
@@ -104,7 +115,14 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
       // Note: allWines doesn't need to be reloaded as it contains all wines
     }
 
+    leaveEditMode();
+  };
+
+  const leaveEditMode = () => {
     setIsEditing(false);
+    if (startInEditMode) {
+      router.replace(`/gruppe/${groupId}/arrangement/${eventId}`);
+    }
   };
 
   const handleDelete = async () => {
@@ -168,11 +186,11 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
           eventId={eventId}
           initialName={event.name}
           initialDescription={event.description || ''}
-          initialDate={event.date ? new Date(event.date).toISOString().split('T')[0] : ''}
+          initialDate={toDateTimeLocal(event.date)}
           initialWines={event.wines || []}
           allWines={allWines}
           onSave={handleSave}
-          onCancel={() => setIsEditing(false)}
+          onCancel={leaveEditMode}
         />
       </div>
     );
@@ -256,5 +274,18 @@ export default function EditArrangement({ params }: { params: Promise<{ id: stri
         </div>
       </section>
     </div>
+  );
+}
+
+export default function EditArrangement({ params }: { params: Promise<{ id: string; eventId: string }> }) {
+  return (
+    <Suspense
+      fallback={
+        <div className={styles.container}>
+          <p>Laster arrangement...</p>
+        </div>
+      }>
+      <EventDetail params={params} />
+    </Suspense>
   );
 }

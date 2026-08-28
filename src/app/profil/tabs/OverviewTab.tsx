@@ -23,6 +23,22 @@ function formatDate(dateString: string): string {
 }
 
 export default function OverviewTab({ tastings, wines, groups, events }: OverviewTabProps) {
+  // Show what is coming up; if nothing is planned, fall back to the events that
+  // just happened so a freshly created event is always visible here.
+  const { shownEvents, showingUpcoming } = useMemo(() => {
+    const now = Date.now()
+    const upcoming = events
+      .filter((e) => new Date(e.date).getTime() >= now)
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+
+    if (upcoming.length > 0) {
+      return { shownEvents: upcoming.slice(0, 3), showingUpcoming: true }
+    }
+
+    const past = [...events].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    return { shownEvents: past.slice(0, 3), showingUpcoming: false }
+  }, [events])
+
   const avgScores = useMemo(() => {
     if (tastings.length === 0) return null
 
@@ -144,12 +160,12 @@ export default function OverviewTab({ tastings, wines, groups, events }: Overvie
         </div>
 
         <div className={styles.linkCard}>
-          <h3 className={styles.linkTitle}>Kommende arrangement</h3>
+          <h3 className={styles.linkTitle}>{showingUpcoming ? "Kommende arrangement" : "Siste arrangement"}</h3>
           <div className={styles.linkList}>
-            {events.length === 0 ? (
+            {shownEvents.length === 0 ? (
               <p className={styles.emptyText}>Ingen arrangement</p>
             ) : (
-              events.slice(0, 3).map((event) => (
+              shownEvents.map((event) => (
                 <div key={event.id} className={styles.eventItemWrapper}>
                   <Link href={`/arrangement/${event.id}`} className={styles.linkItem}>
                     <span className={styles.eventDate}>{formatDate(event.date)}</span>

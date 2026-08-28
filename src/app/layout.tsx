@@ -4,10 +4,30 @@ import AppBar from './components/AppBar';
 import './globals.css';
 import { Provider } from './provider';
 
+const SITE_NAME = 'Smak Vin';
+const TITLE = 'Smak Vin – smaksnotater for vinklubben';
+const DESCRIPTION =
+  'Planlegg vinsmakinger med vinklubben, skriv smaksnotatene sammen og se hvilke viner dere likte best.';
+
 export const metadata: Metadata = {
-  title: 'Smak Vin - Din personlige guide til vinsmaking',
-  description: 'Utforsk, vurdere og forstå vin på en enkel og morsom måte',
-  generator: 'v0.app',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tasting-wine.vercel.app'),
+  title: TITLE,
+  description: DESCRIPTION,
+  // Link previews (WhatsApp, Slack, iMessage) read these
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    locale: 'nb_NO',
+    type: 'website',
+    images: ['/images/wineclub.jpg']
+  },
+  twitter: {
+    card: 'summary',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ['/images/wineclub.jpg']
+  },
   icons: {
     icon: [
       {

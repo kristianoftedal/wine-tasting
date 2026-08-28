@@ -124,6 +124,11 @@ export default function AppBar() {
 
         <div className={styles.actions}>
           <button
+            onClick={() => router.push('/mat-og-vin')}
+            className={`${styles.button} ${styles.buttonOutline}`}>
+            Mat og vin
+          </button>
+          <button
             onClick={() => router.push('/toppliste')}
             className={`${styles.button} ${styles.buttonOutline}`}>
             Toppliste
@@ -133,6 +138,11 @@ export default function AppBar() {
 
         <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ''}`}>
           <nav className={styles.mobileNav}>
+            <button
+              onClick={() => navigateTo('/mat-og-vin')}
+              className={styles.mobileNavItem}>
+              Mat og vin
+            </button>
             <button
               onClick={() => navigateTo('/toppliste')}
               className={styles.mobileNavItem}>
