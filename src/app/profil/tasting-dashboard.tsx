@@ -1,5 +1,6 @@
 "use client"
 import type { Group, Tasting, Wine, Event } from "@/lib/types"
+import type { TasteSummary } from "@/lib/tasteSummary"
 import { useMemo, useState } from "react"
 import { useAtom } from "jotai"
 import { wineAtom } from "@/app/store/tasting"
@@ -13,11 +14,19 @@ interface TastingDashboardProps {
   tastings: Tasting[]
   wines: Wine[]
   allWines: Wine[]
+  tasteSummaries: TasteSummary[]
   groups: Group[]
   events: Event[]
 }
 
-function TastingDashboard({ tastings, wines, allWines: allWinesProp, groups, events }: TastingDashboardProps) {
+function TastingDashboard({
+  tastings,
+  wines,
+  allWines: allWinesProp,
+  tasteSummaries,
+  groups,
+  events,
+}: TastingDashboardProps) {
   const [allWinesFromAtom] = useAtom(wineAtom)
   const allWines = allWinesProp.length > 0 ? allWinesProp : allWinesFromAtom
   const [activeTab, setActiveTab] = useState<"overview" | "awards" | "karakter" | "history">("overview")
@@ -83,7 +92,7 @@ function TastingDashboard({ tastings, wines, allWines: allWinesProp, groups, eve
 
       {activeTab === "awards" && <AwardsTab tastings={sortedTastings} wines={wines} />}
 
-      {activeTab === "karakter" && <PreferenceTab tastings={sortedTastings} wines={wines} allWines={allWines} />}
+      {activeTab === "karakter" && <PreferenceTab tastings={sortedTastings} wines={wines} allWines={allWines} tasteSummaries={tasteSummaries} />}
 
       {activeTab === "history" && <HistoryTab tastings={sortedTastings} wines={wines} />}
     </div>

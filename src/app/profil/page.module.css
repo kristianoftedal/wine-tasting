@@ -1224,3 +1224,71 @@
     padding: 0.75rem 1rem;
   }
 }
+
+/* ── Smaken din, oppsummert ──────────────────────────────────────────────── */
+.tasteSummaryList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.tasteSummary {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1rem 1.125rem;
+  background: var(--background);
+}
+
+.tasteSummaryHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tasteSummaryTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.tasteSummaryCount {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.traitChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.625rem;
+}
+
+.traitChip {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.tasteSummaryText {
+  margin-top: 0.75rem;
+  font-size: 0.925rem;
+  line-height: 1.6;
+  color: var(--foreground);
+}
+
+@media (max-width: 640px) {
+  .tasteSummary {
+    padding: 0.875rem;
+  }
+
+  .tasteSummaryText {
+    font-size: 0.875rem;
+  }
+}

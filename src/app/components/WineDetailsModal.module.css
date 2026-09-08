@@ -278,12 +278,98 @@
   background-color: var(--muted);
 }
 
+
+/* Grab handle — only rendered visually in the mobile bottom sheet */
+.grabberArea {
+  display: none;
+}
+
+.actionSlot {
+  flex: 1;
+}
+
+/* Loading skeleton, shown while the full wine record is fetched */
+.skeleton {
+  background: var(--muted);
+  border-radius: 0.5rem;
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+}
+
+.skeletonImage {
+  height: 12rem;
+}
+
+.skeletonLine {
+  height: 1rem;
+}
+
+.skeletonLine:last-child {
+  width: 60%;
+}
+
+@keyframes skeletonPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 /* Mobile responsiveness */
 @media (max-width: 640px) {
+  /*
+   * Bottom sheet: anchored to the bottom edge, full width, slides up. The
+   * centring transform from the desktop rule has to go — the swipe-to-dismiss
+   * gesture writes translateY() straight onto this element.
+   */
   .content {
-    width: 95vw;
-    max-height: 90vh; /* Use more screen space on mobile */
-    border-radius: 0.5rem;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    max-height: 92dvh;
+    border-radius: 1rem 1rem 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    overscroll-behavior: contain;
+    animation: sheetShow 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .grabberArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Sticks with the header so the sheet stays dismissable while scrolled */
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    padding: 0.625rem 0 0.25rem;
+    background: var(--background, white);
+    border-radius: 1rem 1rem 0 0;
+    cursor: grab;
+    touch-action: none; /* the gesture owns the pointer; no scroll hijack */
+  }
+
+  .grabber {
+    width: 2.25rem;
+    height: 0.25rem;
+    border-radius: 9999px;
+    background: var(--border, #e5e7eb);
+  }
+
+  .header {
+    position: sticky;
+    top: 2.25rem; /* below the grab handle */
+    z-index: 5;
+    background: var(--background, white);
+  }
+
+  .closeButton {
+    top: 1.75rem;
   }
 
   .header {
@@ -398,5 +484,14 @@
 
   .characteristicsGrid {
     grid-template-columns: repeat(2, 1fr); /* Back to 2 columns on very small screens */
+  }
+}
+
+@keyframes sheetShow {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
   }
 }

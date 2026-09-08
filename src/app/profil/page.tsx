@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { buildTasteSummaries } from "@/lib/tasteSummary"
 import type { Event, Group, Profile, Tasting, Wine } from "@/lib/types"
 import { redirect } from "next/navigation"
 import styles from "./page.module.css"
@@ -53,6 +54,10 @@ export default async function Page() {
 
   const { data: allWines } = await supabase.from("wines").select("*").limit(500)
 
+  // Built here rather than in the client tab: the lemmatiser it uses pulls in
+  // `natural`, which has no business in the browser bundle.
+  const tasteSummaries = buildTasteSummaries((tastings as Tasting[]) || [], (wines as Wine[]) || [])
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -64,6 +69,7 @@ export default async function Page() {
         tastings={(tastings as Tasting[]) || []}
         wines={(wines as Wine[]) || []}
         allWines={(allWines as Wine[]) || []}
+        tasteSummaries={tasteSummaries}
         groups={(groups as Group[]) || []}
         events={(events as Event[]) || []}
       />

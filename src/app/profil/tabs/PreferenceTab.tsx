@@ -9,6 +9,7 @@ import {
   type RecommendationWeights,
   type WineSimilarityScore
 } from '@/lib/recommendation-types';
+import type { TasteSummary } from '@/lib/tasteSummary';
 import type { Tasting, Wine } from '@/lib/types';
 import { decode } from 'he';
 import Image from 'next/image';
@@ -26,6 +27,8 @@ interface PreferenceTabProps {
   tastings: Tasting[];
   wines: Wine[];
   allWines: Wine[];
+  /** One plain-language paragraph per wine type, built server-side. */
+  tasteSummaries: TasteSummary[];
 }
 
 interface CategoryRecommendations {
@@ -46,11 +49,14 @@ const INITIAL_RECS: CategoryRecommendations = {
 
 const SHOW_MORE_STEP = 10;
 
+/** Norwegian decimals, so the header reads "snitt 8,5" like the paragraph below it. */
+const karakterFormatter = new Intl.NumberFormat('nb-NO', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
 const useLocalSimilarity =
   typeof window !== 'undefined' &&
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
-export default function PreferenceTab({ tastings, wines, allWines }: PreferenceTabProps) {
+export default function PreferenceTab({ tastings, wines, allWines, tasteSummaries }: PreferenceTabProps) {
   const [rodvinRecs, setRodvinRecs] = useState<CategoryRecommendations>(INITIAL_RECS);
   const [hvitvinRecs, setHvitvinRecs] = useState<CategoryRecommendations>(INITIAL_RECS);
   const [musserendeRecs, setMusserendeRecs] = useState<CategoryRecommendations>(INITIAL_RECS);
@@ -66,7 +72,8 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
     const highRatedTastings = tastings.filter(t => (t.karakter || 0) >= 8);
 
     highRatedTastings.forEach(t => {
-      const wine = wines.find(w => w.product_id === t.product_id);
+      // Tastings point at wines by wine_id -> wines.id; product_id is not on the row.
+      const wine = wines.find(w => w.id === (t as Tasting & { wine_id?: string }).wine_id);
       const styleName = wine?.main_category;
       if (!styleName || styleName === 'Ukjent') {
         return;
@@ -296,6 +303,46 @@ export default function PreferenceTab({ tastings, wines, allWines }: PreferenceT
 
   return (
     <div className={styles.karakterContent}>
+      <div className={styles.preferencesCard}>
+        <h3 className={styles.sectionTitle}>Smaken din, oppsummert</h3>
+        <p className={styles.sectionDescription}>
+          Basert på vinene du har gitt høyest karakter — én oppsummering per vintype
+        </p>
+        {tasteSummaries.length === 0 ? (
+          <p className={styles.emptyText}>Gi noen viner karakter for å få en oppsummering av smaken din</p>
+        ) : (
+          <div className={styles.tasteSummaryList}>
+            {tasteSummaries.map(summary => (
+              <article
+                key={summary.category}
+                className={styles.tasteSummary}>
+                <div className={styles.tasteSummaryHeader}>
+                  <h4 className={styles.tasteSummaryTitle}>{summary.category}</h4>
+                  <span className={styles.tasteSummaryCount}>
+                    {summary.ratedCount} vurdert
+                    {summary.avgKarakter !== null && ` · snitt ${karakterFormatter.format(summary.avgKarakter)}`}
+                  </span>
+                </div>
+
+                {summary.traits.length > 0 && (
+                  <div className={styles.traitChips}>
+                    {summary.traits.map(trait => (
+                      <span
+                        key={trait}
+                        className={styles.traitChip}>
+                        {trait}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <p className={styles.tasteSummaryText}>{summary.text}</p>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+
       <div className={styles.preferencesCard}>
         <h3 className={styles.sectionTitle}>Dine stilpreferanser</h3>
         {stylePreferences.length === 0 ? (
