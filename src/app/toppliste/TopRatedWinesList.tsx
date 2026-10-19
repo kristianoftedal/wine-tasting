@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import type { Wine } from "@/lib/types"
-import Image from "next/image"
-import he from "he"
-import WineDetailsModal from "@/app/components/WineDetailsModal"
-import styles from "./page.module.css"
+import { useState } from 'react'
+import type { Wine } from '@/lib/types'
+import Image from 'next/image'
+import he from 'he'
+import WineDetailsModal from '@/app/components/WineDetailsModal'
+import styles from './page.module.css'
 
-interface TopRatedWine {
+export interface TopRatedWine {
   wine: Wine
   average_karakter: number
   tasting_count: number
@@ -19,23 +19,15 @@ interface TopRatedWinesListProps {
 
 export default function TopRatedWinesList({ topRatedWines }: TopRatedWinesListProps) {
   const [selectedWine, setSelectedWine] = useState<Wine | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const handleWineClick = (wine: Wine) => {
-    setSelectedWine(wine)
-    setIsModalOpen(true)
-  }
 
   return (
     <>
       <div className={styles.list}>
         {topRatedWines.map((item, index) => (
           <div
-            key={`${item.wine.product_id}-${item.wine.year || "no-year"}-${index}`}
+            key={item.wine.id}
             className={styles.wineCard}
-            onClick={() => handleWineClick(item.wine)}
-            style={{ cursor: "pointer" }}
-          >
+            onClick={() => setSelectedWine(item.wine)}>
             <div className={styles.rank}>#{index + 1}</div>
 
             <div className={styles.wineImage}>
@@ -60,7 +52,7 @@ export default function TopRatedWinesList({ topRatedWines }: TopRatedWinesListPr
               <div className={styles.scoreValue}>{item.average_karakter.toFixed(1)}</div>
               <div className={styles.scoreSuffix}>/10</div>
               <div className={styles.tastingCount}>
-                {item.tasting_count} {item.tasting_count === 1 ? "vurdering" : "vurderinger"}
+                {item.tasting_count} {item.tasting_count === 1 ? 'vurdering' : 'vurderinger'}
               </div>
             </div>
           </div>
@@ -69,11 +61,8 @@ export default function TopRatedWinesList({ topRatedWines }: TopRatedWinesListPr
 
       <WineDetailsModal
         wine={selectedWine}
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false)
-          setSelectedWine(null)
-        }}
+        isOpen={selectedWine !== null}
+        onClose={() => setSelectedWine(null)}
       />
     </>
   )

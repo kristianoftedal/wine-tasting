@@ -72,10 +72,10 @@ export default function PreferenceTab({ tastings, wines, allWines, tasteSummarie
     const highRatedTastings = tastings.filter(t => (t.karakter || 0) >= 8);
 
     highRatedTastings.forEach(t => {
-      // Tastings point at wines by wine_id -> wines.id; product_id is not on the row.
-      const wine = wines.find(w => w.id === (t as Tasting & { wine_id?: string }).wine_id);
+      const wine = wines.find(w => w.id === t.wine_id);
       const styleName = wine?.main_category;
-      if (!styleName || styleName === 'Ukjent') {
+      // main_category is free text in the DB, wider than WineType.
+      if (!styleName || styleName === ('Ukjent' as string)) {
         return;
       }
 

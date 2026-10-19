@@ -44,13 +44,6 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
 
   const formattedDate = format(new Date(event.date), 'EEEE dd. MMMM yyyy', { locale: nb });
 
-  const getWineImage = (wine: Wine) => {
-    if (wine.images && wine.images.length > 0) {
-      return wine.images[0];
-    }
-    return null;
-  };
-
   const getCategoryColor = (category: string | undefined | null) => {
     if (!category) return { bg: '#f3f4f6', text: '#6b7280' };
     const lowerCategory = category.toLowerCase();
@@ -209,7 +202,6 @@ export default async function Arrangement({ params }: { params: Promise<{ eventI
           {sortedWines.map((wine: Wine, index: number) => {
             const isTasted = tastedWineIds.has(wine.id);
             const isNextSuggested = nextSuggestedWine?.id === wine.id;
-            const wineImage = getWineImage(wine);
             const categoryColors = getCategoryColor(wine.main_category);
             const formattedPrice = formatPrice(wine.price);
 

@@ -37,38 +37,10 @@ export const FlavorSelection = ({ type = 'lukt', vintype }: Props) => {
     });
   };
 
-  const onChangeIntensity = (value: 'lav' | 'middels' | 'høy') => {
-    setTastingState((prev: TastingFormData) => {
-      if (type === 'lukt') return { ...prev, luktIntensitet: value };
-      return { ...prev, smaksIntensitet: value };
-    });
-  };
-
-  const currentIntensity = type === 'lukt' ? tastingState.luktIntensitet : tastingState.smaksIntensitet;
   const selectedFlavorsList = tastingState[type === 'lukt' ? 'selectedFlavorsLukt' : 'selectedFlavorsSmak'] || [];
   const selectedFlavors = selectedFlavorsList.map(x => x.flavor);
   return (
     <div className={styles.flavorSelection}>
-      <div className={styles.intensitySection}>
-        <div className={styles.intensityLabel}>Intensitet</div>
-        <div className={styles.intensityButtons}>
-          <button
-            className={`${styles.intensityButton} ${currentIntensity === 'lav' ? styles.active : ''}`}
-            onClick={() => onChangeIntensity('lav')}>
-            Lav
-          </button>
-          <button
-            className={`${styles.intensityButton} ${currentIntensity === 'middels' ? styles.active : ''}`}
-            onClick={() => onChangeIntensity('middels')}>
-            Middels
-          </button>
-          <button
-            className={`${styles.intensityButton} ${currentIntensity === 'høy' ? styles.active : ''}`}
-            onClick={() => onChangeIntensity('høy')}>
-            Høy
-          </button>
-        </div>
-      </div>
       <div
         className={styles.commentField}
         style={{ marginBottom: '1rem' }}>

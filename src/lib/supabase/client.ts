@@ -1,8 +1,11 @@
 import { createBrowserClient } from "@supabase/ssr"
+import type { SupabaseClient } from "@supabase/supabase-js"
 
-let client: ReturnType<typeof createBrowserClient> | null = null
+// Not `ReturnType<typeof createBrowserClient>`: that erases the generics to `any`,
+// so typed calls like `.single<Event>()` fail to compile.
+let client: SupabaseClient | null = null
 
-export function createClient() {
+export function createClient(): SupabaseClient {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 

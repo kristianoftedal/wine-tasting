@@ -2,8 +2,6 @@
 import type { Group, Tasting, Wine, Event } from "@/lib/types"
 import type { TasteSummary } from "@/lib/tasteSummary"
 import { useMemo, useState } from "react"
-import { useAtom } from "jotai"
-import { wineAtom } from "@/app/store/tasting"
 import styles from "./page.module.css"
 import OverviewTab from "./tabs/OverviewTab"
 import AwardsTab from "./tabs/AwardsTab"
@@ -22,13 +20,11 @@ interface TastingDashboardProps {
 function TastingDashboard({
   tastings,
   wines,
-  allWines: allWinesProp,
+  allWines,
   tasteSummaries,
   groups,
   events,
 }: TastingDashboardProps) {
-  const [allWinesFromAtom] = useAtom(wineAtom)
-  const allWines = allWinesProp.length > 0 ? allWinesProp : allWinesFromAtom
   const [activeTab, setActiveTab] = useState<"overview" | "awards" | "karakter" | "history">("overview")
 
   const sortedTastings = useMemo(() => {

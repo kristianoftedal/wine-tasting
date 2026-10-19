@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type React from 'react';
 import AppBar from './components/AppBar';
 import './globals.css';
@@ -47,6 +47,13 @@ export const metadata: Metadata = {
   }
 };
 
+// No maximum-scale: it blocks pinch-zoom on Android. Focus-zoom on iOS is
+// prevented instead by keeping form controls at 16px (see globals.css).
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1
+};
+
 export default function RootLayout({
   children
 }: Readonly<{
@@ -54,9 +61,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="no">
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
       <Provider>
         <body className={`font-sans antialiased`}>
           <AppBar />

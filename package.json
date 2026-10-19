@@ -16,6 +16,10 @@
     "make-scoring-slide": "tsx scripts/make-scoring-slide.ts",
     "make-search-slide": "tsx scripts/make-search-slide.ts",
     "record-search-comparison": "tsx scripts/record-search-comparison.ts",
+    "build-note-style": "tsx scripts/build-note-style.ts",
+    "audit-notes": "tsx scripts/enrich-wine-notes.ts --audit",
+    "enrich-notes": "tsx scripts/enrich-wine-notes.ts",
+    "enrich-event-notes": "tsx scripts/enrich-wine-notes.ts --events --execute",
     "test": "vitest",
     "test:run": "vitest run"
   },

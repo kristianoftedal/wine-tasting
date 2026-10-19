@@ -1,7 +1,9 @@
+import { enrichEventNotes } from '@/actions/note-enrichment';
 import { createClient } from '@/lib/supabase/server';
 import type { Event } from '@/lib/types';
 import { parseISO } from 'date-fns';
 import { redirect } from 'next/navigation';
+import { after } from 'next/server';
 import CreateEventForm from './CreateEvent';
 import styles from './page.module.css';
 
@@ -85,6 +87,31 @@ async function createEvent(formData: FormData): Promise<Event> {
   if (!event) {
     throw new Error('Failed to create event: No event returned');
   }
+
+  // Fill in the thin reference notes for the wines that were just scheduled.
+  //
+  // This is the one moment the database learns which bottles will actually be
+  // poured, and it happens days before anyone tastes them. Nearly half the
+  // catalogue has a note too vague to grade a taster against, but only a few
+  // dozen of those wines have ever reached a user — so enrichment is driven by
+  // events rather than by sweeping the catalogue (src/lib/noteEnrichment.ts).
+  //
+  // after() so the organiser is not held while ~8 seconds per wine of research
+  // runs, and try/catch because a failed enrichment must never look like a
+  // failed event. Anything missed here is picked up by the upcoming-event
+  // sweep, which is also what covers wines added later from the edit screen.
+  after(async () => {
+    try {
+      const result = await enrichEventNotes(event.id);
+      console.log('[note-enrichment] event', event.id, {
+        processed: result.processed,
+        enriched: result.enriched,
+        rejected: result.rejected
+      });
+    } catch (enrichmentError) {
+      console.error('[note-enrichment] event', event.id, enrichmentError);
+    }
+  });
 
   return event;
 }

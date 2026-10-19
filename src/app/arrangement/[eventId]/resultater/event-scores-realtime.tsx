@@ -19,7 +19,7 @@ type TastingScore = {
   fylde_score: number | null;
   sodme_score: number | null;
   garvestoffer_score: number | null;
-  attribute_score: number | null;
+  attribute_score?: number | null; // derived client-side, not a column
   karakter: number | null;
   farge: string | null;
   lukt: string | null;

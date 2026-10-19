@@ -195,3 +195,14 @@ h6 {
 [data-slot='dialog-content'] {
   z-index: 9999 !important;
 }
+
+/* iOS (Safari and Chrome, both WebKit) zooms into any focused form control
+   whose font-size is below 16px. !important because module classes outrank
+   element selectors. Touch devices only, so desktop keeps the designed sizes. */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}

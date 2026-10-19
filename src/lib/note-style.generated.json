@@ -1,0 +1,434 @@
+{
+  "generatedAt": "2026-09-18T09:31:37.798Z",
+  "source": "scripts/build-note-style.ts",
+  "corpusSize": 50057,
+  "strongNoteCount": 5661,
+  "limits": {
+    "smell": {
+      "maxChars": 100,
+      "medianChars": 84,
+      "maxSentences": 2
+    },
+    "taste": {
+      "maxChars": 100,
+      "medianChars": 92,
+      "maxSentences": 2
+    }
+  },
+  "openers": {
+    "smell": [
+      "aroma av",
+      "aroma med",
+      "aroma preget",
+      "ung og",
+      "fruktig aroma",
+      "litt utviklet",
+      "fruktig og",
+      "duft av",
+      "fokusert aroma",
+      "sval og",
+      "sval aroma",
+      "nyansert og"
+    ],
+    "taste": [
+      "saftig og",
+      "ung og",
+      "litt utviklet",
+      "saftig med",
+      "fruktig og",
+      "fyldig og",
+      "frisk og",
+      "kremet og",
+      "smak av",
+      "saftig, litt",
+      "ung, saftig",
+      "preg av"
+    ]
+  },
+  "categories": {
+    "Rosévin": {
+      "vocabulary": [
+        "urt",
+        "bær",
+        "eple",
+        "frukt",
+        "sitrus",
+        "blomst",
+        "fersken",
+        "mineral",
+        "nøtt",
+        "rips",
+        "jordbær",
+        "krydder",
+        "drops",
+        "moden",
+        "nype",
+        "bringebær",
+        "nesle",
+        "solbær",
+        "steinfrukt",
+        "kirsebær",
+        "rose",
+        "mandel",
+        "pære",
+        "grapefrukt",
+        "salt",
+        "marmelade",
+        "plomme",
+        "stikkelsbær",
+        "melon",
+        "pepper",
+        "lime",
+        "paprika",
+        "appelsin",
+        "tropisk",
+        "nektarin",
+        "granateple",
+        "kjeks",
+        "balsam",
+        "tranebær",
+        "fiken",
+        "anis",
+        "aprikos",
+        "kamfer",
+        "gress",
+        "fat",
+        "flint",
+        "fiol",
+        "te",
+        "stein",
+        "honning",
+        "rosin",
+        "kvede",
+        "kandisert",
+        "edelråte",
+        "barnål",
+        "blod",
+        "karamell",
+        "vanilje",
+        "sevje",
+        "tørket"
+      ],
+      "exemplars": [
+        {
+          "name": "Rosaura 2024",
+          "smell": "Fruktig og ungdommelig aroma av modne røde bær og eple, litt nype, urter, nøtt og blomst.",
+          "taste": "Fruktig og litt krydret preg av modne jordbær og eple, litt nype, nøtt, svale urter og krydder."
+        },
+        {
+          "name": "Frey Pinot Noir Rosé 2024",
+          "smell": "Fruktig og ferskt preg av sitrus, røde bær og eple, litt rips, fersken, grønn urt, nøtt og blomst.",
+          "taste": "Saftig og friskt preg av sitrus, rips, litt jordbær og eple, hint av grønn urt, nøtt og mineraler."
+        },
+        {
+          "name": "Valenti Poesia Rosato 2024",
+          "smell": "Ung og litt krydret aroma av røde bær, eple og sitrus, litt nype, nøtt, urter og roser.",
+          "taste": "Saftig, ørlite saltaktig og krydret, preg av rips, eple, sitrus og nype, litt nøtt og grønn urt."
+        },
+        {
+          "name": "Leitz Rheingau Pinot Noir Rosé 2024",
+          "smell": "Aroma av modne røde bær, litt eple, sitrus, fersken og urter, hint av blomster og mineraler.",
+          "taste": "Saftig, myk og fruktig, ungt preg av eple og jordbær, litt sitrus, fersken, mineraler og urter."
+        },
+        {
+          "name": "Ioppa Vino Rosato",
+          "smell": "Fruktig og litt krydret aroma av modent eple og sitrus, litt nype, nøtt, svale urter og blomster.",
+          "taste": "Saftig, ung og fruktig med litt fasthet, preg av eple, røde bær, litt sitrus, nøtt og krydder."
+        },
+        {
+          "name": "Collemattoni Toscano Rosato 2020",
+          "smell": "Frisk og floral. Sitrus, fersken og appelsinskall. Jordbær, kirsebær og nype. Vanilje.",
+          "taste": "Frisk og fruktig. Sitrus og stenfrukt. Jordbær, kirsebær og nype. Mineralsk avslutning."
+        }
+      ]
+    },
+    "Rødvin": {
+      "vocabulary": [
+        "bær",
+        "urt",
+        "frukt",
+        "krydder",
+        "fat",
+        "moden",
+        "tørket",
+        "lakris",
+        "kirsebær",
+        "blomst",
+        "kamfer",
+        "vanilje",
+        "lær",
+        "tobakk",
+        "plomme",
+        "jordbær",
+        "bringebær",
+        "morell",
+        "te",
+        "marmelade",
+        "pepper",
+        "skogbunn",
+        "fiol",
+        "solbær",
+        "sjokolade",
+        "skogsbær",
+        "bjørnebær",
+        "krekling",
+        "nype",
+        "paprika",
+        "anis",
+        "rips",
+        "blåbær",
+        "rosin",
+        "balsam",
+        "sedertre",
+        "mineral",
+        "rose",
+        "tjære",
+        "eik",
+        "røyk",
+        "sopp",
+        "kaffe",
+        "mandel",
+        "mynte",
+        "kakao",
+        "eukalyptus",
+        "nøtt",
+        "drops",
+        "jord",
+        "fatpreg",
+        "nellik",
+        "kanel",
+        "oliven",
+        "kjøtt",
+        "karamell",
+        "barnål",
+        "fiken",
+        "tranebær",
+        "granateple"
+      ],
+      "exemplars": [
+        {
+          "name": "Enzo Bartoli Langhe Nebbiolo",
+          "smell": "Litt krydret aroma av modne røde bær, te, litt tørket frukt, kamfer, tobakk, roser og fat.",
+          "taste": "Fast med god fylde, nyansert preg av jordbær, tørket frukt, litt tobakk, kamfer, te, urter og fat."
+        },
+        {
+          "name": "Palladino Barolo 2021",
+          "smell": "Aroma med modent preg av tørket frukt, jordbær, nype og te, innslag av fat, skogbunn, kamfer og lær.",
+          "taste": "Litt utviklet, fyldig og fast, preg av tørket frukt, røde bær, nype, te, litt kamfer, urt og fat."
+        },
+        {
+          "name": "Cant. Guidetti Boca 2018",
+          "smell": "Litt utviklet og nyansert aroma av modne bær, nype og tørket frukt, litt skogbunn, lær, urt og fat.",
+          "taste": "Sammensatt og fast, preg av modne røde bær, syltet frukt og nype, litt te, tobakk, urt og fat."
+        },
+        {
+          "name": "Der Einklang Organic Pinot Noir 2023",
+          "smell": "Ungdommelig preg av modne jordbær, kirsebær og rips, litt syltet frukt, skogbunn, kamfer og blomst.",
+          "taste": "Fruktig og litt krydret preg av modne røde bær, litt syltede jordbær, kirsebær, kamfer og urter."
+        },
+        {
+          "name": "Fernández de Pierola Rioja Gran Reserva 2008",
+          "smell": "Utviklet og krydret preg av tørket frukt, skogbunn, kaffe og lær, samt kamfer, te, fat og vanilje.",
+          "taste": "Moden, helt utviklet og nyansert, preg av tørket frukt, te, kamfer, urt, vanilje og fat, god lengde."
+        },
+        {
+          "name": "The Capeograhpy Cape Red Blend 2023",
+          "smell": "Ungdommelig preg av modne røde bær, innslag av jordbær, syltet frukt, fat, kamfer, lær og blomst.",
+          "taste": "Saftig med litt krydret preg av modne røde bær, litt syltet frukt, kamfer, urter, lakris og fat."
+        }
+      ]
+    },
+    "Hvitvin": {
+      "vocabulary": [
+        "sitrus",
+        "eple",
+        "mineral",
+        "nøtt",
+        "urt",
+        "frukt",
+        "krydder",
+        "blomst",
+        "moden",
+        "fersken",
+        "fat",
+        "steinfrukt",
+        "honning",
+        "pære",
+        "tropisk",
+        "smør",
+        "aprikos",
+        "nesle",
+        "salt",
+        "stikkelsbær",
+        "lime",
+        "tørket",
+        "flint",
+        "kamfer",
+        "sitron",
+        "sjø",
+        "ananas",
+        "vanilje",
+        "mandel",
+        "appelsin",
+        "fløte",
+        "pasjonsfrukt",
+        "pepper",
+        "plomme",
+        "lychee",
+        "røyk",
+        "grapefrukt",
+        "kalk",
+        "melon",
+        "stein",
+        "kvede",
+        "te",
+        "sopp",
+        "anis",
+        "kandisert",
+        "mango",
+        "eik",
+        "balsam",
+        "hylleblomst",
+        "marmelade",
+        "drops",
+        "asparges",
+        "fennikel",
+        "nektarin",
+        "fatpreg",
+        "mais",
+        "karamell",
+        "ristet",
+        "kjeks",
+        "rose"
+      ],
+      "exemplars": [
+        {
+          "name": "Montemercurio Vin Santo di Montepulciano 1992",
+          "smell": "Appelsin, tørket frukt, fiken og honning. Rosiner, skogbunn og nøtter. Karamell og kakao.",
+          "taste": "Appelsin, tørket frukt, fiken og honning. Rosiner, skogbunn og nøtter. Karamell og kakao."
+        },
+        {
+          "name": "Allram Riesling Gaisberg Erste Lage 2021",
+          "smell": "Fruktig og krydret aroma av fersken, sitrus og eple, litt mineraler, blomst, honning, nøtt og urt.",
+          "taste": "Lang, frisk og mineralsk, preg av steinfrukt, sitrus og eple, litt krydder, honning, nøtt og urt."
+        },
+        {
+          "name": "Colombo La Belle de Mai Saint Peray 2023",
+          "smell": "Litt krydret preg av modne epler, steinfrukt og sitrus, litt fat, nøtt, kamfer, flintrøyk og fløte.",
+          "taste": "Fyldig, lang og litt feit, preg av modne epler, sitrus og fersken, litt fat, flint, kamfer og nøtt."
+        },
+        {
+          "name": "Klumpp Muschelkalk Chardonnay 2024",
+          "smell": "Sammensatt preg av modne epler, sitron og fersken, litt nøtt, flintaktige mineraler, fløte og fat.",
+          "taste": "Saftig, mineralsk og frisk, preg av moden sitrus og eple, litt fat, bakverk, urter, fløte og nøtt."
+        },
+        {
+          "name": "Bonterra Estate Collection Chardonnay 2022",
+          "smell": "Modent og krydret preg av eple, sitrus og fersken, tydelig fat, vanilje, litt smør, fløte og nøtt.",
+          "taste": "God fylde, litt feit og krydret, preg av eple, fersken, fat, smør og vanilje, litt nøtt og honning."
+        },
+        {
+          "name": "Zonnebloem Chardonnay 2024",
+          "smell": "Aroma av sitrus, eple, litt mais og tropisk frukt, innslag av mineraler, urter, smør og fat.",
+          "taste": "Ung og fruktig, preg av sitrus og eple, litt gul steinfrukt, litchi og mais, innslag av smør og fat."
+        }
+      ]
+    },
+    "Musserende vin": {
+      "vocabulary": [
+        "eple",
+        "sitrus",
+        "kjeks",
+        "mineral",
+        "nøtt",
+        "moden",
+        "urt",
+        "blomst",
+        "frukt",
+        "krydder",
+        "bakverk",
+        "pære",
+        "bær",
+        "fersken",
+        "steinfrukt",
+        "honning",
+        "brioche",
+        "drops",
+        "gjærbakst",
+        "sopp",
+        "sitron",
+        "mandel",
+        "jordbær",
+        "brød",
+        "toast",
+        "rips",
+        "tørket",
+        "smør",
+        "tropisk",
+        "salt",
+        "sjø",
+        "ananas",
+        "fat",
+        "bringebær",
+        "brøddeig",
+        "ristet",
+        "aprikos",
+        "nype",
+        "flint",
+        "kandisert",
+        "lime",
+        "plomme",
+        "lychee",
+        "melon",
+        "kamfer",
+        "fløte",
+        "stikkelsbær",
+        "appelsin",
+        "nesle",
+        "kalk",
+        "hylleblomst",
+        "sjokolade",
+        "grapefrukt",
+        "vanilje",
+        "kirsebær",
+        "stein",
+        "eik",
+        "nektarin",
+        "kritt",
+        "ingefær"
+      ],
+      "exemplars": [
+        {
+          "name": "La Maison du Champagne Vieille France Brut Vintage 2007",
+          "smell": "Moden aroma av lagret eple, sitrus, kjeks og krydder, litt nøtt, honning, brioche og blomst.",
+          "taste": "Utviklet og kremet, preg av modne epler, sitrus, marmelade og kjeks, litt sopp, mineraler og nøtt."
+        },
+        {
+          "name": "Provam Côto de Mamoelas Alvarinho Bruto 2020",
+          "smell": "Ung, litt flintaktig og fruktig preg av sitrus, eple og blomst, litt fersken, kjeks, urt og nøtt.",
+          "taste": "Kremet og litt krydret med god fylde, sitrus- og eplepreget frukt, litt fersken, kjeks, urt og nøtt."
+        },
+        {
+          "name": "Hugues Godmé Le Blanc de Blancs Brut Nature",
+          "smell": "Litt mineralsk og saltaktig med preg av modne epler, sitrus, kjeks og nøtt, hint av urt og blomst.",
+          "taste": "Frisk, saftig og myk, preg av modne epler, sitrus, kjeks, litt nøtt, fløte, urter og mineraler."
+        },
+        {
+          "name": "Geoffroy Rosé de Saignée Brut",
+          "smell": "Aroma av jordbær, rips, modne epler og sitrus, litt nypesyltetøy, kjeks, nøtt og krydder.",
+          "taste": "Saftig og kremet, preg av modne epler, rips, jordbær og sitrus, litt kjeks, mandel og hint av fat."
+        },
+        {
+          "name": "My Dear! Pet. Nat.",
+          "smell": "Fruktig og litt krydret aroma av sitrus, fersken og røde bær, litt blomst, nøtt, kamfer og urt.",
+          "taste": "Myk og fruktig, preg av fersken, sitrus og friske røde bær, litt grønn urt, nøtt og kjeks."
+        },
+        {
+          "name": "Ebène & Sens Solera",
+          "smell": "Modent og utviklet preg av eple, sitrus, bakverk og nøtt, litt sopp, honning, mineraler og krydder.",
+          "taste": "Kremet, tydelig utviklet og litt saltaktig preg av modne epler, sitrus, bakverk, litt sopp og nøtt."
+        }
+      ]
+    }
+  }
+}

@@ -40,6 +40,7 @@ export type Wine = {
   id: string;
   product_id: string;
   name: string;
+  description: string | null;
   color: string | null;
   smell: string | null;
   taste: string | null;
@@ -61,6 +62,35 @@ export type Wine = {
   sugar: string;
   acidity: string;
   is_good_for: string[];
+
+  // Wine-note enrichment (scripts/023-note-enrichment.sql). Generated notes live
+  // alongside the imported ones; smell/taste are never overwritten and nothing
+  // reads these for scoring until a human sets enrichment_status to 'approved'.
+  smell_enriched: string | null;
+  taste_enriched: string | null;
+  enrichment_status: 'pending' | 'approved' | 'rejected' | 'failed' | null;
+  enrichment_sources: Array<{ url: string; title: string }> | null;
+  enrichment_meta: EnrichmentMeta | null;
+  enriched_at: string | null;
+  /** Review trail (scripts/024-note-review.sql). Null while pending. */
+  reviewed_at: string | null;
+  reviewed_by: string | null;
+};
+
+/** Provenance written by src/lib/noteEnrichment.ts. Shape is not enforced by the DB. */
+export type EnrichmentMeta = {
+  researchModel?: string;
+  generationModel?: string;
+  confidence?: 'high' | 'medium' | 'low';
+  basis?: string;
+  sourceVintages?: string[];
+  vintageMatch?: 'exact' | 'neighbour' | 'unknown';
+  priority?: number;
+  reasons?: string[];
+  failure?: string;
+  problems?: string[];
+  before?: { smell?: { aromaLemmas: number }; taste?: { aromaLemmas: number } };
+  after?: { smell?: { aromaLemmas: number }; taste?: { aromaLemmas: number } };
 };
 
 export type WineType = 'Rødvin' | 'Hvitvin' | 'Musserende vin' | 'Rosévin';
@@ -79,6 +109,9 @@ export type Tasting = {
   id: string;
   user_id: string;
   product_id: string;
+  // Live column, missing from scripts/schema.sql. src/actions/tasting.ts writes it and every
+  // reader joins tastings to wines through it; nullable because older rows may predate it.
+  wine_id: string | null;
   event_id: string | null;
 
   // Basic tasting attributes

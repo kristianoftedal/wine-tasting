@@ -47,11 +47,7 @@ export default function HistoryTab({ tastings, wines }: HistoryTabProps) {
               <details key={tasting.id} className={styles.historyItem}>
                 <summary className={styles.historySummary}>
                   <div className={styles.historyThumb}>
-                    {wine.image_url ? (
-                      <Image src={wine.image_url || "/placeholder.svg"} alt={wine.name} width={50} height={70} />
-                    ) : (
-                      <div style={{ fontSize: "1.5rem" }}>🍷</div>
-                    )}
+                    <Image src={`/api/wine-image/${wine.product_id}`} alt={decode(wine.name)} width={50} height={70} />
                   </div>
                   <div className={styles.historyInfo}>
                     <h3 className={styles.historyName}>{decode(wine.name)}</h3>
@@ -84,7 +80,6 @@ export default function HistoryTab({ tastings, wines }: HistoryTabProps) {
                       <div className={styles.historyNoteItem}>
                         <div className={styles.historyNoteLabel}>
                           Lukt
-                          {tasting.lukt_intensitet && <span> - Intensitet: {tasting.lukt_intensitet}</span>}
                           {tasting.smell_score && <span> ({tasting.smell_score})</span>}
                         </div>
                         <div className={styles.historyNoteValue}>{tasting.lukt}</div>
@@ -100,7 +95,6 @@ export default function HistoryTab({ tastings, wines }: HistoryTabProps) {
                       <div className={styles.historyNoteItem}>
                         <div className={styles.historyNoteLabel}>
                           Smak
-                          {tasting.smaks_intensitet && <span> - Intensitet: {tasting.smaks_intensitet}</span>}
                           {tasting.taste_score && <span> ({tasting.taste_score})</span>}
                         </div>
                         <div className={styles.historyNoteValue}>{tasting.smak}</div>
@@ -189,7 +183,7 @@ export default function HistoryTab({ tastings, wines }: HistoryTabProps) {
                       {tasting.karakter !== null && (
                         <div className={styles.historyScoreItem}>
                           <span className={styles.historyScoreLabel}>
-                            Karakter {tasting.karakter_score && <span>({tasting.karakter_score})</span>}
+                            Karakter
                           </span>
                           <div className={styles.historyScoreBarTrack}>
                             <div
