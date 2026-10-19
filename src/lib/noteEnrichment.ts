@@ -89,6 +89,25 @@ const GENERATION_ATTEMPTS = 2;
 export const DEFAULT_BATCH_SIZE = 10;
 export const MAX_BATCH_SIZE = 50;
 
+/**
+ * Batch ceiling for anything running inside a serverless invocation.
+ *
+ * Vercel's Hobby plan caps a function at 60 seconds, which bounds both the API
+ * route and the `after()` callback that event creation fires. Measured cost is
+ * roughly 8 s per wine — a search, up to five page fetches, and two LLM calls —
+ * which at CONCURRENCY 3 amortises to ~2.7 s each. Reserving ~15 s for the
+ * scan, the event insert and the response leaves room for about sixteen; twelve
+ * keeps headroom for a slow source.
+ *
+ * The ceiling counts wines that *need* enrichment, not bottles on the list —
+ * `candidateLimit` is applied after `needsEnrichment` filtering. Roughly half
+ * of an event's wines qualify (4 of 8 on the first real event), so twelve
+ * covers a bottle list of around two dozen and does not bind on any realistic
+ * tasting. MAX_BATCH_SIZE still applies offline, where the only limit is
+ * patience.
+ */
+export const SERVERLESS_BATCH_SIZE = 12;
+
 /** Concurrent wines in flight. Each is two LLM calls, one of them web search. */
 const CONCURRENCY = 3;
 

@@ -4,9 +4,9 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import {
   auditNoteQuality,
   eventWineIds,
-  MAX_BATCH_SIZE,
   NoteEnrichmentError,
   runEnrichmentBatch,
+  SERVERLESS_BATCH_SIZE,
   upcomingEventWineIds,
   type BatchOptions,
   type BatchResult,
@@ -27,7 +27,7 @@ import {
  * handler at src/app/api/admin/note-enrichment/route.ts.
  */
 
-export { NoteEnrichmentError, DEFAULT_BATCH_SIZE, MAX_BATCH_SIZE } from '@/lib/noteEnrichment';
+export { NoteEnrichmentError, DEFAULT_BATCH_SIZE, MAX_BATCH_SIZE, SERVERLESS_BATCH_SIZE } from '@/lib/noteEnrichment';
 export type {
   BatchItemResult,
   BatchOptions,
@@ -71,7 +71,11 @@ export async function enrichEventNotes(eventId: string, options: BatchOptions = 
   const supabase = requireAdminClient();
   const wineIds = await eventWineIds(supabase, eventId);
 
-  return runEnrichmentBatch(supabase, { limit: MAX_BATCH_SIZE, dryRun: false, ...options, wineIds });
+  // SERVERLESS_BATCH_SIZE, not MAX_BATCH_SIZE: this runs in an after() callback
+  // bounded by the platform's function timeout. The cap counts wines needing
+  // enrichment rather than bottles, so it does not bind on a normal tasting;
+  // anything over it falls to the sweep instead of being cut off mid-run.
+  return runEnrichmentBatch(supabase, { limit: SERVERLESS_BATCH_SIZE, dryRun: false, ...options, wineIds });
 }
 
 /**
@@ -86,5 +90,5 @@ export async function enrichUpcomingEventNotes(options: BatchOptions = {}): Prom
   const supabase = requireAdminClient();
   const wineIds = await upcomingEventWineIds(supabase);
 
-  return runEnrichmentBatch(supabase, { limit: MAX_BATCH_SIZE, ...options, wineIds });
+  return runEnrichmentBatch(supabase, { limit: SERVERLESS_BATCH_SIZE, ...options, wineIds });
 }

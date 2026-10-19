@@ -4,8 +4,8 @@ import {
   DEFAULT_BATCH_SIZE,
   enrichNotes,
   enrichUpcomingEventNotes,
-  MAX_BATCH_SIZE,
-  NoteEnrichmentError
+  NoteEnrichmentError,
+  SERVERLESS_BATCH_SIZE
 } from '@/actions/note-enrichment';
 
 /**
@@ -16,7 +16,9 @@ import {
  *          calls, no writes.
  *   POST — run a batch. `{"scope":"events"}` enriches the wines in upcoming
  *          events, which is the scope worth scheduling; the default sweeps the
- *          catalogue by worst note. Dry run unless the body says otherwise.
+ *          catalogue by worst note and, because that scan reads all 59 000 rows
+ *          before any enrichment starts, is better run from the CLI. Dry run
+ *          unless the body says otherwise.
  *
  * Not a server action: this is an operator tool driven by curl, a cron job or
  * a one-off deploy hook, and it must be callable without a browser session.
@@ -28,8 +30,15 @@ import {
  */
 
 export const runtime = 'nodejs';
-/** A batch of 10 is 20 LLM calls, one per wine with web search. */
-export const maxDuration = 300;
+/**
+ * 60 is the Hobby plan's ceiling — a higher value fails the build outright
+ * ("Serverless Functions must have a maxDuration between 1 and 60 for plan
+ * hobby"), so this is a platform constraint rather than a preference. It is
+ * also why the batch ceiling here is SERVERLESS_BATCH_SIZE: at ~8 s per wine
+ * and CONCURRENCY 3, a larger batch would be killed mid-run instead of
+ * refused. Long sweeps belong on the CLI (scripts/enrich-wine-notes.ts).
+ */
+export const maxDuration = 60;
 
 const NO_STORE = { 'Cache-Control': 'no-store' };
 
@@ -96,10 +105,15 @@ export async function POST(request: Request) {
     }
   }
 
+  // Refuse a batch that cannot finish rather than accepting it and being killed
+  // at 60 s with some wines written and the rest silently dropped.
   const limit = Number(body.limit ?? DEFAULT_BATCH_SIZE);
-  if (!Number.isFinite(limit) || limit < 1 || limit > MAX_BATCH_SIZE) {
+  if (!Number.isFinite(limit) || limit < 1 || limit > SERVERLESS_BATCH_SIZE) {
     return NextResponse.json(
-      { error: 'invalid_limit', detail: `limit must be 1-${MAX_BATCH_SIZE}` },
+      {
+        error: 'invalid_limit',
+        detail: `limit must be 1-${SERVERLESS_BATCH_SIZE} — larger batches exceed the function timeout, use scripts/enrich-wine-notes.ts`
+      },
       { status: 400, headers: NO_STORE }
     );
   }

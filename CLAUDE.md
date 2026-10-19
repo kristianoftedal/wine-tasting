@@ -150,6 +150,8 @@ curl -X POST -H "Authorization: Bearer $NOTE_ENRICHMENT_TOKEN" -H 'Content-Type:
 
 The route is a bearer-token endpoint, not a server action, because it is driven by curl and cron and must work without a browser session — which also means it cannot use Supabase auth, hence the service-role client in `src/lib/supabase/admin.ts`. `POST` is a dry run unless the body says `"dryRun": false`.
 
+**Serverless budget.** Vercel's Hobby plan caps a function at 60 s and *fails the build* on anything higher ("Serverless Functions must have a maxDuration between 1 and 60 for plan hobby"). That ceiling bounds both this route and the `after()` callback event creation fires, so both use `SERVERLESS_BATCH_SIZE` (12) rather than `MAX_BATCH_SIZE` (50): at ~8 s per wine and `CONCURRENCY` 3, a larger batch would be killed mid-run with some wines written and the rest silently dropped. The route returns 400 for an oversized `limit` rather than accepting one it cannot finish. Note the cap counts wines that *need* enrichment, not bottles on the list — `candidateLimit` is applied after `needsEnrichment` filtering, and roughly half an event's wines qualify (4 of 8 on the first real event), so twelve covers a bottle list of around two dozen and does not bind on a realistic tasting. Long or catalogue-wide runs belong on the CLI, where the only limit is patience.
+
 ### Note review
 
 `/admin/notater` is the editorial queue. Every row has already cleared the automated gates; what is left is the judgement no gate can make — whether the sources are convincing for this bottle. The page surfaces the residual signals the gates deliberately do not act on (neighbouring vintage, single source, low confidence, thin taste note), because each can be legitimate.
