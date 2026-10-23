@@ -37,7 +37,11 @@ function RegisterForm() {
     const password = formData.get('password') as string;
     const name = formData.get('name') as string;
 
-    const origin = process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || window.location.origin;
+    // The dev override must never reach a production build: NEXT_PUBLIC_ vars are inlined at
+    // build time, so a localhost value set in the deploy env sends every confirmation mail to localhost.
+    const devOrigin =
+      process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL : undefined;
+    const origin = devOrigin || window.location.origin;
 
     const { data, error } = await supabase.auth.signUp({
       email,
