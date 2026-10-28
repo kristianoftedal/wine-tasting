@@ -1,0 +1,4890 @@
+{
+  "meta": {
+    "exportedAt": "2026-10-28T20:10:22.536Z",
+    "commit": "2e32353",
+    "tastings": 132,
+    "fields": 236,
+    "tasters": 8,
+    "wines": 41,
+    "events": 6,
+    "snapshot": "scripts/validation-results/tasting-scores-20260818-204626.json"
+  },
+  "fields": [
+    {
+      "key": "5607da20-8c7a-48df-b550-219c932280b2:lukt",
+      "tastingId": "5607da20-8c7a-48df-b550-219c932280b2",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-01-30T10:43:11.238+00:00",
+      "event": null,
+      "wine": {
+        "id": "412cb0a3-463b-4766-a12a-cd331eb97cd0",
+        "name": "Rotem & Mounir Saouma Magis Chateauneuf-du-Pape Blanc 2022",
+        "year": "2022"
+      },
+      "userNote": "sitrus frisk",
+      "referenceNote": "Aroma av steinfrukt og tropisk frukt, mineraler.",
+      "storedScore": 24,
+      "previousScore": 45
+    },
+    {
+      "key": "5607da20-8c7a-48df-b550-219c932280b2:smak",
+      "tastingId": "5607da20-8c7a-48df-b550-219c932280b2",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-01-30T10:43:11.238+00:00",
+      "event": null,
+      "wine": {
+        "id": "412cb0a3-463b-4766-a12a-cd331eb97cd0",
+        "name": "Rotem & Mounir Saouma Magis Chateauneuf-du-Pape Blanc 2022",
+        "year": "2022"
+      },
+      "userNote": "frukt sitrus flint",
+      "referenceNote": "Kremet og fyldig med lang ettersmak.",
+      "storedScore": null,
+      "previousScore": 37
+    },
+    {
+      "key": "89316bb4-c603-4fce-8f01-d80017b207ca:lukt",
+      "tastingId": "89316bb4-c603-4fce-8f01-d80017b207ca",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-01-30T11:24:23.493+00:00",
+      "event": {
+        "id": "2d4dc0ca-7693-4392-89b4-227e2ab332ac",
+        "name": "TEST",
+        "date": "2026-01-31T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "e4b1c2bb-40b3-408c-b179-0da458b983ba",
+        "name": "David & Nadia Chenin Blanc",
+        "year": "2024"
+      },
+      "userNote": "eple, frisk mineralsk",
+      "referenceNote": "Ren, fokusert og lett krydret.",
+      "storedScore": 4,
+      "previousScore": 35
+    },
+    {
+      "key": "89316bb4-c603-4fce-8f01-d80017b207ca:smak",
+      "tastingId": "89316bb4-c603-4fce-8f01-d80017b207ca",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-01-30T11:24:23.493+00:00",
+      "event": {
+        "id": "2d4dc0ca-7693-4392-89b4-227e2ab332ac",
+        "name": "TEST",
+        "date": "2026-01-31T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "e4b1c2bb-40b3-408c-b179-0da458b983ba",
+        "name": "David & Nadia Chenin Blanc",
+        "year": "2024"
+      },
+      "userNote": "sitrus eple melon syrlig",
+      "referenceNote": "Konsentrert, frisk og lang.",
+      "storedScore": null,
+      "previousScore": 32
+    },
+    {
+      "key": "30fa2f9f-2a62-4c95-aacf-2c3d0f1027a3:lukt",
+      "tastingId": "30fa2f9f-2a62-4c95-aacf-2c3d0f1027a3",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-01-30T12:21:20.895+00:00",
+      "event": {
+        "id": "2d4dc0ca-7693-4392-89b4-227e2ab332ac",
+        "name": "TEST",
+        "date": "2026-01-31T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "289bdc04-3111-4d13-9ca0-24d7f33a9e62",
+        "name": "Carlines Côtes du Jura La Vouivre 2022",
+        "year": "2022"
+      },
+      "userNote": "sitrus eple nøtter",
+      "referenceNote": "Fruktig duft med eple, aprikos og mineralitet.",
+      "storedScore": 60,
+      "previousScore": 64
+    },
+    {
+      "key": "30fa2f9f-2a62-4c95-aacf-2c3d0f1027a3:smak",
+      "tastingId": "30fa2f9f-2a62-4c95-aacf-2c3d0f1027a3",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-01-30T12:21:20.895+00:00",
+      "event": {
+        "id": "2d4dc0ca-7693-4392-89b4-227e2ab332ac",
+        "name": "TEST",
+        "date": "2026-01-31T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "289bdc04-3111-4d13-9ca0-24d7f33a9e62",
+        "name": "Carlines Côtes du Jura La Vouivre 2022",
+        "year": "2022"
+      },
+      "userNote": "sitrus eple nøtter",
+      "referenceNote": "Tørr med tydelig eplepreg, sitrus og mineralsk ettersmak.",
+      "storedScore": 68,
+      "previousScore": 70
+    },
+    {
+      "key": "9bb85ec9-78ef-4d06-8072-18ccbf2cc89b:lukt",
+      "tastingId": "9bb85ec9-78ef-4d06-8072-18ccbf2cc89b",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-01-31T14:53:45.459+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "af22326e-b649-4266-a156-5ce901c2754b",
+        "name": "Au Bon Climat Santa Barbara County Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "sitrus eple vanilje nøtter aprikos",
+      "referenceNote": "Tydelig aroma preget av moden steinfrukt, eple og sitrus, innslag av fat, vanilje, smør og nøtt.",
+      "storedScore": 97,
+      "previousScore": 95
+    },
+    {
+      "key": "9bb85ec9-78ef-4d06-8072-18ccbf2cc89b:smak",
+      "tastingId": "9bb85ec9-78ef-4d06-8072-18ccbf2cc89b",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-01-31T14:53:45.459+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "af22326e-b649-4266-a156-5ce901c2754b",
+        "name": "Au Bon Climat Santa Barbara County Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "sitrus vanilje nøtter",
+      "referenceNote": "Fyldig og lang med kremet munnfølelse, preg av sitrus og fersken, litt honning, fat, smør og nøtt.",
+      "storedScore": 93,
+      "previousScore": 75
+    },
+    {
+      "key": "1c654633-c3b5-4147-9192-a3d91bdfb009:lukt",
+      "tastingId": "1c654633-c3b5-4147-9192-a3d91bdfb009",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-01-31T17:06:55.911+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "13adcff2-13f1-41c1-b5a8-60276e98e3fe",
+        "name": "La Chablisienne Chablis 1er Cru Montmains 2022",
+        "year": "2022"
+      },
+      "userNote": "litt salt og sjøaktig, sitrus og eple",
+      "referenceNote": "Nyansert aroma av grønt eple, sitrus og urter, innslag av litt smør, nøtt og mineraler.",
+      "storedScore": 90,
+      "previousScore": 87
+    },
+    {
+      "key": "1c654633-c3b5-4147-9192-a3d91bdfb009:smak",
+      "tastingId": "1c654633-c3b5-4147-9192-a3d91bdfb009",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-01-31T17:06:55.911+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "13adcff2-13f1-41c1-b5a8-60276e98e3fe",
+        "name": "La Chablisienne Chablis 1er Cru Montmains 2022",
+        "year": "2022"
+      },
+      "userNote": "litt salt og sjøaktig, sitrus og eple mineralsk",
+      "referenceNote": "Ungdommelig og sammensatt preg av fersken, grønt eple, sitrus, smør og nøtt, hint av mineraler.",
+      "storedScore": 94,
+      "previousScore": 86
+    },
+    {
+      "key": "f4938235-ddad-4a32-941a-19c037091e27:lukt",
+      "tastingId": "f4938235-ddad-4a32-941a-19c037091e27",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-02-02T20:51:48.913+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "eec1b775-adde-46cb-a983-a149290fa16a",
+        "name": "Cuilleron Biousse Saint-Peray 2023",
+        "year": "2023"
+      },
+      "userNote": "sitrus eple fersken aprikos nøtt vanilje",
+      "referenceNote": "Modent og ungdommelig preg av eple, sitrus, aprikos og fersken, litt fat, fløte, nøtt og blomst.",
+      "storedScore": 99,
+      "previousScore": 94
+    },
+    {
+      "key": "f4938235-ddad-4a32-941a-19c037091e27:smak",
+      "tastingId": "f4938235-ddad-4a32-941a-19c037091e27",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-02-02T20:51:48.913+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "eec1b775-adde-46cb-a983-a149290fa16a",
+        "name": "Cuilleron Biousse Saint-Peray 2023",
+        "year": "2023"
+      },
+      "userNote": "sitrus eple fersken aprikos nøtt vanilje",
+      "referenceNote": "Fyldig med litt feit munnfølelse, preg av modent eple, fersken og sitrus, litt fat, krydder og nøtt.",
+      "storedScore": 96,
+      "previousScore": 87
+    },
+    {
+      "key": "8dcfa1ad-d54f-49b9-88c3-ca4cf1156c63:lukt",
+      "tastingId": "8dcfa1ad-d54f-49b9-88c3-ca4cf1156c63",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-02-02T21:00:03.191+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "eec1b775-adde-46cb-a983-a149290fa16a",
+        "name": "Cuilleron Biousse Saint-Peray 2023",
+        "year": "2023"
+      },
+      "userNote": "sitrus eple fersken aprikos nøtt vanilje",
+      "referenceNote": "Modent og ungdommelig preg av eple, sitrus, aprikos og fersken, litt fat, fløte, nøtt og blomst.",
+      "storedScore": 99,
+      "previousScore": 94
+    },
+    {
+      "key": "8dcfa1ad-d54f-49b9-88c3-ca4cf1156c63:smak",
+      "tastingId": "8dcfa1ad-d54f-49b9-88c3-ca4cf1156c63",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-02-02T21:00:03.191+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "eec1b775-adde-46cb-a983-a149290fa16a",
+        "name": "Cuilleron Biousse Saint-Peray 2023",
+        "year": "2023"
+      },
+      "userNote": "sitrus eple fersken aprikos nøtt vanilje",
+      "referenceNote": "Fyldig med litt feit munnfølelse, preg av modent eple, fersken og sitrus, litt fat, krydder og nøtt.",
+      "storedScore": 96,
+      "previousScore": 87
+    },
+    {
+      "key": "6370f135-5449-4bf0-a312-692fab8e2332:lukt",
+      "tastingId": "6370f135-5449-4bf0-a312-692fab8e2332",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-02-02T21:00:22.202+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "7a9a8612-230c-4547-929e-bab275fb2d2e",
+        "name": "Cueva del Monge Rioja Blanco 2010",
+        "year": "2010"
+      },
+      "userNote": "svovel flint og litt marmelade",
+      "referenceNote": "Sammensatt aroma med utviklet og litt krydret preg av modne epler, trekrydder, blomst og nøtt.",
+      "storedScore": 16,
+      "previousScore": 40
+    },
+    {
+      "key": "6370f135-5449-4bf0-a312-692fab8e2332:smak",
+      "tastingId": "6370f135-5449-4bf0-a312-692fab8e2332",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-02-02T21:00:22.202+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "7a9a8612-230c-4547-929e-bab275fb2d2e",
+        "name": "Cueva del Monge Rioja Blanco 2010",
+        "year": "2010"
+      },
+      "userNote": "svovel flint og litt marmelade",
+      "referenceNote": "Utviklet, kompleks og lang, preg av lagret eple og tørket frukt, litt fat, honning, krydder og urt.",
+      "storedScore": 22,
+      "previousScore": 43
+    },
+    {
+      "key": "70c9b70f-4c9a-4b5a-be79-8341ea913c49:lukt",
+      "tastingId": "70c9b70f-4c9a-4b5a-be79-8341ea913c49",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-02-03T08:18:27.067+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "8254b17f-a566-4beb-9b6b-59dfd901aa20",
+        "name": "Delaunay Vignerons Nord-Ouest 2015",
+        "year": "2015"
+      },
+      "userNote": "sitrus krydder mineralsk",
+      "referenceNote": "Aroma av sitrus, mineralsk med urter.",
+      "storedScore": 74,
+      "previousScore": 82
+    },
+    {
+      "key": "70c9b70f-4c9a-4b5a-be79-8341ea913c49:smak",
+      "tastingId": "70c9b70f-4c9a-4b5a-be79-8341ea913c49",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-02-03T08:18:27.067+00:00",
+      "event": {
+        "id": "beb27d04-7632-48c3-94b5-a75c9c735d9a",
+        "name": "Hvitvin #2",
+        "date": "2026-02-03T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "8254b17f-a566-4beb-9b6b-59dfd901aa20",
+        "name": "Delaunay Vignerons Nord-Ouest 2015",
+        "year": "2015"
+      },
+      "userNote": "sitrus krydder mineralsk",
+      "referenceNote": "God fylde med lang tørr ettersmak.",
+      "storedScore": null,
+      "previousScore": 41
+    },
+    {
+      "key": "d8bc4f93-5ce1-4c30-8080-3fc43b1d9512:lukt",
+      "tastingId": "d8bc4f93-5ce1-4c30-8080-3fc43b1d9512",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-02-16T08:49:20.245+00:00",
+      "event": null,
+      "wine": {
+        "id": "d5b2a449-c54b-4a7f-b45b-cc79e64691d6",
+        "name": "Birichino Saint Georges Zinfandel Old Vines 2023",
+        "year": "2023"
+      },
+      "userNote": "Juicy, røde bær, mørk frukt krydder",
+      "referenceNote": "Ungdommelig, modne røde og mørke bær, krydder og blomster.",
+      "storedScore": 75,
+      "previousScore": 82
+    },
+    {
+      "key": "d8bc4f93-5ce1-4c30-8080-3fc43b1d9512:smak",
+      "tastingId": "d8bc4f93-5ce1-4c30-8080-3fc43b1d9512",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-02-16T08:49:20.245+00:00",
+      "event": null,
+      "wine": {
+        "id": "d5b2a449-c54b-4a7f-b45b-cc79e64691d6",
+        "name": "Birichino Saint Georges Zinfandel Old Vines 2023",
+        "year": "2023"
+      },
+      "userNote": "Juicy, røde bær, mørk frukt krydder",
+      "referenceNote": "Fin struktur, leskende, saftig, modne mørke bær, god dybde og lengde.",
+      "storedScore": 54,
+      "previousScore": 68
+    },
+    {
+      "key": "27935fb6-6c24-4c04-9371-9ac452360e08:lukt",
+      "tastingId": "27935fb6-6c24-4c04-9371-9ac452360e08",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-02-25T11:40:30.22+00:00",
+      "event": null,
+      "wine": {
+        "id": "43030538-6892-489d-bbbc-c29937c81294",
+        "name": "Elodie D. Collection Secréte Millésime 1996",
+        "year": "1996"
+      },
+      "userNote": "brioche, modent eple nøtter",
+      "referenceNote": "Sitrus, mandler, tørket frukt.",
+      "storedScore": 43,
+      "previousScore": 56
+    },
+    {
+      "key": "27935fb6-6c24-4c04-9371-9ac452360e08:smak",
+      "tastingId": "27935fb6-6c24-4c04-9371-9ac452360e08",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-02-25T11:40:30.22+00:00",
+      "event": null,
+      "wine": {
+        "id": "43030538-6892-489d-bbbc-c29937c81294",
+        "name": "Elodie D. Collection Secréte Millésime 1996",
+        "year": "1996"
+      },
+      "userNote": "Sitrus, mandler, tørket frukt.",
+      "referenceNote": "Lang syre.",
+      "storedScore": null,
+      "previousScore": 43
+    },
+    {
+      "key": "66ff467b-56dc-469a-a8d8-e16b4c352f93:lukt",
+      "tastingId": "66ff467b-56dc-469a-a8d8-e16b4c352f93",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:46.269+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Pepper, mørke bær.",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 26
+    },
+    {
+      "key": "66ff467b-56dc-469a-a8d8-e16b4c352f93:smak",
+      "tastingId": "66ff467b-56dc-469a-a8d8-e16b4c352f93",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:46.269+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Tanniner, lett, litt syre, litt krydder, mørke bær",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 75,
+      "previousScore": 25
+    },
+    {
+      "key": "28324228-6bb7-453f-bef9-27fb2d5e658b:lukt",
+      "tastingId": "28324228-6bb7-453f-bef9-27fb2d5e658b",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:47.964+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Pepper, mørke bær.",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 26
+    },
+    {
+      "key": "28324228-6bb7-453f-bef9-27fb2d5e658b:smak",
+      "tastingId": "28324228-6bb7-453f-bef9-27fb2d5e658b",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:47.964+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Tanniner, lett, litt syre, litt krydder, mørke bær",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 75,
+      "previousScore": 25
+    },
+    {
+      "key": "19e4335a-c077-4ac8-95dc-53392218e877:lukt",
+      "tastingId": "19e4335a-c077-4ac8-95dc-53392218e877",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:49.149+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Pepper, mørke bær.",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 26
+    },
+    {
+      "key": "19e4335a-c077-4ac8-95dc-53392218e877:smak",
+      "tastingId": "19e4335a-c077-4ac8-95dc-53392218e877",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:49.149+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Tanniner, lett, litt syre, litt krydder, mørke bær",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 75,
+      "previousScore": 25
+    },
+    {
+      "key": "8eba317b-ed91-48af-98da-741f197c80a2:lukt",
+      "tastingId": "8eba317b-ed91-48af-98da-741f197c80a2",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:49.994+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Pepper, mørke bær.",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 26
+    },
+    {
+      "key": "8eba317b-ed91-48af-98da-741f197c80a2:smak",
+      "tastingId": "8eba317b-ed91-48af-98da-741f197c80a2",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:49.994+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Tanniner, lett, litt syre, litt krydder, mørke bær",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 75,
+      "previousScore": 25
+    },
+    {
+      "key": "2382f90d-60eb-4a69-a418-fa33bf313e39:lukt",
+      "tastingId": "2382f90d-60eb-4a69-a418-fa33bf313e39",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:51.783+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Pepper, mørke bær.",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 26
+    },
+    {
+      "key": "2382f90d-60eb-4a69-a418-fa33bf313e39:smak",
+      "tastingId": "2382f90d-60eb-4a69-a418-fa33bf313e39",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:06:51.783+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Tanniner, lett, litt syre, litt krydder, mørke bær",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 75,
+      "previousScore": 25
+    },
+    {
+      "key": "9c8cb304-7f60-493f-8319-360ee813a05a:lukt",
+      "tastingId": "9c8cb304-7f60-493f-8319-360ee813a05a",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T18:07:40.382+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Rød frukt og pepper",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 58
+    },
+    {
+      "key": "9c8cb304-7f60-493f-8319-360ee813a05a:smak",
+      "tastingId": "9c8cb304-7f60-493f-8319-360ee813a05a",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T18:07:40.382+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Rød frukt og pepper. Middels struktur",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 40,
+      "previousScore": 48
+    },
+    {
+      "key": "6cc4e152-9d61-4924-ac55-679410c37bd4:lukt",
+      "tastingId": "6cc4e152-9d61-4924-ac55-679410c37bd4",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T18:08:14.454+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Mørke bær\nRød frukt",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 86,
+      "previousScore": 28
+    },
+    {
+      "key": "6cc4e152-9d61-4924-ac55-679410c37bd4:smak",
+      "tastingId": "6cc4e152-9d61-4924-ac55-679410c37bd4",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T18:08:14.454+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Mørke bær\nSolbær\nPepper",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 66,
+      "previousScore": 28
+    },
+    {
+      "key": "4e4f9599-bfc4-4b28-a363-e91beeb32333:lukt",
+      "tastingId": "4e4f9599-bfc4-4b28-a363-e91beeb32333",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:08:47.023+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Pepper, mørk bær",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 24
+    },
+    {
+      "key": "4e4f9599-bfc4-4b28-a363-e91beeb32333:smak",
+      "tastingId": "4e4f9599-bfc4-4b28-a363-e91beeb32333",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:08:47.023+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Middels taniner\n\nFruktig, mørke bær og pepper, jordlig",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 47,
+      "previousScore": 21
+    },
+    {
+      "key": "ae47bc6d-61aa-46f8-8a4f-7ca1b7bdbdc0:lukt",
+      "tastingId": "ae47bc6d-61aa-46f8-8a4f-7ca1b7bdbdc0",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:08:48.453+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Pepper, mørk bær",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 24
+    },
+    {
+      "key": "ae47bc6d-61aa-46f8-8a4f-7ca1b7bdbdc0:smak",
+      "tastingId": "ae47bc6d-61aa-46f8-8a4f-7ca1b7bdbdc0",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:08:48.453+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Middels taniner\n\nFruktig, mørke bær og pepper, jordlig",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 47,
+      "previousScore": 21
+    },
+    {
+      "key": "beff69db-dd00-449e-bcee-92febe83bb14:lukt",
+      "tastingId": "beff69db-dd00-449e-bcee-92febe83bb14",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:08:50.433+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Pepper, mørk bær",
+      "referenceNote": "Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 24
+    },
+    {
+      "key": "beff69db-dd00-449e-bcee-92febe83bb14:smak",
+      "tastingId": "beff69db-dd00-449e-bcee-92febe83bb14",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:08:50.433+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+        "name": "Cuilleron Les Vignes d'à Côté Syrah 2024",
+        "year": "2024"
+      },
+      "userNote": "Middels taniner\n\nFruktig, mørke bær og pepper, jordlig",
+      "referenceNote": "Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.",
+      "storedScore": 47,
+      "previousScore": 21
+    },
+    {
+      "key": "64abb88e-b68c-4da7-99b2-24d1ba5a0f63:lukt",
+      "tastingId": "64abb88e-b68c-4da7-99b2-24d1ba5a0f63",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T18:22:29.772+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "22e5b848-5dce-43c6-9763-5013a953d822",
+        "name": "Dom. du Colombier Crozes-Hermitage 2024",
+        "year": "2024"
+      },
+      "userNote": "Krydder\nLær",
+      "referenceNote": "Aroma med ungdommelig preg av modne mørke skogsbær, svale urter, krydder, litt pepper og fat.",
+      "storedScore": 55,
+      "previousScore": 26
+    },
+    {
+      "key": "d1a1da15-df26-42ae-9b1c-2c8a3ef048d1:lukt",
+      "tastingId": "d1a1da15-df26-42ae-9b1c-2c8a3ef048d1",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:26:06.068+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "22e5b848-5dce-43c6-9763-5013a953d822",
+        "name": "Dom. du Colombier Crozes-Hermitage 2024",
+        "year": "2024"
+      },
+      "userNote": "Mørke bær, bjørnebær, mindre pepper enn forrige, mer lær",
+      "referenceNote": "Aroma med ungdommelig preg av modne mørke skogsbær, svale urter, krydder, litt pepper og fat.",
+      "storedScore": 57,
+      "previousScore": 31
+    },
+    {
+      "key": "d1a1da15-df26-42ae-9b1c-2c8a3ef048d1:smak",
+      "tastingId": "d1a1da15-df26-42ae-9b1c-2c8a3ef048d1",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:26:06.068+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "22e5b848-5dce-43c6-9763-5013a953d822",
+        "name": "Dom. du Colombier Crozes-Hermitage 2024",
+        "year": "2024"
+      },
+      "userNote": "Mørk frukt. Jordlig, valnøtt, kirsebær",
+      "referenceNote": "Ung, livlig og saftig med toner av moden kirsebær og krekling, litt svale urter, pepper og fat.",
+      "storedScore": 40,
+      "previousScore": 31
+    },
+    {
+      "key": "c72612f1-f6ad-4623-9c30-37f09a68c04d:lukt",
+      "tastingId": "c72612f1-f6ad-4623-9c30-37f09a68c04d",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:27:41.183+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "22e5b848-5dce-43c6-9763-5013a953d822",
+        "name": "Dom. du Colombier Crozes-Hermitage 2024",
+        "year": "2024"
+      },
+      "userNote": "Lær, mindre frukt, mer krydder, kirsebær",
+      "referenceNote": "Aroma med ungdommelig preg av modne mørke skogsbær, svale urter, krydder, litt pepper og fat.",
+      "storedScore": 52,
+      "previousScore": 27
+    },
+    {
+      "key": "c72612f1-f6ad-4623-9c30-37f09a68c04d:smak",
+      "tastingId": "c72612f1-f6ad-4623-9c30-37f09a68c04d",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:27:41.183+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "22e5b848-5dce-43c6-9763-5013a953d822",
+        "name": "Dom. du Colombier Crozes-Hermitage 2024",
+        "year": "2024"
+      },
+      "userNote": "Litt mer syre, lett, friske bær, et eller annet med kjerne",
+      "referenceNote": "Ung, livlig og saftig med toner av moden kirsebær og krekling, litt svale urter, pepper og fat.",
+      "storedScore": 39,
+      "previousScore": 22
+    },
+    {
+      "key": "3e329c22-5ef8-458b-9083-c509162bbeaa:lukt",
+      "tastingId": "3e329c22-5ef8-458b-9083-c509162bbeaa",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T18:28:28.881+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "22e5b848-5dce-43c6-9763-5013a953d822",
+        "name": "Dom. du Colombier Crozes-Hermitage 2024",
+        "year": "2024"
+      },
+      "userNote": "Røde og mørke bær urter",
+      "referenceNote": "Aroma med ungdommelig preg av modne mørke skogsbær, svale urter, krydder, litt pepper og fat.",
+      "storedScore": 75,
+      "previousScore": 76
+    },
+    {
+      "key": "3e329c22-5ef8-458b-9083-c509162bbeaa:smak",
+      "tastingId": "3e329c22-5ef8-458b-9083-c509162bbeaa",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T18:28:28.881+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "22e5b848-5dce-43c6-9763-5013a953d822",
+        "name": "Dom. du Colombier Crozes-Hermitage 2024",
+        "year": "2024"
+      },
+      "userNote": "Røde og mørke bær og urt",
+      "referenceNote": "Ung, livlig og saftig med toner av moden kirsebær og krekling, litt svale urter, pepper og fat.",
+      "storedScore": 56,
+      "previousScore": 70
+    },
+    {
+      "key": "b889203e-e2a5-4cef-80dc-528dbfb9021b:lukt",
+      "tastingId": "b889203e-e2a5-4cef-80dc-528dbfb9021b",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:38:19.028+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4c21cf74-af74-4306-a838-06de8af5064e",
+        "name": "Guigal Côtes du Rhône Rouge 2022",
+        "year": "2022"
+      },
+      "userNote": "Mørke bær. Lakris. Krydder.",
+      "referenceNote": "Aroma preget av modne mørke bær, plomme og krydder over innslag av fat og lær.",
+      "storedScore": 74,
+      "previousScore": 45
+    },
+    {
+      "key": "b889203e-e2a5-4cef-80dc-528dbfb9021b:smak",
+      "tastingId": "b889203e-e2a5-4cef-80dc-528dbfb9021b",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:38:19.028+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4c21cf74-af74-4306-a838-06de8af5064e",
+        "name": "Guigal Côtes du Rhône Rouge 2022",
+        "year": "2022"
+      },
+      "userNote": "Bjørnebær. Jord. Krydder. Skogsbær. Lakris",
+      "referenceNote": "Ørlite utviklet, preg av mørke bær, litt tørket frukt, krydder og urter, fast ettersmak.",
+      "storedScore": 63,
+      "previousScore": 28
+    },
+    {
+      "key": "2493d920-51c4-4130-8987-bc6b459b74b3:lukt",
+      "tastingId": "2493d920-51c4-4130-8987-bc6b459b74b3",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T18:39:18.337+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4c21cf74-af74-4306-a838-06de8af5064e",
+        "name": "Guigal Côtes du Rhône Rouge 2022",
+        "year": "2022"
+      },
+      "userNote": "Anis\nKrydder\nSolbær",
+      "referenceNote": "Aroma preget av modne mørke bær, plomme og krydder over innslag av fat og lær.",
+      "storedScore": 77,
+      "previousScore": 26
+    },
+    {
+      "key": "d6568b87-25bf-423a-8f52-3319b054634f:lukt",
+      "tastingId": "d6568b87-25bf-423a-8f52-3319b054634f",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T18:40:23.142+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4c21cf74-af74-4306-a838-06de8af5064e",
+        "name": "Guigal Côtes du Rhône Rouge 2022",
+        "year": "2022"
+      },
+      "userNote": "Skogsbær urt og jord",
+      "referenceNote": "Aroma preget av modne mørke bær, plomme og krydder over innslag av fat og lær.",
+      "storedScore": 30,
+      "previousScore": 47
+    },
+    {
+      "key": "d6568b87-25bf-423a-8f52-3319b054634f:smak",
+      "tastingId": "d6568b87-25bf-423a-8f52-3319b054634f",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T18:40:23.142+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4c21cf74-af74-4306-a838-06de8af5064e",
+        "name": "Guigal Côtes du Rhône Rouge 2022",
+        "year": "2022"
+      },
+      "userNote": "Mørke bær, fat og urt og jord",
+      "referenceNote": "Ørlite utviklet, preg av mørke bær, litt tørket frukt, krydder og urter, fast ettersmak.",
+      "storedScore": 54,
+      "previousScore": 61
+    },
+    {
+      "key": "3e6a9c85-b3b7-40bf-b0e8-5c6c9f6b1fc5:lukt",
+      "tastingId": "3e6a9c85-b3b7-40bf-b0e8-5c6c9f6b1fc5",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:44:11.037+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4c21cf74-af74-4306-a838-06de8af5064e",
+        "name": "Guigal Côtes du Rhône Rouge 2022",
+        "year": "2022"
+      },
+      "userNote": "Fruktig, bær, anis, krydder,",
+      "referenceNote": "Aroma preget av modne mørke bær, plomme og krydder over innslag av fat og lær.",
+      "storedScore": 79,
+      "previousScore": 31
+    },
+    {
+      "key": "3e6a9c85-b3b7-40bf-b0e8-5c6c9f6b1fc5:smak",
+      "tastingId": "3e6a9c85-b3b7-40bf-b0e8-5c6c9f6b1fc5",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:44:11.037+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4c21cf74-af74-4306-a838-06de8af5064e",
+        "name": "Guigal Côtes du Rhône Rouge 2022",
+        "year": "2022"
+      },
+      "userNote": "Mer taniner, mer syre, nellik, jord - organisk,",
+      "referenceNote": "Ørlite utviklet, preg av mørke bær, litt tørket frukt, krydder og urter, fast ettersmak.",
+      "storedScore": 34,
+      "previousScore": 21
+    },
+    {
+      "key": "9d7727cf-85bd-4008-a828-c1855d36c0d8:lukt",
+      "tastingId": "9d7727cf-85bd-4008-a828-c1855d36c0d8",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:52:18.94+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+        "name": "Ch. de Ségriès 2023",
+        "year": "2023"
+      },
+      "userNote": "Litt mer frukt. Vanilje. Mørke bær.",
+      "referenceNote": "Aroma preget av modne mørke bær og litt tørket frukt, innslag av kamfer og salvie.",
+      "storedScore": 74,
+      "previousScore": 32
+    },
+    {
+      "key": "9d7727cf-85bd-4008-a828-c1855d36c0d8:smak",
+      "tastingId": "9d7727cf-85bd-4008-a828-c1855d36c0d8",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T18:52:18.94+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+        "name": "Ch. de Ségriès 2023",
+        "year": "2023"
+      },
+      "userNote": "Skogsbær. Vanilje. Krydder.",
+      "referenceNote": "Saftig og fyldig preg av sødmerike mørke bær, innslag av krydder og tørket urt. God lengde.",
+      "storedScore": 79,
+      "previousScore": 27
+    },
+    {
+      "key": "e862c423-1718-4627-b2da-30788b7ed4b1:lukt",
+      "tastingId": "e862c423-1718-4627-b2da-30788b7ed4b1",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T18:53:38.421+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+        "name": "Ch. de Ségriès 2023",
+        "year": "2023"
+      },
+      "userNote": "Fruktig\nSolbær\nKrydder\nFat",
+      "referenceNote": "Aroma preget av modne mørke bær og litt tørket frukt, innslag av kamfer og salvie.",
+      "storedScore": 53,
+      "previousScore": 18
+    },
+    {
+      "key": "e862c423-1718-4627-b2da-30788b7ed4b1:smak",
+      "tastingId": "e862c423-1718-4627-b2da-30788b7ed4b1",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T18:53:38.421+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+        "name": "Ch. de Ségriès 2023",
+        "year": "2023"
+      },
+      "userNote": "Krekling\nVanilje\nSolbær\nKrydder urter",
+      "referenceNote": "Saftig og fyldig preg av sødmerike mørke bær, innslag av krydder og tørket urt. God lengde.",
+      "storedScore": 78,
+      "previousScore": 29
+    },
+    {
+      "key": "dc1729d7-50fb-4a12-b56b-b74351dce20c:lukt",
+      "tastingId": "dc1729d7-50fb-4a12-b56b-b74351dce20c",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T18:54:03.49+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+        "name": "Ch. de Ségriès 2023",
+        "year": "2023"
+      },
+      "userNote": "Kirsebær rød frukt urt jord og krydder vanilje",
+      "referenceNote": "Aroma preget av modne mørke bær og litt tørket frukt, innslag av kamfer og salvie.",
+      "storedScore": 49,
+      "previousScore": 68
+    },
+    {
+      "key": "dc1729d7-50fb-4a12-b56b-b74351dce20c:smak",
+      "tastingId": "dc1729d7-50fb-4a12-b56b-b74351dce20c",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T18:54:03.49+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+        "name": "Ch. de Ségriès 2023",
+        "year": "2023"
+      },
+      "userNote": "Rød frukt plomme pepper Fat urt",
+      "referenceNote": "Saftig og fyldig preg av sødmerike mørke bær, innslag av krydder og tørket urt. God lengde.",
+      "storedScore": 51,
+      "previousScore": 56
+    },
+    {
+      "key": "0ab4b9ee-471e-41cb-9b50-9ba076b55293:lukt",
+      "tastingId": "0ab4b9ee-471e-41cb-9b50-9ba076b55293",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:54:57.695+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+        "name": "Ch. de Ségriès 2023",
+        "year": "2023"
+      },
+      "userNote": "Organisk, mindre krydder, fruktig, fat, vanilje",
+      "referenceNote": "Aroma preget av modne mørke bær og litt tørket frukt, innslag av kamfer og salvie.",
+      "storedScore": 32,
+      "previousScore": 18
+    },
+    {
+      "key": "0ab4b9ee-471e-41cb-9b50-9ba076b55293:smak",
+      "tastingId": "0ab4b9ee-471e-41cb-9b50-9ba076b55293",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T18:54:57.695+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+        "name": "Ch. de Ségriès 2023",
+        "year": "2023"
+      },
+      "userNote": "Middels tanin, balansert syre, litt brent, rund",
+      "referenceNote": "Saftig og fyldig preg av sødmerike mørke bær, innslag av krydder og tørket urt. God lengde.",
+      "storedScore": 24,
+      "previousScore": 17
+    },
+    {
+      "key": "95ff3771-164a-410b-b4ad-f8deaaa98a7a:lukt",
+      "tastingId": "95ff3771-164a-410b-b4ad-f8deaaa98a7a",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T19:09:03.636+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+        "name": "Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023",
+        "year": "2023"
+      },
+      "userNote": "Mørke bær. Kjøtt. Fat.",
+      "referenceNote": "Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.",
+      "storedScore": 75,
+      "previousScore": 40
+    },
+    {
+      "key": "95ff3771-164a-410b-b4ad-f8deaaa98a7a:smak",
+      "tastingId": "95ff3771-164a-410b-b4ad-f8deaaa98a7a",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T19:09:03.636+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+        "name": "Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023",
+        "year": "2023"
+      },
+      "userNote": "Mørke bær. Krydder. Fat. Vanilje.",
+      "referenceNote": "Fyldig og krydret, preg av røde og mørke bær, litt tørket frukt, svale urter og fat, hint av pepper.",
+      "storedScore": 96,
+      "previousScore": 43
+    },
+    {
+      "key": "435fd2a9-4287-4379-b810-fbaf5d11c0d8:lukt",
+      "tastingId": "435fd2a9-4287-4379-b810-fbaf5d11c0d8",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T19:10:10.296+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+        "name": "Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023",
+        "year": "2023"
+      },
+      "userNote": "Solbær\nMoreller",
+      "referenceNote": "Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.",
+      "storedScore": 50,
+      "previousScore": 28
+    },
+    {
+      "key": "435fd2a9-4287-4379-b810-fbaf5d11c0d8:smak",
+      "tastingId": "435fd2a9-4287-4379-b810-fbaf5d11c0d8",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T19:10:10.296+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+        "name": "Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023",
+        "year": "2023"
+      },
+      "userNote": "Urter\nSolbær\nMoreller\nTobakk",
+      "referenceNote": "Fyldig og krydret, preg av røde og mørke bær, litt tørket frukt, svale urter og fat, hint av pepper.",
+      "storedScore": 77,
+      "previousScore": 24
+    },
+    {
+      "key": "cd61dad0-dbbf-48d9-8e2a-f5582c9b9529:lukt",
+      "tastingId": "cd61dad0-dbbf-48d9-8e2a-f5582c9b9529",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T19:12:00.012+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+        "name": "Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023",
+        "year": "2023"
+      },
+      "userNote": "Søtt, frukt, meineralsk, bringebær,",
+      "referenceNote": "Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.",
+      "storedScore": 67,
+      "previousScore": 23
+    },
+    {
+      "key": "cd61dad0-dbbf-48d9-8e2a-f5582c9b9529:smak",
+      "tastingId": "cd61dad0-dbbf-48d9-8e2a-f5582c9b9529",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T19:12:00.012+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+        "name": "Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023",
+        "year": "2023"
+      },
+      "userNote": "Balansert, litt taniner, solbær, kirsebær, temper",
+      "referenceNote": "Fyldig og krydret, preg av røde og mørke bær, litt tørket frukt, svale urter og fat, hint av pepper.",
+      "storedScore": 54,
+      "previousScore": 17
+    },
+    {
+      "key": "be3c9b47-f438-413a-8f2a-3d85db4d7a37:lukt",
+      "tastingId": "be3c9b47-f438-413a-8f2a-3d85db4d7a37",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T19:12:32.266+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+        "name": "Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023",
+        "year": "2023"
+      },
+      "userNote": "Bringebær, urt tre",
+      "referenceNote": "Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.",
+      "storedScore": 83,
+      "previousScore": 70
+    },
+    {
+      "key": "be3c9b47-f438-413a-8f2a-3d85db4d7a37:smak",
+      "tastingId": "be3c9b47-f438-413a-8f2a-3d85db4d7a37",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T19:12:32.266+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+        "name": "Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023",
+        "year": "2023"
+      },
+      "userNote": "Skogsbær moreller urt og krydder og vanilje",
+      "referenceNote": "Fyldig og krydret, preg av røde og mørke bær, litt tørket frukt, svale urter og fat, hint av pepper.",
+      "storedScore": 79,
+      "previousScore": 69
+    },
+    {
+      "key": "352a55a3-3161-41e8-83bd-924eebd39c4d:lukt",
+      "tastingId": "352a55a3-3161-41e8-83bd-924eebd39c4d",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T19:20:50.236+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+        "name": "Ch. la Nerthe Châteauneuf-du-Pape 2022",
+        "year": "2022"
+      },
+      "userNote": "Solbær\nUrter\nKrydder\nPepper\nFat",
+      "referenceNote": "Sval og sammensatt aroma av mørke og røde bær, krydder, lær og lakris, litt fat og kamfer.",
+      "storedScore": 81,
+      "previousScore": 37
+    },
+    {
+      "key": "352a55a3-3161-41e8-83bd-924eebd39c4d:smak",
+      "tastingId": "352a55a3-3161-41e8-83bd-924eebd39c4d",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-04-10T19:20:50.236+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+        "name": "Ch. la Nerthe Châteauneuf-du-Pape 2022",
+        "year": "2022"
+      },
+      "userNote": "Solbær\nMørke bær\nModen frukt\nUrter\nKrydder \nVanilje",
+      "referenceNote": "Fyldig, lang og litt utviklet, nyansert preg av modne mørke og røde bær, krydder, urter og fat.",
+      "storedScore": 92,
+      "previousScore": 55
+    },
+    {
+      "key": "5dbb2d51-9a9d-45e3-bf43-b10f836ed5b8:lukt",
+      "tastingId": "5dbb2d51-9a9d-45e3-bf43-b10f836ed5b8",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T19:23:07.43+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+        "name": "Ch. la Nerthe Châteauneuf-du-Pape 2022",
+        "year": "2022"
+      },
+      "userNote": "Mørke bær. Kirsebær. Far.",
+      "referenceNote": "Sval og sammensatt aroma av mørke og røde bær, krydder, lær og lakris, litt fat og kamfer.",
+      "storedScore": 77,
+      "previousScore": 25
+    },
+    {
+      "key": "5dbb2d51-9a9d-45e3-bf43-b10f836ed5b8:smak",
+      "tastingId": "5dbb2d51-9a9d-45e3-bf43-b10f836ed5b8",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-04-10T19:23:07.43+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+        "name": "Ch. la Nerthe Châteauneuf-du-Pape 2022",
+        "year": "2022"
+      },
+      "userNote": "Mørke bær. Vanilje. Moden frukt. Fat.",
+      "referenceNote": "Fyldig, lang og litt utviklet, nyansert preg av modne mørke og røde bær, krydder, urter og fat.",
+      "storedScore": 86,
+      "previousScore": 45
+    },
+    {
+      "key": "4f340ecd-4893-47ee-8a50-a1c86d793307:lukt",
+      "tastingId": "4f340ecd-4893-47ee-8a50-a1c86d793307",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T19:23:39.591+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+        "name": "Ch. la Nerthe Châteauneuf-du-Pape 2022",
+        "year": "2022"
+      },
+      "userNote": "Røde bær mørk frukt urt krydder fat",
+      "referenceNote": "Sval og sammensatt aroma av mørke og røde bær, krydder, lær og lakris, litt fat og kamfer.",
+      "storedScore": 84,
+      "previousScore": 82
+    },
+    {
+      "key": "4f340ecd-4893-47ee-8a50-a1c86d793307:smak",
+      "tastingId": "4f340ecd-4893-47ee-8a50-a1c86d793307",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-04-10T19:23:39.591+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+        "name": "Ch. la Nerthe Châteauneuf-du-Pape 2022",
+        "year": "2022"
+      },
+      "userNote": "Mørke bær. Krydder urt vanilje",
+      "referenceNote": "Fyldig, lang og litt utviklet, nyansert preg av modne mørke og røde bær, krydder, urter og fat.",
+      "storedScore": 94,
+      "previousScore": 78
+    },
+    {
+      "key": "73143ed5-64cb-479d-be14-095b786380de:lukt",
+      "tastingId": "73143ed5-64cb-479d-be14-095b786380de",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T19:25:21.999+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+        "name": "Ch. la Nerthe Châteauneuf-du-Pape 2022",
+        "year": "2022"
+      },
+      "userNote": "Vanilje, frukt mørk og lys",
+      "referenceNote": "Sval og sammensatt aroma av mørke og røde bær, krydder, lær og lakris, litt fat og kamfer.",
+      "storedScore": 36,
+      "previousScore": 27
+    },
+    {
+      "key": "73143ed5-64cb-479d-be14-095b786380de:smak",
+      "tastingId": "73143ed5-64cb-479d-be14-095b786380de",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-04-10T19:25:21.999+00:00",
+      "event": {
+        "id": "c31b9bcb-4539-48d0-8756-7d6133c50b4b",
+        "name": "Rhone",
+        "date": "2026-04-10T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+        "name": "Ch. la Nerthe Châteauneuf-du-Pape 2022",
+        "year": "2022"
+      },
+      "userNote": "Søt, middels + taniner, syre middels, høy alkohol,",
+      "referenceNote": "Fyldig, lang og litt utviklet, nyansert preg av modne mørke og røde bær, krydder, urter og fat.",
+      "storedScore": 19,
+      "previousScore": 17
+    },
+    {
+      "key": "c61e9d34-dbed-4850-b56b-dbe4a4791fea:lukt",
+      "tastingId": "c61e9d34-dbed-4850-b56b-dbe4a4791fea",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-04-28T18:49:19.263+00:00",
+      "event": null,
+      "wine": {
+        "id": "bdd99517-902c-4c7b-9107-f8111046c9ca",
+        "name": "Ch. Langoa Barton 2016",
+        "year": "2016"
+      },
+      "userNote": "Solbær tre tobakk",
+      "referenceNote": "Aroma av friske mørke bær, krydder og tobakk.",
+      "storedScore": 63,
+      "previousScore": 75
+    },
+    {
+      "key": "c61e9d34-dbed-4850-b56b-dbe4a4791fea:smak",
+      "tastingId": "c61e9d34-dbed-4850-b56b-dbe4a4791fea",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-04-28T18:49:19.263+00:00",
+      "event": null,
+      "wine": {
+        "id": "bdd99517-902c-4c7b-9107-f8111046c9ca",
+        "name": "Ch. Langoa Barton 2016",
+        "year": "2016"
+      },
+      "userNote": "Solbær tobakk tre",
+      "referenceNote": "Saftig mørk frukt og lett krydret. Konsentrert og fyldig med faste tanniner. Lang.",
+      "storedScore": 17,
+      "previousScore": 44
+    },
+    {
+      "key": "a44ab139-33f5-4ada-95f8-7919cb20714a:lukt",
+      "tastingId": "a44ab139-33f5-4ada-95f8-7919cb20714a",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-02T18:26:03.763+00:00",
+      "event": null,
+      "wine": {
+        "id": "a77f1366-7236-43fe-b7ee-95deb4660f59",
+        "name": "Cavas de Weinert Gran Vino 2012",
+        "year": "2012"
+      },
+      "userNote": "Mørk frukt, litt syltet krydder  fat",
+      "referenceNote": "Tydelig utviklet og kompleks, preg av moden solbær, tørket frukt, innslag av fat, lær og tobakk.",
+      "storedScore": 77,
+      "previousScore": 67
+    },
+    {
+      "key": "a44ab139-33f5-4ada-95f8-7919cb20714a:smak",
+      "tastingId": "a44ab139-33f5-4ada-95f8-7919cb20714a",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-02T18:26:03.763+00:00",
+      "event": null,
+      "wine": {
+        "id": "a77f1366-7236-43fe-b7ee-95deb4660f59",
+        "name": "Cavas de Weinert Gran Vino 2012",
+        "year": "2012"
+      },
+      "userNote": "Mørke bær, lakris litt urt",
+      "referenceNote": "Fyldig, utviklet og kompleks, preg av tørket frukt, friske røde bær, solbær, fat, vanilje og tobakk.",
+      "storedScore": 49,
+      "previousScore": 53
+    },
+    {
+      "key": "5b423af2-70ec-4168-8ef7-24281519e76c:lukt",
+      "tastingId": "5b423af2-70ec-4168-8ef7-24281519e76c",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-02T18:31:48.67+00:00",
+      "event": null,
+      "wine": {
+        "id": "afd6691c-7cec-4d71-8c58-8fb473f210da",
+        "name": "Opta Touriga Nacional 2023",
+        "year": "2023"
+      },
+      "userNote": "Syltetøy rød frukt vanilje",
+      "referenceNote": "Aroma av mørke skogsbær, litt syltet frukt og fat, innslag av grønne urter, kamfer og fiol.",
+      "storedScore": 90,
+      "previousScore": 59
+    },
+    {
+      "key": "5b423af2-70ec-4168-8ef7-24281519e76c:smak",
+      "tastingId": "5b423af2-70ec-4168-8ef7-24281519e76c",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-02T18:31:48.67+00:00",
+      "event": null,
+      "wine": {
+        "id": "afd6691c-7cec-4d71-8c58-8fb473f210da",
+        "name": "Opta Touriga Nacional 2023",
+        "year": "2023"
+      },
+      "userNote": "Jordbærsyltetøy kamfer fat vanilje",
+      "referenceNote": "God fylde og fasthet, saftig preg av bjørnebær, blåbær, litt fat, grønn urt, lakris og kamfer.",
+      "storedScore": 91,
+      "previousScore": 74
+    },
+    {
+      "key": "158a8ec0-2567-4f4c-95d1-7206a24e265d:lukt",
+      "tastingId": "158a8ec0-2567-4f4c-95d1-7206a24e265d",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-08T20:07:07.471+00:00",
+      "event": null,
+      "wine": {
+        "id": "78b3e252-2a96-45ee-bcec-ad8249ab2c0e",
+        "name": "Lindes de Remelluri Viñedos de San Vicente de la Sonsierra 2019",
+        "year": "2019"
+      },
+      "userNote": "Rød frukt mørke bær. Tre urt",
+      "referenceNote": "Floral, røde bær, balsam, litt krydder.",
+      "storedScore": 43,
+      "previousScore": 65
+    },
+    {
+      "key": "158a8ec0-2567-4f4c-95d1-7206a24e265d:smak",
+      "tastingId": "158a8ec0-2567-4f4c-95d1-7206a24e265d",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-08T20:07:07.471+00:00",
+      "event": null,
+      "wine": {
+        "id": "78b3e252-2a96-45ee-bcec-ad8249ab2c0e",
+        "name": "Lindes de Remelluri Viñedos de San Vicente de la Sonsierra 2019",
+        "year": "2019"
+      },
+      "userNote": "Rød frukt mørke bær te fat urt",
+      "referenceNote": "Saftig, frisk, tannin, krydder, røde og mørke bær, god dybde, lang ettersmak.",
+      "storedScore": 29,
+      "previousScore": 56
+    },
+    {
+      "key": "961cce5f-2b21-44a1-96ab-fb15d586ea51:lukt",
+      "tastingId": "961cce5f-2b21-44a1-96ab-fb15d586ea51",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-09T18:32:35.876+00:00",
+      "event": null,
+      "wine": {
+        "id": "8a4ab74f-a0c3-4b4a-bc23-b7a13b7b951d",
+        "name": "Carl Loewen Riesling Quant Trocken 2025",
+        "year": "2025"
+      },
+      "userNote": "Epler og mineralsk",
+      "referenceNote": "Steinfrukt og sitrus. Sunn moden frukt.",
+      "storedScore": 21,
+      "previousScore": 38
+    },
+    {
+      "key": "961cce5f-2b21-44a1-96ab-fb15d586ea51:smak",
+      "tastingId": "961cce5f-2b21-44a1-96ab-fb15d586ea51",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-09T18:32:35.876+00:00",
+      "event": null,
+      "wine": {
+        "id": "8a4ab74f-a0c3-4b4a-bc23-b7a13b7b951d",
+        "name": "Carl Loewen Riesling Quant Trocken 2025",
+        "year": "2025"
+      },
+      "userNote": "Epler, sitrus mineralsk",
+      "referenceNote": "Fruktdreven, mineralsk og ren.",
+      "storedScore": 66,
+      "previousScore": 78
+    },
+    {
+      "key": "997efbdd-1ebb-47e6-9322-ffb06d2ac4de:lukt",
+      "tastingId": "997efbdd-1ebb-47e6-9322-ffb06d2ac4de",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-09T18:35:52.209+00:00",
+      "event": null,
+      "wine": {
+        "id": "fc3edf95-f0c9-4f51-8cc4-d3b9b8d89bf7",
+        "name": "La Crema Monterey Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Moden steinfrukt, smør fat",
+      "referenceNote": "Aroma av moden gul steinfrukt, fat, litt smør og vanilje, innslag av honning og blomst.",
+      "storedScore": 96,
+      "previousScore": 86
+    },
+    {
+      "key": "997efbdd-1ebb-47e6-9322-ffb06d2ac4de:smak",
+      "tastingId": "997efbdd-1ebb-47e6-9322-ffb06d2ac4de",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-09T18:35:52.209+00:00",
+      "event": null,
+      "wine": {
+        "id": "fc3edf95-f0c9-4f51-8cc4-d3b9b8d89bf7",
+        "name": "La Crema Monterey Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Smør fat eple steinfrukt sitrus",
+      "referenceNote": "Fyldig med litt feit tekstur, preg av moden gul steinfrukt, fat, smør, krydder, honning og nøtt.",
+      "storedScore": 83,
+      "previousScore": 0
+    },
+    {
+      "key": "c8088ef8-2f58-452a-b01b-ec540ef81e55:lukt",
+      "tastingId": "c8088ef8-2f58-452a-b01b-ec540ef81e55",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T18:16:48.43+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Frukt.",
+      "referenceNote": "Sval og fruktig, preg av sitrus, blomst og grønt eple, hint av kjeks.",
+      "storedScore": 72,
+      "previousScore": 74
+    },
+    {
+      "key": "c8088ef8-2f58-452a-b01b-ec540ef81e55:smak",
+      "tastingId": "c8088ef8-2f58-452a-b01b-ec540ef81e55",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T18:16:48.43+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Eple. Nøtt. Sitrus.",
+      "referenceNote": "Preg av eple og sitrus, hint av nøtt, kjeks og sjømineraler.",
+      "storedScore": 93,
+      "previousScore": 100
+    },
+    {
+      "key": "995624e2-8d46-47c3-a20f-93579b0e5c72:lukt",
+      "tastingId": "995624e2-8d46-47c3-a20f-93579b0e5c72",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T18:17:45.993+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Sitrus eple mineralsk",
+      "referenceNote": "Sval og fruktig, preg av sitrus, blomst og grønt eple, hint av kjeks.",
+      "storedScore": 74,
+      "previousScore": 68
+    },
+    {
+      "key": "995624e2-8d46-47c3-a20f-93579b0e5c72:smak",
+      "tastingId": "995624e2-8d46-47c3-a20f-93579b0e5c72",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T18:17:45.993+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Eple sitrus mineralsk",
+      "referenceNote": "Preg av eple og sitrus, hint av nøtt, kjeks og sjømineraler.",
+      "storedScore": 85,
+      "previousScore": 83
+    },
+    {
+      "key": "7c56583b-ae99-4008-8858-be6dc75b25ea:lukt",
+      "tastingId": "7c56583b-ae99-4008-8858-be6dc75b25ea",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T18:28:09.617+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Mineral. Frukt. Nøtt. Krydder",
+      "referenceNote": "Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.",
+      "storedScore": 55,
+      "previousScore": 83
+    },
+    {
+      "key": "7c56583b-ae99-4008-8858-be6dc75b25ea:smak",
+      "tastingId": "7c56583b-ae99-4008-8858-be6dc75b25ea",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T18:28:09.617+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Eple. Sitrus. Nøtt. Salt",
+      "referenceNote": "God fylde og lengde, preg av syrlige epler, sitrus, litt jordbær, fersken, bakverk og mineraler.",
+      "storedScore": 70,
+      "previousScore": 73
+    },
+    {
+      "key": "38fdc3c5-93e1-45c2-a1a3-475809254e66:lukt",
+      "tastingId": "38fdc3c5-93e1-45c2-a1a3-475809254e66",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T18:31:35.296+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Gult eple, pære",
+      "referenceNote": "Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.",
+      "storedScore": 53,
+      "previousScore": 62
+    },
+    {
+      "key": "38fdc3c5-93e1-45c2-a1a3-475809254e66:smak",
+      "tastingId": "38fdc3c5-93e1-45c2-a1a3-475809254e66",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T18:31:35.296+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Eple, mineralsk,",
+      "referenceNote": "God fylde og lengde, preg av syrlige epler, sitrus, litt jordbær, fersken, bakverk og mineraler.",
+      "storedScore": 86,
+      "previousScore": 61
+    },
+    {
+      "key": "d6a50ee2-7f76-470e-9f3c-d32a985e7798:lukt",
+      "tastingId": "d6a50ee2-7f76-470e-9f3c-d32a985e7798",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T18:31:53.905+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Fersken, plomme,",
+      "referenceNote": "Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.",
+      "storedScore": 44,
+      "previousScore": 48
+    },
+    {
+      "key": "d6a50ee2-7f76-470e-9f3c-d32a985e7798:smak",
+      "tastingId": "d6a50ee2-7f76-470e-9f3c-d32a985e7798",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T18:31:53.905+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Grapefrukt, mineraler, litt søtere",
+      "referenceNote": "God fylde og lengde, preg av syrlige epler, sitrus, litt jordbær, fersken, bakverk og mineraler.",
+      "storedScore": 68,
+      "previousScore": 76
+    },
+    {
+      "key": "88113bcf-e964-49c5-beb2-5333bace9ce2:lukt",
+      "tastingId": "88113bcf-e964-49c5-beb2-5333bace9ce2",
+      "field": "lukt",
+      "taster": "T5",
+      "tastedAt": "2026-05-13T18:32:33.617+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Brioche,",
+      "referenceNote": "Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.",
+      "storedScore": 22,
+      "previousScore": 63
+    },
+    {
+      "key": "88113bcf-e964-49c5-beb2-5333bace9ce2:smak",
+      "tastingId": "88113bcf-e964-49c5-beb2-5333bace9ce2",
+      "field": "smak",
+      "taster": "T5",
+      "tastedAt": "2026-05-13T18:32:33.617+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Brioche, Sitrus",
+      "referenceNote": "God fylde og lengde, preg av syrlige epler, sitrus, litt jordbær, fersken, bakverk og mineraler.",
+      "storedScore": 78,
+      "previousScore": 71
+    },
+    {
+      "key": "0bf4a445-2a16-43c3-b755-2ac27a094c31:lukt",
+      "tastingId": "0bf4a445-2a16-43c3-b755-2ac27a094c31",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T18:32:55.017+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Gult eple, pære, brioche",
+      "referenceNote": "Sval og fruktig, preg av sitrus, blomst og grønt eple, hint av kjeks.",
+      "storedScore": 61,
+      "previousScore": 78
+    },
+    {
+      "key": "0bf4a445-2a16-43c3-b755-2ac27a094c31:smak",
+      "tastingId": "0bf4a445-2a16-43c3-b755-2ac27a094c31",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T18:32:55.017+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Eple, pære, mineralsk",
+      "referenceNote": "Preg av eple og sitrus, hint av nøtt, kjeks og sjømineraler.",
+      "storedScore": 73,
+      "previousScore": 79
+    },
+    {
+      "key": "ee61de90-9dc1-452d-9dc0-b8d77866c29e:lukt",
+      "tastingId": "ee61de90-9dc1-452d-9dc0-b8d77866c29e",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T18:32:59.027+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Gule epler, pære, mineraler",
+      "referenceNote": "Sval og fruktig, preg av sitrus, blomst og grønt eple, hint av kjeks.",
+      "storedScore": 46,
+      "previousScore": 55
+    },
+    {
+      "key": "ee61de90-9dc1-452d-9dc0-b8d77866c29e:smak",
+      "tastingId": "ee61de90-9dc1-452d-9dc0-b8d77866c29e",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T18:32:59.027+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Sitrus, eple,",
+      "referenceNote": "Preg av eple og sitrus, hint av nøtt, kjeks og sjømineraler.",
+      "storedScore": 86,
+      "previousScore": 66
+    },
+    {
+      "key": "96102e40-c5ec-4689-8ec7-d7a47b7ad38a:lukt",
+      "tastingId": "96102e40-c5ec-4689-8ec7-d7a47b7ad38a",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T18:42:48.979+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Rødt eple, citrus, mineralsk, aprikos, fersken",
+      "referenceNote": "Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.",
+      "storedScore": 92,
+      "previousScore": 83
+    },
+    {
+      "key": "96102e40-c5ec-4689-8ec7-d7a47b7ad38a:smak",
+      "tastingId": "96102e40-c5ec-4689-8ec7-d7a47b7ad38a",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T18:42:48.979+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Rødt eple citrus fersken",
+      "referenceNote": "God fylde og lengde, preg av syrlige epler, sitrus, litt jordbær, fersken, bakverk og mineraler.",
+      "storedScore": 93,
+      "previousScore": 68
+    },
+    {
+      "key": "a813f983-0f5a-4b20-a2f8-a708381fbd81:lukt",
+      "tastingId": "a813f983-0f5a-4b20-a2f8-a708381fbd81",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T18:43:29.195+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Rødt eple sitrus mineralsk",
+      "referenceNote": "Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.",
+      "storedScore": 93,
+      "previousScore": 71
+    },
+    {
+      "key": "a813f983-0f5a-4b20-a2f8-a708381fbd81:smak",
+      "tastingId": "a813f983-0f5a-4b20-a2f8-a708381fbd81",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T18:43:29.195+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+        "name": "Champagne Aubry Premier Cru Brut",
+        "year": null
+      },
+      "userNote": "Rødt eple brioche sitrus mineralsk",
+      "referenceNote": "God fylde og lengde, preg av syrlige epler, sitrus, litt jordbær, fersken, bakverk og mineraler.",
+      "storedScore": 93,
+      "previousScore": 72
+    },
+    {
+      "key": "536e678d-d8da-4492-819e-07deb784aa70:lukt",
+      "tastingId": "536e678d-d8da-4492-819e-07deb784aa70",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T18:46:11.245+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Eple. Plomme. Mineral.",
+      "referenceNote": "Litt utviklet aroma av modne epler, sitrus og bakverk, innslag av appelsin, nøtt og mineraler.",
+      "storedScore": 70,
+      "previousScore": 65
+    },
+    {
+      "key": "536e678d-d8da-4492-819e-07deb784aa70:smak",
+      "tastingId": "536e678d-d8da-4492-819e-07deb784aa70",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T18:46:11.245+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Sjø. Mineral. Eple. Gjær",
+      "referenceNote": "Saftig, kremet og frisk med god lengde, nyansert preg av modne epler, sitrus, kjeks og mineraler.",
+      "storedScore": 67,
+      "previousScore": 83
+    },
+    {
+      "key": "8a96caed-b65d-4cd2-8d47-b18549c75c1b:lukt",
+      "tastingId": "8a96caed-b65d-4cd2-8d47-b18549c75c1b",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T18:46:13.041+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Rød eple, pære",
+      "referenceNote": "Litt utviklet aroma av modne epler, sitrus og bakverk, innslag av appelsin, nøtt og mineraler.",
+      "storedScore": 58,
+      "previousScore": 48
+    },
+    {
+      "key": "8a96caed-b65d-4cd2-8d47-b18549c75c1b:smak",
+      "tastingId": "8a96caed-b65d-4cd2-8d47-b18549c75c1b",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T18:46:13.041+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Mineralsk, eple, god lengde og fylde, brioche",
+      "referenceNote": "Saftig, kremet og frisk med god lengde, nyansert preg av modne epler, sitrus, kjeks og mineraler.",
+      "storedScore": 79,
+      "previousScore": 70
+    },
+    {
+      "key": "0558afeb-4b1d-4569-b39b-91ee8df99b3a:lukt",
+      "tastingId": "0558afeb-4b1d-4569-b39b-91ee8df99b3a",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T18:47:21.379+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Gult melne eple skjell sitrus",
+      "referenceNote": "Litt utviklet aroma av modne epler, sitrus og bakverk, innslag av appelsin, nøtt og mineraler.",
+      "storedScore": 76,
+      "previousScore": 72
+    },
+    {
+      "key": "0558afeb-4b1d-4569-b39b-91ee8df99b3a:smak",
+      "tastingId": "0558afeb-4b1d-4569-b39b-91ee8df99b3a",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T18:47:21.379+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Gult eple sitrus sjø mineralsk brioche fersken",
+      "referenceNote": "Saftig, kremet og frisk med god lengde, nyansert preg av modne epler, sitrus, kjeks og mineraler.",
+      "storedScore": 73,
+      "previousScore": 92
+    },
+    {
+      "key": "0173e349-d370-439b-8de9-5160a2139d8e:lukt",
+      "tastingId": "0173e349-d370-439b-8de9-5160a2139d8e",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T18:49:57.043+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Kirsebær, røde epler,",
+      "referenceNote": "Litt utviklet aroma av modne epler, sitrus og bakverk, innslag av appelsin, nøtt og mineraler.",
+      "storedScore": 62,
+      "previousScore": 69
+    },
+    {
+      "key": "0173e349-d370-439b-8de9-5160a2139d8e:smak",
+      "tastingId": "0173e349-d370-439b-8de9-5160a2139d8e",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T18:49:57.043+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Gult melende eple, steinfrukt",
+      "referenceNote": "Saftig, kremet og frisk med god lengde, nyansert preg av modne epler, sitrus, kjeks og mineraler.",
+      "storedScore": 40,
+      "previousScore": 66
+    },
+    {
+      "key": "d252709a-52cb-4ecc-bdcb-14990d8ffdfc:lukt",
+      "tastingId": "d252709a-52cb-4ecc-bdcb-14990d8ffdfc",
+      "field": "lukt",
+      "taster": "T7",
+      "tastedAt": "2026-05-13T18:50:01.556+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Mineralsk, hvit fersken",
+      "referenceNote": "Litt utviklet aroma av modne epler, sitrus og bakverk, innslag av appelsin, nøtt og mineraler.",
+      "storedScore": 52,
+      "previousScore": 71
+    },
+    {
+      "key": "6414b5ef-5a1d-40d8-9a36-fe6274700971:lukt",
+      "tastingId": "6414b5ef-5a1d-40d8-9a36-fe6274700971",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T18:54:20.242+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Rødt eple, citrus, hvit fersken, mineralsk",
+      "referenceNote": "Litt utviklet aroma av modne epler, sitrus og bakverk, innslag av appelsin, nøtt og mineraler.",
+      "storedScore": 85,
+      "previousScore": 71
+    },
+    {
+      "key": "6414b5ef-5a1d-40d8-9a36-fe6274700971:smak",
+      "tastingId": "6414b5ef-5a1d-40d8-9a36-fe6274700971",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T18:54:20.242+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+        "name": "André Clouet Grande Reserve Brut",
+        "year": null
+      },
+      "userNote": "Rødt eple, citrus, ristede nøtter, steinfrukt",
+      "referenceNote": "Saftig, kremet og frisk med god lengde, nyansert preg av modne epler, sitrus, kjeks og mineraler.",
+      "storedScore": 64,
+      "previousScore": 76
+    },
+    {
+      "key": "26986834-8818-41ed-ad3f-fa306f10b8c7:lukt",
+      "tastingId": "26986834-8818-41ed-ad3f-fa306f10b8c7",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T19:03:14.592+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Bør. Rips. Sitrus. Bringebær",
+      "referenceNote": "Aroma med modent preg av bringebær, jordbær, eple og bakverk, litt roser, nype og mineraler.",
+      "storedScore": 65,
+      "previousScore": 69
+    },
+    {
+      "key": "26986834-8818-41ed-ad3f-fa306f10b8c7:smak",
+      "tastingId": "26986834-8818-41ed-ad3f-fa306f10b8c7",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T19:03:14.592+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Mineral. Grønt eple. Kremet. Gjør",
+      "referenceNote": "Kremet og frisk, saftig preg av bringebær, jordbær, rips og kjeks, innslag av mandel og mineraler.",
+      "storedScore": 49,
+      "previousScore": 58
+    },
+    {
+      "key": "2e3ccfa1-8458-46b9-a55c-25c309c268bb:lukt",
+      "tastingId": "2e3ccfa1-8458-46b9-a55c-25c309c268bb",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T19:05:46.106+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Rips markjordbær sitrus",
+      "referenceNote": "Aroma med modent preg av bringebær, jordbær, eple og bakverk, litt roser, nype og mineraler.",
+      "storedScore": 63,
+      "previousScore": 71
+    },
+    {
+      "key": "2e3ccfa1-8458-46b9-a55c-25c309c268bb:smak",
+      "tastingId": "2e3ccfa1-8458-46b9-a55c-25c309c268bb",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T19:05:46.106+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Jordbær rips sitrus eple mineralsk",
+      "referenceNote": "Kremet og frisk, saftig preg av bringebær, jordbær, rips og kjeks, innslag av mandel og mineraler.",
+      "storedScore": 68,
+      "previousScore": 91
+    },
+    {
+      "key": "4487f760-71c0-4e9a-94bc-a27d1b5d0349:lukt",
+      "tastingId": "4487f760-71c0-4e9a-94bc-a27d1b5d0349",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T19:07:26.145+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Rips, jordbær, kirsebær, bringebær,",
+      "referenceNote": "Aroma med modent preg av bringebær, jordbær, eple og bakverk, litt roser, nype og mineraler.",
+      "storedScore": 94,
+      "previousScore": 93
+    },
+    {
+      "key": "4487f760-71c0-4e9a-94bc-a27d1b5d0349:smak",
+      "tastingId": "4487f760-71c0-4e9a-94bc-a27d1b5d0349",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T19:07:26.145+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Syrlig, hard bobler, alt for fortynna besk saft",
+      "referenceNote": "Kremet og frisk, saftig preg av bringebær, jordbær, rips og kjeks, innslag av mandel og mineraler.",
+      "storedScore": 8,
+      "previousScore": 44
+    },
+    {
+      "key": "44da0ade-0005-4983-b93b-5842b53ce312:lukt",
+      "tastingId": "44da0ade-0005-4983-b93b-5842b53ce312",
+      "field": "lukt",
+      "taster": "T5",
+      "tastedAt": "2026-05-13T19:07:38.418+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Jordbær, rips, stikkelsbær brød",
+      "referenceNote": "Aroma med modent preg av bringebær, jordbær, eple og bakverk, litt roser, nype og mineraler.",
+      "storedScore": 65,
+      "previousScore": 80
+    },
+    {
+      "key": "44da0ade-0005-4983-b93b-5842b53ce312:smak",
+      "tastingId": "44da0ade-0005-4983-b93b-5842b53ce312",
+      "field": "smak",
+      "taster": "T5",
+      "tastedAt": "2026-05-13T19:07:38.418+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Bringebær, jordbær , rips",
+      "referenceNote": "Kremet og frisk, saftig preg av bringebær, jordbær, rips og kjeks, innslag av mandel og mineraler.",
+      "storedScore": 85,
+      "previousScore": 87
+    },
+    {
+      "key": "285f0ce7-b06e-49e4-9b9a-9a3c05e08f8a:lukt",
+      "tastingId": "285f0ce7-b06e-49e4-9b9a-9a3c05e08f8a",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T19:08:31.715+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Bringebær, bær, sitrus",
+      "referenceNote": "Aroma med modent preg av bringebær, jordbær, eple og bakverk, litt roser, nype og mineraler.",
+      "storedScore": 82,
+      "previousScore": 80
+    },
+    {
+      "key": "285f0ce7-b06e-49e4-9b9a-9a3c05e08f8a:smak",
+      "tastingId": "285f0ce7-b06e-49e4-9b9a-9a3c05e08f8a",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T19:08:31.715+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Bær syrlig",
+      "referenceNote": "Kremet og frisk, saftig preg av bringebær, jordbær, rips og kjeks, innslag av mandel og mineraler.",
+      "storedScore": 49,
+      "previousScore": 66
+    },
+    {
+      "key": "39e2c763-0b38-48c7-857f-ecc973a43c02:lukt",
+      "tastingId": "39e2c763-0b38-48c7-857f-ecc973a43c02",
+      "field": "lukt",
+      "taster": "T7",
+      "tastedAt": "2026-05-13T19:08:43.833+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Rips, jordbær mineralsk",
+      "referenceNote": "Aroma med modent preg av bringebær, jordbær, eple og bakverk, litt roser, nype og mineraler.",
+      "storedScore": 73,
+      "previousScore": 81
+    },
+    {
+      "key": "39e2c763-0b38-48c7-857f-ecc973a43c02:smak",
+      "tastingId": "39e2c763-0b38-48c7-857f-ecc973a43c02",
+      "field": "smak",
+      "taster": "T7",
+      "tastedAt": "2026-05-13T19:08:43.833+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Rød saft, syrlig",
+      "referenceNote": "Kremet og frisk, saftig preg av bringebær, jordbær, rips og kjeks, innslag av mandel og mineraler.",
+      "storedScore": 8,
+      "previousScore": 60
+    },
+    {
+      "key": "08a123b6-a4b9-4295-929b-c2112dc1bd1b:lukt",
+      "tastingId": "08a123b6-a4b9-4295-929b-c2112dc1bd1b",
+      "field": "lukt",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T19:17:47.975+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Brioche. Nøtt. Bakst. Eple",
+      "referenceNote": "Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.",
+      "storedScore": 75,
+      "previousScore": 86
+    },
+    {
+      "key": "08a123b6-a4b9-4295-929b-c2112dc1bd1b:smak",
+      "tastingId": "08a123b6-a4b9-4295-929b-c2112dc1bd1b",
+      "field": "smak",
+      "taster": "T4",
+      "tastedAt": "2026-05-13T19:17:47.975+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Bakst. Mineral. Nøtt. Modent eple.",
+      "referenceNote": "Kompleks, kremet og utviklet med god fylde, preg av sitrus, modne epler, kjeks, nøtt og brioche.",
+      "storedScore": 76,
+      "previousScore": 76
+    },
+    {
+      "key": "a6e8d025-72bb-43a4-a7f0-b5de00f55633:lukt",
+      "tastingId": "a6e8d025-72bb-43a4-a7f0-b5de00f55633",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T19:19:03.618+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Brioche kjeks sitrus eple nøtter sopp",
+      "referenceNote": "Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.",
+      "storedScore": 83,
+      "previousScore": 99
+    },
+    {
+      "key": "a6e8d025-72bb-43a4-a7f0-b5de00f55633:smak",
+      "tastingId": "a6e8d025-72bb-43a4-a7f0-b5de00f55633",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-05-13T19:19:03.618+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Brioche toast nøtt epler sitrus",
+      "referenceNote": "Kompleks, kremet og utviklet med god fylde, preg av sitrus, modne epler, kjeks, nøtt og brioche.",
+      "storedScore": 94,
+      "previousScore": 95
+    },
+    {
+      "key": "285f69f6-199f-4bfa-bb03-a2ec6883386c:lukt",
+      "tastingId": "285f69f6-199f-4bfa-bb03-a2ec6883386c",
+      "field": "lukt",
+      "taster": "T7",
+      "tastedAt": "2026-05-13T19:19:35.744+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Autolyse, bakst, vanilje",
+      "referenceNote": "Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.",
+      "storedScore": 29,
+      "previousScore": 52
+    },
+    {
+      "key": "7012dbb2-998b-409a-8a96-32ec704931c6:lukt",
+      "tastingId": "7012dbb2-998b-409a-8a96-32ec704931c6",
+      "field": "lukt",
+      "taster": "T5",
+      "tastedAt": "2026-05-13T19:20:04.719+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Brioche, modent eple",
+      "referenceNote": "Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.",
+      "storedScore": 93,
+      "previousScore": 75
+    },
+    {
+      "key": "7012dbb2-998b-409a-8a96-32ec704931c6:smak",
+      "tastingId": "7012dbb2-998b-409a-8a96-32ec704931c6",
+      "field": "smak",
+      "taster": "T5",
+      "tastedAt": "2026-05-13T19:20:04.719+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Brioche",
+      "referenceNote": "Kompleks, kremet og utviklet med god fylde, preg av sitrus, modne epler, kjeks, nøtt og brioche.",
+      "storedScore": 72,
+      "previousScore": 78
+    },
+    {
+      "key": "d7872056-a17f-4eff-ab33-29955216f78e:lukt",
+      "tastingId": "d7872056-a17f-4eff-ab33-29955216f78e",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T19:21:46.623+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Brioch, smør, nøtt,",
+      "referenceNote": "Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.",
+      "storedScore": 13,
+      "previousScore": 62
+    },
+    {
+      "key": "d7872056-a17f-4eff-ab33-29955216f78e:smak",
+      "tastingId": "d7872056-a17f-4eff-ab33-29955216f78e",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-05-13T19:21:46.623+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Kjeks, sur, moden, balansert og mineralsk",
+      "referenceNote": "Kompleks, kremet og utviklet med god fylde, preg av sitrus, modne epler, kjeks, nøtt og brioche.",
+      "storedScore": 62,
+      "previousScore": 55
+    },
+    {
+      "key": "e73cd82b-5f3f-4d88-af26-86bf28d70c95:lukt",
+      "tastingId": "e73cd82b-5f3f-4d88-af26-86bf28d70c95",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T19:31:33.285+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Gult eple, brioche, kjeks, honning, citrus, nøtter",
+      "referenceNote": "Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.",
+      "storedScore": 80,
+      "previousScore": 98
+    },
+    {
+      "key": "e73cd82b-5f3f-4d88-af26-86bf28d70c95:smak",
+      "tastingId": "e73cd82b-5f3f-4d88-af26-86bf28d70c95",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T19:31:33.285+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Citrus, toast, nøtter, gult eple kjeks",
+      "referenceNote": "Kompleks, kremet og utviklet med god fylde, preg av sitrus, modne epler, kjeks, nøtt og brioche.",
+      "storedScore": 94,
+      "previousScore": 88
+    },
+    {
+      "key": "6adda679-9bb0-48f5-892d-5aa4044c878b:lukt",
+      "tastingId": "6adda679-9bb0-48f5-892d-5aa4044c878b",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T19:34:04.714+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Bringebær, rips, grønt eple, citrus",
+      "referenceNote": "Aroma med modent preg av bringebær, jordbær, eple og bakverk, litt roser, nype og mineraler.",
+      "storedScore": 66,
+      "previousScore": 82
+    },
+    {
+      "key": "6adda679-9bb0-48f5-892d-5aa4044c878b:smak",
+      "tastingId": "6adda679-9bb0-48f5-892d-5aa4044c878b",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T19:34:04.714+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+        "name": "Louis Nicaise Brut Rosé",
+        "year": null
+      },
+      "userNote": "Bringebær, jordbær, citrus, grønt eple",
+      "referenceNote": "Kremet og frisk, saftig preg av bringebær, jordbær, rips og kjeks, innslag av mandel og mineraler.",
+      "storedScore": 72,
+      "previousScore": 93
+    },
+    {
+      "key": "56766a91-94aa-47bb-8780-cd684681f156:lukt",
+      "tastingId": "56766a91-94aa-47bb-8780-cd684681f156",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T19:42:20.85+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Toasty, brioche, nøtter grønt eple citrus",
+      "referenceNote": "Sval og fruktig, preg av sitrus, blomst og grønt eple, hint av kjeks.",
+      "storedScore": 68,
+      "previousScore": 78
+    },
+    {
+      "key": "56766a91-94aa-47bb-8780-cd684681f156:smak",
+      "tastingId": "56766a91-94aa-47bb-8780-cd684681f156",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-05-13T19:42:20.85+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+        "name": "Diebolt-Vallois Blanc de Blancs Brut",
+        "year": "2022"
+      },
+      "userNote": "Nøtter brioche, grønt eple citrus",
+      "referenceNote": "Preg av eple og sitrus, hint av nøtt, kjeks og sjømineraler.",
+      "storedScore": 91,
+      "previousScore": 77
+    },
+    {
+      "key": "095a4499-b3b7-49e6-80fe-9dd2bb0573ea:lukt",
+      "tastingId": "095a4499-b3b7-49e6-80fe-9dd2bb0573ea",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T19:42:41.452+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Brioche, fyldig, lang, modne epler, nøtter",
+      "referenceNote": "Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.",
+      "storedScore": 81,
+      "previousScore": 95
+    },
+    {
+      "key": "095a4499-b3b7-49e6-80fe-9dd2bb0573ea:smak",
+      "tastingId": "095a4499-b3b7-49e6-80fe-9dd2bb0573ea",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-05-13T19:42:41.452+00:00",
+      "event": {
+        "id": "41a0d425-29be-4efb-8642-0cd94da4de5e",
+        "name": "Champagne",
+        "date": "2026-05-13T00:00:00+00:00"
+      },
+      "wine": {
+        "id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+        "name": "André Clouet Un Jour de 1911",
+        "year": null
+      },
+      "userNote": "Eple, sitrus, moden, bakt",
+      "referenceNote": "Kompleks, kremet og utviklet med god fylde, preg av sitrus, modne epler, kjeks, nøtt og brioche.",
+      "storedScore": 91,
+      "previousScore": 61
+    },
+    {
+      "key": "e2ff0ef6-2ba5-481e-87b1-0e916f1b2245:lukt",
+      "tastingId": "e2ff0ef6-2ba5-481e-87b1-0e916f1b2245",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:10:45.321+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "273e3e3c-8a8f-4542-aa15-eef2cd5795a8",
+        "name": "Matrot Bourgogne Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Mineralsk floralt",
+      "referenceNote": "Ung aroma av sitrus, epler og fersken, litt fat, smør og blomst, hint av flint og våt stein.",
+      "storedScore": 56,
+      "previousScore": null
+    },
+    {
+      "key": "e2ff0ef6-2ba5-481e-87b1-0e916f1b2245:smak",
+      "tastingId": "e2ff0ef6-2ba5-481e-87b1-0e916f1b2245",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:10:45.321+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "273e3e3c-8a8f-4542-aa15-eef2cd5795a8",
+        "name": "Matrot Bourgogne Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Smør brioch frisk syre hibiscus mineralsk nektarin",
+      "referenceNote": "Frisk, saftig og litt kremet, preg av sitrus, steinfrukt, litt vanilje, nøtt, mineraler og urter.",
+      "storedScore": 55,
+      "previousScore": null
+    },
+    {
+      "key": "41db6c0a-746c-4e3a-b529-66ddcc582fb4:lukt",
+      "tastingId": "41db6c0a-746c-4e3a-b529-66ddcc582fb4",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T18:11:24.736+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "273e3e3c-8a8f-4542-aa15-eef2cd5795a8",
+        "name": "Matrot Bourgogne Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Sitrus eple mineralsk litt fat",
+      "referenceNote": "Ung aroma av sitrus, epler og fersken, litt fat, smør og blomst, hint av flint og våt stein.",
+      "storedScore": 96,
+      "previousScore": null
+    },
+    {
+      "key": "41db6c0a-746c-4e3a-b529-66ddcc582fb4:smak",
+      "tastingId": "41db6c0a-746c-4e3a-b529-66ddcc582fb4",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T18:11:24.736+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "273e3e3c-8a8f-4542-aa15-eef2cd5795a8",
+        "name": "Matrot Bourgogne Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Sitrus eple litt sjøbunn tre",
+      "referenceNote": "Frisk, saftig og litt kremet, preg av sitrus, steinfrukt, litt vanilje, nøtt, mineraler og urter.",
+      "storedScore": 65,
+      "previousScore": null
+    },
+    {
+      "key": "7ce5d70b-4ca7-4061-88d4-c8a69f6ea34f:lukt",
+      "tastingId": "7ce5d70b-4ca7-4061-88d4-c8a69f6ea34f",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T18:13:48.903+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "273e3e3c-8a8f-4542-aa15-eef2cd5795a8",
+        "name": "Matrot Bourgogne Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Vanilje, citrus, mineralsk, steinfrukt",
+      "referenceNote": "Ung aroma av sitrus, epler og fersken, litt fat, smør og blomst, hint av flint og våt stein.",
+      "storedScore": 71,
+      "previousScore": null
+    },
+    {
+      "key": "7ce5d70b-4ca7-4061-88d4-c8a69f6ea34f:smak",
+      "tastingId": "7ce5d70b-4ca7-4061-88d4-c8a69f6ea34f",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T18:13:48.903+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "273e3e3c-8a8f-4542-aa15-eef2cd5795a8",
+        "name": "Matrot Bourgogne Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Smør, litt nøtter, citrus, litt steinfrukt, mineralsk",
+      "referenceNote": "Frisk, saftig og litt kremet, preg av sitrus, steinfrukt, litt vanilje, nøtt, mineraler og urter.",
+      "storedScore": 88,
+      "previousScore": null
+    },
+    {
+      "key": "4bf75ce9-ac2c-470e-895d-56dc95468cad:lukt",
+      "tastingId": "4bf75ce9-ac2c-470e-895d-56dc95468cad",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:24:33.982+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "69f8681a-a7b4-4e88-9b45-860efc5b7881",
+        "name": "Matrot Meursault 2023",
+        "year": "2023"
+      },
+      "userNote": "Smør nøtter vanilje",
+      "referenceNote": "Aroma med sammensatt preg av eple og pasjonsfrukt, innslag av smør, nøtt, fat og mineraler.",
+      "storedScore": 93,
+      "previousScore": null
+    },
+    {
+      "key": "4bf75ce9-ac2c-470e-895d-56dc95468cad:smak",
+      "tastingId": "4bf75ce9-ac2c-470e-895d-56dc95468cad",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:24:33.982+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "69f8681a-a7b4-4e88-9b45-860efc5b7881",
+        "name": "Matrot Meursault 2023",
+        "year": "2023"
+      },
+      "userNote": "Sitrus mineralsk fersken",
+      "referenceNote": "Ung, lang og kompleks, saftig preg av sitrus, fersken og eple, litt fat, smør, nøtt og mineraler.",
+      "storedScore": 93,
+      "previousScore": null
+    },
+    {
+      "key": "44dcd223-4627-4fe5-86ff-81cbdd52bff1:lukt",
+      "tastingId": "44dcd223-4627-4fe5-86ff-81cbdd52bff1",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T18:24:36.34+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "69f8681a-a7b4-4e88-9b45-860efc5b7881",
+        "name": "Matrot Meursault 2023",
+        "year": "2023"
+      },
+      "userNote": "Bakt sitron, eple flint, vanilje, nøtt",
+      "referenceNote": "Aroma med sammensatt preg av eple og pasjonsfrukt, innslag av smør, nøtt, fat og mineraler.",
+      "storedScore": 76,
+      "previousScore": null
+    },
+    {
+      "key": "44dcd223-4627-4fe5-86ff-81cbdd52bff1:smak",
+      "tastingId": "44dcd223-4627-4fe5-86ff-81cbdd52bff1",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T18:24:36.34+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "69f8681a-a7b4-4e88-9b45-860efc5b7881",
+        "name": "Matrot Meursault 2023",
+        "year": "2023"
+      },
+      "userNote": "Sitrus, fersken, nøtt vanilje mineralsk",
+      "referenceNote": "Ung, lang og kompleks, saftig preg av sitrus, fersken og eple, litt fat, smør, nøtt og mineraler.",
+      "storedScore": 98,
+      "previousScore": null
+    },
+    {
+      "key": "63295eaa-8c89-4133-a541-7c5a6c228219:lukt",
+      "tastingId": "63295eaa-8c89-4133-a541-7c5a6c228219",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T18:27:25.501+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "69f8681a-a7b4-4e88-9b45-860efc5b7881",
+        "name": "Matrot Meursault 2023",
+        "year": "2023"
+      },
+      "userNote": "Vanilje smør og nøtter steinfrukt sitrus flint",
+      "referenceNote": "Aroma med sammensatt preg av eple og pasjonsfrukt, innslag av smør, nøtt, fat og mineraler.",
+      "storedScore": 75,
+      "previousScore": null
+    },
+    {
+      "key": "63295eaa-8c89-4133-a541-7c5a6c228219:smak",
+      "tastingId": "63295eaa-8c89-4133-a541-7c5a6c228219",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T18:27:25.501+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "69f8681a-a7b4-4e88-9b45-860efc5b7881",
+        "name": "Matrot Meursault 2023",
+        "year": "2023"
+      },
+      "userNote": "Sitrus, nøtter smør litt steinfrukt flint",
+      "referenceNote": "Ung, lang og kompleks, saftig preg av sitrus, fersken og eple, litt fat, smør, nøtt og mineraler.",
+      "storedScore": 95,
+      "previousScore": null
+    },
+    {
+      "key": "142b5d54-3cb3-4816-8dc4-f28c59456419:lukt",
+      "tastingId": "142b5d54-3cb3-4816-8dc4-f28c59456419",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T18:36:03.493+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "d00c05ad-516d-42ad-9158-0a218b5c9614",
+        "name": "Matrot Meursault 1er Cru Les Perrières 2018",
+        "year": "2018"
+      },
+      "userNote": "Smør, Nøtter, fat, sitrus, fersken flint",
+      "referenceNote": "God intensitet, eple, mineralitet og krydder.",
+      "storedScore": 32,
+      "previousScore": null
+    },
+    {
+      "key": "142b5d54-3cb3-4816-8dc4-f28c59456419:smak",
+      "tastingId": "142b5d54-3cb3-4816-8dc4-f28c59456419",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T18:36:03.493+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "d00c05ad-516d-42ad-9158-0a218b5c9614",
+        "name": "Matrot Meursault 1er Cru Les Perrières 2018",
+        "year": "2018"
+      },
+      "userNote": "Smør nøtter fersken sitrus flint fat",
+      "referenceNote": "Konsentrert, kompleks, saftig med lang ettersmak.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "e641b632-0435-4d2f-a9e4-b3d2bcb4c69a:lukt",
+      "tastingId": "e641b632-0435-4d2f-a9e4-b3d2bcb4c69a",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T18:36:18.257+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "d00c05ad-516d-42ad-9158-0a218b5c9614",
+        "name": "Matrot Meursault 1er Cru Les Perrières 2018",
+        "year": "2018"
+      },
+      "userNote": "Blomster sitrus eple flint fat nøtt",
+      "referenceNote": "God intensitet, eple, mineralitet og krydder.",
+      "storedScore": 47,
+      "previousScore": null
+    },
+    {
+      "key": "e641b632-0435-4d2f-a9e4-b3d2bcb4c69a:smak",
+      "tastingId": "e641b632-0435-4d2f-a9e4-b3d2bcb4c69a",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T18:36:18.257+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "d00c05ad-516d-42ad-9158-0a218b5c9614",
+        "name": "Matrot Meursault 1er Cru Les Perrières 2018",
+        "year": "2018"
+      },
+      "userNote": "Sitrus mineralsk eple fersken vanilje nøtt mineralsk",
+      "referenceNote": "Konsentrert, kompleks, saftig med lang ettersmak.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "fa857a32-5b4e-4cbe-bdae-3b10db029161:lukt",
+      "tastingId": "fa857a32-5b4e-4cbe-bdae-3b10db029161",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:36:36.267+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "d00c05ad-516d-42ad-9158-0a218b5c9614",
+        "name": "Matrot Meursault 1er Cru Les Perrières 2018",
+        "year": "2018"
+      },
+      "userNote": "Lær",
+      "referenceNote": "God intensitet, eple, mineralitet og krydder.",
+      "storedScore": 3,
+      "previousScore": null
+    },
+    {
+      "key": "fa857a32-5b4e-4cbe-bdae-3b10db029161:smak",
+      "tastingId": "fa857a32-5b4e-4cbe-bdae-3b10db029161",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:36:36.267+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "d00c05ad-516d-42ad-9158-0a218b5c9614",
+        "name": "Matrot Meursault 1er Cru Les Perrières 2018",
+        "year": "2018"
+      },
+      "userNote": "Sitrus fersken eple mineralsk",
+      "referenceNote": "Konsentrert, kompleks, saftig med lang ettersmak.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "f428dba1-4607-4d59-a98a-077604a6087f:lukt",
+      "tastingId": "f428dba1-4607-4d59-a98a-077604a6087f",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:50:31.428+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "f59c8b2a-57f4-438f-aa64-458f3a8b5511",
+        "name": "Joseph Faiveley Bourgogne Pinot Noir 2023",
+        "year": "2023"
+      },
+      "userNote": "Krydder jordbær mørke bær fruktig",
+      "referenceNote": "Sval aroma preget av bringebær, blomst og urter, innslag av litt jordbær, grønn urt og lakris.",
+      "storedScore": 56,
+      "previousScore": null
+    },
+    {
+      "key": "f428dba1-4607-4d59-a98a-077604a6087f:smak",
+      "tastingId": "f428dba1-4607-4d59-a98a-077604a6087f",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:50:31.428+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "f59c8b2a-57f4-438f-aa64-458f3a8b5511",
+        "name": "Joseph Faiveley Bourgogne Pinot Noir 2023",
+        "year": "2023"
+      },
+      "userNote": "Moreller urter anis mynte bringebær",
+      "referenceNote": "Fruktig, forfriskende og saftig med god lengde, preg av ferske røde bær, urter og hint av fat.",
+      "storedScore": 67,
+      "previousScore": null
+    },
+    {
+      "key": "21b2600d-9d1e-4e73-8b32-930540af3265:lukt",
+      "tastingId": "21b2600d-9d1e-4e73-8b32-930540af3265",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T18:51:01.522+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "f59c8b2a-57f4-438f-aa64-458f3a8b5511",
+        "name": "Joseph Faiveley Bourgogne Pinot Noir 2023",
+        "year": "2023"
+      },
+      "userNote": "Jordbær, bringebær, kirsebær, pepper, fat, nellik",
+      "referenceNote": "Sval aroma preget av bringebær, blomst og urter, innslag av litt jordbær, grønn urt og lakris.",
+      "storedScore": 64,
+      "previousScore": null
+    },
+    {
+      "key": "21b2600d-9d1e-4e73-8b32-930540af3265:smak",
+      "tastingId": "21b2600d-9d1e-4e73-8b32-930540af3265",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T18:51:01.522+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "f59c8b2a-57f4-438f-aa64-458f3a8b5511",
+        "name": "Joseph Faiveley Bourgogne Pinot Noir 2023",
+        "year": "2023"
+      },
+      "userNote": "Bringebær, nellik, kirsebær",
+      "referenceNote": "Fruktig, forfriskende og saftig med god lengde, preg av ferske røde bær, urter og hint av fat.",
+      "storedScore": 48,
+      "previousScore": null
+    },
+    {
+      "key": "88098c37-a67f-4d0e-bc74-558c48a2d797:lukt",
+      "tastingId": "88098c37-a67f-4d0e-bc74-558c48a2d797",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T18:51:20.81+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "f59c8b2a-57f4-438f-aa64-458f3a8b5511",
+        "name": "Joseph Faiveley Bourgogne Pinot Noir 2023",
+        "year": "2023"
+      },
+      "userNote": "Jordbær, urter, kirsebær",
+      "referenceNote": "Sval aroma preget av bringebær, blomst og urter, innslag av litt jordbær, grønn urt og lakris.",
+      "storedScore": 85,
+      "previousScore": null
+    },
+    {
+      "key": "88098c37-a67f-4d0e-bc74-558c48a2d797:smak",
+      "tastingId": "88098c37-a67f-4d0e-bc74-558c48a2d797",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T18:51:20.81+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "f59c8b2a-57f4-438f-aa64-458f3a8b5511",
+        "name": "Joseph Faiveley Bourgogne Pinot Noir 2023",
+        "year": "2023"
+      },
+      "userNote": "Bringebær, urter, jord",
+      "referenceNote": "Fruktig, forfriskende og saftig med god lengde, preg av ferske røde bær, urter og hint av fat.",
+      "storedScore": 65,
+      "previousScore": null
+    },
+    {
+      "key": "30e1278d-925d-4782-ad4b-5dd5292ed5f9:lukt",
+      "tastingId": "30e1278d-925d-4782-ad4b-5dd5292ed5f9",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:59:52.758+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "1c21d648-7622-4ae5-9100-fa9408ce21f7",
+        "name": "Faiveley Nuits-Saint-Georges Les Montroziers 2022",
+        "year": "2022"
+      },
+      "userNote": "Jord lær skogbunn",
+      "referenceNote": "Frisk duft av steinfrukt og røde bær.",
+      "storedScore": 2,
+      "previousScore": null
+    },
+    {
+      "key": "30e1278d-925d-4782-ad4b-5dd5292ed5f9:smak",
+      "tastingId": "30e1278d-925d-4782-ad4b-5dd5292ed5f9",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-08-28T18:59:52.758+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "1c21d648-7622-4ae5-9100-fa9408ce21f7",
+        "name": "Faiveley Nuits-Saint-Georges Les Montroziers 2022",
+        "year": "2022"
+      },
+      "userNote": "Mørk sjokolade jordbær bringebær kirsebær",
+      "referenceNote": "Saftig. Røde bær. God dybde.",
+      "storedScore": 59,
+      "previousScore": null
+    },
+    {
+      "key": "ca50a259-7a4e-4149-9538-a7eb4d11d68d:lukt",
+      "tastingId": "ca50a259-7a4e-4149-9538-a7eb4d11d68d",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T19:00:00.285+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "1c21d648-7622-4ae5-9100-fa9408ce21f7",
+        "name": "Faiveley Nuits-Saint-Georges Les Montroziers 2022",
+        "year": "2022"
+      },
+      "userNote": "Urter, røde bær nype skogbunn",
+      "referenceNote": "Frisk duft av steinfrukt og røde bær.",
+      "storedScore": 43,
+      "previousScore": null
+    },
+    {
+      "key": "ca50a259-7a4e-4149-9538-a7eb4d11d68d:smak",
+      "tastingId": "ca50a259-7a4e-4149-9538-a7eb4d11d68d",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-08-28T19:00:00.285+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "1c21d648-7622-4ae5-9100-fa9408ce21f7",
+        "name": "Faiveley Nuits-Saint-Georges Les Montroziers 2022",
+        "year": "2022"
+      },
+      "userNote": "Røde bær, urter fat",
+      "referenceNote": "Saftig. Røde bær. God dybde.",
+      "storedScore": 33,
+      "previousScore": null
+    },
+    {
+      "key": "ef250791-1ef9-46f4-9c49-93afa2cebab7:lukt",
+      "tastingId": "ef250791-1ef9-46f4-9c49-93afa2cebab7",
+      "field": "lukt",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T19:00:39.146+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "1c21d648-7622-4ae5-9100-fa9408ce21f7",
+        "name": "Faiveley Nuits-Saint-Georges Les Montroziers 2022",
+        "year": "2022"
+      },
+      "userNote": "Jordbær, kirsebær, mørk sjokolade, urter",
+      "referenceNote": "Frisk duft av steinfrukt og røde bær.",
+      "storedScore": 39,
+      "previousScore": null
+    },
+    {
+      "key": "ef250791-1ef9-46f4-9c49-93afa2cebab7:smak",
+      "tastingId": "ef250791-1ef9-46f4-9c49-93afa2cebab7",
+      "field": "smak",
+      "taster": "T6",
+      "tastedAt": "2026-08-28T19:00:39.146+00:00",
+      "event": {
+        "id": "4a426d00-2bb0-497a-a485-fbd43cd86dc8",
+        "name": "Burgund",
+        "date": "2026-08-28T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "1c21d648-7622-4ae5-9100-fa9408ce21f7",
+        "name": "Faiveley Nuits-Saint-Georges Les Montroziers 2022",
+        "year": "2022"
+      },
+      "userNote": "Jordbær, kirsebær, bringebær",
+      "referenceNote": "Saftig. Røde bær. God dybde.",
+      "storedScore": 74,
+      "previousScore": null
+    },
+    {
+      "key": "e88bd01f-e250-4e48-9d4b-cf8b20f36048:lukt",
+      "tastingId": "e88bd01f-e250-4e48-9d4b-cf8b20f36048",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-10-02T13:00:02.449+00:00",
+      "event": null,
+      "wine": {
+        "id": "345e9c0b-1a09-4515-b604-4d8e49085806",
+        "name": "Prod. del Barbaresco 2021",
+        "year": "2021"
+      },
+      "userNote": "Rød frukt te kamfer urt tre",
+      "referenceNote": "Nyansert aroma av røde bær, nype og litt tørket frukt, innslag av te, blomst, tjære og fat.",
+      "storedScore": 80,
+      "previousScore": null
+    },
+    {
+      "key": "e88bd01f-e250-4e48-9d4b-cf8b20f36048:smak",
+      "tastingId": "e88bd01f-e250-4e48-9d4b-cf8b20f36048",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-10-02T13:00:02.449+00:00",
+      "event": null,
+      "wine": {
+        "id": "345e9c0b-1a09-4515-b604-4d8e49085806",
+        "name": "Prod. del Barbaresco 2021",
+        "year": "2021"
+      },
+      "userNote": "Rød frukt kamfer te nype tørket frukt",
+      "referenceNote": "Litt utviklet og sammensatt preg av røde bær, nype og rosin, litt urter, te og fat, fast ettersmak.",
+      "storedScore": 80,
+      "previousScore": null
+    },
+    {
+      "key": "6679ad3c-c33a-4b82-9f79-1692072047fe:smak",
+      "tastingId": "6679ad3c-c33a-4b82-9f79-1692072047fe",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T18:16:20.138+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "2fc4e4cc-f724-464c-a9a4-ac3391c06e51",
+        "name": "Croisee Comtoise Crémant du Jura",
+        "year": null
+      },
+      "userNote": "Sitrus grønt eple brioche tropisk frukt",
+      "referenceNote": "Eple, mineraler, brioche og aprikos. Lang.",
+      "storedScore": 70,
+      "previousScore": null
+    },
+    {
+      "key": "600394e7-17bd-4c5a-8f4a-2a270d0417c5:lukt",
+      "tastingId": "600394e7-17bd-4c5a-8f4a-2a270d0417c5",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T18:23:19.998+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "2fc4e4cc-f724-464c-a9a4-ac3391c06e51",
+        "name": "Croisee Comtoise Crémant du Jura",
+        "year": null
+      },
+      "userNote": "Eple sitrus mineralsk",
+      "referenceNote": "Fokusert aroma av epler, brioche, mineraler.",
+      "storedScore": 66,
+      "previousScore": null
+    },
+    {
+      "key": "600394e7-17bd-4c5a-8f4a-2a270d0417c5:smak",
+      "tastingId": "600394e7-17bd-4c5a-8f4a-2a270d0417c5",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T18:23:19.998+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "2fc4e4cc-f724-464c-a9a4-ac3391c06e51",
+        "name": "Croisee Comtoise Crémant du Jura",
+        "year": null
+      },
+      "userNote": "Eple sitrus mineralsk",
+      "referenceNote": "Eple, mineraler, brioche og aprikos. Lang.",
+      "storedScore": 80,
+      "previousScore": null
+    },
+    {
+      "key": "f0fea5a1-01ff-4b8b-9182-33a0aa3544a0:lukt",
+      "tastingId": "f0fea5a1-01ff-4b8b-9182-33a0aa3544a0",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T18:27:53.461+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "e386334e-e257-49d6-b79d-e94b9d02b500",
+        "name": "Carlines Côtes du Jura Poulsard 2023",
+        "year": "2023"
+      },
+      "userNote": "Svovel kirsebær jord solbær",
+      "referenceNote": "Røde bær og blomster, hint av mineralitet.",
+      "storedScore": 65,
+      "previousScore": null
+    },
+    {
+      "key": "f0fea5a1-01ff-4b8b-9182-33a0aa3544a0:smak",
+      "tastingId": "f0fea5a1-01ff-4b8b-9182-33a0aa3544a0",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T18:27:53.461+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "e386334e-e257-49d6-b79d-e94b9d02b500",
+        "name": "Carlines Côtes du Jura Poulsard 2023",
+        "year": "2023"
+      },
+      "userNote": "Jordbær",
+      "referenceNote": "Frisk og fruktig med syrlige røde bær.",
+      "storedScore": 21,
+      "previousScore": null
+    },
+    {
+      "key": "1330ee3f-25e6-4be0-9b10-3e27b9aeb18f:lukt",
+      "tastingId": "1330ee3f-25e6-4be0-9b10-3e27b9aeb18f",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T18:28:23.547+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "e386334e-e257-49d6-b79d-e94b9d02b500",
+        "name": "Carlines Côtes du Jura Poulsard 2023",
+        "year": "2023"
+      },
+      "userNote": "Rips, syrlige bringebær",
+      "referenceNote": "Røde bær og blomster, hint av mineralitet.",
+      "storedScore": 48,
+      "previousScore": null
+    },
+    {
+      "key": "1330ee3f-25e6-4be0-9b10-3e27b9aeb18f:smak",
+      "tastingId": "1330ee3f-25e6-4be0-9b10-3e27b9aeb18f",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T18:28:23.547+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "e386334e-e257-49d6-b79d-e94b9d02b500",
+        "name": "Carlines Côtes du Jura Poulsard 2023",
+        "year": "2023"
+      },
+      "userNote": "Rød frukt, floral krydder",
+      "referenceNote": "Frisk og fruktig med syrlige røde bær.",
+      "storedScore": 34,
+      "previousScore": null
+    },
+    {
+      "key": "32f964d3-5d20-42ba-9a50-032ab6835789:lukt",
+      "tastingId": "32f964d3-5d20-42ba-9a50-032ab6835789",
+      "field": "lukt",
+      "taster": "T5",
+      "tastedAt": "2026-10-23T18:28:30.101+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "e386334e-e257-49d6-b79d-e94b9d02b500",
+        "name": "Carlines Côtes du Jura Poulsard 2023",
+        "year": "2023"
+      },
+      "userNote": "Solbær",
+      "referenceNote": "Røde bær og blomster, hint av mineralitet.",
+      "storedScore": 48,
+      "previousScore": null
+    },
+    {
+      "key": "567ce1e7-cd72-4f9f-a0cb-8fe3522fcee2:lukt",
+      "tastingId": "567ce1e7-cd72-4f9f-a0cb-8fe3522fcee2",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T18:29:43.13+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "2fc4e4cc-f724-464c-a9a4-ac3391c06e51",
+        "name": "Croisee Comtoise Crémant du Jura",
+        "year": null
+      },
+      "userNote": "Brioche mineraler",
+      "referenceNote": "Fokusert aroma av epler, brioche, mineraler.",
+      "storedScore": 86,
+      "previousScore": null
+    },
+    {
+      "key": "567ce1e7-cd72-4f9f-a0cb-8fe3522fcee2:smak",
+      "tastingId": "567ce1e7-cd72-4f9f-a0cb-8fe3522fcee2",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T18:29:43.13+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "2fc4e4cc-f724-464c-a9a4-ac3391c06e51",
+        "name": "Croisee Comtoise Crémant du Jura",
+        "year": null
+      },
+      "userNote": "Eple pære kirsebær",
+      "referenceNote": "Eple, mineraler, brioche og aprikos. Lang.",
+      "storedScore": 58,
+      "previousScore": null
+    },
+    {
+      "key": "b8e9b88f-5508-4e71-8161-66714918c55c:lukt",
+      "tastingId": "b8e9b88f-5508-4e71-8161-66714918c55c",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T18:31:25.076+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "e386334e-e257-49d6-b79d-e94b9d02b500",
+        "name": "Carlines Côtes du Jura Poulsard 2023",
+        "year": "2023"
+      },
+      "userNote": "Svovel aske jord kirsebær solbær",
+      "referenceNote": "Røde bær og blomster, hint av mineralitet.",
+      "storedScore": 62,
+      "previousScore": null
+    },
+    {
+      "key": "b8e9b88f-5508-4e71-8161-66714918c55c:smak",
+      "tastingId": "b8e9b88f-5508-4e71-8161-66714918c55c",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T18:31:25.076+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "e386334e-e257-49d6-b79d-e94b9d02b500",
+        "name": "Carlines Côtes du Jura Poulsard 2023",
+        "year": "2023"
+      },
+      "userNote": "Kirsebær sur eple chili pepper",
+      "referenceNote": "Frisk og fruktig med syrlige røde bær.",
+      "storedScore": 32,
+      "previousScore": null
+    },
+    {
+      "key": "44d8beca-1a9c-4e98-a797-25796af6c112:lukt",
+      "tastingId": "44d8beca-1a9c-4e98-a797-25796af6c112",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T18:40:47.774+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c2dadbbe-8663-407b-99ce-4a0cf20056b1",
+        "name": "Jean-Luc Mouillard Côtes du Jura Sur la Cour Trousseau 2023",
+        "year": "2023"
+      },
+      "userNote": "Bringebær pepper skogbunn",
+      "referenceNote": "Aroma av rips, urter, krydder, kanel og balsam.",
+      "storedScore": 34,
+      "previousScore": null
+    },
+    {
+      "key": "44d8beca-1a9c-4e98-a797-25796af6c112:smak",
+      "tastingId": "44d8beca-1a9c-4e98-a797-25796af6c112",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T18:40:47.774+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c2dadbbe-8663-407b-99ce-4a0cf20056b1",
+        "name": "Jean-Luc Mouillard Côtes du Jura Sur la Cour Trousseau 2023",
+        "year": "2023"
+      },
+      "userNote": "Bringebær litt krydret tre",
+      "referenceNote": "Frisk, lett, energisk med god lengde.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "3cf04e02-88e7-40a8-8e3a-60c816fcdb2d:lukt",
+      "tastingId": "3cf04e02-88e7-40a8-8e3a-60c816fcdb2d",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T18:41:55.473+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "132f28af-8b0e-4008-a16f-f1c33116cac3",
+        "name": "Jean-Luc Mouillard Côtes du Jura Pinot Noir 2022",
+        "year": "2022"
+      },
+      "userNote": "Fruktig morell",
+      "referenceNote": "Aroma av rips, granateple, blåbær, fiol og krydder.",
+      "storedScore": 24,
+      "previousScore": null
+    },
+    {
+      "key": "3cf04e02-88e7-40a8-8e3a-60c816fcdb2d:smak",
+      "tastingId": "3cf04e02-88e7-40a8-8e3a-60c816fcdb2d",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T18:41:55.473+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "132f28af-8b0e-4008-a16f-f1c33116cac3",
+        "name": "Jean-Luc Mouillard Côtes du Jura Pinot Noir 2022",
+        "year": "2022"
+      },
+      "userNote": "Solbær aprikos mineralsk fersken pepper",
+      "referenceNote": "Lett og frisk med god lengde og forsiktig snerp.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "d4b20fdf-20f8-418e-9c06-2e46bb951651:lukt",
+      "tastingId": "d4b20fdf-20f8-418e-9c06-2e46bb951651",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T18:44:49.132+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "132f28af-8b0e-4008-a16f-f1c33116cac3",
+        "name": "Jean-Luc Mouillard Côtes du Jura Pinot Noir 2022",
+        "year": "2022"
+      },
+      "userNote": "Røde bær pepper",
+      "referenceNote": "Aroma av rips, granateple, blåbær, fiol og krydder.",
+      "storedScore": 51,
+      "previousScore": null
+    },
+    {
+      "key": "d4b20fdf-20f8-418e-9c06-2e46bb951651:smak",
+      "tastingId": "d4b20fdf-20f8-418e-9c06-2e46bb951651",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T18:44:49.132+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "132f28af-8b0e-4008-a16f-f1c33116cac3",
+        "name": "Jean-Luc Mouillard Côtes du Jura Pinot Noir 2022",
+        "year": "2022"
+      },
+      "userNote": "Røde bær",
+      "referenceNote": "Lett og frisk med god lengde og forsiktig snerp.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "0742710a-01ca-4661-abc2-dccc3379b54c:lukt",
+      "tastingId": "0742710a-01ca-4661-abc2-dccc3379b54c",
+      "field": "lukt",
+      "taster": "T5",
+      "tastedAt": "2026-10-23T18:54:14.313+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c2dadbbe-8663-407b-99ce-4a0cf20056b1",
+        "name": "Jean-Luc Mouillard Côtes du Jura Sur la Cour Trousseau 2023",
+        "year": "2023"
+      },
+      "userNote": "Mineralsk, ferske bær",
+      "referenceNote": "Aroma av rips, urter, krydder, kanel og balsam.",
+      "storedScore": 20,
+      "previousScore": null
+    },
+    {
+      "key": "0742710a-01ca-4661-abc2-dccc3379b54c:smak",
+      "tastingId": "0742710a-01ca-4661-abc2-dccc3379b54c",
+      "field": "smak",
+      "taster": "T5",
+      "tastedAt": "2026-10-23T18:54:14.313+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c2dadbbe-8663-407b-99ce-4a0cf20056b1",
+        "name": "Jean-Luc Mouillard Côtes du Jura Sur la Cour Trousseau 2023",
+        "year": "2023"
+      },
+      "userNote": "Jordbær, rips",
+      "referenceNote": "Frisk, lett, energisk med god lengde.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "0f6653f7-2a73-462f-95f0-486612ffebe4:lukt",
+      "tastingId": "0f6653f7-2a73-462f-95f0-486612ffebe4",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T18:55:01.767+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c2dadbbe-8663-407b-99ce-4a0cf20056b1",
+        "name": "Jean-Luc Mouillard Côtes du Jura Sur la Cour Trousseau 2023",
+        "year": "2023"
+      },
+      "userNote": "Svovel fersken",
+      "referenceNote": "Aroma av rips, urter, krydder, kanel og balsam.",
+      "storedScore": 12,
+      "previousScore": null
+    },
+    {
+      "key": "0f6653f7-2a73-462f-95f0-486612ffebe4:smak",
+      "tastingId": "0f6653f7-2a73-462f-95f0-486612ffebe4",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T18:55:01.767+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c2dadbbe-8663-407b-99ce-4a0cf20056b1",
+        "name": "Jean-Luc Mouillard Côtes du Jura Sur la Cour Trousseau 2023",
+        "year": "2023"
+      },
+      "userNote": "Rips jordbær mineralsk",
+      "referenceNote": "Frisk, lett, energisk med god lengde.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "9fc76329-b919-4be4-8efa-ad4ce3070786:lukt",
+      "tastingId": "9fc76329-b919-4be4-8efa-ad4ce3070786",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T19:04:07.286+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "684b521b-d7fe-4460-a71b-397346453516",
+        "name": "Rolet L'Etoile Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Smør brioche",
+      "referenceNote": "Fruktig og mineralsk, eple, nøtter og moden frukt.",
+      "storedScore": 7,
+      "previousScore": null
+    },
+    {
+      "key": "9fc76329-b919-4be4-8efa-ad4ce3070786:smak",
+      "tastingId": "9fc76329-b919-4be4-8efa-ad4ce3070786",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T19:04:07.286+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "684b521b-d7fe-4460-a71b-397346453516",
+        "name": "Rolet L'Etoile Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Smør aprikos stikkelsbær",
+      "referenceNote": "Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.",
+      "storedScore": 33,
+      "previousScore": null
+    },
+    {
+      "key": "f59282df-90e8-4e94-ab62-3c3c2cc4329b:lukt",
+      "tastingId": "f59282df-90e8-4e94-ab62-3c3c2cc4329b",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T19:05:26.87+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "684b521b-d7fe-4460-a71b-397346453516",
+        "name": "Rolet L'Etoile Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Eple sitrus mineralsk nøtt",
+      "referenceNote": "Fruktig og mineralsk, eple, nøtter og moden frukt.",
+      "storedScore": 94,
+      "previousScore": null
+    },
+    {
+      "key": "f59282df-90e8-4e94-ab62-3c3c2cc4329b:smak",
+      "tastingId": "f59282df-90e8-4e94-ab62-3c3c2cc4329b",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T19:05:26.87+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "684b521b-d7fe-4460-a71b-397346453516",
+        "name": "Rolet L'Etoile Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Eple sitrus mineralsk nøtt",
+      "referenceNote": "Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.",
+      "storedScore": 72,
+      "previousScore": null
+    },
+    {
+      "key": "19f58ef2-d7e1-413f-8755-f4e1358abb52:lukt",
+      "tastingId": "19f58ef2-d7e1-413f-8755-f4e1358abb52",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T19:05:43.35+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "684b521b-d7fe-4460-a71b-397346453516",
+        "name": "Rolet L'Etoile Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Brioche konsentrert fat gult eple",
+      "referenceNote": "Fruktig og mineralsk, eple, nøtter og moden frukt.",
+      "storedScore": 36,
+      "previousScore": null
+    },
+    {
+      "key": "19f58ef2-d7e1-413f-8755-f4e1358abb52:smak",
+      "tastingId": "19f58ef2-d7e1-413f-8755-f4e1358abb52",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T19:05:43.35+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "684b521b-d7fe-4460-a71b-397346453516",
+        "name": "Rolet L'Etoile Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Tropisk brioche sitrus gult eple",
+      "referenceNote": "Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.",
+      "storedScore": 56,
+      "previousScore": null
+    },
+    {
+      "key": "edaa1fab-33be-4d5e-a66d-d29f571142cf:lukt",
+      "tastingId": "edaa1fab-33be-4d5e-a66d-d29f571142cf",
+      "field": "lukt",
+      "taster": "T5",
+      "tastedAt": "2026-10-23T19:07:37.762+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "684b521b-d7fe-4460-a71b-397346453516",
+        "name": "Rolet L'Etoile Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Mineralsk",
+      "referenceNote": "Fruktig og mineralsk, eple, nøtter og moden frukt.",
+      "storedScore": 72,
+      "previousScore": null
+    },
+    {
+      "key": "edaa1fab-33be-4d5e-a66d-d29f571142cf:smak",
+      "tastingId": "edaa1fab-33be-4d5e-a66d-d29f571142cf",
+      "field": "smak",
+      "taster": "T5",
+      "tastedAt": "2026-10-23T19:07:37.762+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "684b521b-d7fe-4460-a71b-397346453516",
+        "name": "Rolet L'Etoile Chardonnay 2023",
+        "year": "2023"
+      },
+      "userNote": "Flintstein, sitrus, mineralsk",
+      "referenceNote": "Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.",
+      "storedScore": 65,
+      "previousScore": null
+    },
+    {
+      "key": "269a1587-3887-4c31-a08b-6e8bb54d2216:lukt",
+      "tastingId": "269a1587-3887-4c31-a08b-6e8bb54d2216",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T19:18:19.601+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "b1a37e5d-aa9e-440c-9ce8-50c925843730",
+        "name": "Carlines Côtes du Jura En Charnay 2022",
+        "year": "2022"
+      },
+      "userNote": "Fersken, eple, honning",
+      "referenceNote": "Sitrus, grønne epler, nøtter.",
+      "storedScore": 39,
+      "previousScore": null
+    },
+    {
+      "key": "269a1587-3887-4c31-a08b-6e8bb54d2216:smak",
+      "tastingId": "269a1587-3887-4c31-a08b-6e8bb54d2216",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T19:18:19.601+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "b1a37e5d-aa9e-440c-9ce8-50c925843730",
+        "name": "Carlines Côtes du Jura En Charnay 2022",
+        "year": "2022"
+      },
+      "userNote": "Eple fersken honning",
+      "referenceNote": "Tørr og strukturert, frisk syre, saltmineralitet og lang, nøttepreget avslutning.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "2b18a5c0-f21f-4737-bf9f-5c25253c9249:lukt",
+      "tastingId": "2b18a5c0-f21f-4737-bf9f-5c25253c9249",
+      "field": "lukt",
+      "taster": "T5",
+      "tastedAt": "2026-10-23T19:19:34.849+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "b1a37e5d-aa9e-440c-9ce8-50c925843730",
+        "name": "Carlines Côtes du Jura En Charnay 2022",
+        "year": "2022"
+      },
+      "userNote": "Sitrus, blomst",
+      "referenceNote": "Sitrus, grønne epler, nøtter.",
+      "storedScore": 51,
+      "previousScore": null
+    },
+    {
+      "key": "2b18a5c0-f21f-4737-bf9f-5c25253c9249:smak",
+      "tastingId": "2b18a5c0-f21f-4737-bf9f-5c25253c9249",
+      "field": "smak",
+      "taster": "T5",
+      "tastedAt": "2026-10-23T19:19:34.849+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "b1a37e5d-aa9e-440c-9ce8-50c925843730",
+        "name": "Carlines Côtes du Jura En Charnay 2022",
+        "year": "2022"
+      },
+      "userNote": "Sitrus,",
+      "referenceNote": "Tørr og strukturert, frisk syre, saltmineralitet og lang, nøttepreget avslutning.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "8a83e178-17ea-4dd7-a13b-f54864c916d3:lukt",
+      "tastingId": "8a83e178-17ea-4dd7-a13b-f54864c916d3",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T19:19:38.05+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "b1a37e5d-aa9e-440c-9ce8-50c925843730",
+        "name": "Carlines Côtes du Jura En Charnay 2022",
+        "year": "2022"
+      },
+      "userNote": "Vet ikke",
+      "referenceNote": "Sitrus, grønne epler, nøtter.",
+      "storedScore": 6,
+      "previousScore": null
+    },
+    {
+      "key": "8a83e178-17ea-4dd7-a13b-f54864c916d3:smak",
+      "tastingId": "8a83e178-17ea-4dd7-a13b-f54864c916d3",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T19:19:38.05+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "b1a37e5d-aa9e-440c-9ce8-50c925843730",
+        "name": "Carlines Côtes du Jura En Charnay 2022",
+        "year": "2022"
+      },
+      "userNote": "Sur pære aprikos",
+      "referenceNote": "Tørr og strukturert, frisk syre, saltmineralitet og lang, nøttepreget avslutning.",
+      "storedScore": 3,
+      "previousScore": null
+    },
+    {
+      "key": "50517ac2-f1d2-4cee-94a9-cef98579e763:lukt",
+      "tastingId": "50517ac2-f1d2-4cee-94a9-cef98579e763",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T19:19:49.435+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "b1a37e5d-aa9e-440c-9ce8-50c925843730",
+        "name": "Carlines Côtes du Jura En Charnay 2022",
+        "year": "2022"
+      },
+      "userNote": "Aprikos kraftig",
+      "referenceNote": "Sitrus, grønne epler, nøtter.",
+      "storedScore": 16,
+      "previousScore": null
+    },
+    {
+      "key": "50517ac2-f1d2-4cee-94a9-cef98579e763:smak",
+      "tastingId": "50517ac2-f1d2-4cee-94a9-cef98579e763",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T19:19:49.435+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "b1a37e5d-aa9e-440c-9ce8-50c925843730",
+        "name": "Carlines Côtes du Jura En Charnay 2022",
+        "year": "2022"
+      },
+      "userNote": "God lengde",
+      "referenceNote": "Tørr og strukturert, frisk syre, saltmineralitet og lang, nøttepreget avslutning.",
+      "storedScore": 16,
+      "previousScore": null
+    },
+    {
+      "key": "f0a9f1f0-18fd-43d6-b1d5-2be59d478cf0:lukt",
+      "tastingId": "f0a9f1f0-18fd-43d6-b1d5-2be59d478cf0",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T19:31:06.057+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "8b23e753-c1d0-4567-8202-355433307038",
+        "name": "Tissot Savagnin Sous Voile 2020",
+        "year": "2020"
+      },
+      "userNote": "Portvin boozy",
+      "referenceNote": "Duft av krydder, nøtter og tørket frukt.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "f0a9f1f0-18fd-43d6-b1d5-2be59d478cf0:smak",
+      "tastingId": "f0a9f1f0-18fd-43d6-b1d5-2be59d478cf0",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T19:31:06.057+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "8b23e753-c1d0-4567-8202-355433307038",
+        "name": "Tissot Savagnin Sous Voile 2020",
+        "year": "2020"
+      },
+      "userNote": "Aprikos mango",
+      "referenceNote": "Kraftig, frisk og strukturert smak, konsentrert og lang.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "b09c2502-4b46-4468-a945-ea58c3f340b7:lukt",
+      "tastingId": "b09c2502-4b46-4468-a945-ea58c3f340b7",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T19:32:30.193+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "8b23e753-c1d0-4567-8202-355433307038",
+        "name": "Tissot Savagnin Sous Voile 2020",
+        "year": "2020"
+      },
+      "userNote": "Oliven salt eple sitrus",
+      "referenceNote": "Duft av krydder, nøtter og tørket frukt.",
+      "storedScore": 29,
+      "previousScore": null
+    },
+    {
+      "key": "b09c2502-4b46-4468-a945-ea58c3f340b7:smak",
+      "tastingId": "b09c2502-4b46-4468-a945-ea58c3f340b7",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T19:32:30.193+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "8b23e753-c1d0-4567-8202-355433307038",
+        "name": "Tissot Savagnin Sous Voile 2020",
+        "year": "2020"
+      },
+      "userNote": "Aprikos nøtt honning",
+      "referenceNote": "Kraftig, frisk og strukturert smak, konsentrert og lang.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "7d8e4d5f-b455-4f99-9e55-376bfded00cb:lukt",
+      "tastingId": "7d8e4d5f-b455-4f99-9e55-376bfded00cb",
+      "field": "lukt",
+      "taster": "T5",
+      "tastedAt": "2026-10-23T19:32:37.034+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "8b23e753-c1d0-4567-8202-355433307038",
+        "name": "Tissot Savagnin Sous Voile 2020",
+        "year": "2020"
+      },
+      "userNote": "Flor,",
+      "referenceNote": "Duft av krydder, nøtter og tørket frukt.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "7d8e4d5f-b455-4f99-9e55-376bfded00cb:smak",
+      "tastingId": "7d8e4d5f-b455-4f99-9e55-376bfded00cb",
+      "field": "smak",
+      "taster": "T5",
+      "tastedAt": "2026-10-23T19:32:37.034+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "8b23e753-c1d0-4567-8202-355433307038",
+        "name": "Tissot Savagnin Sous Voile 2020",
+        "year": "2020"
+      },
+      "userNote": "Tørket aprikos",
+      "referenceNote": "Kraftig, frisk og strukturert smak, konsentrert og lang.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "d5dc242a-1e79-407a-95d2-676f2189b03c:lukt",
+      "tastingId": "d5dc242a-1e79-407a-95d2-676f2189b03c",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T19:33:41.993+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "8b23e753-c1d0-4567-8202-355433307038",
+        "name": "Tissot Savagnin Sous Voile 2020",
+        "year": "2020"
+      },
+      "userNote": "Aprikos tørket sødmefull",
+      "referenceNote": "Duft av krydder, nøtter og tørket frukt.",
+      "storedScore": 71,
+      "previousScore": null
+    },
+    {
+      "key": "d5dc242a-1e79-407a-95d2-676f2189b03c:smak",
+      "tastingId": "d5dc242a-1e79-407a-95d2-676f2189b03c",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T19:33:41.993+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "8b23e753-c1d0-4567-8202-355433307038",
+        "name": "Tissot Savagnin Sous Voile 2020",
+        "year": "2020"
+      },
+      "userNote": "Sødmefull aprikos",
+      "referenceNote": "Kraftig, frisk og strukturert smak, konsentrert og lang.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "00842981-0ac2-410a-94f4-578a5197315d:lukt",
+      "tastingId": "00842981-0ac2-410a-94f4-578a5197315d",
+      "field": "lukt",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T19:41:25.607+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c51f65a0-0ba6-40c3-bf0e-3135073d90c0",
+        "name": "Carlines Château Chalon 2017",
+        "year": "2017"
+      },
+      "userNote": "Aprikos tørket frukt skarp",
+      "referenceNote": "Aroma av nøtter, krydder, blomster og mineraler.",
+      "storedScore": 4,
+      "previousScore": null
+    },
+    {
+      "key": "00842981-0ac2-410a-94f4-578a5197315d:smak",
+      "tastingId": "00842981-0ac2-410a-94f4-578a5197315d",
+      "field": "smak",
+      "taster": "T3",
+      "tastedAt": "2026-10-23T19:41:25.607+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c51f65a0-0ba6-40c3-bf0e-3135073d90c0",
+        "name": "Carlines Château Chalon 2017",
+        "year": "2017"
+      },
+      "userNote": "Honning eple konsentrert",
+      "referenceNote": "Tørr, fyldig og mineralsk.",
+      "storedScore": 4,
+      "previousScore": null
+    },
+    {
+      "key": "14f63091-4fb6-4286-9ca9-1b624f5f9dc2:lukt",
+      "tastingId": "14f63091-4fb6-4286-9ca9-1b624f5f9dc2",
+      "field": "lukt",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T19:41:48.023+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c51f65a0-0ba6-40c3-bf0e-3135073d90c0",
+        "name": "Carlines Château Chalon 2017",
+        "year": "2017"
+      },
+      "userNote": "Eple sitrus nøtt honning",
+      "referenceNote": "Aroma av nøtter, krydder, blomster og mineraler.",
+      "storedScore": 28,
+      "previousScore": null
+    },
+    {
+      "key": "14f63091-4fb6-4286-9ca9-1b624f5f9dc2:smak",
+      "tastingId": "14f63091-4fb6-4286-9ca9-1b624f5f9dc2",
+      "field": "smak",
+      "taster": "T1",
+      "tastedAt": "2026-10-23T19:41:48.023+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c51f65a0-0ba6-40c3-bf0e-3135073d90c0",
+        "name": "Carlines Château Chalon 2017",
+        "year": "2017"
+      },
+      "userNote": "Eple sitrus nøtter honning",
+      "referenceNote": "Tørr, fyldig og mineralsk.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "b7a46f64-4557-409c-be8e-64075577fa23:lukt",
+      "tastingId": "b7a46f64-4557-409c-be8e-64075577fa23",
+      "field": "lukt",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T19:43:10.179+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c51f65a0-0ba6-40c3-bf0e-3135073d90c0",
+        "name": "Carlines Château Chalon 2017",
+        "year": "2017"
+      },
+      "userNote": "Vet ikke",
+      "referenceNote": "Aroma av nøtter, krydder, blomster og mineraler.",
+      "storedScore": 0,
+      "previousScore": null
+    },
+    {
+      "key": "b7a46f64-4557-409c-be8e-64075577fa23:smak",
+      "tastingId": "b7a46f64-4557-409c-be8e-64075577fa23",
+      "field": "smak",
+      "taster": "T2",
+      "tastedAt": "2026-10-23T19:43:10.179+00:00",
+      "event": {
+        "id": "b0373f75-9e1c-4aab-818c-7e54bb9b58a0",
+        "name": "Jura",
+        "date": "2026-10-23T19:30:00+00:00"
+      },
+      "wine": {
+        "id": "c51f65a0-0ba6-40c3-bf0e-3135073d90c0",
+        "name": "Carlines Château Chalon 2017",
+        "year": "2017"
+      },
+      "userNote": "Maling",
+      "referenceNote": "Tørr, fyldig og mineralsk.",
+      "storedScore": 3,
+      "previousScore": null
+    }
+  ]
+}

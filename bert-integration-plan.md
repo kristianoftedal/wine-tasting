@@ -53,13 +53,16 @@ What this changes:
 | Baseline | Where it is recorded | Numbers |
 | --- | --- | --- |
 | Perturbation benchmark, previous vs current engine | commit `6d8d700` (18 Aug 2026), `scripts/benchmark-scoring.ts` | 152 cases, 100 distractors. Previous: +HIT +10.3, +WRONG +0.8, MISS −2.1, r(len) 0.41, d 0.80, top1 9%. Current: +11.2, −4.3, +2.6, 0.12, 1.62, 30% |
+| Same benchmark, re-run with +NEG on the grown corpus | `scripts/validation-results/benchmark-2026-10-baseline.md` (28 Oct 2026) | 236 cases. Current: +HIT +12.3, +WRONG −2.8, +NEG +0.0, MISS +3.8, r(len) 0.26, d 1.17, top1 21% (full table under phase 06) |
+| Scorer agreement on the frozen set | `scripts/validation-results/human-agreement-2026-10-baseline.md` | stored vs recomputed 0.991; current vs lexical-only 0.921; previous engine vs current 0.439 |
 | Rejected variants | `src/lib/scoringConfig.ts`, commit `6d8d700` | max(user, wine) denominator MISS −2.3 and +WRONG +1.8; BERTScore F1 MISS −2.2; sentence cosine MISS −3.3 |
 | Anisotropy and centring | `src/lib/embeddingCentering.ts` | unrelated wine notes cosine 0.459 ± 0.159 raw, −0.004 ± 0.156 centred; 1 166 notes; mean norm 0.68 |
 | Token-level floor | `src/lib/derivations.ts` | unrelated descriptor pairs ≈ 0.14 centred; cos(fat, vanilje) = 0.09 |
 | Derivation impact | `src/lib/derivations.ts` | 9.3% of wines mention oak, 81% of those name no derived aroma; 9 of 33 oaked-wine tastings named one |
 | Reference-note coverage | CLAUDE.md, `scripts/enrich-wine-notes.ts --audit` | 18.7% of taste notes name no aroma, 23.5% name exactly one; "citrus" in 6.6% of user notes |
 | Weight-profile validation | `scripts/validation-results/validation-report.md` (7 Feb 2026) | inverted 20/20, moderate 20/20, data-driven 2/20 |
-| Pre-directional score snapshot | `backups/tasting-scores-20260818-204626.json` (gitignored, local only) | smell/taste/overall per tasting under the previous engine; copy it into `scripts/validation-results/` so the frozen set keeps a "previous engine" column |
+| Pre-directional score snapshot | `scripts/validation-results/tasting-scores-20260818-204626.json` (copied from `backups/`) | smell/taste/overall for the 79 tastings that existed in August, under the previous engine; the frozen set's `previousScore` column |
+| Frozen set | `scripts/validation-results/frozen-set-2026-10.json` | 236 fields, never regenerated; new tastings go in a new file |
 
 The soft term's current operating range (centred cosine ≈ [−0.15, 0.55], `SOFT_SCALE` 160) is the number every new engine's rescale has to reproduce *in effect*, not in value.
 
@@ -75,6 +78,7 @@ Real pairs already used as worked examples; all are in the database and in code,
 | "vanilje" vs "Preg av fat og mørke bær."; "solbær" vs "Saftig mørk frukt og lett krydret."; "frukt" vs "Preg av solbær og bjørnebær." | `src/actions/similarity.test.ts` | derived, specific and the non-specific reverse case |
 | Seven demo pairs: God match, Delvis match, Dårlig match, Sjeldne (IDF), three synonym cases | `src/app/scoring-demo/ScoringDemo.tsx` | Synthetic, but they are what a reviewer clicks first |
 | The 50 most recent tastings of the logged-in user | `/scoring-demo` tasting selector | Real notes with stored scores, already wired into the page |
+| Champagne Aubry, smell, six tasters on one reference note: "Rødt eple sitrus mineralsk" (stored 93), "Rødt eple, citrus, mineralsk, aprikos, fersken" (92), "Mineral. Frukt. Nøtt. Krydder" (55), "Gult eple, pære" (53), "Fersken, plomme," (44), "Brioche," (22) | frozen set, `ratings/README.md` | The widest spread of notes on one wine in the corpus; the worked examples for raters |
 
 Near-synonym pairs the ladder misses and a soft engine should catch (to be collected in phase 06 into `scripts/validation-results/near-synonyms.json`): brioche/bakverk, grapefrukt/sitrus, tjære/røyk, lakris/anis, kaffe/mokka, honning/aprikos (botrytis), våt stein/mineral, fiol/blomst. Add the pairs the raters flag.
 
@@ -120,7 +124,7 @@ Two gaps sit before any similarity maths. `ikke`, `hint`, `lett`, `litt` and `ty
 
 ## Negation and unknown words
 
-**Negation rule, no model.** `applyNegation(text)` in `lemmatizeAndWeight.ts`, called before `sanitizeText`. When a negator (`ikke`, `uten`, `ingen`, `aldri`) appears, drop the next descriptor within a window of three words, skipping fillers (`noe`, `særlig`, `mye`, `spesielt`). Return the dropped descriptors so a negated term the reference does contain can be reported as a contradiction. Apply to both notes. Vitest cases: "ikke noe fat", "uten fat", "ingen tydelig frukt", and a non-case "ikke bare bær men også krydder" (the window must stop at `men`). Add a +NEG perturbation to the benchmark: negating a correct descriptor must not raise the score.
+**Negation rule, no model.** `applyNegation(text)` in `src/lib/negation.ts`, called before `sanitizeText`. When a negator (`ikke`, `uten`, `ingen`, `aldri`) appears, drop the next descriptor within a window of three words, skipping fillers (`noe`, `særlig`, `mye`, `spesielt`). Return the dropped descriptors so a negated term the reference does contain can be reported as a contradiction (`negated` and `contradicted` on the breakdown; shown on the demo, not scored). Apply to both notes. A negator is never itself a candidate, so "vet ikke, ikke sitrus" negates sitrus and nothing else. Vitest cases cover "ikke noe fat", "uten fat", "ingen tydelig frukt", the affirmation "ikke bare bær men også krydder", and clause boundaries. The benchmark's +NEG perturbation (negating a descriptor the wine has) reads +0.0.
 
 **Unknown-word mapping, from the soft engine.** Every engine below produces a vector per content word, so a word the dictionary does not know can be mapped to its nearest dictionary lemma by cosine, accepted above a threshold, and fed to the ladder as `{ lemma, source: 'mapped', via: originalWord }`. The UI shows "du skrev X, lest som Y". This is the part of the deferred tagger that the data can support, because the threshold is tuned on the OOV list from `audit-oov.ts` (hundreds of real unknown words with known correct lemmas), not on 2 negated notes. It ships behind `OOV_MAPPING_ENABLED` and only after an engine has been chosen, since the vectors come from that engine.
 
@@ -264,17 +268,29 @@ Everything fits the standard limits; no paid tier is required for evaluation.
 
 Numbered to continue the GSD phases in `.planning/` (v1.0 ended at phase 05). Each phase ends with a check that gates the next.
 
-### Phase 06: Baselines, frozen set, negation
+### Phase 06: Baselines, frozen set, negation — done 28 Oct 2026 (ratings pending)
 
-- [ ] Forward-only: `addTasting` also writes `lukt_scored` / `smak_scored` (the chip-plus-text string the score was computed on) and `scorer_version` for new rows; migration adds the nullable columns, old rows stay null and untouched
-- [ ] Re-run `benchmark-scoring.ts`; commit the output as `scripts/validation-results/benchmark-2026-10-baseline.md`
-- [ ] `scripts/export-frozen-set.ts` → `frozen-set-2026-10.json` (236 fields, stored and snapshot scores); copy the August snapshot into `validation-results/`
-- [ ] Rater CSV template and instructions with the rubric and three worked examples; collect two ratings per field
-- [ ] `scripts/evaluate-human-agreement.ts`: inter-rater agreement; Spearman of current engine, lexical-only and direct-hit-count against the mean rating
-- [ ] `applyNegation` with Vitest cases; +NEG perturbation in the benchmark
-- [ ] `near-synonyms.json` seeded from the list above and from rater comments
+- [x] Forward-only: `addTasting` writes `lukt_scored` / `smak_scored` and `scorer_version` for new rows (`scripts/025-scored-text.sql`, nullable, never backfilled; the insert retries without them until the migration is applied). `SCORER_VERSION` lives in `scoringConfig.ts`
+- [x] `npx tsx --env-file=.env.local scripts/benchmark-scoring.ts --out=…` → `scripts/validation-results/benchmark-2026-10-baseline.md`
+- [x] `npx tsx --env-file=.env.local scripts/export-frozen-set.ts --sheet` → `frozen-set-2026-10.json` (236 fields, 8 tasters anonymised T1–T8, stored score, previous-engine score for 152 fields from the August snapshot, now copied into `validation-results/`)
+- [x] `ratings/README.md` (rubric, four worked examples from the Aubry champagne) and `ratings/rating-sheet-2026-10.csv`; raters save `rater-<name>.csv`
+- [ ] Collect two ratings per field; then re-run the agreement script
+- [x] `npx tsx --env-file=.env.local scripts/evaluate-human-agreement.ts --out=…` → `human-agreement-2026-10-baseline.md` (scorer-vs-scorer part; the human part fills in when rater files exist)
+- [x] `applyNegation` in `src/lib/negation.ts` (its own module and test file rather than inside the 1 000-line lemma file), wired into `scoreFlavourNote`, `getScoringBreakdown`, `getTermBreakdown` and the benchmark's `prep`; +NEG column added
+- [x] `near-synonyms.json` seeded with 12 pairs
 
-Done when the baseline table (benchmark, human correlation, agreement) is committed.
+What the baseline run measured (236 cases, 100 distractors, commit `2e32353`):
+
+| scorer | base | +HIT | +WRONG | +NEG | MISS | r(len) | d | top1% |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| previous (recall on) | 62.1 | +11.5 | +1.0 | +0.0 | −0.3 | 0.40 | 0.62 | 10 |
+| current (directional) | 56.1 | +12.3 | −2.8 | +0.0 | +3.8 | 0.26 | 1.17 | 21 |
+
+Before the negator-as-candidate fix, +NEG read +0.5 for both scorers: two of 236 cases ("Vet ikke" + "ikke sitrus") were being read as "Vet sitrus". The August numbers (152 cases) and these (236 cases) differ in `d` and `top1%` because the corpus has grown; the ordering between scorers is unchanged.
+
+Scorer agreement on the frozen set (Spearman): stored vs recomputed 0.991 (19 of 232 fields differ, mean |Δ| 0.72, the chip-text gap from finding 9); current vs lexical-only 0.921; current vs direct-hit count 0.863; **previous engine vs current 0.439** on the 148 fields both scored, which is how differently the two engines rank the same notes. 12 reference notes among the tasted wines are unscoreable (name no aroma).
+
+Done when the human-correlation rows are filled in.
 
 ### Phase 07: Soft-engine interface and demo harness
 

@@ -8,6 +8,9 @@
  *
  *   +HIT    user adds a descriptor the wine DOES have          want clearly > 0
  *   +WRONG  user adds a descriptor that is genuinely wrong      want <= 0
+ *   +NEG    user NEGATES a descriptor the wine does have        want <= 0
+ *           ("… ikke fat" on an oaked wine is a wrong call; without the
+ *           negation rule it scored as a direct hit on "fat")
  *   MISS    reference note gains notes the user never said      want ~0
  *   r(len)  correlation of score with user note length          want ~0
  *   d/top1  discrimination guard: can it still tell the real
@@ -19,7 +22,11 @@
  * correct reasoning and reports it as a virtue. Candidates here must be absent
  * from the reference, absent from its derivations, and outside its subcategories.
  *
- * Run: npx tsx --env-file=.env.local scripts/benchmark-scoring.ts
+ * Run: npx tsx --env-file=.env.local scripts/benchmark-scoring.ts [--out=scripts/validation-results/<file>.md]
+ *
+ * --out writes the same table as a markdown file with the run's metadata, so
+ * a baseline is a committed file rather than a number remembered from a
+ * terminal. The sampler is seeded; two runs on the same data are identical.
  */
 import { createClient } from '@supabase/supabase-js';
 import {
@@ -31,8 +38,17 @@ import { combineScore, lexicalCredit, lemmasWithWeight } from '../src/lib/flavou
 import { EMBEDDING_MODEL } from '../src/lib/scoringConfig';
 import { centerEmbedding } from '../src/lib/embeddingCentering';
 import { cosineSimilarity } from '../src/lib/math';
+import { applyNegation } from '../src/lib/negation';
+import { execSync } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 
 const DISTRACTORS = 100;
+const OUT = process.argv.find(a => a.startsWith('--out='))?.slice(6);
+
+// Everything printed is also collected, so --out can write it verbatim.
+const lines: string[] = [];
+const log = (...parts: unknown[]) => { const line = parts.join(' '); lines.push(line); console.log(line); };
 
 // ── embedding cache ─────────────────────────────────────────────────────────
 const cache = new Map<string, Float32Array>();
@@ -62,7 +78,7 @@ async function warmCache(texts: string[], center: boolean) {
   }
 }
 
-const prep = (t: string) => normalizeWineSynonyms(sanitizeText(t));
+const prep = (t: string) => normalizeWineSynonyms(sanitizeText(applyNegation(t).text));
 const tokensOf = (t: string) => [...new Set(stripGenericTerms(t).split(' ').filter(Boolean))];
 
 /** Token-level MaxSim precision, mirroring src/lib/semanticSimilarity.ts. */
@@ -144,7 +160,7 @@ async function main() {
     distractors.flatMap(d => [...lemmasWithWeight(prep(d.smell || '')).keys(), ...lemmasWithWeight(prep(d.taste || '')).keys()])
   )];
 
-  type Case = { user: string; reference: string; plusHit: string; plusWrong: string; referencePlusExtra: string };
+  type Case = { user: string; reference: string; plusHit: string; plusWrong: string; plusNeg: string; referencePlusExtra: string };
   const cases: Case[] = [];
 
   for (const t of tastings!) {
@@ -185,11 +201,15 @@ async function main() {
       }
       if (!wrong.length || extras.length < 3) continue;
 
+      const hit = missed[Math.floor(rnd() * missed.length)];
       cases.push({
         user: userNote,
         reference: referenceNote,
-        plusHit: `${userNote} ${missed[Math.floor(rnd() * missed.length)]}`,
+        plusHit: `${userNote} ${hit}`,
         plusWrong: `${userNote} ${wrong[0]}`,
+        // Same descriptor as +HIT, but denied. The wine has it, so this is a
+        // wrong call and must not pay.
+        plusNeg: `${userNote} ikke ${hit}`,
         referencePlusExtra: `${referenceNote} ${extras.join(' ')}`,
       });
     }
@@ -204,7 +224,7 @@ async function main() {
     for (const tok of tokensOf(prep(t))) tokens.add(tok);
     sentences.add(`SENT:${flavorOnlyText(prep(t))}`);
   };
-  for (const c of cases) { register(c.user); register(c.reference); register(c.plusHit); register(c.plusWrong); register(c.referencePlusExtra); }
+  for (const c of cases) { register(c.user); register(c.reference); register(c.plusHit); register(c.plusWrong); register(c.plusNeg); register(c.referencePlusExtra); }
   for (const d of distractors) { register(d.smell || ''); register(d.taste || ''); }
 
   await warmCache([...tokens], true);
@@ -223,21 +243,27 @@ async function main() {
     ['current (directional)', currentScore],
   ];
 
-  console.log(`\n${'='.repeat(104)}`);
-  console.log(`SCORING BENCHMARK — ${cases.length} controlled cases, ${distractors.length} distractors each`);
-  console.log(`Wrong-guess candidates exclude reference terms, their derivations, and their subcategories.`);
-  console.log('='.repeat(104));
-  console.log('scorer'.padEnd(26), 'base'.padStart(7), '+HIT'.padStart(8), '+WRONG'.padStart(8),
+  let commit = 'unknown';
+  try { commit = execSync('git rev-parse --short HEAD').toString().trim(); } catch { /* not a git checkout */ }
+  const fieldCount = tastings!.reduce((n, t) => n + (t.lukt?.trim() ? 1 : 0) + (t.smak?.trim() ? 1 : 0), 0);
+
+  log(`\n${'='.repeat(112)}`);
+  log(`SCORING BENCHMARK — ${cases.length} controlled cases, ${distractors.length} distractors each`);
+  log(`${new Date().toISOString().slice(0, 10)} · commit ${commit} · ${tastings!.length} tastings, ${fieldCount} note fields · embeddings ${EMBEDDING_MODEL}`);
+  log(`Wrong-guess candidates exclude reference terms, their derivations, and their subcategories.`);
+  log('='.repeat(112));
+  log('scorer'.padEnd(26), 'base'.padStart(7), '+HIT'.padStart(8), '+WRONG'.padStart(8), '+NEG'.padStart(8),
     'MISS'.padStart(8), 'r(len)'.padStart(8), 'd'.padStart(7), 'top1%'.padStart(7));
-  console.log('-'.repeat(104));
+  log('-'.repeat(112));
 
   for (const [name, score] of scorers) {
-    const base: number[] = [], dHit: number[] = [], dWrong: number[] = [], dMiss: number[] = [], lengths: number[] = [];
+    const base: number[] = [], dHit: number[] = [], dWrong: number[] = [], dNeg: number[] = [], dMiss: number[] = [], lengths: number[] = [];
     for (const c of cases) {
       const b = score(c.user, c.reference);
       base.push(b);
       dHit.push(score(c.plusHit, c.reference) - b);
       dWrong.push(score(c.plusWrong, c.reference) - b);
+      dNeg.push(score(c.plusNeg, c.reference) - b);
       dMiss.push(score(c.user, c.referencePlusExtra) - b);
       lengths.push(prep(c.user).split(' ').filter(Boolean).length);
     }
@@ -259,19 +285,36 @@ async function main() {
     const d = (mean(trueScores) - mean(randomScores)) / (sd(randomScores) || 1);
     const fmt = (v: number) => (v >= 0 ? '+' : '') + v.toFixed(1);
 
-    console.log(name.padEnd(26), mean(base).toFixed(1).padStart(7), fmt(mean(dHit)).padStart(8),
-      fmt(mean(dWrong)).padStart(8), fmt(mean(dMiss)).padStart(8),
+    log(name.padEnd(26), mean(base).toFixed(1).padStart(7), fmt(mean(dHit)).padStart(8),
+      fmt(mean(dWrong)).padStart(8), fmt(mean(dNeg)).padStart(8), fmt(mean(dMiss)).padStart(8),
       pearson(base, lengths).toFixed(2).padStart(8), d.toFixed(2).padStart(7),
       (top1 / n * 100).toFixed(0).padStart(7));
   }
 
-  console.log('-'.repeat(104));
-  console.log('+HIT   score change when the user adds a descriptor the wine DOES have    -> want clearly positive');
-  console.log('+WRONG score change when the user adds a genuinely wrong descriptor       -> want <= 0');
-  console.log('MISS   score change when the REFERENCE gains notes the user never said    -> want ~0');
-  console.log('r(len) correlation of score with user note length                         -> want ~0');
-  console.log('d      separation of real-wine from random-wine scores, in SD units       -> higher is better');
-  console.log('top1%  how often the real wine outranks every distractor (chance = 1%)    -> higher is better');
+  log('-'.repeat(112));
+  log('+HIT   score change when the user adds a descriptor the wine DOES have    -> want clearly positive');
+  log('+WRONG score change when the user adds a genuinely wrong descriptor       -> want <= 0');
+  log('+NEG   score change when the user NEGATES a descriptor the wine has       -> want <= 0');
+  log('MISS   score change when the REFERENCE gains notes the user never said    -> want ~0');
+  log('r(len) correlation of score with user note length                         -> want ~0');
+  log('d      separation of real-wine from random-wine scores, in SD units       -> higher is better');
+  log('top1%  how often the real wine outranks every distractor (chance = 1%)    -> higher is better');
+
+  if (OUT) {
+    mkdirSync(dirname(OUT), { recursive: true });
+    const md = [
+      `# Scoring benchmark — ${new Date().toISOString().slice(0, 10)}`,
+      '',
+      `Generated by \`scripts/benchmark-scoring.ts\` at commit \`${commit}\`. Seeded sampler; re-running on the same data reproduces this table.`,
+      '',
+      '```text',
+      ...lines.map(l => l.replace(/^\n/, '')),
+      '```',
+      '',
+    ].join('\n');
+    writeFileSync(OUT, md);
+    console.log(`\nwritten ${OUT}`);
+  }
 }
 
 main().catch(e => { console.error(e); process.exit(1); });

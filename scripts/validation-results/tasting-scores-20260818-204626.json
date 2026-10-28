@@ -1,0 +1,713 @@
+[
+  {
+    "id": "66ff467b-56dc-469a-a8d8-e16b4c352f93",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 45,
+    "smell_score": 26,
+    "taste_score": 25,
+    "overall_score": 59
+  },
+  {
+    "id": "28324228-6bb7-453f-bef9-27fb2d5e658b",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 45,
+    "smell_score": 26,
+    "taste_score": 25,
+    "overall_score": 59
+  },
+  {
+    "id": "19e4335a-c077-4ac8-95dc-53392218e877",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 45,
+    "smell_score": 26,
+    "taste_score": 25,
+    "overall_score": 59
+  },
+  {
+    "id": "8eba317b-ed91-48af-98da-741f197c80a2",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 45,
+    "smell_score": 26,
+    "taste_score": 25,
+    "overall_score": 59
+  },
+  {
+    "id": "2382f90d-60eb-4a69-a418-fa33bf313e39",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 45,
+    "smell_score": 26,
+    "taste_score": 25,
+    "overall_score": 59
+  },
+  {
+    "id": "6cc4e152-9d61-4924-ac55-679410c37bd4",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 59,
+    "smell_score": 28,
+    "taste_score": 28,
+    "overall_score": 58
+  },
+  {
+    "id": "4e4f9599-bfc4-4b28-a363-e91beeb32333",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 75,
+    "smell_score": 24,
+    "taste_score": 21,
+    "overall_score": 58
+  },
+  {
+    "id": "ae47bc6d-61aa-46f8-8a4f-7ca1b7bdbdc0",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 75,
+    "smell_score": 24,
+    "taste_score": 21,
+    "overall_score": 58
+  },
+  {
+    "id": "beff69db-dd00-449e-bcee-92febe83bb14",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 75,
+    "smell_score": 24,
+    "taste_score": 21,
+    "overall_score": 58
+  },
+  {
+    "id": "64abb88e-b68c-4da7-99b2-24d1ba5a0f63",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "22e5b848-5dce-43c6-9763-5013a953d822",
+    "color_score": 46,
+    "smell_score": 26,
+    "taste_score": 9,
+    "overall_score": 58
+  },
+  {
+    "id": "d1a1da15-df26-42ae-9b1c-2c8a3ef048d1",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "22e5b848-5dce-43c6-9763-5013a953d822",
+    "color_score": 57,
+    "smell_score": 31,
+    "taste_score": 31,
+    "overall_score": 64
+  },
+  {
+    "id": "c72612f1-f6ad-4623-9c30-37f09a68c04d",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "22e5b848-5dce-43c6-9763-5013a953d822",
+    "color_score": 27,
+    "smell_score": 27,
+    "taste_score": 22,
+    "overall_score": 48
+  },
+  {
+    "id": "b889203e-e2a5-4cef-80dc-528dbfb9021b",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "4c21cf74-af74-4306-a838-06de8af5064e",
+    "color_score": 60,
+    "smell_score": 45,
+    "taste_score": 28,
+    "overall_score": 69
+  },
+  {
+    "id": "2493d920-51c4-4130-8987-bc6b459b74b3",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "4c21cf74-af74-4306-a838-06de8af5064e",
+    "color_score": 93,
+    "smell_score": 26,
+    "taste_score": 22,
+    "overall_score": 72
+  },
+  {
+    "id": "3e329c22-5ef8-458b-9083-c509162bbeaa",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "22e5b848-5dce-43c6-9763-5013a953d822",
+    "color_score": 55,
+    "smell_score": 76,
+    "taste_score": 70,
+    "overall_score": 79
+  },
+  {
+    "id": "9c8cb304-7f60-493f-8319-360ee813a05a",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "1e47dca2-d844-4937-8fd7-4c7eb3bfa107",
+    "color_score": 54,
+    "smell_score": 58,
+    "taste_score": 48,
+    "overall_score": 74
+  },
+  {
+    "id": "27935fb6-6c24-4c04-9371-9ac452360e08",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "43030538-6892-489d-bbbc-c29937c81294",
+    "color_score": 28,
+    "smell_score": 56,
+    "taste_score": 43,
+    "overall_score": 55
+  },
+  {
+    "id": "d8bc4f93-5ce1-4c30-8080-3fc43b1d9512",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "d5b2a449-c54b-4a7f-b45b-cc79e64691d6",
+    "color_score": 100,
+    "smell_score": 82,
+    "taste_score": 68,
+    "overall_score": 92
+  },
+  {
+    "id": "70c9b70f-4c9a-4b5a-be79-8341ea913c49",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "8254b17f-a566-4beb-9b6b-59dfd901aa20",
+    "color_score": 54,
+    "smell_score": 82,
+    "taste_score": 41,
+    "overall_score": 73
+  },
+  {
+    "id": "6370f135-5449-4bf0-a312-692fab8e2332",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "7a9a8612-230c-4547-929e-bab275fb2d2e",
+    "color_score": 100,
+    "smell_score": 40,
+    "taste_score": 43,
+    "overall_score": 68
+  },
+  {
+    "id": "8dcfa1ad-d54f-49b9-88c3-ca4cf1156c63",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "eec1b775-adde-46cb-a983-a149290fa16a",
+    "color_score": 17,
+    "smell_score": 94,
+    "taste_score": 87,
+    "overall_score": 84
+  },
+  {
+    "id": "f4938235-ddad-4a32-941a-19c037091e27",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "eec1b775-adde-46cb-a983-a149290fa16a",
+    "color_score": 17,
+    "smell_score": 94,
+    "taste_score": 87,
+    "overall_score": 84
+  },
+  {
+    "id": "1c654633-c3b5-4147-9192-a3d91bdfb009",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "13adcff2-13f1-41c1-b5a8-60276e98e3fe",
+    "color_score": 77,
+    "smell_score": 87,
+    "taste_score": 86,
+    "overall_score": 85
+  },
+  {
+    "id": "9bb85ec9-78ef-4d06-8072-18ccbf2cc89b",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "af22326e-b649-4266-a156-5ce901c2754b",
+    "color_score": 0,
+    "smell_score": 95,
+    "taste_score": 75,
+    "overall_score": 71
+  },
+  {
+    "id": "30fa2f9f-2a62-4c95-aacf-2c3d0f1027a3",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "289bdc04-3111-4d13-9ca0-24d7f33a9e62",
+    "color_score": 42,
+    "smell_score": 64,
+    "taste_score": 70,
+    "overall_score": 75
+  },
+  {
+    "id": "89316bb4-c603-4fce-8f01-d80017b207ca",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "e4b1c2bb-40b3-408c-b179-0da458b983ba",
+    "color_score": 0,
+    "smell_score": 35,
+    "taste_score": 32,
+    "overall_score": 62
+  },
+  {
+    "id": "5607da20-8c7a-48df-b550-219c932280b2",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "412cb0a3-463b-4766-a12a-cd331eb97cd0",
+    "color_score": 50,
+    "smell_score": 45,
+    "taste_score": 37,
+    "overall_score": 69
+  },
+  {
+    "id": "3e6a9c85-b3b7-40bf-b0e8-5c6c9f6b1fc5",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "4c21cf74-af74-4306-a838-06de8af5064e",
+    "color_score": 93,
+    "smell_score": 31,
+    "taste_score": 21,
+    "overall_score": 68
+  },
+  {
+    "id": "9d7727cf-85bd-4008-a828-c1855d36c0d8",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+    "color_score": 61,
+    "smell_score": 32,
+    "taste_score": 27,
+    "overall_score": 71
+  },
+  {
+    "id": "e862c423-1718-4627-b2da-30788b7ed4b1",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+    "color_score": 75,
+    "smell_score": 18,
+    "taste_score": 29,
+    "overall_score": 68
+  },
+  {
+    "id": "0ab4b9ee-471e-41cb-9b50-9ba076b55293",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+    "color_score": 82,
+    "smell_score": 18,
+    "taste_score": 17,
+    "overall_score": 62
+  },
+  {
+    "id": "95ff3771-164a-410b-b4ad-f8deaaa98a7a",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+    "color_score": 76,
+    "smell_score": 40,
+    "taste_score": 43,
+    "overall_score": 72
+  },
+  {
+    "id": "435fd2a9-4287-4379-b810-fbaf5d11c0d8",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+    "color_score": 49,
+    "smell_score": 28,
+    "taste_score": 24,
+    "overall_score": 67
+  },
+  {
+    "id": "cd61dad0-dbbf-48d9-8e2a-f5582c9b9529",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+    "color_score": 58,
+    "smell_score": 23,
+    "taste_score": 17,
+    "overall_score": 61
+  },
+  {
+    "id": "352a55a3-3161-41e8-83bd-924eebd39c4d",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+    "color_score": 93,
+    "smell_score": 37,
+    "taste_score": 55,
+    "overall_score": 80
+  },
+  {
+    "id": "5dbb2d51-9a9d-45e3-bf43-b10f836ed5b8",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+    "color_score": 57,
+    "smell_score": 25,
+    "taste_score": 45,
+    "overall_score": 66
+  },
+  {
+    "id": "73143ed5-64cb-479d-be14-095b786380de",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+    "color_score": 63,
+    "smell_score": 27,
+    "taste_score": 17,
+    "overall_score": 63
+  },
+  {
+    "id": "4f340ecd-4893-47ee-8a50-a1c86d793307",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "6f3abaf3-2e85-462c-a8fe-659e0a4201e6",
+    "color_score": 100,
+    "smell_score": 82,
+    "taste_score": 78,
+    "overall_score": 90
+  },
+  {
+    "id": "be3c9b47-f438-413a-8f2a-3d85db4d7a37",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "0cbdd3d9-84b4-47f8-b25b-89b5537a56a1",
+    "color_score": 21,
+    "smell_score": 70,
+    "taste_score": 69,
+    "overall_score": 73
+  },
+  {
+    "id": "dc1729d7-50fb-4a12-b56b-b74351dce20c",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "4651efc4-02da-4a08-847a-75b3521f3a6e",
+    "color_score": 49,
+    "smell_score": 68,
+    "taste_score": 56,
+    "overall_score": 76
+  },
+  {
+    "id": "d6568b87-25bf-423a-8f52-3319b054634f",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "4c21cf74-af74-4306-a838-06de8af5064e",
+    "color_score": 100,
+    "smell_score": 47,
+    "taste_score": 61,
+    "overall_score": 80
+  },
+  {
+    "id": "c61e9d34-dbed-4850-b56b-dbe4a4791fea",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "bdd99517-902c-4c7b-9107-f8111046c9ca",
+    "color_score": 43,
+    "smell_score": 75,
+    "taste_score": 44,
+    "overall_score": 76
+  },
+  {
+    "id": "a44ab139-33f5-4ada-95f8-7919cb20714a",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "a77f1366-7236-43fe-b7ee-95deb4660f59",
+    "color_score": 22,
+    "smell_score": 67,
+    "taste_score": 53,
+    "overall_score": 69
+  },
+  {
+    "id": "5b423af2-70ec-4168-8ef7-24281519e76c",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "afd6691c-7cec-4d71-8c58-8fb473f210da",
+    "color_score": 48,
+    "smell_score": 59,
+    "taste_score": 74,
+    "overall_score": 77
+  },
+  {
+    "id": "158a8ec0-2567-4f4c-95d1-7206a24e265d",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "78b3e252-2a96-45ee-bcec-ad8249ab2c0e",
+    "color_score": 0,
+    "smell_score": 65,
+    "taste_score": 56,
+    "overall_score": 68
+  },
+  {
+    "id": "961cce5f-2b21-44a1-96ab-fb15d586ea51",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "8a4ab74f-a0c3-4b4a-bc23-b7a13b7b951d",
+    "color_score": 63,
+    "smell_score": 38,
+    "taste_score": 78,
+    "overall_score": 73
+  },
+  {
+    "id": "997efbdd-1ebb-47e6-9322-ffb06d2ac4de",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "fc3edf95-f0c9-4f51-8cc4-d3b9b8d89bf7",
+    "color_score": 100,
+    "smell_score": 86,
+    "taste_score": 0,
+    "overall_score": 69
+  },
+  {
+    "id": "c8088ef8-2f58-452a-b01b-ec540ef81e55",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+    "color_score": 0,
+    "smell_score": 74,
+    "taste_score": 100,
+    "overall_score": 70
+  },
+  {
+    "id": "995624e2-8d46-47c3-a20f-93579b0e5c72",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+    "color_score": 53,
+    "smell_score": 68,
+    "taste_score": 83,
+    "overall_score": 66
+  },
+  {
+    "id": "7c56583b-ae99-4008-8858-be6dc75b25ea",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+    "color_score": 0,
+    "smell_score": 83,
+    "taste_score": 73,
+    "overall_score": 58
+  },
+  {
+    "id": "38fdc3c5-93e1-45c2-a1a3-475809254e66",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+    "color_score": 44,
+    "smell_score": 62,
+    "taste_score": 61,
+    "overall_score": 69
+  },
+  {
+    "id": "d6a50ee2-7f76-470e-9f3c-d32a985e7798",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+    "color_score": 78,
+    "smell_score": 48,
+    "taste_score": 76,
+    "overall_score": 65
+  },
+  {
+    "id": "88113bcf-e964-49c5-beb2-5333bace9ce2",
+    "user_id": "32a7218e-48a2-4066-b48c-29fa9ac65a73",
+    "wine_id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+    "color_score": 78,
+    "smell_score": 63,
+    "taste_score": 71,
+    "overall_score": 71
+  },
+  {
+    "id": "0bf4a445-2a16-43c3-b755-2ac27a094c31",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+    "color_score": 51,
+    "smell_score": 78,
+    "taste_score": 79,
+    "overall_score": 82
+  },
+  {
+    "id": "ee61de90-9dc1-452d-9dc0-b8d77866c29e",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+    "color_score": 53,
+    "smell_score": 55,
+    "taste_score": 66,
+    "overall_score": 65
+  },
+  {
+    "id": "96102e40-c5ec-4689-8ec7-d7a47b7ad38a",
+    "user_id": "8b1a7593-c3cb-4ca4-a720-8d979db5ea50",
+    "wine_id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+    "color_score": 44,
+    "smell_score": 83,
+    "taste_score": 68,
+    "overall_score": 69
+  },
+  {
+    "id": "a813f983-0f5a-4b20-a2f8-a708381fbd81",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "d9da021d-ae05-44b1-adbe-c61ea7a7a6fa",
+    "color_score": 78,
+    "smell_score": 71,
+    "taste_score": 72,
+    "overall_score": 84
+  },
+  {
+    "id": "536e678d-d8da-4492-819e-07deb784aa70",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+    "color_score": 0,
+    "smell_score": 65,
+    "taste_score": 83,
+    "overall_score": 76
+  },
+  {
+    "id": "8a96caed-b65d-4cd2-8d47-b18549c75c1b",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+    "color_score": 0,
+    "smell_score": 48,
+    "taste_score": 70,
+    "overall_score": 69
+  },
+  {
+    "id": "0558afeb-4b1d-4569-b39b-91ee8df99b3a",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+    "color_score": 100,
+    "smell_score": 72,
+    "taste_score": 92,
+    "overall_score": 83
+  },
+  {
+    "id": "1460938b-a245-415d-8a68-4aace19c8f3d",
+    "user_id": "32a7218e-48a2-4066-b48c-29fa9ac65a73",
+    "wine_id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+    "color_score": 56,
+    "smell_score": 57,
+    "taste_score": 71,
+    "overall_score": 79
+  },
+  {
+    "id": "0173e349-d370-439b-8de9-5160a2139d8e",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+    "color_score": 31,
+    "smell_score": 69,
+    "taste_score": 66,
+    "overall_score": 67
+  },
+  {
+    "id": "d252709a-52cb-4ecc-bdcb-14990d8ffdfc",
+    "user_id": "1d31f2cc-01a8-48bb-a8da-b237c4bbeb81",
+    "wine_id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+    "color_score": 40,
+    "smell_score": 71,
+    "taste_score": 59,
+    "overall_score": 68
+  },
+  {
+    "id": "6414b5ef-5a1d-40d8-9a36-fe6274700971",
+    "user_id": "8b1a7593-c3cb-4ca4-a720-8d979db5ea50",
+    "wine_id": "dd1425b1-dff5-4554-bb29-feb5686e4c3e",
+    "color_score": 25,
+    "smell_score": 71,
+    "taste_score": 76,
+    "overall_score": 68
+  },
+  {
+    "id": "26986834-8818-41ed-ad3f-fa306f10b8c7",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+    "color_score": 26,
+    "smell_score": 69,
+    "taste_score": 58,
+    "overall_score": 58
+  },
+  {
+    "id": "2e3ccfa1-8458-46b9-a55c-25c309c268bb",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+    "color_score": 26,
+    "smell_score": 71,
+    "taste_score": 91,
+    "overall_score": 67
+  },
+  {
+    "id": "4487f760-71c0-4e9a-94bc-a27d1b5d0349",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+    "color_score": 30,
+    "smell_score": 93,
+    "taste_score": 44,
+    "overall_score": 76
+  },
+  {
+    "id": "44da0ade-0005-4983-b93b-5842b53ce312",
+    "user_id": "32a7218e-48a2-4066-b48c-29fa9ac65a73",
+    "wine_id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+    "color_score": 82,
+    "smell_score": 80,
+    "taste_score": 87,
+    "overall_score": 78
+  },
+  {
+    "id": "285f0ce7-b06e-49e4-9b9a-9a3c05e08f8a",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+    "color_score": 26,
+    "smell_score": 80,
+    "taste_score": 66,
+    "overall_score": 77
+  },
+  {
+    "id": "39e2c763-0b38-48c7-857f-ecc973a43c02",
+    "user_id": "1d31f2cc-01a8-48bb-a8da-b237c4bbeb81",
+    "wine_id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+    "color_score": 31,
+    "smell_score": 81,
+    "taste_score": 60,
+    "overall_score": 66
+  },
+  {
+    "id": "08a123b6-a4b9-4295-929b-c2112dc1bd1b",
+    "user_id": "d1bc6295-c248-4708-9b5a-da3d1d6942a4",
+    "wine_id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+    "color_score": 0,
+    "smell_score": 86,
+    "taste_score": 76,
+    "overall_score": 69
+  },
+  {
+    "id": "a6e8d025-72bb-43a4-a7f0-b5de00f55633",
+    "user_id": "17c85a0e-5b5f-47a2-8a04-55f0512515f5",
+    "wine_id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+    "color_score": 39,
+    "smell_score": 99,
+    "taste_score": 95,
+    "overall_score": 88
+  },
+  {
+    "id": "285f69f6-199f-4bfa-bb03-a2ec6883386c",
+    "user_id": "1d31f2cc-01a8-48bb-a8da-b237c4bbeb81",
+    "wine_id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+    "color_score": 37,
+    "smell_score": 52,
+    "taste_score": 80,
+    "overall_score": 66
+  },
+  {
+    "id": "7012dbb2-998b-409a-8a96-32ec704931c6",
+    "user_id": "32a7218e-48a2-4066-b48c-29fa9ac65a73",
+    "wine_id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+    "color_score": 39,
+    "smell_score": 75,
+    "taste_score": 78,
+    "overall_score": 67
+  },
+  {
+    "id": "d7872056-a17f-4eff-ab33-29955216f78e",
+    "user_id": "a77fc9b6-ccfb-461a-ac24-11be8b0cb68b",
+    "wine_id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+    "color_score": 42,
+    "smell_score": 62,
+    "taste_score": 55,
+    "overall_score": 64
+  },
+  {
+    "id": "e73cd82b-5f3f-4d88-af26-86bf28d70c95",
+    "user_id": "8b1a7593-c3cb-4ca4-a720-8d979db5ea50",
+    "wine_id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+    "color_score": 40,
+    "smell_score": 98,
+    "taste_score": 88,
+    "overall_score": 74
+  },
+  {
+    "id": "6adda679-9bb0-48f5-892d-5aa4044c878b",
+    "user_id": "8b1a7593-c3cb-4ca4-a720-8d979db5ea50",
+    "wine_id": "da0f413c-8e46-4c94-a885-d8341442ee93",
+    "color_score": 27,
+    "smell_score": 82,
+    "taste_score": 93,
+    "overall_score": 71
+  },
+  {
+    "id": "56766a91-94aa-47bb-8780-cd684681f156",
+    "user_id": "8b1a7593-c3cb-4ca4-a720-8d979db5ea50",
+    "wine_id": "511a8730-4d59-4733-9b92-b07c4b3f8d5d",
+    "color_score": 47,
+    "smell_score": 78,
+    "taste_score": 77,
+    "overall_score": 78
+  },
+  {
+    "id": "095a4499-b3b7-49e6-80fe-9dd2bb0573ea",
+    "user_id": "3af8a941-a36e-4ad8-b590-6556aaedf74b",
+    "wine_id": "6044650e-2fd6-410c-9a34-3d34053095a0",
+    "color_score": 37,
+    "smell_score": 95,
+    "taste_score": 61,
+    "overall_score": 70
+  }
+]

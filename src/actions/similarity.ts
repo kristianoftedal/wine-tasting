@@ -1,9 +1,10 @@
 'use server';
 
 import { sanitizeText, stripPunctuation } from '@/lib/lemmatizeAndWeight';
+import { applyNegation } from '@/lib/negation';
 import { rawSemanticSimilarity, tokenPrecisionSimilarity } from '@/lib/semanticSimilarity';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
-import { combineScore, hasScoreableFlavour, lexicalCredit, type FlavourScoreBreakdown } from '@/lib/flavourScoring';
+import { combineScore, hasScoreableFlavour, lemmasWithWeight, lexicalCredit, type FlavourScoreBreakdown } from '@/lib/flavourScoring';
 
 export type { FlavourScoreBreakdown, MatchKind, TermMatch } from '@/lib/flavourScoring';
 
@@ -23,15 +24,26 @@ export async function scoreFlavourNote(
   if (!userNote?.trim() || !referenceNote?.trim()) return EMPTY;
 
   try {
-    const userNorm = normalizeWineSynonyms(sanitizeText(userNote));
-    const referenceNorm = normalizeWineSynonyms(sanitizeText(referenceNote));
+    // Negation first: "ikke noe fat" must not reach the ladder as "fat".
+    const user = applyNegation(userNote);
+    const reference = applyNegation(referenceNote);
+    const userNorm = normalizeWineSynonyms(sanitizeText(user.text));
+    const referenceNorm = normalizeWineSynonyms(sanitizeText(reference.text));
 
-    if (!hasScoreableFlavour(referenceNorm)) return { ...EMPTY, scoreable: false };
+    if (!hasScoreableFlavour(referenceNorm)) return { ...EMPTY, scoreable: false, negated: user.negated };
 
     const lexical = lexicalCredit(userNorm, referenceNorm);
     const softRaw = await tokenPrecisionSimilarity(userNorm, referenceNorm);
 
-    return combineScore(lexical, softRaw, true);
+    const breakdown = combineScore(lexical, softRaw, true);
+    if (user.negated.length === 0) return breakdown;
+
+    // A negated descriptor the wine does show is a wrong call in the other
+    // direction. Surfaced for the UI; the score ignores it for now.
+    const referenceLemmas = new Set(lemmasWithWeight(referenceNorm).keys());
+    const negatedLemmas = lemmasWithWeight(normalizeWineSynonyms(sanitizeText(user.negated.join(' '))));
+    const contradicted = [...negatedLemmas.keys()].filter(l => referenceLemmas.has(l));
+    return { ...breakdown, negated: user.negated, contradicted };
   } catch (error) {
     console.error('Flavour scoring error:', error);
     return EMPTY;

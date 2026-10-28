@@ -191,6 +191,11 @@ export type SelectedFlavor = {
 
 export type Intensitet = 'lav' | 'middels' | 'høy' | '';
 
+  /** Exactly what the smell/taste score was computed on: chip names + free text. */
+  luktScored?: string;
+  smakScored?: string;
+  /** SCORER_VERSION at the time of scoring; see src/lib/scoringConfig.ts. */
+  scorerVersion?: string;
 export type TastingFormData = {
   eventId?: string;
   farge: string;

@@ -1,0 +1,17 @@
+{
+  "description": "Descriptor pairs the credit ladder does not link but an experienced taster would accept. Used by the acceptance gate: a soft engine should place these above its unrelated-pair baseline. user = what a taster might write, reference = what the Vinmonopolet note says. Add pairs the raters flag in their comments.",
+  "pairs": [
+    { "user": "brioche", "reference": "bakverk", "note": "lees ageing; the derivation map links them, listed as a sanity check" },
+    { "user": "grapefrukt", "reference": "sitrus", "note": "specific within citrus" },
+    { "user": "tjære", "reference": "røyk", "note": "Nebbiolo / Syrah register" },
+    { "user": "lakris", "reference": "anis", "note": "same aromatic compound" },
+    { "user": "kaffe", "reference": "mokka", "note": "roast register" },
+    { "user": "honning", "reference": "aprikos", "note": "botrytis; weak link, see derivations.ts" },
+    { "user": "våt stein", "reference": "mineral", "note": "two-word user form" },
+    { "user": "fiol", "reference": "blomst", "note": "specific within floral" },
+    { "user": "citrus", "reference": "sitrus", "note": "misspelling in 6.6% of user notes; synonym map covers it, listed to catch regressions" },
+    { "user": "skogbunn", "reference": "jordaktig", "note": "earthy register" },
+    { "user": "hvit pepper", "reference": "pepper", "note": "the colour adjective is a stopword; a contextual engine should still match" },
+    { "user": "kirsebær", "reference": "moreller", "note": "same fruit, two names" }
+  ]
+}

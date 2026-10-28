@@ -253,6 +253,19 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
         <div className={styles.tokenRows}>
           <TokenChips rawTokens={data.userRawTokens} flavorTokens={data.userFlavorTokens} terms={data.userTerms} label="Ditt notat" />
           <TokenChips rawTokens={data.wineRawTokens} flavorTokens={data.wineFlavorTokens} terms={data.wineTerms} label="Vinnota" />
+          {data.negated.length > 0 && (
+            <div className={styles.tokenRow}>
+              <span className={styles.tokenRowLabel}>Negert</span>
+              {data.negated.map((w, i) => (
+                <span key={i} className={`${styles.tokenChip} ${styles.tokenChipStripped}`} title="Fjernet fra scoringen fordi du skrev at det ikke var der">
+                  {w}
+                </span>
+              ))}
+              {data.contradicted.length > 0 && (
+                <span className={styles.compareNote}>Vinnotatet nevner: {data.contradicted.join(', ')}</span>
+              )}
+            </div>
+          )}
         </div>
         <div className={styles.scoreGrid}>
           <ScoreCard title="Treffscore" value={Math.round(data.hitScore)} description={`Metning på ${data.hitMass.toFixed(1)} treffmasse`} />

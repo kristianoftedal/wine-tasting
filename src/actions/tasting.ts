@@ -18,7 +18,16 @@ export const addTasting = async (tastingModel: TastingFormData): Promise<{ error
     return { error: 'Du er logget ut. Logg inn i en ny fane, og trykk Ferdig her igjen.' };
   }
 
-  const { error } = await supabase.from('tastings').insert({
+  // Columns from scripts/025-scored-text.sql. If the migration has not been
+  // applied yet the insert is retried without them: a tasting must never be
+  // lost over bookkeeping columns.
+  const scored = {
+    lukt_scored: tastingModel.luktScored ?? null,
+    smak_scored: tastingModel.smakScored ?? null,
+    scorer_version: tastingModel.scorerVersion ?? null
+  };
+
+  const row = {
     user_id: user.id,
     wine_id: tastingModel.wineId,
     event_id: tastingModel.eventId || null,
@@ -46,7 +55,13 @@ export const addTasting = async (tastingModel: TastingFormData): Promise<{ error
     fylde_score: tastingModel.fyldeScore,
     friskhet_score: tastingModel.friskhetScore,
     overall_score: tastingModel.overallScore
-  });
+  };
+
+  let { error } = await supabase.from('tastings').insert({ ...row, ...scored });
+  if (error && /scored|scorer_version|schema cache|42703/i.test(`${error.code} ${error.message}`)) {
+    console.warn('tastings insert: scored-text columns missing, apply scripts/025-scored-text.sql; retrying without them');
+    ({ error } = await supabase.from('tastings').insert(row));
+  }
 
   if (error) {
     console.error('Error adding tasting:', error);

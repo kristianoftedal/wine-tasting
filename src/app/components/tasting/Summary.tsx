@@ -3,6 +3,7 @@
 import { getTermBreakdown, type NoteTermBreakdown, type TermDetail } from '@/actions/scoring-debug';
 import { calculateServerSideScores } from '@/actions/similarity';
 import { ratioSimilarity, scaleSimilarity } from '@/lib/numericScoring';
+import { SCORER_VERSION } from '@/lib/scoringConfig';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import type { Wine } from '@/lib/types';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -87,7 +88,7 @@ export const Summary: React.FC = () => {
   const [isCalculating, setIsCalculating] = useState(true);
   const [tasteDescToShort, setTasteDescToShort] = useState(false);
   const [smellDescToShort, setSmellDescToShort] = useState(false);
-  const emptyBreakdown: NoteTermBreakdown = { rawTokens: [], terms: [], flavorTokens: [] };
+  const emptyBreakdown: NoteTermBreakdown = { rawTokens: [], terms: [], flavorTokens: [], negated: [] };
   const [luktBreakdown, setLuktBreakdown] = useState<NoteTermBreakdown>(emptyBreakdown);
   const [smakBreakdown, setSmakBreakdown] = useState<NoteTermBreakdown>(emptyBreakdown);
 
@@ -192,6 +193,11 @@ export const Summary: React.FC = () => {
 
         setTastingState(prev => ({
           ...prev,
+          // The text the score was computed on (chips + free text) and the
+          // scorer that produced it, so the stored score stays reproducible.
+          luktScored: userSmellText,
+          smakScored: userTasteText,
+          scorerVersion: SCORER_VERSION,
           colorScore: colorScore,
           smellScore: smellScore ?? 0,
           tasteScore: tasteScore ?? 0,

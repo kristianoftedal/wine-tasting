@@ -7,6 +7,7 @@ import { getCategoryWeight } from '@/lib/profiles';
 import { PorterStemmerNo } from 'natural';
 import idfRaw from '@/lib/idf-weights.generated.json';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
+import { applyNegation } from '@/lib/negation';
 
 const idfWeights = idfRaw as Record<string, number>;
 
@@ -44,6 +45,8 @@ export type ScoringBreakdown = {
   currentScore: number;
   scoreable: boolean;
   matches: TermMatch[];
+  negated: string[];
+  contradicted: string[];
   // Term details
   userTerms: TermDetail[];
   wineTerms: TermDetail[];
@@ -128,28 +131,35 @@ export type NoteTermBreakdown = {
   rawTokens: string[];
   terms: TermDetail[];
   flavorTokens: string[];
+  /** Words the taster negated; they are absent from the lists above. */
+  negated: string[];
 };
 
 export async function getTermBreakdown(
   userNote: string,
   wineNote: string
 ): Promise<NoteTermBreakdown> {
-  if (!userNote.trim()) return { rawTokens: [], terms: [], flavorTokens: [] };
-  const userMap = extractTerms(userNote);
-  const wineMap = extractTerms(wineNote);
+  if (!userNote.trim()) return { rawTokens: [], terms: [], flavorTokens: [], negated: [] };
+  const user = applyNegation(userNote);
+  const wine = applyNegation(wineNote);
+  const userMap = extractTerms(user.text);
+  const wineMap = extractTerms(wine.text);
   const matchedLemmas = new Set([...userMap.keys()].filter(k => wineMap.has(k)));
   return {
-    rawTokens: sanitizeText(userNote).split(' ').filter(Boolean),
+    rawTokens: sanitizeText(user.text).split(' ').filter(Boolean),
     terms: toDetailFn(userMap, matchedLemmas),
-    flavorTokens: flavorOnlyText(userNote).split(' ').filter(Boolean),
+    flavorTokens: flavorOnlyText(user.text).split(' ').filter(Boolean),
+    negated: user.negated,
   };
 }
 
 // ── Main export ────────────────────────────────────────────────────────────
 
 export async function getScoringBreakdown(userNote: string, wineNote: string): Promise<ScoringBreakdown> {
-  const userProcessed = normalizeWineSynonyms(sanitizeText(userNote));
-  const wineProcessed = normalizeWineSynonyms(sanitizeText(wineNote));
+  const user = applyNegation(userNote);
+  const wine = applyNegation(wineNote);
+  const userProcessed = normalizeWineSynonyms(sanitizeText(user.text));
+  const wineProcessed = normalizeWineSynonyms(sanitizeText(wine.text));
 
   const [flavour, userMap, wineMap] = await Promise.all([
     scoreFlavourNote(userNote, wineNote),
@@ -168,10 +178,12 @@ export async function getScoringBreakdown(userNote: string, wineNote: string): P
     currentScore: flavour.score,
     scoreable: flavour.scoreable,
     matches: flavour.matches,
+    negated: flavour.negated ?? [],
+    contradicted: flavour.contradicted ?? [],
     userTerms: toDetailFn(userMap, matchedLemmas),
     wineTerms: toDetailFn(wineMap, matchedLemmas),
-    userRawTokens: sanitizeText(userNote).split(' ').filter(Boolean),
-    wineRawTokens: sanitizeText(wineNote).split(' ').filter(Boolean),
+    userRawTokens: sanitizeText(user.text).split(' ').filter(Boolean),
+    wineRawTokens: sanitizeText(wine.text).split(' ').filter(Boolean),
     userFlavorTokens: stripGenericTerms(userProcessed).split(' ').filter(Boolean),
     wineFlavorTokens: stripGenericTerms(wineProcessed).split(' ').filter(Boolean),
   };

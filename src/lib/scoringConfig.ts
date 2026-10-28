@@ -32,6 +32,15 @@
 export const EMBEDDING_MODEL = 'text-embedding-3-small';
 
 /**
+ * Written to `tastings.scorer_version` on every new tasting. Stored scores are
+ * never recomputed (history is read-only, by decision), so this is how a score
+ * from one engine is told apart from a score from the next. Bump it whenever
+ * the number a taster sees would change for the same note: a new soft engine,
+ * a constant below, a dictionary change that moves scores.
+ */
+export const SCORER_VERSION = 'directional-1:text-embedding-3-small';
+
+/**
  * Saturation constant for matched mass, in weighted-lemma units where a
  * specific descriptor carries ~2.0 under the inverted profile.
  *

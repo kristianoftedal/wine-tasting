@@ -68,6 +68,10 @@ export type FlavourScoreBreakdown = LexicalCredit & {
    * being empty, which is the omission penalty wearing a different hat.
    */
   scoreable: boolean;
+  /** Descriptors the taster negated ("ikke noe fat"); removed before scoring. */
+  negated?: string[];
+  /** Negated descriptors the reference nevertheless names. Reported, not scored. */
+  contradicted?: string[];
 };
 
 /**
