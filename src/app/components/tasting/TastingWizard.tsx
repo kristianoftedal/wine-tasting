@@ -33,6 +33,7 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [index, setIndex] = useState<number>(0);
   const steps = ['Se', 'Aroma', 'Smak', 'Egenskaper', 'Oppsummering'];
 
@@ -54,18 +55,6 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
     }
   }, [wine, setWine]);
 
-  const onSave = async () => {
-    const wineId = wine.id;
-    const tastedAt = new Date();
-
-    try {
-      await addTasting({ ...tasting, userId, wineId: wineId, tastedAt, eventId: eventId || undefined });
-    } catch (error) {
-      console.error('Error saving tasting:', error);
-    } finally {
-    }
-  };
-
   const handleNextStep = () => {
     setIndex(index + 1 <= steps.length ? index + 1 : index);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -84,13 +73,31 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
     // a second addTasting call.
     if (isSaving) return;
     setIsSaving(true);
+    setSaveError(null);
+
+    // Redirect only after a confirmed save. This used to swallow the error and redirect
+    // anyway, so a failed insert looked exactly like a successful one to the taster.
+    let error: string | null;
     try {
-      await onSave();
-      router.push(eventId ? `/arrangement/${eventId}` : '/');
+      ({ error } = await addTasting({
+        ...tasting,
+        userId,
+        wineId: wine.id,
+        tastedAt: new Date(),
+        eventId: eventId || undefined
+      }));
     } catch (err) {
-      console.error('Finish failed:', err);
-      setIsSaving(false);
+      console.error('Error saving tasting:', err);
+      error = 'Smakingen ble ikke lagret. Sjekk nettforbindelsen og prøv igjen.';
     }
+
+    if (error) {
+      setSaveError(error);
+      setIsSaving(false);
+      return;
+    }
+
+    router.push(eventId ? `/arrangement/${eventId}` : '/');
     // Deliberately do NOT reset isSaving on success: the router.push above
     // will unmount this component, and flipping state back would briefly
     // re-enable the button and allow a trailing click to re-submit.
@@ -138,6 +145,13 @@ export const TastingWizard: React.FC<TastingProps> = ({ wine }) => {
             )}
             {index === 3 && <TastingAttributes />}
             {index === 4 && <Summary />}
+            {saveError && (
+              <p
+                className={styles.saveError}
+                role="alert">
+                {saveError}
+              </p>
+            )}
           </div>
 
           <footer className={styles.footer}>

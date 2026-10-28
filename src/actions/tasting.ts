@@ -1,16 +1,21 @@
 'use server';
 import { createClient } from '@/lib/supabase/server';
 import type { TastingFormData } from '@/lib/types';
-import { redirect } from 'next/navigation';
 
-export const addTasting = async (tastingModel: TastingFormData) => {
+// Returns the failure instead of throwing: Next.js replaces a thrown server-action error with a
+// generic message in production, and the wizard needs a reason it can show the taster. An
+// expired session is reported rather than redirected, because a redirect throws away a
+// tasting that is still intact in the wizard's state.
+export const addTasting = async (tastingModel: TastingFormData): Promise<{ error: string | null }> => {
   const supabase = await createClient();
+  if (!supabase) return { error: 'Tjenesten er ikke konfigurert riktig.' };
+
   const {
     data: { user }
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/login');
+    return { error: 'Du er logget ut. Logg inn i en ny fane, og trykk Ferdig her igjen.' };
   }
 
   const { error } = await supabase.from('tastings').insert({
@@ -45,6 +50,8 @@ export const addTasting = async (tastingModel: TastingFormData) => {
 
   if (error) {
     console.error('Error adding tasting:', error);
-    throw new Error('Failed to add tasting');
+    return { error: `Smakingen ble ikke lagret (${error.message}).` };
   }
+
+  return { error: null };
 };
