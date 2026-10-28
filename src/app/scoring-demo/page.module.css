@@ -52,36 +52,6 @@
   flex-wrap: wrap;
 }
 
-.flagToggles {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.flagToggle {
-  font-size: 0.8125rem;
-  padding: 0.35rem 0.85rem;
-  border: 1px solid #d1d5db;
-  border-radius: 9999px;
-  background: white;
-  color: #6b7280;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
-}
-
-.flagToggle:hover {
-  background: #f3f4f6;
-}
-
-.flagToggleOn {
-  background: #f0fdf4;
-  border-color: #86efac;
-  color: #15803d;
-}
-
-.flagToggleOn:hover {
-  background: #dcfce7;
-}
-
 .exampleBtn:hover {
   background: #f3f4f6;
   border-color: #9ca3af;

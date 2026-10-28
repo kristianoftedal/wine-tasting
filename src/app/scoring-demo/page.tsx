@@ -130,8 +130,6 @@ export default async function ScoringDemoPage() {
       <ScoringDemo
         pastTastings={pastTastings}
         lemmaGroups={lemmaGroups}
-        defaultRecall={process.env.SCORING_RECALL_ENABLED === 'true'}
-        defaultFlavorFilter={process.env.SEMANTIC_FLAVOR_FILTER_ENABLED === 'true'}
       />
     </main>
   );

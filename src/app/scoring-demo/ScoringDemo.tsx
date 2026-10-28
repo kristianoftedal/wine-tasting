@@ -27,7 +27,7 @@ const EXAMPLES = [
     wine: 'Intens mørke frukt, laurbær og tjæreaktige toner. Godt balansert med frisk syre og lang avslutning.',
   },
   // ── Synonym normalization examples ────────────────────────────────────────
-  // Toggle "Synonymnorm på/av" to see the score change.
+  // Surface forms outside the dictionary that normalizeWineSynonyms maps onto it.
   {
     label: 'Synonym: OOV (bærete/mineralaktig)',
     user: 'Bærete med mineralaktig ettersmak. Tanninrik og balansert, lang fruktig avslutning.',
@@ -245,6 +245,11 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
       {/* Main scores row */}
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Komponentscorer</h3>
+        {!data.scoreable && (
+          <div className={styles.compareNote}>
+            Vinnotatet nevner ingen aroma, bare struktur. Komponenten telles ikke med i en ekte smaking, så scoren her er 0.
+          </div>
+        )}
         <div className={styles.tokenRows}>
           <TokenChips rawTokens={data.userRawTokens} flavorTokens={data.userFlavorTokens} terms={data.userTerms} label="Ditt notat" />
           <TokenChips rawTokens={data.wineRawTokens} flavorTokens={data.wineFlavorTokens} terms={data.wineTerms} label="Vinnota" />
@@ -258,7 +263,6 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
             <div className={styles.formula}>{data.hitMass.toFixed(1)} / {data.userMass.toFixed(1)} masse</div>
             <div className={styles.scoreCardDesc}>Andel av det du skrev som traff</div>
           </div>
-          <ScoreCard title="Setningscosinus" value={data.semanticScore} description="Kun til sammenligning — inngår ikke" />
           <div className={styles.finalCard}>
             <ScoreRing value={data.currentScore} label="Totalscore" sub="beregnet nå" />
             <div className={styles.finalFormula}>
@@ -406,11 +410,9 @@ function TastingSelector({
   );
 }
 
-export default function ScoringDemo({ pastTastings, lemmaGroups, defaultRecall, defaultFlavorFilter }: {
+export default function ScoringDemo({ pastTastings, lemmaGroups }: {
   pastTastings: PastTasting[];
   lemmaGroups: LemmaGroup[];
-  defaultRecall: boolean;
-  defaultFlavorFilter: boolean;
 }) {
   const [userNote, setUserNote] = useState('');
   const [wineNote, setWineNote] = useState('');
@@ -419,15 +421,13 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, defaultRecall, 
   const [result, setResult] = useState<ScoringBreakdown | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-  const [recall, setRecall] = useState(defaultRecall);
-  const [flavorFilter, setFlavorFilter] = useState(defaultFlavorFilter);
 
   const analyze = () => {
     if (!userNote.trim() || !wineNote.trim()) return;
     setError(null);
     startTransition(async () => {
       try {
-        const data = await getScoringBreakdown(userNote, wineNote, { recall, flavorFilter });
+        const data = await getScoringBreakdown(userNote, wineNote);
         setResult(data);
       } catch (e) {
         setError('Analyse feilet. Sjekk at OpenAI API-nøkkelen er satt.');
@@ -525,22 +525,6 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, defaultRecall, 
         >
           {isPending ? 'Analyserer…' : 'Analyser'}
         </button>
-        <div className={styles.flagToggles}>
-          <button
-            className={`${styles.flagToggle} ${recall ? styles.flagToggleOn : ''}`}
-            onClick={() => setRecall(r => !r)}
-            title="Kun for den gamle algoritmen under — den nye scoren bruker alltid ditt eget notat som nevner"
-          >
-            Recall (gammel) {recall ? 'på' : 'av'}
-          </button>
-          <button
-            className={`${styles.flagToggle} ${flavorFilter ? styles.flagToggleOn : ''}`}
-            onClick={() => setFlavorFilter(f => !f)}
-            title="Kun for setningscosinus som vises til sammenligning"
-          >
-            Smakfilter {flavorFilter ? 'på' : 'av'}
-          </button>
-        </div>
       </div>
 
       {error && <div className={styles.error}>{error}</div>}
