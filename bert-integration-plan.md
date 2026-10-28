@@ -279,29 +279,30 @@ Numbered to continue the GSD phases in `.planning/` (v1.0 ended at phase 05). Ea
 - [x] `applyNegation` in `src/lib/negation.ts` (its own module and test file rather than inside the 1 000-line lemma file), wired into `scoreFlavourNote`, `getScoringBreakdown`, `getTermBreakdown` and the benchmark's `prep`; +NEG column added
 - [x] `near-synonyms.json` seeded with 12 pairs
 
-What the baseline run measured (236 cases, 100 distractors, commit `2e32353`):
+What the baseline run measured (236 cases from the frozen set, 100 distractors, deterministic, re-recorded in phase 07):
 
 | scorer | base | +HIT | +WRONG | +NEG | MISS | r(len) | d | top1% |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| previous (recall on) | 62.1 | +11.5 | +1.0 | +0.0 | −0.3 | 0.40 | 0.62 | 10 |
-| current (directional) | 56.1 | +12.3 | −2.8 | +0.0 | +3.8 | 0.26 | 1.17 | 21 |
+| previous (recall on) | 62.1 | +11.5 | +1.1 | +0.0 | −0.6 | 0.40 | 0.58 | 11 |
+| current + openai | 56.1 | +12.6 | −3.2 | +0.0 | +3.5 | 0.26 | 1.19 | 18 |
 
 Before the negator-as-candidate fix, +NEG read +0.5 for both scorers: two of 236 cases ("Vet ikke" + "ikke sitrus") were being read as "Vet sitrus". The August numbers (152 cases) and these (236 cases) differ in `d` and `top1%` because the corpus has grown; the ordering between scorers is unchanged.
+
+**The benchmark was not reproducible until phase 07.** Its two database queries had no `ORDER BY`, so the seeded sampler saw rows in a different order every run and drew different perturbations: three runs of the same code gave +WRONG −2.8, −2.5 and −3.1 for the same engine. The `base` column, which uses no sampling, was stable throughout, and that column is the one that proves an engine unchanged. Both queries are now ordered and `--frozen` takes the cases from the frozen file; two consecutive runs are byte-identical, which is the table above.
 
 Scorer agreement on the frozen set (Spearman): stored vs recomputed 0.991 (19 of 232 fields differ, mean |Δ| 0.72, the chip-text gap from finding 9); current vs lexical-only 0.921; current vs direct-hit count 0.863; **previous engine vs current 0.439** on the 148 fields both scored, which is how differently the two engines rank the same notes. 12 reference notes among the tasted wines are unscoreable (name no aroma).
 
 Done when the human-correlation rows are filled in.
 
-### Phase 07: Soft-engine interface and demo harness
+### Phase 07: Soft-engine interface and demo harness — done 28 Oct 2026
 
-- [ ] `src/lib/softEngines/` with `types.ts`, `openai.ts` (wrapping `tokenEmbeddings` + centring + `SOFT_SCALE`), `index.ts` (registry, `SOFT_ENGINE` selection, availability)
-- [ ] `combineScore` overload taking a 0–100 soft score; `scoreFlavourNote` routed through the registry; `similarity.test.ts` stays green with the engine mocked
-- [ ] `benchmark-scoring.ts` imports engines; `--engines`, `--frozen`, markdown and JSON output
-- [ ] `scoring-debug.ts`: `engines` option, `softEngines` result, `listSoftEngines`
-- [ ] `scripts/export-engine-comparison.ts` → `engine-comparison.generated.json` (OpenAI engine only at this point, which also records the stored-vs-recomputed drift)
-- [ ] `ScoringDemo.tsx`: engine chips, Motorsammenligning table, alignment panels; `page.tsx` renders the static extract
-
-Done when the demo shows the OpenAI engine's alignments and the benchmark output is byte-identical to phase 06's for `--engines=openai`.
+- [x] `src/lib/softEngines/`: `types.ts`, `maxsim.ts` (content words, idf lookup, directional MaxSim with alignments), `openai.ts`, `index.ts` (lazy registry, `SOFT_ENGINE`, `listSoftEngines`), `comparison.ts` (shape of the static extract)
+- [x] `combineScoreScaled(lexical, softScore)`; `combineScore(lexical, softRaw)` is now the OpenAI path on top of it. `scoreFlavourNote` goes through `getSoftEngine()` and carries `engine` and `alignments` on the breakdown. `tokenPrecisionSimilarity` is gone from `semanticSimilarity.ts`; its logic is the OpenAI engine. Tests mock `embedTokens` instead.
+- [x] `benchmark-scoring.ts` scores through the engines (`--engines`, `--frozen`, `--out` writes `.md` and `.json`); its private `softRaw` copy and token REST cache are gone. The legacy row keeps its own sentence embeddings, since nothing in production embeds sentences any more.
+- [x] `getScoringBreakdown(user, wine, { engines })` → `softEngines` with combined score, delta and alignments; `listSoftEngines()`
+- [x] `scripts/export-engine-comparison.ts` → `src/app/scoring-demo/engine-comparison.generated.json` (OpenAI only so far: ρ(stored) 0.990, ρ(previous engine) 0.439)
+- [x] Demo: engine chips (availability and the active engine from the server, selection remembered per viewer), Motorsammenligning table, one alignment panel per engine with disagreements highlighted, and the static extract rendered by `EngineComparison.tsx` with a scatter against the stored score and a largest-disagreement filter
+- [x] Identity: the agreement script's per-field numbers before and after the refactor are the same (19 of 232 differ from stored, mean |Δ| 0.72, Spearman 0.991), and the benchmark's `base` column is unchanged (62.1 / 56.1). The perturbation columns could not be compared byte for byte because the pre-refactor benchmark was not reproducible (see phase 06); they are now.
 
 ### Phase 08: BERT and ColBERT engines
 

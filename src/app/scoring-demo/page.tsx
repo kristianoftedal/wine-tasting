@@ -1,6 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { norwegianLemmas } from '@/lib/lemmatizeAndWeight';
 import ScoringDemo from './ScoringDemo';
+import EngineComparison from './EngineComparison';
+import { listSoftEngines } from '@/lib/softEngines';
+import type { EngineComparison as EngineComparisonData } from '@/lib/softEngines/comparison';
+import comparisonJson from './engine-comparison.generated.json';
 import styles from './page.module.css';
 
 export const metadata = { title: 'Scoring Demo' };
@@ -114,10 +118,12 @@ async function getPastTastings(): Promise<PastTasting[]> {
 }
 
 export default async function ScoringDemoPage() {
-  const [pastTastings, lemmaGroups] = await Promise.all([
+  const [pastTastings, lemmaGroups, engines] = await Promise.all([
     getPastTastings(),
     Promise.resolve(computeLemmaGroups()),
+    listSoftEngines(),
   ]);
+  const comparison = comparisonJson as unknown as EngineComparisonData;
 
   return (
     <main className={styles.page}>
@@ -130,7 +136,9 @@ export default async function ScoringDemoPage() {
       <ScoringDemo
         pastTastings={pastTastings}
         lemmaGroups={lemmaGroups}
+        engines={engines}
       />
+      <EngineComparison data={comparison} />
     </main>
   );
 }

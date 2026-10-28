@@ -8,6 +8,8 @@ import { PorterStemmerNo } from 'natural';
 import idfRaw from '@/lib/idf-weights.generated.json';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 import { applyNegation } from '@/lib/negation';
+import { combineScoreScaled, lexicalCredit } from '@/lib/flavourScoring';
+import { getSoftEngineById, listSoftEngines as listEngines, type SoftEngineId, type SoftResult, type SoftEngineUnavailable, type TokenAlignment } from '@/lib/softEngines';
 
 const idfWeights = idfRaw as Record<string, number>;
 
@@ -47,6 +49,15 @@ export type ScoringBreakdown = {
   matches: TermMatch[];
   negated: string[];
   contradicted: string[];
+  /** Which engine produced softScore / currentScore, and its per-word alignments. */
+  engine: SoftEngineId | null;
+  alignments: TokenAlignment[];
+  /**
+   * The same note pair scored by other soft engines, for the side-by-side on
+   * /scoring-demo. `combinedScore` is what the total would be with that engine;
+   * `delta` is against `currentScore`. Never used for production scoring.
+   */
+  softEngines: SoftEngineComparison[];
   // Term details
   userTerms: TermDetail[];
   wineTerms: TermDetail[];
@@ -57,6 +68,10 @@ export type ScoringBreakdown = {
   userFlavorTokens: string[];
   wineFlavorTokens: string[];
 };
+
+export type SoftEngineComparison =
+  | (SoftResult & { available: true; combinedScore: number; delta: number })
+  | SoftEngineUnavailable;
 
 type InternalTerm = {
   lemma: string;
@@ -155,7 +170,15 @@ export async function getTermBreakdown(
 
 // ── Main export ────────────────────────────────────────────────────────────
 
-export async function getScoringBreakdown(userNote: string, wineNote: string): Promise<ScoringBreakdown> {
+export async function listSoftEngines() {
+  return listEngines();
+}
+
+export async function getScoringBreakdown(
+  userNote: string,
+  wineNote: string,
+  options: { engines?: SoftEngineId[] } = {}
+): Promise<ScoringBreakdown> {
   const user = applyNegation(userNote);
   const wine = applyNegation(wineNote);
   const userProcessed = normalizeWineSynonyms(sanitizeText(user.text));
@@ -166,6 +189,24 @@ export async function getScoringBreakdown(userNote: string, wineNote: string): P
     Promise.resolve(extractTerms(userProcessed)),
     Promise.resolve(extractTerms(wineProcessed)),
   ]);
+
+  // Other engines on the same pair. Each runs independently so one missing
+  // model cannot hide the others; the lexical half is shared.
+  const lexical = flavour.scoreable ? lexicalCredit(userProcessed, wineProcessed) : null;
+  const softEngines: SoftEngineComparison[] = await Promise.all(
+    (options.engines ?? []).map(async (id): Promise<SoftEngineComparison> => {
+      const engine = getSoftEngineById(id);
+      const a = await engine.available();
+      if (!a.ok) return { engine: id, model: engine.model, available: false, reason: a.reason ?? 'ukjent årsak' };
+      try {
+        const result = await engine.score({ raw: user.text, norm: userProcessed }, { raw: wine.text, norm: wineProcessed });
+        const combinedScore = lexical ? combineScoreScaled(lexical, result.softScore, true).score : 0;
+        return { ...result, available: true, combinedScore, delta: combinedScore - flavour.score };
+      } catch (e) {
+        return { engine: id, model: engine.model, available: false, reason: e instanceof Error ? e.message : String(e) };
+      }
+    })
+  );
 
   const matchedLemmas = new Set([...userMap.keys()].filter(k => wineMap.has(k)));
 
@@ -180,6 +221,9 @@ export async function getScoringBreakdown(userNote: string, wineNote: string): P
     matches: flavour.matches,
     negated: flavour.negated ?? [],
     contradicted: flavour.contradicted ?? [],
+    engine: flavour.engine ?? null,
+    alignments: flavour.alignments ?? [],
+    softEngines,
     userTerms: toDetailFn(userMap, matchedLemmas),
     wineTerms: toDetailFn(wineMap, matchedLemmas),
     userRawTokens: sanitizeText(user.text).split(' ').filter(Boolean),

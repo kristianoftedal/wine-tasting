@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useTransition } from 'react';
-import { getScoringBreakdown, type ScoringBreakdown, type TermDetail } from '@/actions/scoring-debug';
+import { useEffect, useState, useTransition } from 'react';
+import { getScoringBreakdown, type ScoringBreakdown, type TermDetail, type SoftEngineComparison } from '@/actions/scoring-debug';
+import type { SoftEngineId, SoftEngineUnavailable, TokenAlignment } from '@/lib/softEngines/types';
 import type { PastTasting, LemmaGroup } from './page';
 import styles from './page.module.css';
 
@@ -234,6 +235,78 @@ function TokenChips({ rawTokens, flavorTokens, terms, label }: {
   );
 }
 
+export type EngineInfo = { id: SoftEngineId; model: string; available: boolean; reason?: string; active: boolean };
+
+const ENGINE_STORAGE_KEY = 'scoring-demo.engines';
+
+function AlignmentPanel({ title, model, alignments, disagreeWith }: {
+  title: string; model: string; alignments: TokenAlignment[]; disagreeWith?: TokenAlignment[];
+}) {
+  const other = new Map((disagreeWith ?? []).map(a => [a.word, a.best]));
+  return (
+    <div className={styles.alignPanel}>
+      <div className={styles.alignTitle}><span>{title}</span><span className={styles.alignSim}>{model}</span></div>
+      {alignments.length === 0 && <div className={styles.unavailable}>ingen innholdsord</div>}
+      {alignments.map(a => {
+        const disagree = other.size > 0 && other.has(a.word) && other.get(a.word) !== a.best;
+        return (
+          <div key={a.word} className={`${styles.alignRow} ${disagree ? styles.alignDisagree : ''}`} title={disagree ? 'Motorene er uenige om beste treff' : undefined}>
+            <span className={styles.mono}>{a.word}</span>
+            <span className={styles.alignArrow}>→</span>
+            <span className={styles.mono}>{a.best ?? '∅'}</span>
+            <span className={styles.alignSim}>{a.sim.toFixed(2)}{a.weight !== 1 ? ` ×${a.weight.toFixed(2)}` : ''}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function EngineTable({ data }: { data: ScoringBreakdown }) {
+  const current = data.alignments;
+  const rows: SoftEngineComparison[] = data.softEngines;
+  if (!rows.length) return null;
+  return (
+    <div className={styles.section}>
+      <h3 className={styles.sectionTitle}>Motorsammenligning</h3>
+      <div className={styles.tableWrap}>
+        <table className={styles.table}>
+          <thead>
+            <tr><th>Motor</th><th>Modell</th><th>Rå MaxSim</th><th>Baseline</th><th>Token-likhet</th><th>Totalscore</th><th>Δ mot nå</th><th>ms</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className={styles.mono}>{data.engine ?? 'openai'} (nå)</td><td>—</td><td className={styles.num}>—</td><td className={styles.num}>—</td>
+              <td className={styles.num}>{Math.round(data.softScore)}</td><td className={styles.num} style={{ fontWeight: 600 }}>{data.currentScore}</td><td className={styles.num}>0</td><td className={styles.num}>—</td>
+            </tr>
+            {rows.map(r => r.available ? (
+              <tr key={r.engine}>
+                <td className={styles.mono}>{r.engine}</td><td className={styles.mono}>{r.model}</td>
+                <td className={styles.num}>{r.raw.toFixed(3)}</td><td className={styles.num}>{r.baseline.toFixed(3)}</td>
+                <td className={styles.num}>{Math.round(r.softScore)}</td><td className={styles.num} style={{ fontWeight: 600 }}>{r.combinedScore}</td>
+                <td className={styles.num} style={{ color: r.delta > 0 ? '#16a34a' : r.delta < 0 ? '#dc2626' : '#9ca3af' }}>{r.delta > 0 ? '+' : ''}{r.delta}</td>
+                <td className={styles.num}>{Math.round(r.ms)}</td>
+              </tr>
+            ) : (
+              <tr key={r.engine}>
+                <td className={styles.mono}>{r.engine}</td><td className={styles.mono}>{r.model}</td>
+                <td colSpan={6} className={styles.unavailable}>ikke tilgjengelig: {(r as SoftEngineUnavailable).reason}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className={styles.alignGrid}>
+        <AlignmentPanel title={`${data.engine ?? 'openai'} (nå)`} model="" alignments={current} />
+        {rows.map(r => r.available && (
+          <AlignmentPanel key={r.engine} title={r.engine} model={r.model} alignments={r.alignments} disagreeWith={current} />
+        ))}
+      </div>
+      <div className={styles.compareNote}>Oransje rader: motoren velger et annet referanseord enn motoren i drift. Det er de parene som er verdt å se på for hånd.</div>
+    </div>
+  );
+}
+
 function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: number | null }) {
   const idfBoosted = data.userTerms.filter(t => t.idfMultiplier > 1.0 && t.matched);
   const diff = storedScore !== null ? data.currentScore - storedScore : null;
@@ -284,6 +357,8 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
           </div>
         </div>
       </div>
+
+      <EngineTable data={data} />
 
       {/* Stored vs calculated comparison — only shown when scores differ */}
       {storedScore !== null && diff !== null && diff !== 0 && (
@@ -423,9 +498,10 @@ function TastingSelector({
   );
 }
 
-export default function ScoringDemo({ pastTastings, lemmaGroups }: {
+export default function ScoringDemo({ pastTastings, lemmaGroups, engines }: {
   pastTastings: PastTasting[];
   lemmaGroups: LemmaGroup[];
+  engines: EngineInfo[];
 }) {
   const [userNote, setUserNote] = useState('');
   const [wineNote, setWineNote] = useState('');
@@ -434,16 +510,32 @@ export default function ScoringDemo({ pastTastings, lemmaGroups }: {
   const [result, setResult] = useState<ScoringBreakdown | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [selectedEngines, setSelectedEngines] = useState<SoftEngineId[]>([]);
+
+  // Remember which engines to compare; a per-viewer convenience only.
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(ENGINE_STORAGE_KEY) ?? '[]') as SoftEngineId[];
+      setSelectedEngines(saved.filter(id => engines.some(e => e.id === id && e.available && !e.active)));
+    } catch { /* ignore */ }
+  }, [engines]);
+  const toggleEngine = (id: SoftEngineId) => {
+    setSelectedEngines(prev => {
+      const next = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
+      try { localStorage.setItem(ENGINE_STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+  };
 
   const analyze = () => {
     if (!userNote.trim() || !wineNote.trim()) return;
     setError(null);
     startTransition(async () => {
       try {
-        const data = await getScoringBreakdown(userNote, wineNote);
+        const data = await getScoringBreakdown(userNote, wineNote, { engines: selectedEngines });
         setResult(data);
       } catch (e) {
-        setError('Analyse feilet. Sjekk at OpenAI API-nøkkelen er satt.');
+        setError('Analyse feilet. Sjekk at motoren i drift har det den trenger (OPENAI_API_KEY for openai).');
         console.error(e);
       }
     });
@@ -471,6 +563,21 @@ export default function ScoringDemo({ pastTastings, lemmaGroups }: {
         {EXAMPLES.map(ex => (
           <button key={ex.label} className={styles.exampleBtn} onClick={() => loadExample(ex)}>
             {ex.label}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.engineRow}>
+        <span className={styles.engineRowLabel}>Sammenlign motorer</span>
+        {engines.map(e => (
+          <button
+            key={e.id}
+            className={`${styles.engineChip} ${selectedEngines.includes(e.id) || e.active ? styles.engineChipOn : ''}`}
+            onClick={() => !e.active && toggleEngine(e.id)}
+            disabled={!e.available || e.active}
+            title={e.active ? `I drift (SOFT_ENGINE) · ${e.model}` : e.available ? e.model : e.reason}
+          >
+            {e.id}{e.active && <span className={styles.engineActive}>i drift</span>}
           </button>
         ))}
       </div>

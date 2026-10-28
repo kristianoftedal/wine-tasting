@@ -4,7 +4,6 @@ import { openai } from '@ai-sdk/openai';
 import { embed, embedMany } from 'ai';
 import { stripGenericTerms } from './lemmatizeAndWeight';
 import { cosineSimilarity } from './math';
-import { embedTokens } from './tokenEmbeddings';
 import { EMBEDDING_MODEL } from './scoringConfig';
 
 /**
@@ -96,50 +95,4 @@ export async function batchSemanticSimilarity(pairs: Array<{ text1: string; text
     console.error('Batch semantic similarity error:', error);
     return pairs.map(() => 0);
   }
-}
-
-/**
- * Directional token-level similarity — MaxSim precision, no recall term.
- *
- *   score = mean over USER tokens of ( max cosine to any REFERENCE token )
- *
- * For every descriptor the taster named, how close is the nearest thing the
- * wine actually shows. Reference tokens the taster never mentioned are simply
- * never iterated, so omissions cannot lower the score — which is the scoring
- * objective, stated as a loop direction.
- *
- * This replaces a BERTScore-style F1. The recall half of that formula asked
- * "for each reference token, how well did the user cover it", which is the
- * omission penalty exactly; on the tasting corpus it measured MISS -2.2 and
- * ranked worst of every variant tried. Dropping it and centering the vectors
- * moved the same measure to MISS +1.6 with the best discrimination of any
- * scorer tested.
- *
- * Vectors come pre-centered from `embedTokens` — see embeddingCentering.ts for
- * why raw cosine is unusable here.
- *
- * Returns a raw cosine mean in roughly [-0.15, 0.55], not a 0-100 score;
- * callers scale it.
- */
-export async function tokenPrecisionSimilarity(userText: string, referenceText: string): Promise<number> {
-  const userTokens = [...new Set(stripGenericTerms(userText).split(' ').filter(Boolean))];
-  const refTokens = [...new Set(stripGenericTerms(referenceText).split(' ').filter(Boolean))];
-  if (!userTokens.length || !refTokens.length) return 0;
-
-  const vectors = await embedTokens([...userTokens, ...refTokens]);
-
-  const refVectors = refTokens.map(t => vectors.get(t)).filter((v): v is Float32Array => !!v);
-  const userVectors = userTokens.map(t => vectors.get(t)).filter((v): v is Float32Array => !!v);
-  if (!refVectors.length || !userVectors.length) return 0;
-
-  let sum = 0;
-  for (const userVec of userVectors) {
-    let best = -Infinity;
-    for (const refVec of refVectors) {
-      const sim = cosineSimilarity(userVec, refVec);
-      if (sim > best) best = sim;
-    }
-    sum += best;
-  }
-  return sum / userVectors.length;
 }

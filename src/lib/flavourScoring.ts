@@ -10,6 +10,7 @@
  */
 import { lemmatizeAndWeight, norwegianLemmas } from './lemmatizeAndWeight';
 import { derivationSource, derivedFrom, isSpecificOfReference } from './derivations';
+import type { SoftEngineId, TokenAlignment } from './softEngines/types';
 import {
   CREDIT_CATEGORY,
   CREDIT_DERIVED,
@@ -68,6 +69,10 @@ export type FlavourScoreBreakdown = LexicalCredit & {
    * being empty, which is the omission penalty wearing a different hat.
    */
   scoreable: boolean;
+  /** Which soft engine produced softScore (src/lib/softEngines). */
+  engine?: SoftEngineId;
+  /** Per user content word: the reference word it matched best. */
+  alignments?: TokenAlignment[];
   /** Descriptors the taster negated ("ikke noe fat"); removed before scoring. */
   negated?: string[];
   /** Negated descriptors the reference nevertheless names. Reported, not scored. */
@@ -180,16 +185,25 @@ export function lexicalCredit(userText: string, referenceText: string): LexicalC
 }
 
 /**
- * Blend the lexical hit term with token-level MaxSim precision, then discount
- * by how much of what the user wrote actually earned credit.
- *
- * `softRaw` is a mean centered cosine in roughly [-0.15, 0.55]; pass 0 to score
- * on the lexical signal alone.
+ * Blend the lexical hit term with a soft score already on 0–100, then discount
+ * by how much of what the user wrote actually earned credit. This is the step
+ * every soft engine feeds; how an engine gets its value onto 0–100 (centring
+ * and `SOFT_SCALE` for OpenAI, a measured baseline for the others) is the
+ * engine's business, not this function's.
  */
-export function combineScore(lexical: LexicalCredit, softRaw: number, scoreable = true): FlavourScoreBreakdown {
-  const softScore = Math.max(0, Math.min(100, softRaw * SOFT_SCALE));
-  const blended = HIT_WEIGHT * lexical.hitScore + SOFT_WEIGHT * softScore;
+export function combineScoreScaled(lexical: LexicalCredit, softScore: number, scoreable = true): FlavourScoreBreakdown {
+  const soft = Math.max(0, Math.min(100, softScore));
+  const blended = HIT_WEIGHT * lexical.hitScore + SOFT_WEIGHT * soft;
   const precisionFactor = PRECISION_FLOOR + (1 - PRECISION_FLOOR) * lexical.precision;
   const score = Math.round(Math.max(0, Math.min(100, blended * precisionFactor)));
-  return { ...lexical, softScore, score, scoreable };
+  return { ...lexical, softScore: soft, score, scoreable };
+}
+
+/**
+ * The OpenAI engine's path, kept for callers that have a raw centred cosine:
+ * `softRaw` in roughly [-0.15, 0.55] is scaled by `SOFT_SCALE` and combined.
+ * Pass 0 to score on the lexical signal alone.
+ */
+export function combineScore(lexical: LexicalCredit, softRaw: number, scoreable = true): FlavourScoreBreakdown {
+  return combineScoreScaled(lexical, softRaw * SOFT_SCALE, scoreable);
 }

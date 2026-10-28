@@ -2,9 +2,10 @@
 
 import { sanitizeText, stripPunctuation } from '@/lib/lemmatizeAndWeight';
 import { applyNegation } from '@/lib/negation';
-import { rawSemanticSimilarity, tokenPrecisionSimilarity } from '@/lib/semanticSimilarity';
+import { rawSemanticSimilarity } from '@/lib/semanticSimilarity';
+import { getSoftEngine } from '@/lib/softEngines';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
-import { combineScore, hasScoreableFlavour, lemmasWithWeight, lexicalCredit, type FlavourScoreBreakdown } from '@/lib/flavourScoring';
+import { combineScoreScaled, hasScoreableFlavour, lemmasWithWeight, lexicalCredit, type FlavourScoreBreakdown } from '@/lib/flavourScoring';
 
 export type { FlavourScoreBreakdown, MatchKind, TermMatch } from '@/lib/flavourScoring';
 
@@ -15,7 +16,8 @@ const EMPTY: FlavourScoreBreakdown = {
 /**
  * Full breakdown of a smell/taste score. The scoring itself lives in
  * src/lib/flavourScoring.ts as a pure function; this wrapper supplies the one
- * input that needs I/O — token embeddings for the MaxSim term.
+ * input that needs I/O — the soft term, from whichever engine `SOFT_ENGINE`
+ * selects (src/lib/softEngines, default: OpenAI token embeddings).
  */
 export async function scoreFlavourNote(
   userNote: string,
@@ -33,9 +35,12 @@ export async function scoreFlavourNote(
     if (!hasScoreableFlavour(referenceNorm)) return { ...EMPTY, scoreable: false, negated: user.negated };
 
     const lexical = lexicalCredit(userNorm, referenceNorm);
-    const softRaw = await tokenPrecisionSimilarity(userNorm, referenceNorm);
+    const soft = await getSoftEngine().score(
+      { raw: user.text, norm: userNorm },
+      { raw: reference.text, norm: referenceNorm }
+    );
 
-    const breakdown = combineScore(lexical, softRaw, true);
+    const breakdown = { ...combineScoreScaled(lexical, soft.softScore, true), engine: soft.engine, alignments: soft.alignments };
     if (user.negated.length === 0) return breakdown;
 
     // A negated descriptor the wine does show is a wrong call in the other

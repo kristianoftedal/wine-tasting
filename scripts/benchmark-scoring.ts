@@ -3,8 +3,9 @@
  * Regression gate for flavour scoring.
  *
  * Measures the properties the objective demands — reward correct picks, never
- * punish omissions — with controlled perturbations of real tastings, and
- * compares the current algorithm against the one it replaced.
+ * punish omissions — with controlled perturbations of real tastings, for every
+ * soft engine asked for, and compares against the algorithm the directional
+ * scorer replaced.
  *
  *   +HIT    user adds a descriptor the wine DOES have          want clearly > 0
  *   +WRONG  user adds a descriptor that is genuinely wrong      want <= 0
@@ -22,36 +23,51 @@
  * correct reasoning and reports it as a virtue. Candidates here must be absent
  * from the reference, absent from its derivations, and outside its subcategories.
  *
- * Run: npx tsx --env-file=.env.local scripts/benchmark-scoring.ts [--out=scripts/validation-results/<file>.md]
+ * The soft term comes from src/lib/softEngines, the same code production runs;
+ * this file no longer carries a copy of it. The legacy comparison row is the
+ * one piece that still embeds sentences itself, because nothing in production
+ * does that any more.
  *
- * --out writes the same table as a markdown file with the run's metadata, so
- * a baseline is a committed file rather than a number remembered from a
- * terminal. The sampler is seeded; two runs on the same data are identical.
+ * Run:
+ *   npx tsx --env-file=.env.local scripts/benchmark-scoring.ts
+ *     [--engines=openai,bert,colbert-word,colbert-token]   default: openai
+ *     [--frozen=scripts/validation-results/frozen-set-2026-10.json]   cases from the frozen set instead of the live table
+ *     [--out=scripts/validation-results/<file>.md]   also writes <file>.json
+ *
+ * The sampler is seeded; two runs on the same data are identical.
  */
 import { createClient } from '@supabase/supabase-js';
+import { execSync } from 'node:child_process';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import {
-  flavorOnlyText, norwegianLemmas, sanitizeText, stripGenericTerms,
+  flavorOnlyText, norwegianLemmas, sanitizeText,
 } from '../src/lib/lemmatizeAndWeight';
 import { normalizeWineSynonyms } from '../src/lib/synonymNormalization';
 import { derivedFrom } from '../src/lib/derivations';
-import { combineScore, lexicalCredit, lemmasWithWeight } from '../src/lib/flavourScoring';
+import { combineScoreScaled, lexicalCredit, lemmasWithWeight } from '../src/lib/flavourScoring';
 import { EMBEDDING_MODEL } from '../src/lib/scoringConfig';
-import { centerEmbedding } from '../src/lib/embeddingCentering';
 import { cosineSimilarity } from '../src/lib/math';
 import { applyNegation } from '../src/lib/negation';
-import { execSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { getSoftEngineById, isSoftEngineId, type SoftEngine, type SoftEngineId } from '../src/lib/softEngines';
+import { contentWords } from '../src/lib/softEngines/maxsim';
+import { embedTokens } from '../src/lib/tokenEmbeddings';
+import { mean, pearson, sd } from '../src/lib/stats';
+import type { FrozenSet } from './export-frozen-set';
 
 const DISTRACTORS = 100;
-const OUT = process.argv.find(a => a.startsWith('--out='))?.slice(6);
+const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+const OUT = arg('out');
+const FROZEN = arg('frozen');
+const ENGINE_IDS: SoftEngineId[] = (arg('engines') ?? 'openai').split(',').map(s => s.trim()).filter(isSoftEngineId);
+if (!ENGINE_IDS.length) throw new Error('--engines names no known engine');
 
 // Everything printed is also collected, so --out can write it verbatim.
 const lines: string[] = [];
 const log = (...parts: unknown[]) => { const line = parts.join(' '); lines.push(line); console.log(line); };
 
-// ── embedding cache ─────────────────────────────────────────────────────────
-const cache = new Map<string, Float32Array>();
+// ── sentence embeddings, legacy comparison only ─────────────────────────────
+const sentenceCache = new Map<string, Float32Array>();
 async function embedBatch(input: string[]): Promise<number[][]> {
   for (let attempt = 0; attempt < 4; attempt++) {
     const res = await fetch('https://api.openai.com/v1/embeddings', {
@@ -68,32 +84,11 @@ async function embedBatch(input: string[]): Promise<number[][]> {
   }
   throw new Error('OpenAI retries exhausted');
 }
-async function warmCache(texts: string[], center: boolean) {
-  const todo = [...new Set(texts.filter(t => t && !cache.has(t)))];
-  for (let i = 0; i < todo.length; i += 256) {
-    const chunk = todo.slice(i, i + 256);
-    const embeddings = await embedBatch(chunk);
-    embeddings.forEach((e, j) => cache.set(chunk[j], center ? centerEmbedding(e) : Float32Array.from(e)));
-    process.stderr.write(`  embedding ${Math.min(i + 256, todo.length)}/${todo.length}\r`);
-  }
-}
 
+/** Negation, sanitising and synonym normalisation: what the ladder sees. */
 const prep = (t: string) => normalizeWineSynonyms(sanitizeText(applyNegation(t).text));
-const tokensOf = (t: string) => [...new Set(stripGenericTerms(t).split(' ').filter(Boolean))];
-
-/** Token-level MaxSim precision, mirroring src/lib/semanticSimilarity.ts. */
-function softRaw(userText: string, referenceText: string): number {
-  const u = tokensOf(userText).map(t => cache.get(t)).filter(Boolean) as Float32Array[];
-  const r = tokensOf(referenceText).map(t => cache.get(t)).filter(Boolean) as Float32Array[];
-  if (!u.length || !r.length) return 0;
-  let sum = 0;
-  for (const uv of u) {
-    let best = -Infinity;
-    for (const rv of r) { const s = cosineSimilarity(uv, rv); if (s > best) best = s; }
-    sum += best;
-  }
-  return sum / u.length;
-}
+/** Lightly cleaned original, for engines that need words in context. */
+const rawOf = (t: string) => applyNegation(t).text;
 
 // ── the algorithm being replaced, for comparison ────────────────────────────
 const sumW = (m: Map<string, { weight: number }>) => [...m.values()].reduce((s, v) => s + v.weight, 0);
@@ -116,8 +111,8 @@ function legacyScore(userText: string, referenceText: string): number {
     else if (mains.has(info.main)) credit += info.weight * 0.5;
   }
 
-  const userSentence = cache.get(`SENT:${flavorOnlyText(prep(userText))}`);
-  const referenceSentence = cache.get(`SENT:${flavorOnlyText(prep(referenceText))}`);
+  const userSentence = sentenceCache.get(flavorOnlyText(prep(userText)));
+  const referenceSentence = sentenceCache.get(flavorOnlyText(prep(referenceText)));
   const semantic = userSentence && referenceSentence
     ? cosineSimilarity(userSentence, referenceSentence) * 100
     : 0;
@@ -125,32 +120,60 @@ function legacyScore(userText: string, referenceText: string): number {
   return Math.round(Math.min(100, semantic + precision * 0.35));
 }
 
-function currentScore(userText: string, referenceText: string): number {
-  const u = prep(userText), r = prep(referenceText);
-  return combineScore(lexicalCredit(u, r), softRaw(u, r)).score;
+/** The production formula with the given engine supplying the soft term. */
+function engineScorer(engine: SoftEngine) {
+  const memo = new Map<string, number>();
+  return async (userText: string, referenceText: string): Promise<number> => {
+    const key = `${userText}\u0000${referenceText}`;
+    const hit = memo.get(key);
+    if (hit !== undefined) return hit;
+    const u = prep(userText), r = prep(referenceText);
+    const soft = await engine.score({ raw: rawOf(userText), norm: u }, { raw: rawOf(referenceText), norm: r });
+    const score = combineScoreScaled(lexicalCredit(u, r), soft.softScore).score;
+    memo.set(key, score);
+    return score;
+  };
 }
 
-// ── statistics ──────────────────────────────────────────────────────────────
-const mean = (a: number[]) => a.reduce((x, y) => x + y, 0) / (a.length || 1);
-const sd = (a: number[]) => { const m = mean(a); return Math.sqrt(mean(a.map(x => (x - m) ** 2))); };
-const pearson = (x: number[], y: number[]) => {
-  const mx = mean(x), my = mean(y);
-  let n = 0, dx2 = 0, dy2 = 0;
-  for (let i = 0; i < x.length; i++) { const dx = x[i] - mx, dy = y[i] - my; n += dx * dy; dx2 += dx * dx; dy2 += dy * dy; }
-  return dx2 && dy2 ? n / Math.sqrt(dx2 * dy2) : 0;
-};
+type Scorer = (u: string, w: string) => Promise<number> | number;
 
 async function main() {
-  const sb = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+  const sb = createClient(process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
-  const { data: tastings } = await sb.from('tastings').select('wine_id,lukt,smak').limit(500);
-  const wineIds = [...new Set(tastings!.map(t => t.wine_id).filter(Boolean))] as string[];
-  const { data: tasted } = await sb.from('wines').select('id,name,smell,taste').in('id', wineIds);
-  const wineById = new Map(tasted!.map(w => [w.id, w]));
+  type Field = { user: string; reference: string; isSmell: boolean; wineId: string | null };
+  let fields: Field[];
+  let source: string;
+  // Every wine any tasting points at is kept out of the distractor pool, notes
+  // or not — the pool, and with it the sampled perturbations, must not shift
+  // when a tasting gains or loses a note.
+  const tastedWineIds = new Set<string>();
+  if (FROZEN) {
+    const frozen = JSON.parse(readFileSync(FROZEN, 'utf8')) as FrozenSet;
+    fields = frozen.fields.map(f => ({ user: f.userNote, reference: f.referenceNote, isSmell: f.field === 'lukt', wineId: f.wine.id }));
+    for (const f of frozen.fields) tastedWineIds.add(f.wine.id);
+    source = `${FROZEN} (${frozen.meta.fields} fields)`;
+  } else {
+    // Ordered: PostgREST guarantees nothing without it, and the seeded sampler
+    // consumes randomness in row order, so an unordered query made every run
+    // sample different perturbations (the phase 06 numbers suffered from this).
+    const { data: tastings } = await sb.from('tastings').select('wine_id,lukt,smak').order('created_at').order('id').limit(500);
+    const wineIds = [...new Set(tastings!.map(t => t.wine_id).filter(Boolean))] as string[];
+    for (const id of wineIds) tastedWineIds.add(id);
+    const { data: tasted } = await sb.from('wines').select('id,name,smell,taste').in('id', wineIds);
+    const wineById = new Map(tasted!.map(w => [w.id, w]));
+    fields = [];
+    for (const t of tastings!) {
+      const wine = wineById.get(t.wine_id!);
+      if (!wine) continue;
+      if (t.lukt?.trim() && wine.smell?.trim()) fields.push({ user: t.lukt, reference: wine.smell, isSmell: true, wineId: wine.id });
+      if (t.smak?.trim() && wine.taste?.trim()) fields.push({ user: t.smak, reference: wine.taste, isSmell: false, wineId: wine.id });
+    }
+    source = `live tastings table (${tastings!.length} tastings, ${fields.length} note fields)`;
+  }
 
   const { data: pool } = await sb.from('wines').select('id,smell,taste')
-    .not('taste', 'is', null).not('smell', 'is', null).range(2000, 2199);
-  const distractors = pool!.filter(w => !wineIds.includes(w.id)).slice(0, DISTRACTORS);
+    .not('taste', 'is', null).not('smell', 'is', null).order('id').range(2000, 2199);
+  const distractors = pool!.filter(w => !tastedWineIds.has(w.id)).slice(0, DISTRACTORS);
 
   // Deterministic sampler — no Math.random, so runs are comparable.
   let seed = 20260818;
@@ -163,132 +186,132 @@ async function main() {
   type Case = { user: string; reference: string; plusHit: string; plusWrong: string; plusNeg: string; referencePlusExtra: string };
   const cases: Case[] = [];
 
-  for (const t of tastings!) {
-    const wine = wineById.get(t.wine_id!);
-    if (!wine) continue;
-    for (const [userNote, referenceNote] of [[t.lukt, wine.smell], [t.smak, wine.taste]] as const) {
-      if (!userNote?.trim() || !referenceNote?.trim()) continue;
+  for (const f of fields) {
+    const userNote = f.user, referenceNote = f.reference;
+    const userLemmas = lemmasWithWeight(prep(userNote));
+    const referenceLemmas = lemmasWithWeight(prep(referenceNote));
+    const referenceSet = new Set(referenceLemmas.keys());
+    const derived = derivedFrom(referenceSet);
+    const referenceSubs = new Set(
+      [...referenceLemmas.values()].filter(v => v.main && v.sub).map(v => `${v.main}/${v.sub}`)
+    );
 
-      const userLemmas = lemmasWithWeight(prep(userNote));
-      const referenceLemmas = lemmasWithWeight(prep(referenceNote));
-      const referenceSet = new Set(referenceLemmas.keys());
-      const derived = derivedFrom(referenceSet);
-      const referenceSubs = new Set(
-        [...referenceLemmas.values()].filter(v => v.main && v.sub).map(v => `${v.main}/${v.sub}`)
-      );
+    const missed = [...referenceSet].filter(l => !userLemmas.has(l));
+    if (!missed.length) continue;
 
-      const missed = [...referenceSet].filter(l => !userLemmas.has(l));
-      if (!missed.length) continue;
+    // A candidate is genuinely wrong only if the reference neither names it,
+    // implies it, nor shares its subcategory.
+    const isGenuinelyWrong = (lemma: string) => {
+      if (referenceSet.has(lemma) || derived.has(lemma) || userLemmas.has(lemma)) return false;
+      const entry = norwegianLemmas[lemma]?.categoryPath;
+      if (entry?.main && entry.sub && referenceSubs.has(`${entry.main}/${entry.sub}`)) return false;
+      return true;
+    };
 
-      // A candidate is genuinely wrong only if the reference neither names it,
-      // implies it, nor shares its subcategory.
-      const isGenuinelyWrong = (lemma: string) => {
-        if (referenceSet.has(lemma) || derived.has(lemma) || userLemmas.has(lemma)) return false;
-        const entry = norwegianLemmas[lemma]?.categoryPath;
-        if (entry?.main && entry.sub && referenceSubs.has(`${entry.main}/${entry.sub}`)) return false;
-        return true;
-      };
-
-      const wrong: string[] = [];
-      for (let k = 0; k < 200 && wrong.length < 1; k++) {
-        const c = vocabulary[Math.floor(rnd() * vocabulary.length)];
-        if (c && isGenuinelyWrong(c)) wrong.push(c);
-      }
-      const extras: string[] = [];
-      for (let k = 0; k < 200 && extras.length < 3; k++) {
-        const c = vocabulary[Math.floor(rnd() * vocabulary.length)];
-        if (c && isGenuinelyWrong(c) && !extras.includes(c)) extras.push(c);
-      }
-      if (!wrong.length || extras.length < 3) continue;
-
-      const hit = missed[Math.floor(rnd() * missed.length)];
-      cases.push({
-        user: userNote,
-        reference: referenceNote,
-        plusHit: `${userNote} ${hit}`,
-        plusWrong: `${userNote} ${wrong[0]}`,
-        // Same descriptor as +HIT, but denied. The wine has it, so this is a
-        // wrong call and must not pay.
-        plusNeg: `${userNote} ikke ${hit}`,
-        referencePlusExtra: `${referenceNote} ${extras.join(' ')}`,
-      });
+    const wrong: string[] = [];
+    for (let k = 0; k < 200 && wrong.length < 1; k++) {
+      const c = vocabulary[Math.floor(rnd() * vocabulary.length)];
+      if (c && isGenuinelyWrong(c)) wrong.push(c);
     }
+    const extras: string[] = [];
+    for (let k = 0; k < 200 && extras.length < 3; k++) {
+      const c = vocabulary[Math.floor(rnd() * vocabulary.length)];
+      if (c && isGenuinelyWrong(c) && !extras.includes(c)) extras.push(c);
+    }
+    if (!wrong.length || extras.length < 3) continue;
+
+    const hit = missed[Math.floor(rnd() * missed.length)];
+    cases.push({
+      user: userNote,
+      reference: referenceNote,
+      plusHit: `${userNote} ${hit}`,
+      plusWrong: `${userNote} ${wrong[0]}`,
+      // Same descriptor as +HIT, but denied. The wine has it, so this is a
+      // wrong call and must not pay.
+      plusNeg: `${userNote} ikke ${hit}`,
+      referencePlusExtra: `${referenceNote} ${extras.join(' ')}`,
+    });
   }
 
-  // Warm both caches: individual tokens (centered, for MaxSim) and whole
-  // sentences (uncentered, for the legacy comparison).
-  const tokens = new Set<string>();
-  const sentences = new Set<string>();
-  const register = (t: string) => {
-    if (!t?.trim()) return;
-    for (const tok of tokensOf(prep(t))) tokens.add(tok);
-    sentences.add(`SENT:${flavorOnlyText(prep(t))}`);
-  };
-  for (const c of cases) { register(c.user); register(c.reference); register(c.plusHit); register(c.plusWrong); register(c.plusNeg); register(c.referencePlusExtra); }
-  for (const d of distractors) { register(d.smell || ''); register(d.taste || ''); }
+  // Every text any scorer will see: warm the OpenAI token cache in one go
+  // (the other engines cache per text internally) and the legacy sentences.
+  const texts = new Set<string>();
+  for (const c of cases) for (const t of [c.user, c.reference, c.plusHit, c.plusWrong, c.plusNeg, c.referencePlusExtra]) texts.add(t);
+  for (const d of distractors) { if (d.smell) texts.add(d.smell); if (d.taste) texts.add(d.taste); }
+  for (const f of fields) { texts.add(f.user); texts.add(f.reference); }
 
-  await warmCache([...tokens], true);
-  const sentenceTexts = [...sentences];
-  const rawSentences = sentenceTexts.map(s => s.slice(5));
-  const todo = rawSentences.filter(s => s && !cache.has(`SENT:${s}`));
-  for (let i = 0; i < todo.length; i += 256) {
-    const chunk = todo.slice(i, i + 256);
+  if (ENGINE_IDS.includes('openai')) {
+    const tokens = new Set<string>();
+    for (const t of texts) for (const w of contentWords(prep(t))) tokens.add(w);
+    process.stderr.write(`  warming ${tokens.size} token embeddings\n`);
+    await embedTokens([...tokens]);
+  }
+  const sentences = [...new Set([...texts].map(t => flavorOnlyText(prep(t))).filter(Boolean))].filter(s => !sentenceCache.has(s));
+  for (let i = 0; i < sentences.length; i += 256) {
+    const chunk = sentences.slice(i, i + 256);
     const embeddings = await embedBatch(chunk);
-    embeddings.forEach((e, j) => cache.set(`SENT:${chunk[j]}`, Float32Array.from(e)));
-    process.stderr.write(`  sentences ${Math.min(i + 256, todo.length)}/${todo.length}\r`);
+    embeddings.forEach((e, j) => sentenceCache.set(chunk[j], Float32Array.from(e)));
+    process.stderr.write(`  sentences ${Math.min(i + 256, sentences.length)}/${sentences.length}\r`);
   }
 
-  const scorers: Array<[string, (u: string, w: string) => number]> = [
-    ['previous (recall=ON)', legacyScore],
-    ['current (directional)', currentScore],
-  ];
+  const scorers: Array<[string, Scorer]> = [['previous (recall=ON)', legacyScore]];
+  for (const id of ENGINE_IDS) {
+    const engine = getSoftEngineById(id);
+    const a = await engine.available();
+    if (!a.ok) { log(`engine ${id} unavailable: ${a.reason}`); continue; }
+    scorers.push([`current + ${id}`, engineScorer(engine)]);
+  }
 
   let commit = 'unknown';
   try { commit = execSync('git rev-parse --short HEAD').toString().trim(); } catch { /* not a git checkout */ }
-  const fieldCount = tastings!.reduce((n, t) => n + (t.lukt?.trim() ? 1 : 0) + (t.smak?.trim() ? 1 : 0), 0);
 
   log(`\n${'='.repeat(112)}`);
   log(`SCORING BENCHMARK — ${cases.length} controlled cases, ${distractors.length} distractors each`);
-  log(`${new Date().toISOString().slice(0, 10)} · commit ${commit} · ${tastings!.length} tastings, ${fieldCount} note fields · embeddings ${EMBEDDING_MODEL}`);
+  log(`${new Date().toISOString().slice(0, 10)} · commit ${commit} · source: ${source}`);
   log(`Wrong-guess candidates exclude reference terms, their derivations, and their subcategories.`);
   log('='.repeat(112));
   log('scorer'.padEnd(26), 'base'.padStart(7), '+HIT'.padStart(8), '+WRONG'.padStart(8), '+NEG'.padStart(8),
     'MISS'.padStart(8), 'r(len)'.padStart(8), 'd'.padStart(7), 'top1%'.padStart(7));
   log('-'.repeat(112));
 
+  type Row = { scorer: string; base: number; hit: number; wrong: number; neg: number; miss: number; rLen: number; d: number; top1: number; ms: number };
+  const rows: Row[] = [];
+
   for (const [name, score] of scorers) {
+    const started = performance.now();
     const base: number[] = [], dHit: number[] = [], dWrong: number[] = [], dNeg: number[] = [], dMiss: number[] = [], lengths: number[] = [];
     for (const c of cases) {
-      const b = score(c.user, c.reference);
+      const b = await score(c.user, c.reference);
       base.push(b);
-      dHit.push(score(c.plusHit, c.reference) - b);
-      dWrong.push(score(c.plusWrong, c.reference) - b);
-      dNeg.push(score(c.plusNeg, c.reference) - b);
-      dMiss.push(score(c.user, c.referencePlusExtra) - b);
+      dHit.push((await score(c.plusHit, c.reference)) - b);
+      dWrong.push((await score(c.plusWrong, c.reference)) - b);
+      dNeg.push((await score(c.plusNeg, c.reference)) - b);
+      dMiss.push((await score(c.user, c.referencePlusExtra)) - b);
       lengths.push(prep(c.user).split(' ').filter(Boolean).length);
     }
 
     const trueScores: number[] = [], randomScores: number[] = [];
     let top1 = 0, n = 0;
-    for (const t of tastings!) {
-      const wine = wineById.get(t.wine_id!);
-      if (!wine) continue;
-      for (const [userNote, referenceNote, isSmell] of [[t.lukt, wine.smell, true], [t.smak, wine.taste, false]] as const) {
-        if (!userNote?.trim() || !referenceNote?.trim()) continue;
-        const s = score(userNote, referenceNote);
-        trueScores.push(s); n++;
-        const ds = distractors.map(d => score(userNote, (isSmell ? d.smell : d.taste) || ''));
-        randomScores.push(...ds);
-        if (!ds.some(x => x > s)) top1++;
-      }
+    for (const f of fields) {
+      const s = await score(f.user, f.reference);
+      trueScores.push(s); n++;
+      const ds: number[] = [];
+      for (const d of distractors) ds.push(await score(f.user, (f.isSmell ? d.smell : d.taste) || ''));
+      randomScores.push(...ds);
+      if (!ds.some(x => x > s)) top1++;
     }
     const d = (mean(trueScores) - mean(randomScores)) / (sd(randomScores) || 1);
     const fmt = (v: number) => (v >= 0 ? '+' : '') + v.toFixed(1);
+    const row: Row = {
+      scorer: name, base: mean(base), hit: mean(dHit), wrong: mean(dWrong), neg: mean(dNeg), miss: mean(dMiss),
+      rLen: pearson(base, lengths), d, top1: (top1 / n) * 100, ms: performance.now() - started,
+    };
+    rows.push(row);
 
-    log(name.padEnd(26), mean(base).toFixed(1).padStart(7), fmt(mean(dHit)).padStart(8),
-      fmt(mean(dWrong)).padStart(8), fmt(mean(dNeg)).padStart(8), fmt(mean(dMiss)).padStart(8),
-      pearson(base, lengths).toFixed(2).padStart(8), d.toFixed(2).padStart(7),
-      (top1 / n * 100).toFixed(0).padStart(7));
+    log(name.padEnd(26), row.base.toFixed(1).padStart(7), fmt(row.hit).padStart(8),
+      fmt(row.wrong).padStart(8), fmt(row.neg).padStart(8), fmt(row.miss).padStart(8),
+      row.rLen.toFixed(2).padStart(8), row.d.toFixed(2).padStart(7),
+      row.top1.toFixed(0).padStart(7));
   }
 
   log('-'.repeat(112));
@@ -313,7 +336,12 @@ async function main() {
       '',
     ].join('\n');
     writeFileSync(OUT, md);
-    console.log(`\nwritten ${OUT}`);
+    const json = OUT.replace(/\.md$/, '') + '.json';
+    writeFileSync(json, JSON.stringify({
+      meta: { date: new Date().toISOString(), commit, source, cases: cases.length, distractors: distractors.length, engines: ENGINE_IDS },
+      rows,
+    }, null, 2) + '\n');
+    console.log(`\nwritten ${OUT} and ${json}`);
   }
 }
 

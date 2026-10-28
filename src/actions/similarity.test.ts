@@ -4,8 +4,10 @@ import { describe, expect, it, vi } from 'vitest'
 // them out so these tests exercise the scoring *shape* — the invariants the
 // objective demands — without an API key or network access. The soft term is
 // held at zero, so what is asserted here is the lexical half of the score.
+vi.mock('@/lib/tokenEmbeddings', () => ({
+  embedTokens: vi.fn().mockResolvedValue(new Map()),
+}))
 vi.mock('@/lib/semanticSimilarity', () => ({
-  tokenPrecisionSimilarity: vi.fn().mockResolvedValue(0),
   rawSemanticSimilarity: vi.fn().mockResolvedValue(0),
 }))
 

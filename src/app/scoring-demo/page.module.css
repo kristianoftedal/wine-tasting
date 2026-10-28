@@ -842,3 +842,156 @@
   color: #92400e;
   border-color: #fde68a;
 }
+
+/* ── Soft engines ── */
+.engineRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+.engineRowLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 0.25rem;
+}
+
+.engineChip {
+  font-size: 0.8125rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.engineChip:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.engineChipOn {
+  background: #eef2ff;
+  border-color: #a5b4fc;
+  color: #3730a3;
+}
+
+.engineChip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.engineActive {
+  font-size: 0.7rem;
+  color: #6b7280;
+  margin-left: 0.35rem;
+}
+
+.alignGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.alignPanel {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #fafafa;
+}
+
+.alignTitle {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.alignRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto;
+  gap: 0.4rem;
+  align-items: center;
+  font-size: 0.8125rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.alignRow:last-child {
+  border-bottom: none;
+}
+
+.alignArrow {
+  color: #9ca3af;
+}
+
+.alignSim {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.alignDisagree {
+  background: #fff7ed;
+  border-radius: 4px;
+}
+
+.unavailable {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* ── Static comparison extract ── */
+.scatterWrap {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-top: 0.75rem;
+}
+
+.scatter {
+  width: 280px;
+  height: 280px;
+  flex: none;
+}
+
+.filterRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0.75rem 0;
+  font-size: 0.8125rem;
+  color: #374151;
+}
+
+.filterRow select,
+.filterRow input {
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+}
+
+.noteCell {
+  max-width: 320px;
+  white-space: normal;
+  font-size: 0.78rem;
+  color: #4b5563;
+}
+
+.deltaPos { color: #16a34a; font-weight: 600; }
+.deltaNeg { color: #dc2626; font-weight: 600; }
+.deltaZero { color: #9ca3af; }
