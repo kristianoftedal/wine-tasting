@@ -1,0 +1,8 @@
+{
+  "threshold": 0.5,
+  "tunedAt": "2026-10-28T21:02:32.075Z",
+  "commit": "160b917",
+  "positives": 10,
+  "negatives": 22,
+  "objective": "correct − 2·(wrong + negative accepts)"
+}

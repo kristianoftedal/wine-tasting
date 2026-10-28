@@ -3,7 +3,8 @@
 import { sanitizeText, stripPunctuation } from '@/lib/lemmatizeAndWeight';
 import { applyNegation } from '@/lib/negation';
 import { rawSemanticSimilarity } from '@/lib/semanticSimilarity';
-import { getSoftEngine } from '@/lib/softEngines';
+import { getSoftEngine, getSoftEngineById, isSoftEngineId } from '@/lib/softEngines';
+import { OOV_MAPPING_ENABLED, mapUnknownWords } from '@/lib/oovMapping';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 import { combineScoreScaled, hasScoreableFlavour, lemmasWithWeight, lexicalCredit, type FlavourScoreBreakdown } from '@/lib/flavourScoring';
 
@@ -29,18 +30,30 @@ export async function scoreFlavourNote(
     // Negation first: "ikke noe fat" must not reach the ladder as "fat".
     const user = applyNegation(userNote);
     const reference = applyNegation(referenceNote);
-    const userNorm = normalizeWineSynonyms(sanitizeText(user.text));
     const referenceNorm = normalizeWineSynonyms(sanitizeText(reference.text));
+    let userNorm = normalizeWineSynonyms(sanitizeText(user.text));
 
     if (!hasScoreableFlavour(referenceNorm)) return { ...EMPTY, scoreable: false, negated: user.negated };
 
+    // Unknown-word mapping (phase 12): only the user's side, only above the
+    // tuned threshold, and every mapping is reported so the taster sees it.
+    const mapped = OOV_MAPPING_ENABLED ? await mapUnknownWords(userNorm) : null;
+    if (mapped) userNorm = mapped.text;
+
     const lexical = lexicalCredit(userNorm, referenceNorm);
-    const soft = await getSoftEngine().score(
+    const engine = getSoftEngine();
+    const soft = await engine.score(
       { raw: user.text, norm: userNorm },
       { raw: reference.text, norm: referenceNorm }
     );
+    await shadowScore(engine.id, lexical, soft.softScore, { raw: user.text, norm: userNorm }, { raw: reference.text, norm: referenceNorm });
 
-    const breakdown = { ...combineScoreScaled(lexical, soft.softScore, true), engine: soft.engine, alignments: soft.alignments };
+    const breakdown = {
+      ...combineScoreScaled(lexical, soft.softScore, true),
+      engine: soft.engine,
+      alignments: soft.alignments,
+      ...(mapped && mapped.mapped.length ? { mapped: mapped.mapped } : {}),
+    };
     if (user.negated.length === 0) return breakdown;
 
     // A negated descriptor the wine does show is a wrong call in the other
@@ -52,6 +65,34 @@ export async function scoreFlavourNote(
   } catch (error) {
     console.error('Flavour scoring error:', error);
     return EMPTY;
+  }
+}
+
+/**
+ * Shadow mode (phase 11): with SOFT_ENGINE_SHADOW set to another engine, every
+ * production score is also computed with that engine and the pair is logged.
+ * Nothing is written and the response is unchanged; it costs one extra score
+ * per field while it is on. Reading the log over two events is the agreed
+ * precondition for switching SOFT_ENGINE.
+ */
+async function shadowScore(
+  active: string,
+  lexical: ReturnType<typeof lexicalCredit>,
+  activeSoft: number,
+  user: { raw: string; norm: string },
+  reference: { raw: string; norm: string }
+): Promise<void> {
+  const wanted = process.env.SOFT_ENGINE_SHADOW;
+  if (!wanted || wanted === active || !isSoftEngineId(wanted)) return;
+  try {
+    const shadow = getSoftEngineById(wanted);
+    if (!(await shadow.available()).ok) return;
+    const result = await shadow.score(user, reference);
+    const a = combineScoreScaled(lexical, activeSoft, true).score;
+    const b = combineScoreScaled(lexical, result.softScore, true).score;
+    console.info('[soft-shadow]', JSON.stringify({ active, score: a, shadow: wanted, shadowScore: b, delta: b - a, ms: Math.round(result.ms) }));
+  } catch (error) {
+    console.warn('[soft-shadow] failed:', error instanceof Error ? error.message : error);
   }
 }
 

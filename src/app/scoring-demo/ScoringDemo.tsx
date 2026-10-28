@@ -326,6 +326,20 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
         <div className={styles.tokenRows}>
           <TokenChips rawTokens={data.userRawTokens} flavorTokens={data.userFlavorTokens} terms={data.userTerms} label="Ditt notat" />
           <TokenChips rawTokens={data.wineRawTokens} flavorTokens={data.wineFlavorTokens} terms={data.wineTerms} label="Vinnota" />
+          {data.unknownWords.length > 0 && (
+            <div className={styles.tokenRow}>
+              <span className={styles.tokenRowLabel}>Lest som</span>
+              {data.unknownWords.map((u, i) => (
+                <span
+                  key={i}
+                  className={`${styles.tokenChip} ${u.applied ? styles.tokenChipMatched : u.sim >= data.oovThreshold ? styles.tokenChipRecognized : styles.tokenChipUnknown}`}
+                  title={u.applied ? 'Brukt i scoringen (OOV_MAPPING_ENABLED)' : u.sim >= data.oovThreshold ? 'Ville blitt brukt med OOV_MAPPING_ENABLED=true' : `Under terskelen ${data.oovThreshold}`}
+                >
+                  {u.from} → {u.to} {u.sim.toFixed(2)}
+                </span>
+              ))}
+            </div>
+          )}
           {data.negated.length > 0 && (
             <div className={styles.tokenRow}>
               <span className={styles.tokenRowLabel}>Negert</span>

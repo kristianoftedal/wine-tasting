@@ -11,6 +11,7 @@
 import { lemmatizeAndWeight, norwegianLemmas } from './lemmatizeAndWeight';
 import { derivationSource, derivedFrom, isSpecificOfReference } from './derivations';
 import type { SoftEngineId, TokenAlignment } from './softEngines/types';
+import type { OovMapping } from './oovMapping';
 import {
   CREDIT_CATEGORY,
   CREDIT_DERIVED,
@@ -73,6 +74,8 @@ export type FlavourScoreBreakdown = LexicalCredit & {
   engine?: SoftEngineId;
   /** Per user content word: the reference word it matched best. */
   alignments?: TokenAlignment[];
+  /** Unknown words read as a dictionary lemma ("toasty" → "toast"), when OOV mapping is on. */
+  mapped?: OovMapping[];
   /** Descriptors the taster negated ("ikke noe fat"); removed before scoring. */
   negated?: string[];
   /** Negated descriptors the reference nevertheless names. Reported, not scored. */

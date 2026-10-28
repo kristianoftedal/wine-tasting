@@ -10,6 +10,7 @@ import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 import { applyNegation } from '@/lib/negation';
 import { combineScoreScaled, lexicalCredit } from '@/lib/flavourScoring';
 import { getSoftEngineById, listSoftEngines as listEngines, type SoftEngineId, type SoftResult, type SoftEngineUnavailable, type TokenAlignment } from '@/lib/softEngines';
+import { OOV_MAPPING_ENABLED, OOV_THRESHOLD, isUnknownWord, nearestAromaLemmas, type OovMapping } from '@/lib/oovMapping';
 
 const idfWeights = idfRaw as Record<string, number>;
 
@@ -49,6 +50,13 @@ export type ScoringBreakdown = {
   matches: TermMatch[];
   negated: string[];
   contradicted: string[];
+  /**
+   * Unknown words and the aroma lemma they are nearest to. `applied` is true
+   * when OOV_MAPPING_ENABLED is on and the cosine cleared the threshold, i.e.
+   * the score above used the mapping; otherwise it is shown as a suggestion.
+   */
+  unknownWords: Array<OovMapping & { applied: boolean }>;
+  oovThreshold: number;
   /** Which engine produced softScore / currentScore, and its per-word alignments. */
   engine: SoftEngineId | null;
   alignments: TokenAlignment[];
@@ -210,6 +218,16 @@ export async function getScoringBreakdown(
 
   const matchedLemmas = new Set([...userMap.keys()].filter(k => wineMap.has(k)));
 
+  // What the taster wrote that the dictionary does not know, and where it
+  // would land. Shown whether or not mapping is on, so the demo can judge it.
+  const unknown = userProcessed.split(' ').filter(isUnknownWord);
+  const nearest = unknown.length ? await nearestAromaLemmas(unknown) : new Map();
+  const applied = new Set((flavour.mapped ?? []).map(m => m.from));
+  const unknownWords = unknown.flatMap(w => {
+    const n = nearest.get(w);
+    return n ? [{ from: w, to: n.lemma, sim: n.sim, applied: OOV_MAPPING_ENABLED && applied.has(w) }] : [];
+  });
+
   return {
     hitMass: parseFloat(flavour.hitMass.toFixed(2)),
     userMass: parseFloat(flavour.userMass.toFixed(2)),
@@ -221,6 +239,8 @@ export async function getScoringBreakdown(
     matches: flavour.matches,
     negated: flavour.negated ?? [],
     contradicted: flavour.contradicted ?? [],
+    unknownWords,
+    oovThreshold: OOV_THRESHOLD,
     engine: flavour.engine ?? null,
     alignments: flavour.alignments ?? [],
     softEngines,
