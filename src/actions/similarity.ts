@@ -1,6 +1,6 @@
 'use server';
 
-import { sanitizeText } from '@/lib/lemmatizeAndWeight';
+import { sanitizeText, stripPunctuation } from '@/lib/lemmatizeAndWeight';
 import { rawSemanticSimilarity, tokenPrecisionSimilarity } from '@/lib/semanticSimilarity';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 import { combineScore, hasScoreableFlavour, lexicalCredit, type FlavourScoreBreakdown } from '@/lib/flavourScoring';
@@ -39,14 +39,21 @@ export async function scoreFlavourNote(
 }
 
 /**
- * Colour comparison: embed text directly without any term stripping.
+ * Colour comparison: embed text whole without any term stripping.
  * Colour descriptors ("lys rubinrød", "dyp gylden") would be corrupted by the
  * generic-term filter used for smell and taste, and the vocabulary is too small
  * for token-level matching to add anything.
+ *
+ * Punctuation is still removed on both sides. The catalogue's colour notes are
+ * sentences ("Dyp rubinrød.", "Lys gul, grønnlig skjær.") while the taster
+ * types a bare phrase, and that formatting difference is not something the
+ * taster should be graded on.
  */
 export async function semanticOnlySimilarity(text1: string, text2: string): Promise<number> {
-  if (!text1?.trim() || !text2?.trim()) return 0;
-  return rawSemanticSimilarity(text1, text2);
+  const a = stripPunctuation(text1 ?? '');
+  const b = stripPunctuation(text2 ?? '');
+  if (!a || !b) return 0;
+  return rawSemanticSimilarity(a, b);
 }
 
 /**

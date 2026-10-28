@@ -11,7 +11,7 @@
  * while `fat` sits under Treverk, so a hierarchical match scores them 0.
  *
  * Token embeddings do not close the gap either: measured on this corpus,
- * cos(fat, vanilje) = 0.09 after centering, *below* the 0.14 baseline for
+how  * cos(fat, vanilje) = 0.09 after centering, *below* the 0.14 baseline for
  * genuinely unrelated descriptor pairs. The causal link is wine chemistry, not
  * distributional semantics, so no general-purpose embedding recovers it.
  *
@@ -78,7 +78,7 @@ export const DERIVATIONS: Record<string, readonly string[]> = {
   kalk: ['mineral', 'flint', 'stein', 'skjell', 'kritt'],
   flint: ['mineral', 'stein', 'røyk', 'krutt'],
   mineral: ['flint', 'stein', 'kalk', 'skjell'],
-  skifer: ['mineral', 'stein', 'flint'],
+  skifer: ['mineral', 'stein', 'flint']
 } as const;
 
 /**
@@ -108,7 +108,7 @@ export const HYPERNYMS: Record<string, { main: string; sub?: string }> = {
   blomst: { main: 'Blomst' },
   nøtt: { main: 'Nøtter' },
   treverk: { main: 'Treverk' },
-  mineral: { main: 'Jordaktig' },
+  mineral: { main: 'Jordaktig' }
 };
 
 /**

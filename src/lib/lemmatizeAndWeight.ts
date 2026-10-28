@@ -837,13 +837,24 @@ export const stopwords = new Set([
  * lowercase, strip punctuation and other noise, collapse whitespace, drop stopwords.
  * Preserves Norwegian characters (æ, ø, å) and digits.
  */
+const PUNCTUATION = /[.,\/#!?$%\^&\*;:{}=\-_`~()"'«»“”‘’<>\[\]|\\]/g;
+
+/**
+ * Lowercase, replace punctuation with spaces and collapse whitespace — nothing
+ * else. Used where the full sanitiser is too aggressive: colour notes are
+ * embedded whole, and a trailing period or an "og"/"med" joining two shades is
+ * part of the phrase, not noise. Vinmonopolet colour notes end in a period
+ * ("Dyp rubinrød.") and list shades with commas, so without this the wine side
+ * of the comparison carries punctuation the taster's input never has.
+ */
+export const stripPunctuation = (text: string): string => {
+  if (!text) return '';
+  return text.toLowerCase().replace(PUNCTUATION, ' ').replace(/\s+/g, ' ').trim();
+};
+
 export const sanitizeText = (text: string): string => {
   if (!text) return '';
-  return text
-    .toLowerCase()
-    .replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()"'«»“”‘’<>\[\]|\\]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
+  return stripPunctuation(text)
     .split(' ')
     .filter(word => word.length > 0 && !stopwords.has(word))
     .join(' ');

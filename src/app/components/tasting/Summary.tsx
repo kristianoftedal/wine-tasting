@@ -2,44 +2,13 @@
 
 import { getTermBreakdown, type NoteTermBreakdown, type TermDetail } from '@/actions/scoring-debug';
 import { calculateServerSideScores } from '@/actions/similarity';
+import { ratioSimilarity, scaleSimilarity } from '@/lib/numericScoring';
 import { tastingAtom, wineAtom } from '@/app/store/tasting';
 import type { Wine } from '@/lib/types';
 import { useAtomValue, useSetAtom } from 'jotai';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import styles from './Summary.module.css';
-
-function calculateNumericSimilarity(
-  userValue: string | number | undefined,
-  actualValue: string | number | undefined
-): number {
-  const normalizeNumber = (val: string | number | undefined): number => {
-    if (val === undefined || val === null || val === '' || val === '-') return Number.NaN;
-    const str = String(val);
-    const cleaned = str.replace(/[^\d.,]/g, '').replace('prosent', '');
-    return Number.parseFloat(cleaned.replace(',', '.'));
-  };
-
-  const userNum = normalizeNumber(userValue);
-  const actualNum = normalizeNumber(actualValue);
-
-  // If either value is invalid, return 0
-  if (isNaN(userNum) || isNaN(actualNum)) {
-    return 0;
-  }
-
-  // If both values are the same, return 100%
-  if (userNum === actualNum) {
-    return 100;
-  }
-
-  // Calculate difference as percentage of the larger value
-  const maxVal = Math.max(userNum, actualNum);
-  const difference = Math.abs(userNum - actualNum);
-  const score = Math.max(0, Math.round((1 - difference / maxVal) * 100));
-
-  return score;
-}
 
 function NoteTokenChips({ breakdown }: { breakdown: NoteTermBreakdown }) {
   if (breakdown.rawTokens.length === 0) return null;
@@ -158,16 +127,19 @@ export const Summary: React.FC = () => {
 
         // Get alcohol value from wine.alcohol field
         const wineAlcohol = wine?.alcohol || '0';
-        const prosentScore = calculateNumericSimilarity(tastingState.alkohol, wineAlcohol);
+        const prosentScore = ratioSimilarity(tastingState.alkohol, wineAlcohol);
 
-        const priceScore = calculateNumericSimilarity(tastingState.pris?.toString(), wine?.price);
+        const priceScore = ratioSimilarity(tastingState.pris?.toString(), wine?.price);
 
-        const garvestofferScore = vmpGarvestoffer
-          ? calculateNumericSimilarity(tastingState.garvestoffer, vmpGarvestoffer)
-          : 0;
-        const sødmeScore = vmpSødme ? calculateNumericSimilarity(tastingState.sodme, vmpSødme) : 0;
-        const fyldeScore = vmpFylde ? calculateNumericSimilarity(tastingState.fylde, vmpFylde) : 0;
-        const friskhetScore = vmpFriskhet ? calculateNumericSimilarity(tastingState.friskhet, vmpFriskhet) : 0;
+        // The four 0–12 scales are scored against the scale's range, not the
+        // value, so a one-step miss costs the same whether the wine sits at
+        // sødme 1 or fylde 11. A reference of 0 is a real reading and is
+        // scored; only null (no expert data) is excluded, in the filter below.
+        const garvestofferScore =
+          vmpGarvestoffer !== null ? scaleSimilarity(tastingState.garvestoffer, vmpGarvestoffer) : 0;
+        const sødmeScore = vmpSødme !== null ? scaleSimilarity(tastingState.sodme, vmpSødme) : 0;
+        const fyldeScore = vmpFylde !== null ? scaleSimilarity(tastingState.fylde, vmpFylde) : 0;
+        const friskhetScore = vmpFriskhet !== null ? scaleSimilarity(tastingState.friskhet, vmpFriskhet) : 0;
 
         // smellScore/tasteScore are null when the wine's own note names no
         // aroma — there is nothing to identify, so the component is dropped

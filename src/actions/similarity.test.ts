@@ -114,3 +114,27 @@ describe('scoreFlavourNote — objective invariants', () => {
     }
   })
 })
+
+describe('semanticOnlySimilarity — colour', () => {
+  it('strips punctuation from both sides before embedding', async () => {
+    const { rawSemanticSimilarity } = await import('@/lib/semanticSimilarity')
+    const { semanticOnlySimilarity } = await import('./similarity')
+    vi.mocked(rawSemanticSimilarity).mockClear()
+
+    await semanticOnlySimilarity('Lys rubinrød', 'Lys rubinrød, med fiolett skjær.')
+
+    expect(rawSemanticSimilarity).toHaveBeenCalledWith('lys rubinrød', 'lys rubinrød med fiolett skjær')
+  })
+
+  it('keeps stopwords and shade words intact', async () => {
+    // "og"/"med" join two shades and the generic-term filter would drop
+    // "lys"; the colour path must only touch punctuation.
+    const { stripPunctuation } = await import('@/lib/lemmatizeAndWeight')
+    expect(stripPunctuation('Dyp rød og fiolett, lys kant.')).toBe('dyp rød og fiolett lys kant')
+  })
+
+  it('returns 0 when a side is punctuation only', async () => {
+    const { semanticOnlySimilarity } = await import('./similarity')
+    expect(await semanticOnlySimilarity('...', 'Dyp rubinrød.')).toBe(0)
+  })
+})
