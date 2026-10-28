@@ -304,15 +304,18 @@ Done when the human-correlation rows are filled in.
 - [x] Demo: engine chips (availability and the active engine from the server, selection remembered per viewer), Motorsammenligning table, one alignment panel per engine with disagreements highlighted, and the static extract rendered by `EngineComparison.tsx` with a scatter against the stored score and a largest-disagreement filter
 - [x] Identity: the agreement script's per-field numbers before and after the refactor are the same (19 of 232 differ from stored, mean |Δ| 0.72, Spearman 0.991), and the benchmark's `base` column is unchanged (62.1 / 56.1). The perturbation columns could not be compared byte for byte because the pre-refactor benchmark was not reproducible (see phase 06); they are now.
 
-### Phase 08: BERT and ColBERT engines
+### Phase 08: BERT and ColBERT engines — done 28 Oct 2026 (parity run pending)
 
-- [ ] `scripts/fetch-soft-models.ts`; `models/` in `.gitignore`; `serverExternalPackages`
-- [ ] `bert.ts`: NorBERT3 ONNX, word spans, pooling, idf weighting; PyTorch parity check on five notes
-- [ ] `colbert.ts`: mLateOn int8 session, `[Q]`/`[D]` prefixes, both variants; parity check against PyLate on five notes (Python, one-off)
-- [ ] Vitest: span alignment (≥ 99% agreement with whole-text tokenisation), pooling, idf weighting, the directional property (extending the reference never lowers the score)
-- [ ] All engines visible on `/scoring-demo`; extract regenerated with all engines
+- [x] `scripts/fetch-soft-models.ts` (NorBERT3 int8 142 MB + mLateOn int8 313 MB + 34 MB tokenizer into `models/`, gitignored); `@huggingface/transformers` 4.3 installed (brings `onnxruntime-node` 1.30); `serverExternalPackages` in `next.config.ts`
+- [x] `bert.ts`: NorBERT3 through transformers.js (`AutoModel` base class, the config carries no `model_type`), last layer, mean-pooled subwords, L2, idf-weighted MaxSim, baseline rescale. Loads in ~0.3 s, scores a pair in ~10 ms
+- [x] `colbert.ts`: mLateOn through `onnxruntime-node` directly (projection and L2 are inside the graph), `[Q]`/`[D]` prefixes, `colbert-word` and `colbert-token` sharing one session and cache. Loads in ~0.6 s, ~10 ms per pair
+- [x] **Word spans are recovered from one whole-text tokenisation**, not from per-word concatenation as the draft proposed. Measured first: per-word concatenation equalled whole-text tokenisation in 1.5% of real notes for NorBERT and 0% for mLateOn (sentence-initial forms, stray space tokens that every word then shared, giving ColBERT ~0.98 for unrelated words). `words.ts` groups the tokenizer's token strings by their word-start markers (`Ġ` for NorBERT's byte-level BPE, `▁` for mLateOn's sentencepiece); a leading space makes the first word tokenise like every other. Agreement on 200 real notes: 100% for both; per-word tokenising remains as a counted fallback
+- [x] Vitest: `maxsim.test.ts` (pure: directional property, weighting, alignments, grouping, bucketing, rescale) and `engines.test.ts` (skips without models: ≥ 99% span recovery on 200 real notes, a matching word beats an unrelated one, one alignment per content word, soft score within 0–100)
+- [x] **Contextual engines are only approximately directional.** Extending the reference changes the context, so its word vectors move and the raw value can drop slightly. The test allows 0.05 of drift; the benchmark's MISS column measures what that does to scores (phase 10)
+- [ ] **Parity against PyTorch not run.** `scripts/parity-dump.ts` (Node, ids + ONNX vectors for five notes) and `scripts/parity-check.py` (PyTorch originals on the same ids, per-token cosine, pass at mean > 0.99) are in the repo; running the Python half was blocked in this session. Needs an environment with `torch`, `transformers` and `pylate`, and downloads the originals (~1.7 GB)
+- [x] All engines visible on `/scoring-demo` once `models/` is present; the extract is regenerated after calibration in phase 09, since uncalibrated local engines report raw ≈ 0.9 for everything
 
-Done when all four engines score the seven demo pairs and the 50 loaded tastings without error, with latency recorded.
+Observed before calibration (raw MaxSim, int8): NorBERT separates a little (0.77 for a close note, 0.33 for "vanilje" on an oaked wine, 0.46 for an unrelated note) but places `brioche` nearest `fersken`, not `bakverk`; mLateOn places `brioche` nearest `bakverk` (0.84) but sits at 0.89–0.94 for everything, matched or not, which is the anisotropy phase 09 exists to remove.
 
 ### Phase 09: Calibration
 

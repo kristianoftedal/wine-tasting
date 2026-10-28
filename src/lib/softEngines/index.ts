@@ -1,29 +1,22 @@
 import { openaiEngine } from './openai';
+import { bertEngine } from './bert';
+import { colbertTokenEngine, colbertWordEngine } from './colbert';
 import { SOFT_ENGINE_IDS, type SoftEngine, type SoftEngineId } from './types';
 
 export type { Availability, NoteInput, SoftEngine, SoftEngineId, SoftEngineUnavailable, SoftResult, TokenAlignment } from './types';
 export { SOFT_ENGINE_IDS } from './types';
 
 /**
- * Engine registry. Engines are created lazily so that a model nobody selects
- * is never loaded; `require` inside the factory keeps the ONNX runtime out of
- * the module graph until an engine that needs it is actually asked for.
+ * Engine registry. The engine modules are cheap to import: each one loads
+ * its model (and the ONNX runtime) on first `score`, never at import, so an
+ * engine nobody selects costs nothing.
  */
 const factories: Record<SoftEngineId, () => SoftEngine> = {
   openai: () => openaiEngine,
-  bert: () => notYet('bert', 'NorBERT3-motoren kommer i fase 08'),
-  'colbert-word': () => notYet('colbert-word', 'ColBERT-motoren kommer i fase 08'),
-  'colbert-token': () => notYet('colbert-token', 'ColBERT-motoren kommer i fase 08'),
+  bert: () => bertEngine,
+  'colbert-word': () => colbertWordEngine,
+  'colbert-token': () => colbertTokenEngine,
 };
-
-function notYet(id: SoftEngineId, reason: string): SoftEngine {
-  return {
-    id,
-    model: '—',
-    async available() { return { ok: false, reason }; },
-    async score() { throw new Error(`soft engine ${id}: ${reason}`); },
-  };
-}
 
 const instances = new Map<SoftEngineId, SoftEngine>();
 

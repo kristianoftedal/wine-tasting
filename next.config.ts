@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
   experimental: {
     swcPlugins: [["@swc-jotai/react-refresh", {}]],
   },
+  // Native ONNX binaries and the transformers.js runtime must stay out of the
+  // bundler; the local soft engines import them at first use.
+  serverExternalPackages: ["@huggingface/transformers", "onnxruntime-node"],
 }
 
 export default nextConfig
