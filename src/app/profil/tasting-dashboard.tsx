@@ -1,6 +1,7 @@
 "use client"
 import type { Group, Tasting, Wine, Event } from "@/lib/types"
 import type { TasteSummary } from "@/lib/tasteSummary"
+import type { TasterSkill } from "@/lib/tasterSkill"
 import { useMemo, useState } from "react"
 import styles from "./page.module.css"
 import OverviewTab from "./tabs/OverviewTab"
@@ -15,6 +16,7 @@ interface TastingDashboardProps {
   tasteSummaries: TasteSummary[]
   groups: Group[]
   events: Event[]
+  skill?: TasterSkill[]
 }
 
 function TastingDashboard({
@@ -24,6 +26,7 @@ function TastingDashboard({
   tasteSummaries,
   groups,
   events,
+  skill = [],
 }: TastingDashboardProps) {
   const [activeTab, setActiveTab] = useState<"overview" | "awards" | "karakter" | "history">("overview")
 
@@ -83,7 +86,7 @@ function TastingDashboard({
       </div>
 
       {activeTab === "overview" && (
-        <OverviewTab tastings={sortedTastings} wines={wines} groups={groups} events={events} />
+        <OverviewTab tastings={sortedTastings} wines={wines} groups={groups} events={events}  skill={skill} />
       )}
 
       {activeTab === "awards" && <AwardsTab tastings={sortedTastings} wines={wines} />}

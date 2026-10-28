@@ -4,6 +4,7 @@ import type { Event, Group, Profile, Tasting, Wine } from "@/lib/types"
 import { redirect } from "next/navigation"
 import styles from "./page.module.css"
 import { TastingDashboard } from "./tasting-dashboard"
+import type { TasterSkill } from "@/lib/tasterSkill"
 
 export default async function Page() {
   const supabase = await createClient()
@@ -54,6 +55,11 @@ export default async function Page() {
 
   const { data: allWines } = await supabase.from("wines").select("*").limit(500)
 
+  // Skill across tastings (migration 026). The RPC returns the caller's rows
+  // only; before the migration is applied it simply errors and nothing shows.
+  const { data: skillRows } = await supabase.rpc("my_taster_skill")
+  const skill = (skillRows as TasterSkill[] | null) ?? []
+
   // Built here rather than in the client tab: the lemmatiser it uses pulls in
   // `natural`, which has no business in the browser bundle.
   const tasteSummaries = buildTasteSummaries((tastings as Tasting[]) || [], (wines as Wine[]) || [])
@@ -72,6 +78,7 @@ export default async function Page() {
         tasteSummaries={tasteSummaries}
         groups={(groups as Group[]) || []}
         events={(events as Event[]) || []}
+        skill={skill}
       />
     </div>
   )

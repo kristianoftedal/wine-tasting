@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useMemo } from "react"
 import { decode } from "he"
 import ScoreBar from "@/app/components/ScoreBar"
+import { MIN_TASTINGS, displayableSkill, formatSkill, type TasterSkill } from "@/lib/tasterSkill"
 import styles from "../page.module.css"
 
 interface OverviewTabProps {
@@ -12,6 +13,7 @@ interface OverviewTabProps {
   wines: Wine[]
   groups: Group[]
   events: Event[]
+  skill?: TasterSkill[]
 }
 
 function formatDate(dateString: string): string {
@@ -22,7 +24,8 @@ function formatDate(dateString: string): string {
   return `${day}.${month}.${year}`
 }
 
-export default function OverviewTab({ tastings, wines, groups, events }: OverviewTabProps) {
+export default function OverviewTab({ tastings, wines, groups, events, skill = [] }: OverviewTabProps) {
+  const shownSkill = displayableSkill(skill)
   // Show what is coming up; if nothing is planned, fall back to the events that
   // just happened so a freshly created event is always visible here.
   const { shownEvents, showingUpcoming } = useMemo(() => {
@@ -122,6 +125,16 @@ export default function OverviewTab({ tastings, wines, groups, events }: Overvie
         <div className={styles.statCard}>
           <div className={styles.statValue}>{earnedCount}</div>
           <div className={styles.statLabel}>Utmerkelser</div>
+        </div>
+        <div
+          className={styles.statCard}
+          title={
+            shownSkill
+              ? `Snitt over ${shownSkill.tastings} smakinger av hvor mye du scorer over eller under andre på de samme vinene. Vanskelige viner trekker ikke ned.`
+              : `Vises etter ${MIN_TASTINGS} smakinger med samme scoringsmotor.`
+          }>
+          <div className={styles.statValue}>{shownSkill ? formatSkill(shownSkill.skill) : "–"}</div>
+          <div className={styles.statLabel}>Ferdighet{shownSkill ? ` (${shownSkill.tastings} smakinger)` : ""}</div>
         </div>
       </div>
 

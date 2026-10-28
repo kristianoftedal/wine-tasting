@@ -268,6 +268,8 @@ Everything fits the standard limits; no paid tier is required for evaluation.
 
 Numbered to continue the GSD phases in `.planning/` (v1.0 ended at phase 05). Each phase ends with a check that gates the next.
 
+**Execution log.** Phases 06–13 were executed on branch `bert-integration` on 28 Oct 2026, one commit per phase or pair of phases. Outstanding items that need a person: collect the ratings (06), apply migrations 025 and 026, run the PyTorch parity check (08), decide whether to grow `WINE_SYNONYMS` from the phase 12 list.
+
 ### Phase 06: Baselines, frozen set, negation — done 28 Oct 2026 (ratings pending)
 
 - [x] Forward-only: `addTasting` writes `lukt_scored` / `smak_scored` and `scorer_version` for new rows (`scripts/025-scored-text.sql`, nullable, never backfilled; the insert retries without them until the migration is applied). `SCORER_VERSION` lives in `scoringConfig.ts`
@@ -355,24 +357,28 @@ What the alignments show is more interesting than the totals. mLateOn finds `bri
 
 `previous` reads 62.0 here against 62.1 in the baseline file: OpenAI sentence embeddings are not bit-reproducible between calls and one case sits on a rounding boundary. The engine rows, which use cached token vectors, are identical to the baseline.
 
-### Phase 11: Rollout, new tastings only (winner only)
+### Phase 11: Rollout, new tastings only — shadow mode done 28 Oct 2026; the rest is gated on a winner there is not
 
-- [ ] Shadow mode: `SOFT_ENGINE_SHADOW=<id>` computes both for new tastings and logs the delta; nothing is written
-- [ ] Reference-vector table filled from the event-creation hook; cold-start warming in the cron ping
-- [ ] Switch `SOFT_ENGINE` after two events with no regressions. From then on new tastings are scored by the new engine and carry its `scorer_version`; every existing row keeps its score and its note exactly as stored
-- [ ] `recalculate-user-tasting-scores.ts` is **not** run. Old-versus-new is read from the static extract on the demo page; if a side-by-side for a user's own history is wanted, it is another generated file, not a column update
-- [ ] Leaderboards and the profile show the engine version where scores from two engines sit next to each other (small badge from `scorer_version`)
-- [ ] Keep `SOFT_SCALE` and the OpenAI engine in the tree while any displayed score was produced by them; rewrite the README scoring section
+- [x] Shadow mode: `SOFT_ENGINE_SHADOW=<id>` scores every new field with that engine as well and logs `[soft-shadow] {active, score, shadow, shadowScore, delta, ms}`; nothing is written and the response is unchanged
+- [ ] Reference-vector table, `SOFT_ENGINE` switch, `scorer_version` badge: not done, by the phase 10 decision. The code path is ready; if a future engine clears the gate, these three bullets are the rollout
+- [ ] README scoring section: not rewritten here, since README.md was being edited concurrently in the working tree
 
-### Phase 12: Unknown-word mapping
+### Phase 12: Unknown-word mapping — built, measured, left off (28 Oct 2026)
 
-- [ ] Nearest-lemma mapping from the winning engine; threshold tuned on the `audit-oov.ts` list
-- [ ] `lexicalCredit` accepts mapped descriptors with `source: 'mapped'`; "lest som" in the breakdown UI and the demo
-- [ ] Benchmark: mapping must not raise +WRONG
+- [x] `src/lib/oovMapping.ts`: unknown words (dictionary category `ukjent`, ≥ 4 letters) mapped to the nearest of the 163 aroma lemmas by centred OpenAI token cosine, accepted above a tuned threshold; `scoreFlavourNote` applies it to the user's side behind `OOV_MAPPING_ENABLED` and reports `mapped` on the breakdown
+- [x] `scripts/tune-oov-threshold.ts` → `oov-threshold.generated.json` and `scripts/validation-results/oov-threshold-2026-10-28.md`. Labelled set: the synonym map's keys the dictionary cannot resolve (4 after stemming and compound splitting), 6 real-note positives (`brioch`, `toasty`, `chili`, `hibiscus`, `aske`, `autolyse`, `bakt`) and 22 real-note negatives (`gult` ×9 in the corpus, `sur`, `vet`, `bobler`, …)
+- [x] Demo: a "Lest som" row shows every unknown word with its nearest lemma and cosine, coloured by whether it is applied, would clear the threshold, or sits below it
+- [x] Benchmark with mapping on: identical to the baseline row (+WRONG −3.2, d 1.19); the perturbation words are dictionary lemmas, so the gate is passed trivially
 
-### Phase 13: Skill across tastings
+**Result: it does not earn its place, and stays off.** At the chosen threshold 0.5 the OpenAI vectors map 3 of 10 positives correctly (`brioch → brioche` 0.63 is the only confident one), miss 7, accept no wrong positive and one negative (`kjerne → kjernefrukt` 0.63). Below 0.5 the negatives flood in; `toasty` lands on `toffee`, `aske` on `skinke`, `hibiscus` on `guava`. The local engines were measured as mapping sources on the same set: mLateOn also 3 of 10 (a different three: `brioch`, `toasty`, `bakt`) with negatives accepted from 0.7 down; NorBERT 1 of 10. Isolated rare words are exactly where these vectors are weakest, which is the measurement behind the derivation map in the first place.
 
-- [ ] SQL view with shrinkage; profile tab after 10 tastings with the count shown
+What does work for this problem already exists: `WINE_SYNONYMS` is an exact, free, hand-curated mapping. The six real-note positives above are candidates for it (`brioch → brioche`, `toasty → toast`, `bakt → bakverk`, `autolyse → bakverk`; `aske` and `hibiscus` need a judgement), and `scripts/audit-oov.ts` ranks the rest by frequency. Growing that list beats any threshold measured here; it is a dictionary change and therefore a `SCORER_VERSION` bump.
+
+### Phase 13: Skill across tastings — done 28 Oct 2026 (migration to apply)
+
+- [x] `scripts/026-taster-skill.sql`: `tasting_field_scores` → `wine_difficulty` (mean per wine and field, shrunk toward the global mean, k = 5) → `taster_skill` (mean residual per taster, shrunk toward 0, k = 5), all grouped by `scorer_version` with null read as the directional scorer. The views run as owner because difficulty needs every tasting of a wine while RLS shows a user only their own and their groups'; they are revoked from clients and the single entry point is `my_taster_skill()`, `SECURITY DEFINER`, returning the caller's rows only
+- [x] `src/lib/tasterSkill.ts` (`displayableSkill`, 10-tasting minimum under one scorer version) with tests; profile overview shows a "Ferdighet" stat card with the tasting count and an explanation on hover, "–" until eligible. Five tasters qualify today
+- [ ] Apply the migration; until then the RPC errors quietly and the card shows "–"
 
 ## Acceptance gate
 
