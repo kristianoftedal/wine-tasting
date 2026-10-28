@@ -317,19 +317,43 @@ Done when the human-correlation rows are filled in.
 
 Observed before calibration (raw MaxSim, int8): NorBERT separates a little (0.77 for a close note, 0.33 for "vanilje" on an oaked wine, 0.46 for an unrelated note) but places `brioche` nearest `fersken`, not `bakverk`; mLateOn places `brioche` nearest `bakverk` (0.84) but sits at 0.89–0.94 for everything, matched or not, which is the anisotropy phase 09 exists to remove.
 
-### Phase 09: Calibration
+### Phase 09: Calibration — done 28 Oct 2026
 
-- [ ] `compute-maxsim-baseline.ts` per engine → `maxsim-baseline.generated.json`
-- [ ] Apply the rescale in `bert.ts` and `colbert.ts`
-- [ ] Layer k for BERT only if BERT is within reach of the gate
+- [x] `scripts/compute-maxsim-baseline.ts` writes two generated files: `centering.generated.json` (a corpus mean per local engine family, subtracted at score time) and `maxsim-baseline.generated.json` (the MaxSim floor per reference-length bucket, measured on centred vectors against 400 catalogue wines ids 3000–3399 that the benchmark never uses). Report: `scripts/validation-results/calibration-2026-10-28.md`
+- [x] Rescale applied in `bert.ts` and `colbert.ts`; a missing bucket falls back to the nearest measured one (no reference in the corpus has 11+ content words)
+- [x] **Centring was not in the draft and turned out to be the main step.** mLateOn's mean token vector has norm **0.978** (1.0 would be every vector identical): before centring any two descriptor words scored 0.89–0.94, matched or not. NorBERT's is 0.663, close to OpenAI's 0.68. After centring and rescaling, random pairs centre near 0 for every engine and bucket, which was the done-criterion
+- [ ] Layer k for BERT: not attempted; BERT did not come within reach of the gate (phase 10)
 
-Done when unrelated pairs centre near 0 for every engine and reference-length bucket.
+Separation of true pairs from random ones on the centred raw MaxSim, (mean true − mean random) / sd(random), by reference bucket:
 
-### Phase 10: Benchmark and decision
+| engine | 1–3 words | 4–6 | 7–10 |
+| --- | --- | --- | --- |
+| openai | 0.55 | 1.07 | 1.11 |
+| colbert-token | 0.81 | 0.97 | 1.06 |
+| colbert-word | 0.79 | 0.94 | 0.99 |
+| bert | 0.36 | 0.82 | 0.83 |
 
-- [ ] Run `--engines=openai,bert,colbert-word,colbert-token` on the benchmark and the frozen set; human correlation 5-fold where anything was fitted
-- [ ] Record the full table in `scripts/validation-results/benchmark-2026-11-engines.md`
-- [ ] Decide against the acceptance gate; write the decision and the numbers into `scoringConfig.ts`, in the same style as the existing commentary
+### Phase 10: Benchmark and decision — done 28 Oct 2026 (human rows pending)
+
+- [x] `--engines=openai,bert,colbert-word,colbert-token --frozen=…` → `scripts/validation-results/benchmark-2026-10-engines.md` and `.json`; extract regenerated with all four engines
+- [ ] Human correlation: waits for rater files
+- [x] Decision recorded here and in `scoringConfig.ts`
+
+| scorer | base | +HIT | +WRONG | +NEG | MISS | r(len) | d | top1% |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| previous (recall on) | 62.0 | +11.5 | +1.1 | +0.0 | −0.6 | 0.40 | 0.58 | 11 |
+| current + openai | 56.1 | +12.6 | −3.2 | +0.0 | +3.5 | 0.26 | 1.19 | 18 |
+| current + bert | 37.3 | +9.9 | −0.9 | +0.0 | +2.0 | 0.35 | 0.92 | 10 |
+| current + colbert-word | 37.0 | +9.5 | −1.2 | +0.0 | +2.1 | 0.31 | 0.94 | 12 |
+| current + colbert-token | 36.9 | +9.6 | −1.2 | +0.0 | +1.8 | 0.32 | 0.94 | 12 |
+
+On the frozen set (Spearman): bert 0.926 / colbert-word 0.929 / colbert-token 0.932 against the stored score, and 0.55–0.57 against the previous engine (OpenAI: 0.439), i.e. the local engines rank notes a little more like the old sentence-cosine scorer did.
+
+**Decision: the OpenAI token engine stays.** Both local engines fail the gate on every metric that discriminates: smaller reward for a correct descriptor (+HIT 9.5–9.9 vs 12.6), a weaker penalty for a wrong one (−0.9 to −1.2 vs −3.2), less separation from random wines (d 0.92–0.94 vs 1.19, top1 10–12% vs 18%) and more length dependence (r 0.31–0.35 vs 0.26). They pass only MISS, where they sit nearer 0. The lower `base` is a scale artefact of the rescale, not the reason: `d` and `top1` are rank-based. The human rows cannot overturn a gate that fails on four of five property metrics, so the decision does not wait for them; they are still worth collecting, because they also judge the engine that stays.
+
+What the alignments show is more interesting than the totals. mLateOn finds `brioche → bakverk` (0.84 raw) where OpenAI and NorBERT do not, and it is the better engine on the shortest references (1–3 words: 0.81 vs 0.55 separation). It is worse at the isolated-synonym judgement that most of the score is made of. That is the profile the draft predicted for a pretrained ColBERT, and it is the case for the contingency in the ColBERT section (distil the credit ladder into mLateOn) if the near-synonym list is ever worth that work. Not planned.
+
+`previous` reads 62.0 here against 62.1 in the baseline file: OpenAI sentence embeddings are not bit-reproducible between calls and one case sits on a rounding boundary. The engine rows, which use cached token vectors, are identical to the baseline.
 
 ### Phase 11: Rollout, new tastings only (winner only)
 

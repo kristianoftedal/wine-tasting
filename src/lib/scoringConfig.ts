@@ -32,6 +32,26 @@
 export const EMBEDDING_MODEL = 'text-embedding-3-small';
 
 /**
+ * Soft-engine decision, 28 Oct 2026 (bert-integration-plan.md, phase 10).
+ *
+ * Two local engines were built behind src/lib/softEngines and measured on the
+ * same benchmark and frozen set: NorBERT3 base (contextual word vectors) and
+ * mLateOn (multilingual ColBERT), both int8 ONNX, both centred and rescaled
+ * against a measured floor. Neither cleared the gate:
+ *
+ *                    +HIT  +WRONG   MISS  r(len)     d  top1%
+ *   openai          +12.6    -3.2   +3.5    0.26  1.19     18
+ *   bert             +9.9    -0.9   +2.0    0.35  0.92     10
+ *   colbert-token    +9.6    -1.2   +1.8    0.32  0.94     12
+ *
+ * The isolated token embeddings reward a correct descriptor more, punish a
+ * wrong one more, and separate the real wine from random ones better. The
+ * local engines win only on MISS. mLateOn does find links the others miss
+ * (brioche -> bakverk) and is better on one- to three-word references; that
+ * is a fine-tuning lead, not a reason to switch. SOFT_ENGINE stays `openai`.
+ */
+
+/**
  * Written to `tastings.scorer_version` on every new tasting. Stored scores are
  * never recomputed (history is read-only, by decision), so this is how a score
  * from one engine is told apart from a score from the next. Bump it whenever

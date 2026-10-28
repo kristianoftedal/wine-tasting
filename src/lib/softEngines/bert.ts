@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { baselineFor, rescale } from './baseline';
 import { idfWeight, maxSimPrecision, type WordVector } from './maxsim';
-import { EncodingCache, MODEL_DIR, l2normalize, meanPool, noteWords, tokenizeWithSpans, type Tokenizer } from './words';
+import { EncodingCache, MODEL_DIR, centered, l2normalize, loadMean, meanPool, noteWords, tokenizeWithSpans, type Tokenizer } from './words';
 import type { NoteInput, SoftEngine, SoftResult } from './types';
 
 /**
@@ -39,6 +39,18 @@ type Loaded = {
 
 let loading: Promise<Loaded> | null = null;
 const cache = new EncodingCache<Encoded>();
+
+/**
+ * Calibration state and hooks. `mean` is subtracted at score time (encodings
+ * are cached uncentred), so scripts/compute-maxsim-baseline.ts can collect
+ * raw vectors, set a mean, and re-score without reloading anything.
+ */
+export const bertCalibration = {
+  mean: loadMean('bert'),
+  setMean(mean: Float32Array | null) { this.mean = mean; },
+  /** Uncentred, L2-normalised vector per content word. */
+  async contentVectors(note: NoteInput): Promise<Float32Array[]> { return [...(await encode(note)).vectors.values()]; },
+};
 
 function missingFile(): string | null {
   for (const f of FILES) if (!existsSync(join(MODEL_DIR(), BERT_REPO, f))) return f;
@@ -106,7 +118,8 @@ export const bertEngine: SoftEngine = {
   async score(user: NoteInput, reference: NoteInput): Promise<SoftResult> {
     const started = performance.now();
     const [u, r] = await Promise.all([encode(user), encode(reference)]);
-    const toList = (m: Map<string, Float32Array>): WordVector[] => [...m.entries()].map(([word, vec]) => ({ word, vec }));
+    const mean = bertCalibration.mean;
+    const toList = (m: Map<string, Float32Array>): WordVector[] => [...m.entries()].map(([word, vec]) => ({ word, vec: centered(vec, mean) }));
     const { raw, alignments } = maxSimPrecision(toList(u.vectors), toList(r.vectors), idfWeight);
     const baseline = baselineFor('bert', r.wordCount);
     return {

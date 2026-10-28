@@ -1,1 +1,46 @@
-{}
+{
+  "bert": {
+    "model": "lebchen/norbert3-base-onnx@int8",
+    "measuredAt": "2026-10-28T20:54:33.825Z",
+    "pairs": 86620,
+    "centered": true,
+    "buckets": {
+      "1-3": 0.0429,
+      "4-6": 0.1268,
+      "7-10": 0.1766
+    }
+  },
+  "colbert-word": {
+    "model": "lightonai/mLateOn@int8",
+    "measuredAt": "2026-10-28T20:54:35.865Z",
+    "pairs": 86620,
+    "centered": true,
+    "buckets": {
+      "1-3": 0.0881,
+      "4-6": 0.1505,
+      "7-10": 0.1751
+    }
+  },
+  "colbert-token": {
+    "model": "lightonai/mLateOn@int8",
+    "measuredAt": "2026-10-28T20:54:37.751Z",
+    "pairs": 86620,
+    "centered": true,
+    "buckets": {
+      "1-3": 0.1568,
+      "4-6": 0.2057,
+      "7-10": 0.2321
+    }
+  },
+  "openai": {
+    "model": "text-embedding-3-small",
+    "measuredAt": "2026-10-28T20:55:40.365Z",
+    "pairs": 86620,
+    "centered": false,
+    "buckets": {
+      "1-3": 0.1098,
+      "4-6": 0.2223,
+      "7-10": 0.2998
+    }
+  }
+}

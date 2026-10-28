@@ -30,8 +30,21 @@ export function bucketFor(referenceWordCount: number): BaselineBucket {
   return '11+';
 }
 
+/**
+ * The engine's floor for this reference length; the nearest measured bucket
+ * when this one has no measurement, 0 when the engine was never calibrated.
+ */
 export function baselineFor(engine: SoftEngineId, referenceWordCount: number): number {
-  return BASELINES[engine]?.buckets[bucketFor(referenceWordCount)] ?? 0;
+  const buckets = BASELINES[engine]?.buckets;
+  if (!buckets) return 0;
+  const want = BASELINE_BUCKETS.indexOf(bucketFor(referenceWordCount));
+  for (let d = 0; d < BASELINE_BUCKETS.length; d++) {
+    for (const i of [want - d, want + d]) {
+      const b = buckets[BASELINE_BUCKETS[i]];
+      if (b !== undefined) return b;
+    }
+  }
+  return 0;
 }
 
 export function baselineMeta(engine: SoftEngineId) {

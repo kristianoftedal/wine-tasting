@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { baselineFor, rescale } from './baseline';
 import { idfWeight, maxSimPrecision, type WordVector } from './maxsim';
 import { cosineSimilarity } from '../math';
-import { EncodingCache, MODEL_DIR, l2normalize, meanPool, noteWords, tokenizeWithSpans, type Tokenizer } from './words';
+import { EncodingCache, MODEL_DIR, centered, l2normalize, loadMean, meanPool, noteWords, tokenizeWithSpans, type Tokenizer } from './words';
 import type { NoteInput, SoftEngine, SoftEngineId, SoftResult, TokenAlignment } from './types';
 
 /**
@@ -45,6 +45,19 @@ type Loaded = {
 
 let loading: Promise<Loaded> | null = null;
 const cache = new EncodingCache<Encoded>();
+
+/**
+ * Calibration state and hooks, shared by both variants: one mean over token
+ * vectors, subtracted at score time (encodings are cached uncentred).
+ */
+export const colbertCalibration = {
+  mean: loadMean('colbert'),
+  setMean(mean: Float32Array | null) { this.mean = mean; },
+  /** Uncentred, L2-normalised token vectors of every content word. */
+  async tokenVectors(note: NoteInput, prefix = DOCUMENT_PREFIX): Promise<Float32Array[]> {
+    return [...(await encode(note, prefix)).tokens.values()].flat();
+  },
+};
 
 function missingFile(): string | null {
   for (const f of FILES) if (!existsSync(join(MODEL_DIR(), COLBERT_REPO, f))) return f;
@@ -111,15 +124,16 @@ async function encode(note: NoteInput, prefix: string): Promise<Encoded> {
 }
 
 /** Token-level late interaction, averaged within each user word. */
-function tokenMaxSim(user: Map<string, Float32Array[]>, reference: Map<string, Float32Array[]>): { raw: number; alignments: TokenAlignment[] } {
+function tokenMaxSim(user: Map<string, Float32Array[]>, reference: Map<string, Float32Array[]>, mean: Float32Array | null): { raw: number; alignments: TokenAlignment[] } {
   if (!user.size || !reference.size) return { raw: 0, alignments: [] };
-  const refTokens = [...reference.entries()].flatMap(([word, rows]) => rows.map(vec => ({ word, vec })));
+  const refTokens = [...reference.entries()].flatMap(([word, rows]) => rows.map(vec => ({ word, vec: centered(vec, mean) })));
   let num = 0, den = 0;
   const alignments: TokenAlignment[] = [];
   for (const [word, rows] of user) {
     let wordSum = 0;
     const bestCount = new Map<string, number>();
-    for (const vec of rows) {
+    for (const raw of rows) {
+      const vec = centered(raw, mean);
       let best = -Infinity, bestWord = '';
       for (const r of refTokens) {
         const sim = cosineSimilarity(vec, r.vec);
@@ -153,9 +167,10 @@ function makeEngine(id: Extract<SoftEngineId, 'colbert-word' | 'colbert-token'>)
     async score(user: NoteInput, reference: NoteInput): Promise<SoftResult> {
       const started = performance.now();
       const [u, r] = await Promise.all([encode(user, QUERY_PREFIX), encode(reference, DOCUMENT_PREFIX)]);
-      const toList = (m: Map<string, Float32Array>): WordVector[] => [...m.entries()].map(([word, vec]) => ({ word, vec }));
+      const mean = colbertCalibration.mean;
+      const toList = (m: Map<string, Float32Array>): WordVector[] => [...m.entries()].map(([word, vec]) => ({ word, vec: centered(vec, mean) }));
       const { raw, alignments } = id === 'colbert-token'
-        ? tokenMaxSim(u.tokens, r.tokens)
+        ? tokenMaxSim(u.tokens, r.tokens, mean)
         : maxSimPrecision(toList(u.pooled), toList(r.pooled), idfWeight);
       const baseline = baselineFor(id, r.wordCount);
       return {

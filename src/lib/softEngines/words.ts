@@ -67,6 +67,37 @@ export function meanPool(rows: Float32Array[]): Float32Array {
 export const MODEL_DIR = () => process.env.SOFT_MODEL_DIR ?? 'models';
 
 /**
+ * Per-engine corpus mean, the local engines' equivalent of
+ * embeddingCentering.ts. ColBERT token vectors and BERT word vectors both
+ * occupy a narrow cone (mLateOn: cosine 0.89–0.94 between any two descriptor
+ * words, matched or not), and subtracting the mean direction removes the
+ * shared "this is a Norwegian wine word" component that carries no
+ * information about the match. Measured and written by
+ * scripts/compute-maxsim-baseline.ts into centering.generated.json.
+ */
+import centeringRaw from './centering.generated.json';
+
+type CenteringFile = Partial<Record<string, { model: string; dimensions: number; sampleSize: number; meanNorm: number; vector: number[] }>>;
+
+export function loadMean(key: string): Float32Array | null {
+  const entry = (centeringRaw as CenteringFile)[key];
+  return entry?.vector?.length ? Float32Array.from(entry.vector) : null;
+}
+
+export function centeringMeta(key: string) {
+  const e = (centeringRaw as CenteringFile)[key];
+  return e ? { model: e.model, dimensions: e.dimensions, sampleSize: e.sampleSize, meanNorm: e.meanNorm } : null;
+}
+
+/** vec − mean when a mean of matching dimension is set; the input is untouched. */
+export function centered(vec: Float32Array, mean: Float32Array | null): Float32Array {
+  if (!mean || mean.length !== vec.length) return vec;
+  const out = new Float32Array(vec.length);
+  for (let i = 0; i < vec.length; i++) out[i] = vec[i] - mean[i];
+  return out;
+}
+
+/**
  * Word-start markers of the two tokenizers: byte-level BPE writes a leading
  * space as "Ġ" (NorBERT3), sentencepiece as "▁" (mLateOn). The first token of
  * a text carries no marker, so the first non-marker token also opens a word.
