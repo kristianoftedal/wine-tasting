@@ -19,7 +19,7 @@
  *
  *   npx tsx --env-file=.env.local scripts/evaluate-human-agreement.ts [--frozen=<file>] [--out=<file.md>]
  */
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { execSync } from 'node:child_process';
 import { scoreFlavourNote } from '../src/actions/similarity';
@@ -28,8 +28,8 @@ import { sanitizeText } from '../src/lib/lemmatizeAndWeight';
 import { normalizeWineSynonyms } from '../src/lib/synonymNormalization';
 import { applyNegation } from '../src/lib/negation';
 import type { FrozenSet } from './export-frozen-set';
+import { RATINGS_DIR, loadRaterFiles } from './ratings-csv';
 
-const RATINGS_DIR = 'scripts/validation-results/ratings';
 const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
 const FROZEN = arg('frozen') ?? latestFrozen();
 const OUT = arg('out');
@@ -89,38 +89,7 @@ function bootstrapCi(x: number[], y: number[], reps = 1000): [number, number] {
 }
 
 // ── ratings ─────────────────────────────────────────────────────────────────
-function parseCsv(text: string): Record<string, string>[] {
-  const rows: string[][] = [];
-  let row: string[] = [], cell = '', quoted = false;
-  const src = text.replace(/^﻿/, '');
-  for (let i = 0; i < src.length; i++) {
-    const c = src[i];
-    if (quoted) {
-      if (c === '"' && src[i + 1] === '"') { cell += '"'; i++; }
-      else if (c === '"') quoted = false;
-      else cell += c;
-    } else if (c === '"') quoted = true;
-    else if (c === ';') { row.push(cell); cell = ''; }
-    else if (c === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
-    else if (c !== '\r') cell += c;
-  }
-  if (cell || row.length) { row.push(cell); rows.push(row); }
-  const [header, ...body] = rows;
-  return body.filter(r => r.some(Boolean)).map(r => Object.fromEntries(header.map((h, i) => [h.trim(), r[i] ?? ''])));
-}
-function loadRatings(): Map<string, Map<string, number>> {
-  const out = new Map<string, Map<string, number>>(); // rater -> key -> rating
-  if (!existsSync(RATINGS_DIR)) return out;
-  for (const f of readdirSync(RATINGS_DIR).filter(f => /^rater-.*\.csv$/i.test(f))) {
-    const m = new Map<string, number>();
-    for (const r of parseCsv(readFileSync(join(RATINGS_DIR, f), 'utf8'))) {
-      const v = Number(r.rating?.replace(',', '.'));
-      if (r.key && r.rating !== '' && Number.isInteger(v) && v >= 0 && v <= 4) m.set(r.key, v);
-    }
-    if (m.size) out.set(f.replace(/^rater-|\.csv$/gi, ''), m);
-  }
-  return out;
-}
+const loadRatings = loadRaterFiles;
 
 // ── scorers ─────────────────────────────────────────────────────────────────
 const prep = (t: string) => normalizeWineSynonyms(sanitizeText(applyNegation(t).text));

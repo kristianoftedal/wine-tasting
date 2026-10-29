@@ -17,7 +17,7 @@
  *     [--frozen=<file>]   default: the newest frozen set
  */
 import { execSync } from 'node:child_process';
-import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { sanitizeText } from '../src/lib/lemmatizeAndWeight';
 import { normalizeWineSynonyms } from '../src/lib/synonymNormalization';
@@ -26,9 +26,9 @@ import { combineScoreScaled, hasScoreableFlavour, lexicalCredit } from '../src/l
 import { getSoftEngineById, isSoftEngineId, type SoftEngineId, type TokenAlignment } from '../src/lib/softEngines';
 import { mean, sd, spearman } from '../src/lib/stats';
 import type { FrozenSet } from './export-frozen-set';
+import { loadRaterFiles } from './ratings-csv';
 
 const OUT = 'src/app/scoring-demo/engine-comparison.generated.json';
-const RATINGS_DIR = 'scripts/validation-results/ratings';
 const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
 const ENGINE_IDS: SoftEngineId[] = (arg('engines') ?? 'openai').split(',').map(s => s.trim()).filter(isSoftEngineId);
 
@@ -41,38 +41,9 @@ function latestFrozen(): string {
   return join('scripts/validation-results', files[files.length - 1]);
 }
 
-function parseCsv(text: string): Record<string, string>[] {
-  const rows: string[][] = [];
-  let row: string[] = [], cell = '', quoted = false;
-  const src = text.replace(/^﻿/, '');
-  for (let i = 0; i < src.length; i++) {
-    const c = src[i];
-    if (quoted) {
-      if (c === '"' && src[i + 1] === '"') { cell += '"'; i++; }
-      else if (c === '"') quoted = false;
-      else cell += c;
-    } else if (c === '"') quoted = true;
-    else if (c === ';') { row.push(cell); cell = ''; }
-    else if (c === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
-    else if (c !== '\r') cell += c;
-  }
-  if (cell || row.length) { row.push(cell); rows.push(row); }
-  const [header, ...body] = rows;
-  return body.filter(r => r.some(Boolean)).map(r => Object.fromEntries(header.map((h, i) => [h.trim(), r[i] ?? ''])));
-}
 
 function meanRatings(): { raters: number; byKey: Map<string, number> } {
-  const perRater: Map<string, number>[] = [];
-  if (existsSync(RATINGS_DIR)) {
-    for (const f of readdirSync(RATINGS_DIR).filter(f => /^rater-.*\.csv$/i.test(f))) {
-      const m = new Map<string, number>();
-      for (const r of parseCsv(readFileSync(join(RATINGS_DIR, f), 'utf8'))) {
-        const v = Number(r.rating?.replace(',', '.'));
-        if (r.key && r.rating !== '' && Number.isInteger(v) && v >= 0 && v <= 4) m.set(r.key, v);
-      }
-      if (m.size) perRater.push(m);
-    }
-  }
+  const perRater = [...loadRaterFiles().values()];
   const byKey = new Map<string, number>();
   const keys = new Set(perRater.flatMap(m => [...m.keys()]));
   for (const k of keys) {
