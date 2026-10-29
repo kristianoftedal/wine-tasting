@@ -14,7 +14,9 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { sanitizeText } from '../src/lib/lemmatizeAndWeight';
 import { normalizeWineSynonyms } from '../src/lib/synonymNormalization';
 import { applyNegation } from '../src/lib/negation';
-import { lexicalCredit, hasScoreableFlavour } from '../src/lib/flavourScoring';
+import { combineScoreScaled, lexicalCredit, hasScoreableFlavour, type ScoringOptions } from '../src/lib/flavourScoring';
+import { hybridSoftScore } from '../src/lib/softEngines/hybrid';
+import { existsSync } from 'node:fs';
 import { mean } from '../src/lib/stats';
 import { loadRaterFiles } from './ratings-csv';
 import type { FrozenSet } from './export-frozen-set';
@@ -33,8 +35,21 @@ function main() {
   const human = raters.get('kristian');
   const panel = [...raters.entries()].filter(([k]) => k.startsWith('llm')).map(([, m]) => m);
 
-  const header = ['key', 'event', 'wine', 'field', 'taster', 'user_note', 'reference_note', 'stored_score', 'rating_kristian', 'rating_llm_panel',
+  // Variants measured but not shipped, recomputed from the extract's soft
+  // term (OpenAI engine) so every column is the same code at the same commit.
+  const sidecar = 'scripts/validation-results/frozen-set-2026-10.categories.json';
+  const categories = existsSync(sidecar) ? (JSON.parse(readFileSync(sidecar, 'utf8')) as Record<string, string | null>) : {};
+  const VARIANTS: Array<{ column: string; options: ScoringOptions; hybrid?: boolean; category?: boolean }> = [
+    { column: 'score_openai_style_weights', options: { styleWeights: true }, category: true },
+    { column: 'score_openai_hybrid_soft', options: {}, hybrid: true },
+    { column: 'score_openai_tuned_constants', options: { hitWeight: 0.9, tau: 3, precisionFloor: 0.9 } },
+    { column: 'score_openai_no_specific_tier', options: { hypernymExclude: ['frukt', 'bær', 'sitrus', 'steinfrukt', 'kjernefrukt', 'urt', 'blomst', 'nøtt', 'treverk', 'mineral'] } },
+    { column: 'score_openai_structural_out', options: { ignoreGeneric: true } },
+  ];
+
+  const header = ['key', 'event', 'wine', 'field', 'taster', 'user_note', 'reference_note', 'stored_score', 'score_previous_engine_aug_2026', 'rating_kristian', 'rating_llm_panel',
     'score_openai', 'score_bert', 'score_colbert_word', 'score_colbert_token',
+    ...VARIANTS.map(v => v.column),
     'reason_ladder', 'reason_soft_openai', 'reason_soft_bert', 'reason_soft_colbert', 'why_engines_differ'];
   const rows: string[] = [header.join(';')];
 
@@ -93,10 +108,19 @@ function main() {
     } else if (!scoreable) why = 'not scoreable';
 
     const p = panel.map(m => m.get(f.key)).filter((v): v is number => v !== undefined);
+    const o = x?.scores.openai;
+    const variantScores = VARIANTS.map(v => {
+      if (!o || !scoreable) return '';
+      const options: ScoringOptions = { ...v.options, category: v.category ? categories[f.wine.id] ?? null : null };
+      const lexicalV = lexicalCredit(userNorm, refNorm, options);
+      const softV = v.hybrid ? hybridSoftScore({ engine: 'openai', model: '', raw: o.raw, baseline: 0, softScore: o.softScore, alignments: o.alignments, ms: 0 }, lexicalV) : o.softScore;
+      return combineScoreScaled(lexicalV, softV, true, options).score;
+    });
     rows.push([
       f.key, f.event?.name ?? '', `${f.wine.name}${f.wine.year ? ` ${f.wine.year}` : ''}`, f.field, f.taster, f.userNote, f.referenceNote,
-      f.storedScore ?? '', human?.get(f.key) ?? '', p.length ? mean(p).toFixed(1) : '',
-      x?.scores.openai?.score ?? '', x?.scores.bert?.score ?? '', x?.scores['colbert-word']?.score ?? '', x?.scores['colbert-token']?.score ?? '',
+      f.storedScore ?? '', f.previousScore ?? '', human?.get(f.key) ?? '', p.length ? mean(p).toFixed(1) : '',
+      o?.score ?? '', x?.scores.bert?.score ?? '', x?.scores['colbert-word']?.score ?? '', x?.scores['colbert-token']?.score ?? '',
+      ...variantScores,
       ladder, soft('openai'), soft('bert'), soft('colbert-token'), why,
     ].map(q).join(';'));
   }
