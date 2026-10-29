@@ -19,7 +19,7 @@ import { STYLE_WEIGHTS_ENABLED } from './scoringConfig';
 const globalIdf = idfRaw as Record<string, number>;
 
 /** Per-call scoring context: the wine's style, and whether to weight by it. */
-export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number; /** Ladder-credited words count as full soft matches (src/lib/softEngines/hybrid.ts). */ hybridSoft?: boolean };
+export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number; /** Ladder-credited words count as full soft matches (src/lib/softEngines/hybrid.ts). */ hybridSoft?: boolean; /** Tuning overrides for the `specific` tier: its credit, and category words that must not license it. */ specificCredit?: number; hypernymExclude?: readonly string[] };
 import {
   CREDIT_CATEGORY,
   CREDIT_DERIVED,
@@ -153,6 +153,10 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
 
   const referenceLemmas = new Set(reference.keys());
   const derived = derivedFrom(referenceLemmas);
+  const specificCredit = options.specificCredit ?? CREDIT_SPECIFIC;
+  const licensing = options.hypernymExclude?.length
+    ? new Set([...referenceLemmas].filter(l => !options.hypernymExclude!.includes(l)))
+    : referenceLemmas;
   const referenceSubPaths = new Set(
     [...reference.values()].filter(v => v.main && v.sub).map(v => `${v.main}/${v.sub}`)
   );
@@ -176,9 +180,9 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
       kind = 'derived';
       factor = CREDIT_DERIVED;
       via = derivationSource(info.lemma, referenceLemmas) ?? undefined;
-    } else if ((via = isSpecificOfReference(info, referenceLemmas) ?? undefined)) {
+    } else if ((via = isSpecificOfReference(info, licensing) ?? undefined)) {
       kind = 'specific';
-      factor = CREDIT_SPECIFIC;
+      factor = specificCredit;
     } else if (info.main && info.sub && referenceSubPaths.has(`${info.main}/${info.sub}`)) {
       kind = 'subcategory';
       factor = CREDIT_SUBCATEGORY;

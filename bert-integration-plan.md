@@ -461,7 +461,18 @@ Property benchmark with the flag on (floor 0.5): +HIT +13.2, +WRONG −3.0, +NEG
 
    Worse against the human and the panel for every engine, better only on the constructed set, which the ladder built; the four engines collapse onto one score. Properties (`benchmark-2026-10-hybrid-soft.md`): openai +HIT 12.6 → 10.4, d 1.19 → 0.92, top1 18 → 23%; colbert-token +WRONG −1.2 → −3.6, d 0.94 → 0.88. Off, and it explains something: the local engines' small validity edge comes *from* under-crediting exact matches of common words. A contextual cosine for "sitrus" in two different sentences is low and for a rare specific word high, which is the style-relative weighting of phase 14 arrived at implicitly, and it agrees with the human rater where the explicit version did not. The soft term is not a second vote on what the ladder matched; it is a different signal, and giving it the ladder's answer removes that.
 
-2. **The ladder's `specific` tier.** The six re-rating holdouts are all one question: is "pepper" a specific answer to a reference that says "krydder"? The ladder pays 0.85; the rater says no. Re-examining which category terms admit which specifics (`HYPERNYMS` in `derivations.ts`) against the 149 ratings is a dictionary change with a measurable target, and cheaper than anything above.
+2. **The ladder's `specific` tier — measured 29 Oct 2026; one change recommended.** 109 of the 750 ladder matches on the frozen set are `specific`; the licensing words that dominate are `krydder` (13, almost all `pepper`, mean human rating 2.4) and `frukt` (sitrus, eple; 1.5–2.4), while `bær → solbær / kirsebær` sits near 3. Ten variants, both engines (`scripts/measure-specific-tier.ts`, `specific-tier-2026-10-29.md`): changing the tier's credit (0.6, 0.3, 1.0) helps nothing; removing a licensing word does, and only one of them consistently:
+
+   | variant | openai ρ human | openai ρ panel | colbert-token ρ human | specific matches |
+   | --- | --- | --- | --- | --- |
+   | current (0.85, all hypernyms) | 0.569 | 0.664 | 0.616 | 109 |
+   | no `krydder` | **0.599** | 0.664 | **0.624** | 91 |
+   | no `krydder`, `frukt` | 0.594 | 0.656 | 0.628 | 68 |
+   | no specific tier at all | 0.580 | 0.654 | 0.607 | 0 |
+
+   Properties with `krydder` removed (`benchmark-2026-10-no-krydder.md`): +HIT +12.9, +WRONG −3.1, MISS +3.5, d 1.19, top1 19%, unchanged within noise. The gain is +0.03 inside a ±0.1 interval, but it is the only variant that helps both engines, costs the panel nothing, and says exactly what the six re-rating holdouts said: "pepper" is not a specific answer to "krydder" (nearly every red has some spice; naming pepper identifies nothing). **Recommended:** drop `krydder` from `HYPERNYMS`, so pepper on a wine noted as "krydder" earns category credit (0.3) instead of 0.85; bump `SCORER_VERSION`. Not applied yet; it is a scoring change for new tastings and the call is the owner's.
+
+   **Rating bump, 29 Oct 2026.** At the rater's request every rating was raised by one, capped at 4 (original kept as `ratings/kristian-original-2026-10-29.csv`). A uniform shift cannot change a rank correlation; the cap can, and did: 83 threes merged into the ten fours, 93 of 149 ratings are now 4, and agreement with every scorer fell (openai 0.565 → 0.542, bert 0.606 → 0.582, colbert-token 0.612 → 0.583) along with the weighted kappa against the panel. The file is as asked, but the original is the better measuring stick, and restoring it is one rename.
 
 3. **Re-measure the engines when the corpus has grown.** All three validity rows lean toward the local engines by ~0.05, inside the noise every time; at 500 fields the noise is half what it is now. The frozen set is dated so the next one is a new file, not a regeneration.
 
