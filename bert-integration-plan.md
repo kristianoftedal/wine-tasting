@@ -423,6 +423,48 @@ What does work for this problem already exists: `WINE_SYNONYMS` is an exact, fre
 - [x] `src/lib/tasterSkill.ts` (`displayableSkill`, 10-tasting minimum under one scorer version) with tests; profile overview shows a "Ferdighet" stat card with the tasting count and an explanation on hover, "–" until eligible. Five tasters qualify today
 - [ ] Apply the migration; until then the RPC errors quietly and the card shows "–"
 
+### Phase 14: Style-relative descriptor weights — built, measured, left off (29 Oct 2026)
+
+The hypothesis from the human ratings: a taster discounts the default descriptors of a style, the scorer does not, so weight each aroma lemma by its rarity *within the wine's main category* instead of the global, floor-at-1.0 idf.
+
+- [x] `scripts/compute-style-idf.ts` → `src/lib/style-idf.generated.json`: per category (Rødvin 29 775 wines, Hvitvin 21 063, Musserende vin 6 486, Rosévin 2 099), idf / median idf per aroma lemma, unfloored; plus a sidecar with the frozen set's wine categories. In whites: sitrus 55% of notes (ratio 0.24), frukt 49%, mineral 48%, eple 41%
+- [x] `src/lib/styleWeights.ts`, `STYLE_WEIGHTS_ENABLED` (off), `STYLE_WEIGHT_FLOOR` / `CAP`; `lexicalCredit` and `scoreFlavourNote` take `{ category }`; the summary screen passes the wine's `main_category`; the demo has a Stilvekter toggle and a category select
+- [x] `scripts/measure-style-weights.ts`: floor sweep against the human ratings, the panel and the constructed set; `benchmark-scoring.ts --style=on`
+
+| floor | ρ human (95%) | ρ panel | ρ constructed | mean score |
+| --- | --- | --- | --- | --- |
+| 1.0 (off) | 0.565 (0.44–0.66) | 0.664 | 0.704 | 60.1 |
+| 0.7 | 0.568 | 0.663 | 0.704 | 55.5 |
+| 0.5 | 0.569 | 0.649 | 0.713 | 52.0 |
+| 0.3 | 0.573 | 0.636 | 0.719 | 48.7 |
+
+Property benchmark with the flag on (floor 0.5): +HIT +13.2, +WRONG −3.0, +NEG +0.0, MISS +3.1, r(len) 0.29, d 1.18, top1 18%, against +12.6 / −3.2 / +0.0 / +3.5 / 0.26 / 1.19 / 18% off. `scripts/validation-results/style-weights-2026-10-29.md`, `benchmark-2026-10-style-weights.md`.
+
+**Result: neutral everywhere, so it stays off.** Agreement with the human moves by +0.008 at best across the whole sweep, inside a ±0.1 interval; the panel loses a little; the properties are unchanged within noise; scores drop by up to 12 points on average. Lowering every common word on a white together lowers that note's score but reorders little, because most white-wine notes are made of the same common words, and the human's ranking lives inside those notes. The diagnosis from the ratings was right about *what* the scorer sees differently; this mechanism is not the one that moves it. The six re-rating holdouts (is `pepper` specific against `krydder`?) are the better lead: they are about the ladder's `specific` tier, not about weights.
+
+### Step 3: housekeeping — done 29 Oct 2026
+
+- [x] `WINE_SYNONYMS` grew by the typos and loanwords real notes contain and the vector mapping could not resolve: `brioch`, `toasty`, `bakt`, `autolyse`. `SCORER_VERSION` is now `directional-2:text-embedding-3-small`; new tastings carry it, stored scores are untouched
+- [ ] PyTorch parity check: still needs a person to run it
+- [ ] `package-lock.json` and the concurrent dependency cleanup: left for their author to commit
+- [x] `main` fast-forwarded to the branch
+
+## Engine decision, 29 Oct 2026
+
+Everything measured on existing notes, in one place:
+
+| measure | what it asks | openai | bert | colbert-token | decides for |
+| --- | --- | --- | --- | --- | --- |
+| +HIT / +WRONG | rewards a correct word, punishes a wrong one | +12.6 / −3.2 | +9.9 / −0.9 | +9.6 / −1.2 | openai, clearly |
+| d / top1 | tells the real wine from 100 random ones | 1.19 / 18% | 0.92 / 10% | 0.94 / 12% | openai, clearly |
+| MISS | omissions cost nothing | +3.5 | +2.0 | +1.8 | local, slightly |
+| ρ human (149 ratings) | agrees with a club member | 0.57 | 0.61 | 0.61 | local, inside noise |
+| ρ LLM panel | agrees with three models | 0.66 | 0.70 | 0.71 | local, inside noise |
+| constructed set | orders known levels | 0.70 | 0.75 | 0.77 | local, inside noise |
+| cost | per call, cold start, memory | API call | 142 MB, local | 347 MB, local | — |
+
+The property gate is the one the objective is written in, and it is the only row with a margin outside the noise, so the production engine stays OpenAI. The three validity rows all lean the same way by the same small amount; that is a reason to keep the local engines in the tree and measure them again when the corpus has grown, not a reason to switch now. Shadow mode (`SOFT_ENGINE_SHADOW=colbert-token`) at an event is a deployment check for cold start and latency on Vercel, not a scientific one; the scientific comparison is this table.
+
 ## Acceptance gate
 
 An engine ships only if it raises the human-judgement correlation and matches or beats the current engine on every metric the benchmark reports, on the same frozen fields and perturbations.

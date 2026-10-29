@@ -118,7 +118,8 @@ export const Summary: React.FC = () => {
             userTasteText,
             wine.color,
             wine.smell,
-            wine.taste
+            wine.taste,
+            wine.main_category
           ),
           getTermBreakdown(userSmellText, wine.smell ?? ''),
           getTermBreakdown(userTasteText, wine.taste ?? '')

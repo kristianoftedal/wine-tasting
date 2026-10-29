@@ -58,7 +58,7 @@ export const EMBEDDING_MODEL = 'text-embedding-3-small';
  * the number a taster sees would change for the same note: a new soft engine,
  * a constant below, a dictionary change that moves scores.
  */
-export const SCORER_VERSION = 'directional-1:text-embedding-3-small';
+export const SCORER_VERSION = 'directional-2:text-embedding-3-small'; // 2: synonym map grew (brioch, toasty, bakt, autolyse), 29 Oct 2026
 
 /**
  * Saturation constant for matched mass, in weighted-lemma units where a
@@ -73,6 +73,21 @@ export const SCORER_VERSION = 'directional-1:text-embedding-3-small';
  * generous to short notes.
  */
 export const SATURATION_TAU = 3.0;
+
+/**
+ * Style-relative descriptor weights (src/lib/styleWeights.ts), behind
+ * STYLE_WEIGHTS_ENABLED. The global idf multiplier is floored at 1.0 and
+ * measured over the whole catalogue, so "sitrus" on a white earns as much as
+ * "solbær" on a red; measured against 149 human ratings that was the scorer's
+ * largest systematic error. With the flag on, a dictionary word's multiplier
+ * is its idf over the median idf *within the wine's main category*, clamped
+ * to [FLOOR, CAP]. The floor is what lets a default-for-the-style word earn
+ * less than 1.0; it was tuned on the human ratings
+ * (scripts/measure-style-weights.ts) — see the plan for the sweep.
+ */
+export const STYLE_WEIGHTS_ENABLED = process.env.STYLE_WEIGHTS_ENABLED === 'true';
+export const STYLE_WEIGHT_FLOOR = 0.5;
+export const STYLE_WEIGHT_CAP = 2.0;
 
 /**
  * Credit ladder for a user lemma, as a fraction of its profile weight.

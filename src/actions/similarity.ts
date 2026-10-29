@@ -6,7 +6,8 @@ import { rawSemanticSimilarity } from '@/lib/semanticSimilarity';
 import { getSoftEngine, getSoftEngineById, isSoftEngineId } from '@/lib/softEngines';
 import { OOV_MAPPING_ENABLED, mapUnknownWords } from '@/lib/oovMapping';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
-import { combineScoreScaled, hasScoreableFlavour, lemmasWithWeight, lexicalCredit, type FlavourScoreBreakdown } from '@/lib/flavourScoring';
+import { combineScoreScaled, hasScoreableFlavour, lemmasWithWeight, lexicalCredit, type FlavourScoreBreakdown, type ScoringOptions } from '@/lib/flavourScoring';
+import { normalizeCategory } from '@/lib/styleWeights';
 
 export type { FlavourScoreBreakdown, MatchKind, TermMatch } from '@/lib/flavourScoring';
 
@@ -22,9 +23,11 @@ const EMPTY: FlavourScoreBreakdown = {
  */
 export async function scoreFlavourNote(
   userNote: string,
-  referenceNote: string
+  referenceNote: string,
+  options: ScoringOptions = {}
 ): Promise<FlavourScoreBreakdown> {
   if (!userNote?.trim() || !referenceNote?.trim()) return EMPTY;
+  const scoring: ScoringOptions = { ...options, category: normalizeCategory(options.category) };
 
   try {
     // Negation first: "ikke noe fat" must not reach the ladder as "fat".
@@ -40,7 +43,7 @@ export async function scoreFlavourNote(
     const mapped = OOV_MAPPING_ENABLED ? await mapUnknownWords(userNorm) : null;
     if (mapped) userNorm = mapped.text;
 
-    const lexical = lexicalCredit(userNorm, referenceNorm);
+    const lexical = lexicalCredit(userNorm, referenceNorm, scoring);
     const engine = getSoftEngine();
     const soft = await engine.score(
       { raw: user.text, norm: userNorm },
@@ -119,8 +122,8 @@ export async function semanticOnlySimilarity(text1: string, text2: string): Prom
  * callers can drop the component from the overall average instead of averaging
  * in a zero the taster did not earn.
  */
-export async function serverSideSimilarity(text1: string, text2: string): Promise<number | null> {
-  const { score, scoreable } = await scoreFlavourNote(text1, text2);
+export async function serverSideSimilarity(text1: string, text2: string, category?: string | null): Promise<number | null> {
+  const { score, scoreable } = await scoreFlavourNote(text1, text2, { category });
   return scoreable ? score : null;
 }
 
@@ -135,12 +138,13 @@ export async function calculateServerSideScores(
   userSmak: string,
   wineColor: string,
   wineSmell: string,
-  wineTaste: string
+  wineTaste: string,
+  wineCategory?: string | null
 ): Promise<{ colorScore: number; smellScore: number | null; tasteScore: number | null }> {
   const [colorScore, smellScore, tasteScore] = await Promise.all([
     userFarge && wineColor ? semanticOnlySimilarity(userFarge, wineColor) : Promise.resolve(0),
-    userLukt && wineSmell ? serverSideSimilarity(userLukt, wineSmell) : Promise.resolve(null),
-    userSmak && wineTaste ? serverSideSimilarity(userSmak, wineTaste) : Promise.resolve(null),
+    userLukt && wineSmell ? serverSideSimilarity(userLukt, wineSmell, wineCategory) : Promise.resolve(null),
+    userSmak && wineTaste ? serverSideSimilarity(userSmak, wineTaste, wineCategory) : Promise.resolve(null),
   ]);
 
   return { colorScore, smellScore, tasteScore };

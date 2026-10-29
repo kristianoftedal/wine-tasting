@@ -10,6 +10,15 @@
 //
 // Keys are lowercase surface tokens; values are the canonical dict surface form.
 export const WINE_SYNONYMS: Record<string, string> = {
+  // ── From real taster notes (frozen set, Oct 2026) ─────────────────────────
+  // Typos and loanwords the dictionary could not resolve; the vector-based
+  // mapping (oovMapping.ts) was measured too weak to do this automatically,
+  // so they are listed by hand like everything else here.
+  brioch: 'brioche',
+  toasty: 'toast',
+  bakt: 'bakverk',
+  autolyse: 'bakverk',               // lees autolysis is what gives the bakverk/brioche register
+
   // ── Mineral ───────────────────────────────────────────────────────────────
   // mineralsk + mineralitet are already in the lemma dict but normalizing here
   // also harmonises the semantic embedding text.

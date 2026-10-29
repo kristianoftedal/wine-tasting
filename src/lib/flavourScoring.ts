@@ -12,6 +12,14 @@ import { lemmatizeAndWeight, norwegianLemmas } from './lemmatizeAndWeight';
 import { derivationSource, derivedFrom, isSpecificOfReference } from './derivations';
 import type { SoftEngineId, TokenAlignment } from './softEngines/types';
 import type { OovMapping } from './oovMapping';
+import idfRaw from './idf-weights.generated.json';
+import { styleMultiplier } from './styleWeights';
+import { STYLE_WEIGHTS_ENABLED } from './scoringConfig';
+
+const globalIdf = idfRaw as Record<string, number>;
+
+/** Per-call scoring context: the wine's style, and whether to weight by it. */
+export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number };
 import {
   CREDIT_CATEGORY,
   CREDIT_DERIVED,
@@ -100,15 +108,23 @@ export function hasScoreableFlavour(preppedText: string): boolean {
  * twice. Unknown words (category `ukjent`) are skipped so they neither reward
  * nor penalise the score.
  */
-export function lemmasWithWeight(text: string): Map<string, LemmaInfo> {
+export function lemmasWithWeight(text: string, options: ScoringOptions = {}): Map<string, LemmaInfo> {
   const data = lemmatizeAndWeight(text);
+  const useStyle = (options.styleWeights ?? STYLE_WEIGHTS_ENABLED) && !!options.category;
   const out = new Map<string, LemmaInfo>();
   for (const item of data.lemmatized) {
     if (item.category === 'ukjent') continue;
     const path = (norwegianLemmas[item.original] ?? norwegianLemmas[item.lemma])?.categoryPath;
+    let weight = item.weight;
+    if (useStyle && path?.main && path.main !== 'GENERIC') {
+      // item.weight is profile × global idf; swap the global multiplier for
+      // the style one when the style table has this lemma.
+      const style = styleMultiplier(item.lemma, options.category, options.styleFloor);
+      if (style !== null) weight = (item.weight / (globalIdf[item.lemma] ?? 1)) * style;
+    }
     const existing = out.get(item.lemma);
-    if (!existing || item.weight > existing.weight) {
-      out.set(item.lemma, { lemma: item.lemma, weight: item.weight, main: path?.main, sub: path?.sub });
+    if (!existing || weight > existing.weight) {
+      out.set(item.lemma, { lemma: item.lemma, weight, main: path?.main, sub: path?.sub });
     }
   }
   return out;
@@ -131,9 +147,9 @@ export function lemmasWithWeight(text: string): Map<string, LemmaInfo> {
  *
  * Both arguments must already be sanitised and synonym-normalised.
  */
-export function lexicalCredit(userText: string, referenceText: string): LexicalCredit {
-  const user = lemmasWithWeight(userText);
-  const reference = lemmasWithWeight(referenceText);
+export function lexicalCredit(userText: string, referenceText: string, options: ScoringOptions = {}): LexicalCredit {
+  const user = lemmasWithWeight(userText, options);
+  const reference = lemmasWithWeight(referenceText, options);
 
   const referenceLemmas = new Set(reference.keys());
   const derived = derivedFrom(referenceLemmas);

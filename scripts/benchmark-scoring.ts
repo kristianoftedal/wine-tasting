@@ -32,6 +32,7 @@
  *   npx tsx --env-file=.env.local scripts/benchmark-scoring.ts
  *     [--engines=openai,bert,colbert-word,colbert-token]   default: openai
  *     [--frozen=scripts/validation-results/frozen-set-2026-10.json]   cases from the frozen set instead of the live table
+ *     [--style=on]   style-relative descriptor weights (STYLE_WEIGHTS_ENABLED) using the wine's category
  *     [--out=scripts/validation-results/<file>.md]   also writes <file>.json
  *
  * The sampler is seeded; two runs on the same data are identical.
@@ -54,12 +55,16 @@ import { contentWords } from '../src/lib/softEngines/maxsim';
 import { embedTokens } from '../src/lib/tokenEmbeddings';
 import { mean, pearson, sd } from '../src/lib/stats';
 import type { FrozenSet } from './export-frozen-set';
+import { existsSync } from 'node:fs';
+import { normalizeCategory } from '../src/lib/styleWeights';
 
 const DISTRACTORS = 100;
 const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
 const OUT = arg('out');
 const FROZEN = arg('frozen');
 const ENGINE_IDS: SoftEngineId[] = (arg('engines') ?? 'openai').split(',').map(s => s.trim()).filter(isSoftEngineId);
+const STYLE = arg('style') === 'on';
+const SIDECAR = 'scripts/validation-results/frozen-set-2026-10.categories.json';
 if (!ENGINE_IDS.length) throw new Error('--engines names no known engine');
 
 // Everything printed is also collected, so --out can write it verbatim.
@@ -120,6 +125,9 @@ function legacyScore(userText: string, referenceText: string): number {
   return Math.round(Math.min(100, semantic + precision * 0.35));
 }
 
+/** The wine's category for a reference note, when --style=on; null otherwise. */
+const categoryOfReference = new Map<string, string | null>();
+
 /** The production formula with the given engine supplying the soft term. */
 function engineScorer(engine: SoftEngine) {
   const memo = new Map<string, number>();
@@ -129,7 +137,8 @@ function engineScorer(engine: SoftEngine) {
     if (hit !== undefined) return hit;
     const u = prep(userText), r = prep(referenceText);
     const soft = await engine.score({ raw: rawOf(userText), norm: u }, { raw: rawOf(referenceText), norm: r });
-    const score = combineScoreScaled(lexicalCredit(u, r), soft.softScore).score;
+    const category = STYLE ? categoryOfReference.get(referenceText) ?? null : null;
+    const score = combineScoreScaled(lexicalCredit(u, r, { styleWeights: STYLE, category }), soft.softScore).score;
     memo.set(key, score);
     return score;
   };
@@ -151,7 +160,11 @@ async function main() {
     const frozen = JSON.parse(readFileSync(FROZEN, 'utf8')) as FrozenSet;
     fields = frozen.fields.map(f => ({ user: f.userNote, reference: f.referenceNote, isSmell: f.field === 'lukt', wineId: f.wine.id }));
     for (const f of frozen.fields) tastedWineIds.add(f.wine.id);
-    source = `${FROZEN} (${frozen.meta.fields} fields)`;
+    if (STYLE) {
+      const sidecar = existsSync(SIDECAR) ? JSON.parse(readFileSync(SIDECAR, 'utf8')) as Record<string, string | null> : {};
+      for (const f of frozen.fields) categoryOfReference.set(f.referenceNote, sidecar[f.wine.id] ?? null);
+    }
+    source = `${FROZEN} (${frozen.meta.fields} fields)${STYLE ? ', style weights on' : ''}`;
   } else {
     // Ordered: PostgREST guarantees nothing without it, and the seeded sampler
     // consumes randomness in row order, so an unordered query made every run
@@ -159,21 +172,23 @@ async function main() {
     const { data: tastings } = await sb.from('tastings').select('wine_id,lukt,smak').order('created_at').order('id').limit(500);
     const wineIds = [...new Set(tastings!.map(t => t.wine_id).filter(Boolean))] as string[];
     for (const id of wineIds) tastedWineIds.add(id);
-    const { data: tasted } = await sb.from('wines').select('id,name,smell,taste').in('id', wineIds);
+    const { data: tasted } = await sb.from('wines').select('id,name,smell,taste,main_category').in('id', wineIds);
     const wineById = new Map(tasted!.map(w => [w.id, w]));
     fields = [];
     for (const t of tastings!) {
       const wine = wineById.get(t.wine_id!);
       if (!wine) continue;
+      if (STYLE) { for (const ref of [wine.smell, wine.taste]) if (ref) categoryOfReference.set(ref, normalizeCategory(wine.main_category)); }
       if (t.lukt?.trim() && wine.smell?.trim()) fields.push({ user: t.lukt, reference: wine.smell, isSmell: true, wineId: wine.id });
       if (t.smak?.trim() && wine.taste?.trim()) fields.push({ user: t.smak, reference: wine.taste, isSmell: false, wineId: wine.id });
     }
-    source = `live tastings table (${tastings!.length} tastings, ${fields.length} note fields)`;
+    source = `live tastings table (${tastings!.length} tastings, ${fields.length} note fields)${STYLE ? ', style weights on' : ''}`;
   }
 
-  const { data: pool } = await sb.from('wines').select('id,smell,taste')
+  const { data: pool } = await sb.from('wines').select('id,smell,taste,main_category')
     .not('taste', 'is', null).not('smell', 'is', null).order('id').range(2000, 2199);
   const distractors = pool!.filter(w => !tastedWineIds.has(w.id)).slice(0, DISTRACTORS);
+  if (STYLE) for (const d of distractors) for (const ref of [d.smell, d.taste]) if (ref) categoryOfReference.set(ref, normalizeCategory(d.main_category));
 
   // Deterministic sampler — no Math.random, so runs are comparable.
   let seed = 20260818;
@@ -221,6 +236,8 @@ async function main() {
     if (!wrong.length || extras.length < 3) continue;
 
     const hit = missed[Math.floor(rnd() * missed.length)];
+    // The perturbed reference is the same wine: it must carry the same category.
+    if (STYLE) categoryOfReference.set(`${referenceNote} ${extras.join(' ')}`, categoryOfReference.get(referenceNote) ?? null);
     cases.push({
       user: userNote,
       reference: referenceNote,
@@ -338,7 +355,7 @@ async function main() {
     writeFileSync(OUT, md);
     const json = OUT.replace(/\.md$/, '') + '.json';
     writeFileSync(json, JSON.stringify({
-      meta: { date: new Date().toISOString(), commit, source, cases: cases.length, distractors: distractors.length, engines: ENGINE_IDS },
+      meta: { date: new Date().toISOString(), commit, source, cases: cases.length, distractors: distractors.length, engines: ENGINE_IDS, styleWeights: STYLE },
       rows,
     }, null, 2) + '\n');
     console.log(`\nwritten ${OUT} and ${json}`);

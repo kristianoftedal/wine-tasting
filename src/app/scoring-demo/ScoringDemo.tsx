@@ -318,6 +318,9 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
       {/* Main scores row */}
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Komponentscorer</h3>
+        {data.styleWeights && (
+          <div className={styles.compareNote}>Stilvekter på: deskriptorvekter relativt til {data.styleCategory}. Termtabellen under viser de globale vektene.</div>
+        )}
         {!data.scoreable && (
           <div className={styles.compareNote}>
             Vinnotatet nevner ingen aroma, bare struktur. Komponenten telles ikke med i en ekte smaking, så scoren her er 0.
@@ -512,11 +515,15 @@ function TastingSelector({
   );
 }
 
-export default function ScoringDemo({ pastTastings, lemmaGroups, engines }: {
+export default function ScoringDemo({ pastTastings, lemmaGroups, engines, styleCategories, styleDefault }: {
   pastTastings: PastTasting[];
   lemmaGroups: LemmaGroup[];
   engines: EngineInfo[];
+  styleCategories: string[];
+  styleDefault: boolean;
 }) {
+  const [category, setCategory] = useState<string>('');
+  const [styleWeights, setStyleWeights] = useState<boolean>(styleDefault);
   const [userNote, setUserNote] = useState('');
   const [wineNote, setWineNote] = useState('');
   const [selectedTasting, setSelectedTasting] = useState<PastTasting | null>(null);
@@ -546,7 +553,7 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, engines }: {
     setError(null);
     startTransition(async () => {
       try {
-        const data = await getScoringBreakdown(userNote, wineNote, { engines: selectedEngines });
+        const data = await getScoringBreakdown(userNote, wineNote, { engines: selectedEngines, category: category || null, styleWeights });
         setResult(data);
       } catch (e) {
         setError('Analyse feilet. Sjekk at motoren i drift har det den trenger (OPENAI_API_KEY for openai).');
@@ -568,6 +575,7 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, engines }: {
     setWineNote(isSmak ? t.wineTaste : t.wineSmell);
     setSelectedTasting(t);
     setNoteType(type);
+    setCategory(styleCategories.find(c => c.toLowerCase() === String(t.wineCategory ?? '').toLowerCase()) ?? '');
     setResult(null);
   };
 
@@ -594,6 +602,21 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, engines }: {
             {e.id}{e.active && <span className={styles.engineActive}>i drift</span>}
           </button>
         ))}
+      </div>
+
+      <div className={styles.engineRow}>
+        <span className={styles.engineRowLabel}>Stilvekter</span>
+        <button
+          className={`${styles.engineChip} ${styleWeights ? styles.engineChipOn : ''}`}
+          onClick={() => setStyleWeights(v => !v)}
+          title="Deskriptorvekt relativt til vinens stil (STYLE_WEIGHTS_ENABLED): sitrus på en hvitvin teller mindre enn solbær på en rødvin"
+        >
+          {styleWeights ? 'på' : 'av'}
+        </button>
+        <select className={styles.engineChip} value={category} onChange={e => setCategory(e.target.value)} title="Vinens hovedkategori; uten kategori brukes globale vekter">
+          <option value="">ingen kategori</option>
+          {styleCategories.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
       </div>
 
       <TastingSelector

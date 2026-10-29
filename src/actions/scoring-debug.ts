@@ -8,7 +8,9 @@ import { PorterStemmerNo } from 'natural';
 import idfRaw from '@/lib/idf-weights.generated.json';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 import { applyNegation } from '@/lib/negation';
-import { combineScoreScaled, lexicalCredit } from '@/lib/flavourScoring';
+import { combineScoreScaled, lexicalCredit, type ScoringOptions } from '@/lib/flavourScoring';
+import { normalizeCategory, STYLE_CATEGORIES } from '@/lib/styleWeights';
+import { STYLE_WEIGHTS_ENABLED } from '@/lib/scoringConfig';
 import { getSoftEngineById, listSoftEngines as listEngines, type SoftEngineId, type SoftResult, type SoftEngineUnavailable, type TokenAlignment } from '@/lib/softEngines';
 import { OOV_MAPPING_ENABLED, OOV_THRESHOLD, isUnknownWord, nearestAromaLemmas, type OovMapping } from '@/lib/oovMapping';
 
@@ -57,6 +59,9 @@ export type ScoringBreakdown = {
    */
   unknownWords: Array<OovMapping & { applied: boolean }>;
   oovThreshold: number;
+  /** Style-relative weights: the category used (null = none, global idf) and whether they were on. */
+  styleCategory: string | null;
+  styleWeights: boolean;
   /** Which engine produced softScore / currentScore, and its per-word alignments. */
   engine: SoftEngineId | null;
   alignments: TokenAlignment[];
@@ -182,25 +187,30 @@ export async function listSoftEngines() {
   return listEngines();
 }
 
+export async function listStyleCategories(): Promise<{ categories: string[]; enabledByDefault: boolean }> {
+  return { categories: STYLE_CATEGORIES, enabledByDefault: STYLE_WEIGHTS_ENABLED };
+}
+
 export async function getScoringBreakdown(
   userNote: string,
   wineNote: string,
-  options: { engines?: SoftEngineId[] } = {}
+  options: { engines?: SoftEngineId[]; category?: string | null; styleWeights?: boolean } = {}
 ): Promise<ScoringBreakdown> {
   const user = applyNegation(userNote);
   const wine = applyNegation(wineNote);
   const userProcessed = normalizeWineSynonyms(sanitizeText(user.text));
   const wineProcessed = normalizeWineSynonyms(sanitizeText(wine.text));
+  const scoring: ScoringOptions = { category: normalizeCategory(options.category), styleWeights: options.styleWeights ?? STYLE_WEIGHTS_ENABLED };
 
   const [flavour, userMap, wineMap] = await Promise.all([
-    scoreFlavourNote(userNote, wineNote),
+    scoreFlavourNote(userNote, wineNote, scoring),
     Promise.resolve(extractTerms(userProcessed)),
     Promise.resolve(extractTerms(wineProcessed)),
   ]);
 
   // Other engines on the same pair. Each runs independently so one missing
   // model cannot hide the others; the lexical half is shared.
-  const lexical = flavour.scoreable ? lexicalCredit(userProcessed, wineProcessed) : null;
+  const lexical = flavour.scoreable ? lexicalCredit(userProcessed, wineProcessed, scoring) : null;
   const softEngines: SoftEngineComparison[] = await Promise.all(
     (options.engines ?? []).map(async (id): Promise<SoftEngineComparison> => {
       const engine = getSoftEngineById(id);
@@ -241,6 +251,8 @@ export async function getScoringBreakdown(
     contradicted: flavour.contradicted ?? [],
     unknownWords,
     oovThreshold: OOV_THRESHOLD,
+    styleCategory: scoring.category ?? null,
+    styleWeights: !!scoring.styleWeights && !!scoring.category,
     engine: flavour.engine ?? null,
     alignments: flavour.alignments ?? [],
     softEngines,
