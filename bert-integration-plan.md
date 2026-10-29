@@ -276,7 +276,7 @@ Numbered to continue the GSD phases in `.planning/` (v1.0 ended at phase 05). Ea
 - [x] `npx tsx --env-file=.env.local scripts/benchmark-scoring.ts --out=…` → `scripts/validation-results/benchmark-2026-10-baseline.md`
 - [x] `npx tsx --env-file=.env.local scripts/export-frozen-set.ts --sheet` → `frozen-set-2026-10.json` (236 fields, 8 tasters anonymised T1–T8, stored score, previous-engine score for 152 fields from the August snapshot, now copied into `validation-results/`)
 - [x] `ratings/README.md` (rubric, four worked examples from the Aubry champagne) and `ratings/rating-sheet-2026-10.csv`; raters save `rater-<name>.csv`
-- [ ] Collect two ratings per field; then re-run the agreement script
+- [x] Ratings: no human raters were available, so the backup plan below was built and run on 29 Oct 2026 (LLM panel + a 50-field calibration sample for one person + a constructed set with ratings known by construction)
 - [x] `npx tsx --env-file=.env.local scripts/evaluate-human-agreement.ts --out=…` → `human-agreement-2026-10-baseline.md` (scorer-vs-scorer part; the human part fills in when rater files exist)
 - [x] `applyNegation` in `src/lib/negation.ts` (its own module and test file rather than inside the 1 000-line lemma file), wired into `scoreFlavourNote`, `getScoringBreakdown`, `getTermBreakdown` and the benchmark's `prep`; +NEG column added
 - [x] `near-synonyms.json` seeded with 12 pairs
@@ -294,7 +294,35 @@ Before the negator-as-candidate fix, +NEG read +0.5 for both scorers: two of 236
 
 Scorer agreement on the frozen set (Spearman): stored vs recomputed 0.991 (19 of 232 fields differ, mean |Δ| 0.72, the chip-text gap from finding 9); current vs lexical-only 0.921; current vs direct-hit count 0.863; **previous engine vs current 0.439** on the 148 fields both scored, which is how differently the two engines rank the same notes. 12 reference notes among the tasted wines are unscoreable (name no aroma).
 
-Done when the human-correlation rows are filled in.
+Done when the human-correlation rows are filled in — they are, with the LLM panel standing in; see "Accuracy without raters" below.
+
+#### Accuracy without raters (backup plan, run 29 Oct 2026)
+
+**LLM panel.** `scripts/rate-with-llm.ts` rates every field with the rubric and worked examples from `ratings/README.md`, one file per model, temperature 0, so disagreement between files is disagreement between models. Three models (gpt-4o-mini, gpt-4.1-mini, gpt-4o) agree with each other at Spearman 0.69–0.73 (weighted kappa 0.36–0.74), which is about what two experienced people manage on a 0–4 scale. `scripts/validation-results/human-agreement-2026-10-llm-panel.md`:
+
+| scorer | Spearman vs panel mean | bootstrap 95% |
+| --- | --- | --- |
+| stored score | 0.616 | 0.523 – 0.684 |
+| current engine (recomputed) | 0.622 | 0.536 – 0.689 |
+| lexical half only (soft = 0) | 0.622 | 0.518 – 0.698 |
+| direct-hit count | 0.620 | 0.540 – 0.712 |
+
+**The soft term earns no validity on this set.** Full engine, lexical half alone and a bare count of direct hits agree with the panel equally. With a median note of four words, nearly all of them dictionary words, the ladder already decides, and the 45% soft weight redistributes without reordering. That is a stronger statement about where to spend effort than anything in the engine comparison.
+
+Per engine on the demo extract (scoreable fields only, so the numbers differ from the table above): openai 0.664, bert 0.707, colbert-word 0.711, colbert-token 0.711 against the panel.
+
+**Calibration sample.** `ratings/calibration-sample-2026-10.csv`: 50 fields stratified by event and stored score, for one person to rate in about twenty minutes. Saved as `rater-<name>.csv`, it enters the same agreement table, and its Spearman against the panel mean is what decides whether the panel can stand in for people (above roughly 0.6: yes, with that number recorded).
+
+**Constructed set.** `scripts/build-constructed-set.ts` has gpt-4o-mini write four taster-style notes per reference (levels 4/3/2/0, two to seven words) and keeps a note only if the credit ladder confirms the level it was asked for: 115 of 296 kept, mostly because a "level 0" note with any fruit word still earns category credit and lands at 2. `scripts/validation-results/constructed-set-2026-10.md`:
+
+| engine | Spearman(score, level) | pairwise order accuracy | mean at 4 / 3 / 2 / 0 |
+| --- | --- | --- | --- |
+| openai | 0.704 | 92.3% (48/52) | 85.3 / 66.5 / 27.9 / 2.3 |
+| bert | 0.751 | 94.2% (49/52) | 64.6 / 44.4 / 18.4 / 0.0 |
+| colbert-word | 0.777 | 94.2% (49/52) | 61.4 / 44.1 / 18.3 / 0.3 |
+| colbert-token | 0.770 | 92.3% (48/52) | 60.6 / 43.7 / 18.8 / 0.3 |
+
+Every engine orders the levels; the set is too small at levels 2 and 0 to separate them.
 
 ### Phase 07: Soft-engine interface and demo harness — done 28 Oct 2026
 
@@ -351,7 +379,7 @@ Separation of true pairs from random ones on the centred raw MaxSim, (mean true 
 
 On the frozen set (Spearman): bert 0.926 / colbert-word 0.929 / colbert-token 0.932 against the stored score, and 0.55–0.57 against the previous engine (OpenAI: 0.439), i.e. the local engines rank notes a little more like the old sentence-cosine scorer did.
 
-**Decision: the OpenAI token engine stays.** Both local engines fail the gate on every metric that discriminates: smaller reward for a correct descriptor (+HIT 9.5–9.9 vs 12.6), a weaker penalty for a wrong one (−0.9 to −1.2 vs −3.2), less separation from random wines (d 0.92–0.94 vs 1.19, top1 10–12% vs 18%) and more length dependence (r 0.31–0.35 vs 0.26). They pass only MISS, where they sit nearer 0. The lower `base` is a scale artefact of the rescale, not the reason: `d` and `top1` are rank-based. The human rows cannot overturn a gate that fails on four of five property metrics, so the decision does not wait for them; they are still worth collecting, because they also judge the engine that stays.
+**Decision: the OpenAI token engine stays, with a caveat added on 29 Oct.** The two validity measures run afterwards (LLM panel, constructed set) lean the other way: the local engines agree slightly better with the panel (0.71 vs 0.66) and order the constructed levels slightly better (0.75–0.78 vs 0.70). Neither difference clears its noise, and both are measured against language models judging language, so they cannot overturn a property gate the local engines fail by a wide margin. What they do is move the tie-break onto the calibration sample: if one person's 50 ratings agree with the panel, the panel's preference gains standing and the right next step is shadow mode (`SOFT_ENGINE_SHADOW=colbert-token`) through one real event. Both local engines fail the gate on every metric that discriminates: smaller reward for a correct descriptor (+HIT 9.5–9.9 vs 12.6), a weaker penalty for a wrong one (−0.9 to −1.2 vs −3.2), less separation from random wines (d 0.92–0.94 vs 1.19, top1 10–12% vs 18%) and more length dependence (r 0.31–0.35 vs 0.26). They pass only MISS, where they sit nearer 0. The lower `base` is a scale artefact of the rescale, not the reason: `d` and `top1` are rank-based. The human rows cannot overturn a gate that fails on four of five property metrics, so the decision does not wait for them; they are still worth collecting, because they also judge the engine that stays.
 
 What the alignments show is more interesting than the totals. mLateOn finds `brioche → bakverk` (0.84 raw) where OpenAI and NorBERT do not, and it is the better engine on the shortest references (1–3 words: 0.81 vs 0.55 separation). It is worse at the isolated-synonym judgement that most of the score is made of. That is the profile the draft predicted for a pretrained ColBERT, and it is the case for the contingency in the ColBERT section (distil the credit ladder into mLateOn) if the near-synonym list is ever worth that work. Not planned.
 
