@@ -19,7 +19,7 @@ import type { SoftEngineId } from './types';
 export const BASELINE_BUCKETS = ['1-3', '4-6', '7-10', '11+'] as const;
 export type BaselineBucket = (typeof BASELINE_BUCKETS)[number];
 
-type BaselineFile = Partial<Record<SoftEngineId, { model: string; measuredAt: string; pairs: number; buckets: Partial<Record<BaselineBucket, number>> }>>;
+type BaselineFile = Partial<Record<SoftEngineId, { model: string; measuredAt: string; pairs: number; buckets: Partial<Record<BaselineBucket, number>>; /** Mean raw similarity of an exact word match (same word on both sides), the engine's own 100. */ top?: number }>>;
 
 const BASELINES = baselineRaw as BaselineFile;
 
@@ -51,9 +51,19 @@ export function baselineMeta(engine: SoftEngineId) {
   return BASELINES[engine] ?? null;
 }
 
-/** (raw − b) / (1 − b), clamped to [0, 1], then onto 0–100. */
-export function rescale(raw: number, baseline: number): number {
-  const denom = 1 - baseline;
+/**
+ * The engine's measured level for an exact word match, or 1 when not measured.
+ * A contextual engine never reaches cosine 1 for the same word in two
+ * sentences (NorBERT and mLateOn sit near 0.45 after centring), so without
+ * this anchor their soft term tops out at a third of the OpenAI engine's.
+ */
+export function topFor(engine: SoftEngineId): number {
+  return BASELINES[engine]?.top ?? 1;
+}
+
+/** (raw − b) / (top − b), clamped to [0, 1], then onto 0–100: unrelated reads 0, an exact match reads 100. */
+export function rescale(raw: number, baseline: number, top = 1): number {
+  const denom = top - baseline;
   if (denom <= 0) return 0;
   return Math.max(0, Math.min(1, (raw - baseline) / denom)) * 100;
 }

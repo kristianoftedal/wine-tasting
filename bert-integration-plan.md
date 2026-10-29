@@ -484,6 +484,22 @@ Property benchmark with the flag on (floor 0.5): +HIT +13.2, +WRONG −3.0, +NEG
 - **The six invariants are a test now**: `src/lib/flavourScoring.invariants.test.ts` runs the same seeded perturbations over the frozen set on the lexical half, offline, and fails the build if a wrong guess pays, a negation pays, a longer reference lowers a score, or scores track length. It is what the benchmark measures, minus the soft engine and the distractors.
 - **Event leaderboard**: not changed. The results page ranks participants per wine, where everyone faces the same difficulty, so raw score is already fair there; the across-wines adjustment lives on the profile (phase 13). Nothing to add until there is an event-wide ranking.
 
+**Two-anchor scale and isolated-word variants, 29 Oct 2026.**
+
+- *Scale.* The local engines' soft term now maps the engine's own exact-match level to 100 (`top` in `maxsim-baseline.generated.json`, measured as the mean raw similarity of a word present on both sides: NorBERT 0.58, mLateOn 0.52, isolated mLateOn 0.67 because `[Q] word` and `[D] word` differ) and the random-pair floor to 0. Means rose from 37–40 to 42–45; rankings within an engine unchanged; against the human rater the contextual ColBERT lost a little (0.616 → 0.598), the same direction as the hybrid, for the same reason.
+- *Isolated words* (`bert-iso`, `colbert-iso`): each content word encoded alone, cached per word, the OpenAI engine's approach with a local model. Measured on everything (`benchmark-2026-10-engines-v4.md`, `hybrid-soft-2026-10-29.md` off rows):
+
+  | engine | +HIT | +WRONG | MISS | r(len) | d | top1 | ρ human | ρ panel | ρ constructed |
+  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+  | openai | +12.8 | −3.1 | +3.9 | 0.28 | 1.22 | 20% | 0.622 | 0.661 | 0.685 |
+  | bert | +12.2 | −1.6 | +2.5 | 0.35 | 1.03 | 11% | 0.623 | 0.675 | 0.712 |
+  | bert-iso | +10.7 | −3.4 | +2.0 | 0.24 | 1.01 | 16% | 0.495 | 0.547 | 0.627 |
+  | colbert-word | +12.0 | −2.6 | +2.6 | 0.29 | 1.11 | 14% | 0.617 | 0.683 | 0.719 |
+  | colbert-token | +12.7 | −2.8 | +1.8 | 0.30 | 1.12 | 11% | 0.598 | 0.670 | 0.704 |
+  | colbert-iso | +12.1 | −3.0 | +2.3 | 0.26 | 1.19 | 18% | 0.604 | 0.652 | 0.696 |
+
+  Isolated NorBERT is worse on every target: its word vectors are not built for isolated comparison (floor 0.52 after centring, separation 0.44). Isolated mLateOn is the closest any local engine has come to the production engine on the property gate (d 1.19 vs 1.22, +WRONG −3.0 vs −3.1, less length dependence) with validity just under the contextual variants; it is also the cheapest engine in the tree (one vector per vocabulary word, no span recovery, no per-note model call once warm). **Decision unchanged**: nothing beats OpenAI on the gate. If a local engine is ever wanted for cost or offline reasons, `colbert-iso` is the one.
+
 3. **Re-measure the engines when the corpus has grown.** All three validity rows lean toward the local engines by ~0.05, inside the noise every time; at 500 fields the noise is half what it is now. The frozen set is dated so the next one is a new file, not a regeneration.
 
 4. **PyTorch parity check** (`scripts/parity-dump.ts`, `scripts/parity-check.py`), one run.

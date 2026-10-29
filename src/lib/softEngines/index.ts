@@ -1,6 +1,6 @@
 import { openaiEngine } from './openai';
-import { bertEngine } from './bert';
-import { colbertTokenEngine, colbertWordEngine } from './colbert';
+import { bertEngine, bertIsoEngine } from './bert';
+import { colbertIsoEngine, colbertTokenEngine, colbertWordEngine } from './colbert';
 import { SOFT_ENGINE_IDS, type SoftEngine, type SoftEngineId } from './types';
 
 export type { Availability, NoteInput, SoftEngine, SoftEngineId, SoftEngineUnavailable, SoftResult, TokenAlignment } from './types';
@@ -14,8 +14,10 @@ export { SOFT_ENGINE_IDS } from './types';
 const factories: Record<SoftEngineId, () => SoftEngine> = {
   openai: () => openaiEngine,
   bert: () => bertEngine,
+  'bert-iso': () => bertIsoEngine,
   'colbert-word': () => colbertWordEngine,
   'colbert-token': () => colbertTokenEngine,
+  'colbert-iso': () => colbertIsoEngine,
 };
 
 const instances = new Map<SoftEngineId, SoftEngine>();

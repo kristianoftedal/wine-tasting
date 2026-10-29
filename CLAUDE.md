@@ -35,7 +35,7 @@ Named shortcuts: `npm run analyze`, `recalculate-scores`, `validate-scoring`, `b
 
 ### Database
 
-`scripts/schema.sql` is the consolidated schema; `scripts/0NN-*.sql` are incremental migrations applied in numeric order against Supabase. There is no migration runner — they are pasted into the Supabase SQL editor. `023-note-enrichment.sql` must be applied before the note-enrichment routine runs — the candidate scan selects `enrichment_status`. `021-search-overhaul.sql` has a **required post-deploy `VACUUM (ANALYZE) wines;`** that cannot run inside its transaction block; skipping it makes search ~10× slower.
+`scripts/schema.sql` is the consolidated schema for migrations 001–016 (those files no longer exist); `scripts/017-*.sql` through `025-*.sql` are incremental migrations applied on top, in numeric order, against Supabase. `025-scored-text.sql` adds `lukt_scored` / `smak_scored` / `scorer_version` to `tastings`; until it is applied `addTasting` logs a warning and retries the insert without them, so nothing is lost, but new rows then lack the bookkeeping. `026-taster-skill.sql` adds the skill views and `my_taster_skill()`; the profile card shows "–" until it is applied. There is no migration runner — they are pasted into the Supabase SQL editor. `023-note-enrichment.sql` must be applied before the note-enrichment routine runs — the candidate scan selects `enrichment_status`. `021-search-overhaul.sql` has a **required post-deploy `VACUUM (ANALYZE) wines;`** that cannot run inside its transaction block; skipping it makes search ~10× slower.
 
 ## Architecture
 
@@ -46,7 +46,6 @@ src/actions/   server actions + server-only modules (the app's service layer)
 src/app/       routes, components, API routes, Jotai store
 src/lib/       scoring engine, dictionaries, Supabase factories, domain types
 scripts/       SQL migrations + offline analysis/benchmark/codegen
-.planning/     GSD workflow artifacts (phase plans, verification, codebase maps)
 ```
 
 ### The scoring engine — the core of this codebase
@@ -60,7 +59,7 @@ Flow for smell (`lukt`) and taste (`smak`):
 1. `src/app/components/tasting/Summary.tsx` (client) orchestrates. It calls `calculateServerSideScores` and computes the numeric components itself.
 2. `src/actions/similarity.ts` (`'use server'`) is a thin I/O wrapper: sanitise → synonym-normalise → check scoreability → compute lexical credit → fetch the token MaxSim value → combine.
 3. `src/lib/flavourScoring.ts` holds the **pure** scoring function. It is deliberately I/O-free so `scripts/benchmark-scoring.ts` exercises production code rather than a reimplementation that can drift. Credit ladder, best match wins: `direct` (1.0) → `derived` (1.0) → `specific` (0.85) → `subcategory` (0.6) → `category` (0.3).
-4. `src/lib/derivations.ts` encodes oenological causation — the reference says "fat" (barrel), the taster says "vanilje", and that is a *correct* call. Embeddings do not recover this (measured cos(fat, vanilje) = 0.09, below the unrelated-pair baseline), so it is a hand-maintained map. `HYPERNYMS` handles the reverse case: reference generalises ("mørk frukt"), taster is more precise ("solbær").
+4. `src/lib/derivations.ts` encodes oenological causation — the reference says "fat" (barrel), the taster says "vanilje", and that is a *correct* call. Embeddings do not recover this (measured cos(fat, vanilje) = 0.09, below the unrelated-pair baseline), so it is a hand-maintained map. `HYPERNYMS` handles the reverse case: reference generalises ("mørk frukt"), taster is more precise ("solbær"). `krydder` is deliberately not in it: measured against 149 human ratings, pepper on a note saying "krydder" is not a specific answer (nearly every red has spice), and removing that one licensing word was the only ladder change that raised agreement with the rater for both soft engines.
 5. `src/lib/semanticSimilarity.ts` → `tokenPrecisionSimilarity` is directional MaxSim over *user* tokens only. Omitted reference tokens are never iterated, so the loop direction *is* the scoring objective.
 6. `src/lib/tokenEmbeddings.ts` caches per-token embeddings in a process-local map (the descriptor vocabulary is closed, ~892 tokens), and `src/lib/embeddingCentering.ts` subtracts the corpus mean before use. Uncentered cosine between two *unrelated* wine notes is 0.459 — that floor is the model noticing both texts are Norwegian wine prose, which carries zero information.
 
@@ -70,7 +69,11 @@ Things that are structurally load-bearing:
 - **Colour uses a different path.** `semanticOnlySimilarity` → `rawSemanticSimilarity` embeds the text with no term stripping; the generic-term filter would destroy "lys rubinrød".
 - **Weight profiles** (`src/lib/profiles/`) set per-category lemma weights, selected by `NEXT_PUBLIC_WEIGHT_PROFILE` (`inverted` default, or `moderate`).
 - **`src/lib/lemmatizeAndWeight.ts`** (~1000 lines) is the Norwegian lemma dictionary + stopwords + `sanitizeText`/`stripGenericTerms`/`flavorOnlyText`. Every key in `DERIVATIONS` and `HYPERNYMS` must exist here as a *lemma* surface form — `derivations.test.ts` enforces it.
-- **`src/actions/scoring-debug.ts`** computes both the current and the legacy algorithm side by side to power the debug UI and `/scoring-demo`. It is explanation, not scoring — do not route production scores through it.
+- **`src/actions/scoring-debug.ts`** decomposes the current scorer to power the debug UI and `/scoring-demo`. It is explanation, not scoring — do not route production scores through it.
+- **`src/lib/flavourScoring.invariants.test.ts`** is the scoring objective as a test: the benchmark's six perturbations over the frozen set, lexical half only, offline. If it fails, a change has let a wrong guess pay or a reference lower a score; fix the change, not the threshold.
+- **`src/lib/negation.ts`** runs before `sanitizeText` on both notes: `ikke` is a stopword, so without it "ikke noe fat" scored as a direct hit on "fat". Two of 236 live notes contain a negator; the rule exists for correctness and the benchmark's +NEG column, not for impact.
+- **Soft engines** (`src/lib/softEngines/`): the soft term is behind one interface; `SOFT_ENGINE` picks production's (default `openai`), `SOFT_ENGINE_SHADOW` logs a second engine's score per field without writing anything. `bert`, `bert-iso`, `colbert-*` and `colbert-iso` (the `-iso` variants embed each word alone, cached per word) need `models/` (`scripts/fetch-soft-models.ts`, gitignored) and were measured worse than the OpenAI token engine on every discriminating benchmark metric (phase 10 of the plan); they stay available for the demo and the benchmark. `OOV_MAPPING_ENABLED` turns on unknown-word mapping, measured too weak to ship (phase 12). `STYLE_WEIGHTS_ENABLED` weights descriptors by rarity within the wine's category (`style-idf.generated.json`, regenerate with `scripts/compute-style-idf.ts`), measured neutral on every target and left off (phase 14). `SOFT_HYBRID_ENABLED` lets ladder-credited words count as full soft matches; measured worse against the human rater for every engine and left off (the soft term is a different signal, not a second vote).
+- **Tasting history is read-only.** Stored scores are never recomputed. `SCORER_VERSION` (`scoringConfig.ts`) is written to new rows so scores from different engines can be told apart; bump it whenever the same note would score differently. The evaluation corpus is `scripts/validation-results/frozen-set-2026-10.json` (never regenerated; `export-frozen-set.ts`, `evaluate-human-agreement.ts` and `benchmark-scoring.ts --out` write the dated baseline files beside it). `bert-integration-plan.md` is the roadmap.
 
 ### Wine search
 
@@ -91,7 +94,7 @@ The column names mislead and the file says so: real *occasions* (Jul og nyttår,
 
 ### Recommendations
 
-`src/actions/wine-recommendations-sql.ts` scores candidates against the user's high-rated wines: for each candidate, the mean of its top-3 similarities to that set, rather than one comparison against a concatenated corpus (which collapses to an average-wine centroid identical for everyone). Falls back to `@xenova/transformers` MiniLM locally if the OpenAI call throws.
+`src/actions/wine-recommendations-sql.ts` scores candidates against the user's high-rated wines: for each candidate, the mean of its top-3 similarities to that set, rather than one comparison against a concatenated corpus (which collapses to an average-wine centroid identical for everyone).
 
 ### Wine-note enrichment
 
@@ -201,6 +204,6 @@ Note the spelling drift between layers: the wines table uses `garvestoff` (singu
 ## Gotchas
 
 - `next.config.ts` sets `typescript.ignoreBuildErrors: true` and `tsconfig.json` has `strict: false`. A green `npm run build` proves nothing about types — run `npx tsc --noEmit` separately.
-- **`README.md` is stale on scoring.** It describes the previous "semantic floor + precision bonus" formula, `min(user, wine)` overlap coefficient, an obsolete six-category hierarchy, and a `/sommailer` route that no longer exists. It also states colour weight 1.0 where `Summary.tsx` weights it 0.2. Trust the code and `scoringConfig.ts`.
+- **`scripts/recalculate-user-tasting-scores.ts` does not mirror `Summary.tsx`**, despite its header saying so: `computeOverall` weights colour 1.0 (production: 0.2) and drops smell/taste below 10 characters of reference text (production: 6). Recalculated `overall_score`s will differ from live ones until the two are reconciled.
+- `scoring-debug.ts` and `/scoring-demo` explain the current scorer only. The previous algorithm and its `SCORING_RECALL_ENABLED` / `SEMANTIC_FLAVOR_FILTER_ENABLED` toggles were removed on 28 Oct 2026; the "previous" comparison survives solely as a row in `scripts/benchmark-scoring.ts`.
 - `src/lib/supabase/middleware.ts` exports `updateSession` but there is no root `middleware.ts` importing it — route protection is currently not enforced at the edge.
-- `src/app/api/embeddings/route.ts` hardcodes the embedding model instead of importing `EMBEDDING_MODEL`; change both if you swap models (and regenerate the corpus mean).

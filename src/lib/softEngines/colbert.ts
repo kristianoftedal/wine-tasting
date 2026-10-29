@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { baselineFor, rescale } from './baseline';
+import { baselineFor, rescale, topFor } from './baseline';
 import { idfWeight, maxSimPrecision, type WordVector } from './maxsim';
 import { cosineSimilarity } from '../math';
 import { EncodingCache, MODEL_DIR, centered, l2normalize, loadMean, meanPool, noteWords, tokenizeWithSpans, type Tokenizer } from './words';
@@ -58,6 +58,41 @@ export const colbertCalibration = {
     return [...(await encode(note, prefix)).tokens.values()].flat();
   },
 };
+
+/** Same, for the isolated-word variant (word-pooled vectors, one per word). */
+export const colbertIsoCalibration = {
+  mean: loadMean('colbert-iso'),
+  setMean(mean: Float32Array | null) { this.mean = mean; },
+  async tokenVectors(note: NoteInput, prefix = DOCUMENT_PREFIX): Promise<Float32Array[]> {
+    return [...(await encodeIsolated(note, prefix)).pooled.values()];
+  },
+};
+
+const isoCache = new EncodingCache<Float32Array[]>(8000);
+
+/** Each content word encoded alone as "[Q] word" / "[D] word", cached per word and prefix. */
+async function encodeIsolated(note: NoteInput, prefix: string): Promise<Encoded> {
+  const { tokenizer, run, cls, sep } = await load();
+  const words = noteWords(note).filter(w => w.content);
+  const tokens = new Map<string, Float32Array[]>();
+  const pooled = new Map<string, Float32Array>();
+  for (const w of words) {
+    const key = `${prefix}\u0000${w.key}`;
+    let rows = isoCache.get(key);
+    if (!rows) {
+      const { ids, spans } = tokenizeWithSpans(tokenizer, [w.text], cls, sep, prefix);
+      const out = await run(ids);
+      const dim = out.dims[out.dims.length - 1];
+      const [a, b] = spans[0];
+      rows = [];
+      for (let t = a; t < b; t++) rows.push(Float32Array.from(out.data.subarray(t * dim, (t + 1) * dim)));
+      isoCache.set(key, rows);
+    }
+    tokens.set(w.key, rows);
+    pooled.set(w.key, l2normalize(meanPool(rows)));
+  }
+  return { tokens, pooled, wordCount: words.length };
+}
 
 function missingFile(): string | null {
   for (const f of FILES) if (!existsSync(join(MODEL_DIR(), COLBERT_REPO, f))) return f;
@@ -152,10 +187,12 @@ function tokenMaxSim(user: Map<string, Float32Array[]>, reference: Map<string, F
   return { raw: den > 0 ? num / den : 0, alignments };
 }
 
-function makeEngine(id: Extract<SoftEngineId, 'colbert-word' | 'colbert-token'>): SoftEngine {
+function makeEngine(id: Extract<SoftEngineId, 'colbert-word' | 'colbert-token' | 'colbert-iso'>): SoftEngine {
+  const isolated = id === 'colbert-iso';
+  const calibration = isolated ? colbertIsoCalibration : colbertCalibration;
   const engine: SoftEngine = {
     id,
-    model: `${COLBERT_REPO}@int8`,
+    model: `${COLBERT_REPO}@int8${isolated ? ' (isolated words)' : ''}`,
 
     async available() {
       const missing = missingFile();
@@ -166,8 +203,9 @@ function makeEngine(id: Extract<SoftEngineId, 'colbert-word' | 'colbert-token'>)
 
     async score(user: NoteInput, reference: NoteInput): Promise<SoftResult> {
       const started = performance.now();
-      const [u, r] = await Promise.all([encode(user, QUERY_PREFIX), encode(reference, DOCUMENT_PREFIX)]);
-      const mean = colbertCalibration.mean;
+      const enc = isolated ? encodeIsolated : encode;
+      const [u, r] = await Promise.all([enc(user, QUERY_PREFIX), enc(reference, DOCUMENT_PREFIX)]);
+      const mean = calibration.mean;
       const toList = (m: Map<string, Float32Array>): WordVector[] => [...m.entries()].map(([word, vec]) => ({ word, vec: centered(vec, mean) }));
       const { raw, alignments } = id === 'colbert-token'
         ? tokenMaxSim(u.tokens, r.tokens, mean)
@@ -178,7 +216,7 @@ function makeEngine(id: Extract<SoftEngineId, 'colbert-word' | 'colbert-token'>)
         model: engine.model,
         raw,
         baseline,
-        softScore: u.pooled.size && r.pooled.size ? rescale(raw, baseline) : 0,
+        softScore: u.pooled.size && r.pooled.size ? rescale(raw, baseline, topFor(id)) : 0,
         alignments,
         ms: performance.now() - started,
       };
@@ -189,3 +227,4 @@ function makeEngine(id: Extract<SoftEngineId, 'colbert-word' | 'colbert-token'>)
 
 export const colbertWordEngine = makeEngine('colbert-word');
 export const colbertTokenEngine = makeEngine('colbert-token');
+export const colbertIsoEngine = makeEngine('colbert-iso');

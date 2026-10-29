@@ -32,8 +32,8 @@ import { sanitizeText } from '../src/lib/lemmatizeAndWeight';
 import { normalizeWineSynonyms } from '../src/lib/synonymNormalization';
 import { applyNegation } from '../src/lib/negation';
 import { getSoftEngineById, isSoftEngineId, type NoteInput, type SoftEngineId } from '../src/lib/softEngines';
-import { bertCalibration } from '../src/lib/softEngines/bert';
-import { colbertCalibration } from '../src/lib/softEngines/colbert';
+import { bertCalibration, bertIsoCalibration } from '../src/lib/softEngines/bert';
+import { colbertCalibration, colbertIsoCalibration } from '../src/lib/softEngines/colbert';
 import { BASELINE_BUCKETS, bucketFor, type BaselineBucket } from '../src/lib/softEngines/baseline';
 import { contentWords } from '../src/lib/softEngines/maxsim';
 import { mean, sd } from '../src/lib/stats';
@@ -42,7 +42,7 @@ import type { FrozenSet } from './export-frozen-set';
 const CENTERING = 'src/lib/softEngines/centering.generated.json';
 const BASELINE = 'src/lib/softEngines/maxsim-baseline.generated.json';
 const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
-const ENGINE_IDS: SoftEngineId[] = (arg('engines') ?? 'bert,colbert-word,colbert-token').split(',').map(s => s.trim()).filter(isSoftEngineId);
+const ENGINE_IDS: SoftEngineId[] = (arg('engines') ?? 'bert,bert-iso,colbert-word,colbert-token,colbert-iso').split(',').map(s => s.trim()).filter(isSoftEngineId);
 const REPORT = arg('report') ?? `scripts/validation-results/calibration-${new Date().toISOString().slice(0, 10)}.md`;
 
 const input = (t: string): NoteInput => { const n = applyNegation(t); return { raw: n.text, norm: normalizeWineSynonyms(sanitizeText(n.text)) }; };
@@ -73,16 +73,18 @@ async function main() {
   ])].map(input);
 
   // ── step 1: corpus means ─────────────────────────────────────────────────
-  const families: Array<{ key: 'bert' | 'colbert'; model: string; collect: (n: NoteInput) => Promise<Float32Array[]>; set: (m: Float32Array | null) => void }> = [];
-  if (ENGINE_IDS.includes('bert')) families.push({ key: 'bert', model: getSoftEngineById('bert').model, collect: n => bertCalibration.contentVectors(n), set: m => bertCalibration.setMean(m) });
-  if (ENGINE_IDS.some(id => id.startsWith('colbert'))) families.push({ key: 'colbert', model: getSoftEngineById('colbert-word').model, collect: n => colbertCalibration.tokenVectors(n), set: m => colbertCalibration.setMean(m) });
+  const families: Array<{ key: 'bert' | 'bert-iso' | 'colbert' | 'colbert-iso'; engine: SoftEngineId; model: string; collect: (n: NoteInput) => Promise<Float32Array[]>; set: (m: Float32Array | null) => void }> = [];
+  if (ENGINE_IDS.includes('bert')) families.push({ key: 'bert', engine: 'bert', model: getSoftEngineById('bert').model, collect: n => bertCalibration.contentVectors(n), set: m => bertCalibration.setMean(m) });
+  if (ENGINE_IDS.includes('bert-iso')) families.push({ key: 'bert-iso', engine: 'bert-iso', model: getSoftEngineById('bert-iso').model, collect: n => bertIsoCalibration.contentVectors(n), set: m => bertIsoCalibration.setMean(m) });
+  if (ENGINE_IDS.some(id => id === 'colbert-word' || id === 'colbert-token')) families.push({ key: 'colbert', engine: 'colbert-word', model: getSoftEngineById('colbert-word').model, collect: n => colbertCalibration.tokenVectors(n), set: m => colbertCalibration.setMean(m) });
+  if (ENGINE_IDS.includes('colbert-iso')) families.push({ key: 'colbert-iso', engine: 'colbert-iso', model: getSoftEngineById('colbert-iso').model, collect: n => colbertIsoCalibration.tokenVectors(n), set: m => colbertIsoCalibration.setMean(m) });
 
   log('## Centring');
   log();
   log('| family | model | vectors | dims | ‖mean‖ (0 = isotropic, 1 = collapsed) |');
   log('| --- | --- | --- | --- | --- |');
   for (const fam of families) {
-    const engine = getSoftEngineById(fam.key === 'bert' ? 'bert' : 'colbert-word');
+    const engine = getSoftEngineById(fam.engine);
     const a = await engine.available();
     if (!a.ok) { log(`| ${fam.key} | unavailable: ${a.reason} | | | |`); continue; }
     fam.set(null);
@@ -110,21 +112,24 @@ async function main() {
   log();
   log('Random pairs: every taster note against each calibration wine\'s note of the same field. True pairs: the note against its own wine. Separation = (true − random) / sd(random).');
   log();
-  log('| engine | bucket | random pairs | b = mean random | sd random | true pairs | mean true | separation |');
-  log('| --- | --- | --- | --- | --- | --- | --- | --- |');
+  log('| engine | bucket | random pairs | b = mean random | sd random | true pairs | mean true | separation | exact-match level (top) |');
+  log('| --- | --- | --- | --- | --- | --- | --- | --- | --- |');
   for (const id of ENGINE_IDS) {
     const engine = getSoftEngineById(id);
     const a = await engine.available();
     if (!a.ok) { log(`| ${id} | unavailable: ${a.reason} | | | | | | |`); continue; }
     const random: Record<BaselineBucket, number[]> = { '1-3': [], '4-6': [], '7-10': [], '11+': [] };
     const truePairs: Record<BaselineBucket, number[]> = { '1-3': [], '4-6': [], '7-10': [], '11+': [] };
+    // Top anchor: the raw similarity the engine gives a word that is present
+    // on both sides (alignment best === word), averaged over true pairs.
+    const exact: number[] = [];
     let done = 0;
     for (const f of frozen.fields) {
       const user = input(f.userNote);
       if (!contentWords(user.norm).length) continue;
       const own = input(f.referenceNote);
       const ownWords = contentWords(own.norm).length;
-      if (ownWords) truePairs[bucketFor(ownWords)].push((await engine.score(user, own)).raw);
+      if (ownWords) { const res = await engine.score(user, own); truePairs[bucketFor(ownWords)].push(res.raw); for (const a of res.alignments) if (a.best === a.word) exact.push(a.sim); }
       for (const d of distractors) {
         const ref = input((f.field === 'lukt' ? d.smell : d.taste) || '');
         const words = contentWords(ref.norm).length;
@@ -141,9 +146,10 @@ async function main() {
       buckets[b] = Number(mean(r).toFixed(4));
       pairs += r.length;
       const sep = t.length ? (mean(t) - mean(r)) / (sd(r) || 1) : NaN;
-      log(`| ${id} | ${b} | ${r.length} | ${mean(r).toFixed(3)} | ${sd(r).toFixed(3)} | ${t.length} | ${t.length ? mean(t).toFixed(3) : '—'} | ${Number.isNaN(sep) ? '—' : sep.toFixed(2)} |`);
+      log(`| ${id} | ${b} | ${r.length} | ${mean(r).toFixed(3)} | ${sd(r).toFixed(3)} | ${t.length} | ${t.length ? mean(t).toFixed(3) : '—'} | ${Number.isNaN(sep) ? '—' : sep.toFixed(2)} | ${exact.length ? mean(exact).toFixed(3) + ` (n=${exact.length})` : '—'} |`);
     }
-    baselines[id] = { model: engine.model, measuredAt: new Date().toISOString(), pairs, centered: id !== 'openai', buckets };
+    const top = id === 'openai' || !exact.length ? undefined : Number(mean(exact).toFixed(4));
+    baselines[id] = { model: engine.model, measuredAt: new Date().toISOString(), pairs, centered: id !== 'openai', buckets, ...(top !== undefined ? { top } : {}) };
   }
   writeFileSync(BASELINE, JSON.stringify(baselines, null, 2) + '\n');
   log();
