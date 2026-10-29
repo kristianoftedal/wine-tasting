@@ -8,6 +8,7 @@ import { OOV_MAPPING_ENABLED, mapUnknownWords } from '@/lib/oovMapping';
 import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 import { combineScoreScaled, hasScoreableFlavour, lemmasWithWeight, lexicalCredit, type FlavourScoreBreakdown, type ScoringOptions } from '@/lib/flavourScoring';
 import { normalizeCategory } from '@/lib/styleWeights';
+import { SOFT_HYBRID_ENABLED, hybridSoftScore } from '@/lib/softEngines/hybrid';
 
 export type { FlavourScoreBreakdown, MatchKind, TermMatch } from '@/lib/flavourScoring';
 
@@ -49,10 +50,11 @@ export async function scoreFlavourNote(
       { raw: user.text, norm: userNorm },
       { raw: reference.text, norm: referenceNorm }
     );
-    await shadowScore(engine.id, lexical, soft.softScore, { raw: user.text, norm: userNorm }, { raw: reference.text, norm: referenceNorm });
+    const softScore = (scoring.hybridSoft ?? SOFT_HYBRID_ENABLED) ? hybridSoftScore(soft, lexical) : soft.softScore;
+    await shadowScore(engine.id, lexical, softScore, { raw: user.text, norm: userNorm }, { raw: reference.text, norm: referenceNorm });
 
     const breakdown = {
-      ...combineScoreScaled(lexical, soft.softScore, true),
+      ...combineScoreScaled(lexical, softScore, true),
       engine: soft.engine,
       alignments: soft.alignments,
       ...(mapped && mapped.mapped.length ? { mapped: mapped.mapped } : {}),

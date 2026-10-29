@@ -33,6 +33,7 @@
  *     [--engines=openai,bert,colbert-word,colbert-token]   default: openai
  *     [--frozen=scripts/validation-results/frozen-set-2026-10.json]   cases from the frozen set instead of the live table
  *     [--style=on]   style-relative descriptor weights (STYLE_WEIGHTS_ENABLED) using the wine's category
+ *     [--hybrid=on]  ladder-credited words count as full soft matches (SOFT_HYBRID_ENABLED)
  *     [--out=scripts/validation-results/<file>.md]   also writes <file>.json
  *
  * The sampler is seeded; two runs on the same data are identical.
@@ -57,6 +58,7 @@ import { mean, pearson, sd } from '../src/lib/stats';
 import type { FrozenSet } from './export-frozen-set';
 import { existsSync } from 'node:fs';
 import { normalizeCategory } from '../src/lib/styleWeights';
+import { hybridSoftScore } from '../src/lib/softEngines/hybrid';
 
 const DISTRACTORS = 100;
 const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
@@ -64,6 +66,7 @@ const OUT = arg('out');
 const FROZEN = arg('frozen');
 const ENGINE_IDS: SoftEngineId[] = (arg('engines') ?? 'openai').split(',').map(s => s.trim()).filter(isSoftEngineId);
 const STYLE = arg('style') === 'on';
+const HYBRID = arg('hybrid') === 'on';
 const SIDECAR = 'scripts/validation-results/frozen-set-2026-10.categories.json';
 if (!ENGINE_IDS.length) throw new Error('--engines names no known engine');
 
@@ -138,7 +141,8 @@ function engineScorer(engine: SoftEngine) {
     const u = prep(userText), r = prep(referenceText);
     const soft = await engine.score({ raw: rawOf(userText), norm: u }, { raw: rawOf(referenceText), norm: r });
     const category = STYLE ? categoryOfReference.get(referenceText) ?? null : null;
-    const score = combineScoreScaled(lexicalCredit(u, r, { styleWeights: STYLE, category }), soft.softScore).score;
+    const lexical = lexicalCredit(u, r, { styleWeights: STYLE, category });
+    const score = combineScoreScaled(lexical, HYBRID ? hybridSoftScore(soft, lexical) : soft.softScore).score;
     memo.set(key, score);
     return score;
   };
@@ -164,7 +168,7 @@ async function main() {
       const sidecar = existsSync(SIDECAR) ? JSON.parse(readFileSync(SIDECAR, 'utf8')) as Record<string, string | null> : {};
       for (const f of frozen.fields) categoryOfReference.set(f.referenceNote, sidecar[f.wine.id] ?? null);
     }
-    source = `${FROZEN} (${frozen.meta.fields} fields)${STYLE ? ', style weights on' : ''}`;
+    source = `${FROZEN} (${frozen.meta.fields} fields)${STYLE ? ', style weights on' : ''}${HYBRID ? ', hybrid soft on' : ''}`;
   } else {
     // Ordered: PostgREST guarantees nothing without it, and the seeded sampler
     // consumes randomness in row order, so an unordered query made every run
@@ -355,7 +359,7 @@ async function main() {
     writeFileSync(OUT, md);
     const json = OUT.replace(/\.md$/, '') + '.json';
     writeFileSync(json, JSON.stringify({
-      meta: { date: new Date().toISOString(), commit, source, cases: cases.length, distractors: distractors.length, engines: ENGINE_IDS, styleWeights: STYLE },
+      meta: { date: new Date().toISOString(), commit, source, cases: cases.length, distractors: distractors.length, engines: ENGINE_IDS, styleWeights: STYLE, hybridSoft: HYBRID },
       rows,
     }, null, 2) + '\n');
     console.log(`\nwritten ${OUT} and ${json}`);

@@ -449,6 +449,26 @@ Property benchmark with the flag on (floor 0.5): +HIT +13.2, +WRONG −3.0, +NEG
 - [ ] `package-lock.json` and the concurrent dependency cleanup: left for their author to commit
 - [x] `main` fast-forwarded to the branch
 
+## What's next, in order (29 Oct 2026)
+
+1. **Hybrid soft term — measured, rejected.** The per-field reasons showed the local engines underpay exact matches: a contextual vector of the same word in two sentences gives a centred cosine near 0.45 where an isolated token gives 1.0. The fix seemed obvious: a word the ladder already credited (direct, derived, specific) counts as a full soft match, and the engine only judges the rest (`src/lib/softEngines/hybrid.ts`, `SOFT_HYBRID_ENABLED`). Measured on every engine (`scripts/validation-results/hybrid-soft-2026-10-29.md`):
+
+   | engine | hybrid | ρ human | ρ panel | ρ constructed | mean score |
+   | --- | --- | --- | --- | --- | --- |
+   | openai | off → on | 0.569 → 0.520 | 0.664 → 0.635 | 0.704 → 0.830 | 60.3 → 61.5 |
+   | bert | off → on | 0.609 → 0.530 | 0.707 → 0.646 | 0.751 → 0.829 | 40.0 → 58.5 |
+   | colbert-token | off → on | 0.616 → 0.528 | 0.712 → 0.642 | 0.770 → 0.828 | 39.7 → 58.6 |
+
+   Worse against the human and the panel for every engine, better only on the constructed set, which the ladder built; the four engines collapse onto one score. Properties (`benchmark-2026-10-hybrid-soft.md`): openai +HIT 12.6 → 10.4, d 1.19 → 0.92, top1 18 → 23%; colbert-token +WRONG −1.2 → −3.6, d 0.94 → 0.88. Off, and it explains something: the local engines' small validity edge comes *from* under-crediting exact matches of common words. A contextual cosine for "sitrus" in two different sentences is low and for a rare specific word high, which is the style-relative weighting of phase 14 arrived at implicitly, and it agrees with the human rater where the explicit version did not. The soft term is not a second vote on what the ladder matched; it is a different signal, and giving it the ladder's answer removes that.
+
+2. **The ladder's `specific` tier.** The six re-rating holdouts are all one question: is "pepper" a specific answer to a reference that says "krydder"? The ladder pays 0.85; the rater says no. Re-examining which category terms admit which specifics (`HYPERNYMS` in `derivations.ts`) against the 149 ratings is a dictionary change with a measurable target, and cheaper than anything above.
+
+3. **Re-measure the engines when the corpus has grown.** All three validity rows lean toward the local engines by ~0.05, inside the noise every time; at 500 fields the noise is half what it is now. The frozen set is dated so the next one is a new file, not a regeneration.
+
+4. **PyTorch parity check** (`scripts/parity-dump.ts`, `scripts/parity-check.py`), one run.
+
+5. **Commit `package-lock.json`** with the dependency cleanup it belongs to.
+
 ## Engine decision, 29 Oct 2026
 
 Everything measured on existing notes, in one place:

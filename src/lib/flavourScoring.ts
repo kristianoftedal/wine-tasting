@@ -19,7 +19,7 @@ import { STYLE_WEIGHTS_ENABLED } from './scoringConfig';
 const globalIdf = idfRaw as Record<string, number>;
 
 /** Per-call scoring context: the wine's style, and whether to weight by it. */
-export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number };
+export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number; /** Ladder-credited words count as full soft matches (src/lib/softEngines/hybrid.ts). */ hybridSoft?: boolean };
 import {
   CREDIT_CATEGORY,
   CREDIT_DERIVED,

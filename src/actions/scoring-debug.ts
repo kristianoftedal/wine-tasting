@@ -11,6 +11,7 @@ import { applyNegation } from '@/lib/negation';
 import { combineScoreScaled, lexicalCredit, type ScoringOptions } from '@/lib/flavourScoring';
 import { normalizeCategory, STYLE_CATEGORIES } from '@/lib/styleWeights';
 import { STYLE_WEIGHTS_ENABLED } from '@/lib/scoringConfig';
+import { SOFT_HYBRID_ENABLED, hybridSoftScore } from '@/lib/softEngines/hybrid';
 import { getSoftEngineById, listSoftEngines as listEngines, type SoftEngineId, type SoftResult, type SoftEngineUnavailable, type TokenAlignment } from '@/lib/softEngines';
 import { OOV_MAPPING_ENABLED, OOV_THRESHOLD, isUnknownWord, nearestAromaLemmas, type OovMapping } from '@/lib/oovMapping';
 
@@ -194,13 +195,13 @@ export async function listStyleCategories(): Promise<{ categories: string[]; ena
 export async function getScoringBreakdown(
   userNote: string,
   wineNote: string,
-  options: { engines?: SoftEngineId[]; category?: string | null; styleWeights?: boolean } = {}
+  options: { engines?: SoftEngineId[]; category?: string | null; styleWeights?: boolean; hybridSoft?: boolean } = {}
 ): Promise<ScoringBreakdown> {
   const user = applyNegation(userNote);
   const wine = applyNegation(wineNote);
   const userProcessed = normalizeWineSynonyms(sanitizeText(user.text));
   const wineProcessed = normalizeWineSynonyms(sanitizeText(wine.text));
-  const scoring: ScoringOptions = { category: normalizeCategory(options.category), styleWeights: options.styleWeights ?? STYLE_WEIGHTS_ENABLED };
+  const scoring: ScoringOptions = { category: normalizeCategory(options.category), styleWeights: options.styleWeights ?? STYLE_WEIGHTS_ENABLED, hybridSoft: options.hybridSoft ?? SOFT_HYBRID_ENABLED };
 
   const [flavour, userMap, wineMap] = await Promise.all([
     scoreFlavourNote(userNote, wineNote, scoring),
@@ -218,8 +219,9 @@ export async function getScoringBreakdown(
       if (!a.ok) return { engine: id, model: engine.model, available: false, reason: a.reason ?? 'ukjent årsak' };
       try {
         const result = await engine.score({ raw: user.text, norm: userProcessed }, { raw: wine.text, norm: wineProcessed });
-        const combinedScore = lexical ? combineScoreScaled(lexical, result.softScore, true).score : 0;
-        return { ...result, available: true, combinedScore, delta: combinedScore - flavour.score };
+        const softScore = lexical && scoring.hybridSoft ? hybridSoftScore(result, lexical) : result.softScore;
+        const combinedScore = lexical ? combineScoreScaled(lexical, softScore, true).score : 0;
+        return { ...result, softScore, available: true, combinedScore, delta: combinedScore - flavour.score };
       } catch (e) {
         return { engine: id, model: engine.model, available: false, reason: e instanceof Error ? e.message : String(e) };
       }
