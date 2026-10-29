@@ -1,6 +1,6 @@
 # Human agreement — 2026-10-29
 
-Frozen set `scripts/validation-results/frozen-set-2026-10.json` (236 fields, 8 tasters); 232 fields with a stored score; commit `7e82fae`.
+Frozen set `scripts/validation-results/frozen-set-2026-10.json` (236 fields, 8 tasters); 232 fields with a stored score; commit `83276cf`.
 
 ## Stored score vs recomputed now
 
@@ -28,9 +28,9 @@ Previous-engine scores exist for 148 fields; Spearman(previous, current) on thos
 
 | rater A | rater B | fields both rated | Spearman | weighted kappa |
 | --- | --- | --- | --- | --- |
-| kristian | llm-gpt-4.1-mini | 149 | 0.396 | 0.388 |
-| kristian | llm-gpt-4o-mini | 149 | 0.389 | 0.327 |
-| kristian | llm-gpt-4o | 149 | 0.476 | 0.472 |
+| kristian | llm-gpt-4.1-mini | 149 | 0.437 | 0.446 |
+| kristian | llm-gpt-4o-mini | 149 | 0.407 | 0.323 |
+| kristian | llm-gpt-4o | 149 | 0.497 | 0.516 |
 | llm-gpt-4.1-mini | llm-gpt-4o-mini | 236 | 0.685 | 0.363 |
 | llm-gpt-4.1-mini | llm-gpt-4o | 236 | 0.728 | 0.743 |
 | llm-gpt-4o-mini | llm-gpt-4o | 236 | 0.719 | 0.477 |
@@ -39,9 +39,9 @@ Previous-engine scores exist for 148 fields; Spearman(previous, current) on thos
 
 | scorer | Spearman | bootstrap 95% |
 | --- | --- | --- |
-| stored score | 0.625 | 0.535 – 0.691 |
-| current engine (recomputed) | 0.633 | 0.549 – 0.695 |
-| lexical half only (soft = 0) | 0.640 | 0.544 – 0.707 |
-| direct-hit count | 0.651 | 0.577 – 0.733 |
+| stored score | 0.637 | 0.550 – 0.703 |
+| current engine (recomputed) | 0.645 | 0.564 – 0.709 |
+| lexical half only (soft = 0) | 0.652 | 0.560 – 0.721 |
+| direct-hit count | 0.654 | 0.580 – 0.742 |
 
 The current engine must beat the lexical-only and direct-hit rows by more than the interval width for the soft term to be earning its weight. A new engine must beat the current one the same way.
