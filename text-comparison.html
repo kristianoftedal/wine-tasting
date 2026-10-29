@@ -1141,6 +1141,164 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
+  30a  BERT in one slide
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s30a">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application · BERT &amp; ColBERT</div>
+  <h2>BERT: A Word Read in Its Sentence</h2>
+  <p>BERT is a transformer <span class="cv">encoder</span>. It is trained by hiding words in ordinary text and predicting them from the words on <em>both</em> sides. What it learns is not a dictionary but a way of reading: every word comes out as a vector shaped by the sentence around it.</p>
+  <div class="two-col" style="margin-top:12px;align-items:start;">
+    <div>
+      <div class="code">"preg av <span style="color:#fbbf24;">hvit pepper</span>"<br>→ pepper ≈ [white, Grüner, mineral …]<br><br>"<span style="color:#86efac;">sort pepper</span> og mørke bær"<br>→ pepper ≈ [black, Syrah, spice …]</div>
+      <div class="card" style="margin-top:12px;">
+        <h3>What that changes here</h3>
+        <p style="font-size:0.9rem;">The production soft term embeds each descriptor <strong>alone</strong>: "pepper" is the same vector in every note. BERT reads the whole note first, so modifiers the stopword list throws away ("hvit", "sort", "moden") still shape the word's vector.</p>
+      </div>
+    </div>
+    <div>
+      <div class="card accent">
+        <h3>NorBERT3 — the Norwegian one</h3>
+        <ul>
+          <li>Trained on Norwegian text by the Language Technology Group, University of Oslo</li>
+          <li>123 M parameters; the last layer gives a 768-number vector per subword</li>
+          <li>Run here as an int8 ONNX graph under Node — no Python, no service, ~10 ms per note pair</li>
+        </ul>
+      </div>
+      <div class="card yellow" style="margin-top:12px;">
+        <h3>What it does not know</h3>
+        <p style="font-size:0.9rem;">Wine chemistry. That "fat" implies "vanilje" is a causal fact about oak, not a pattern in Norwegian prose, so the derivation map stays hand-written whichever model reads the note.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  30b  ColBERT in one slide
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s30b">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application · BERT &amp; ColBERT</div>
+  <h2>ColBERT: Keep Every Token, Match Late</h2>
+  <p>A sentence embedding squeezes a text into one vector and compares the two blobs. ColBERT is BERT fine-tuned for search that <span class="cv">keeps one small vector per token</span> and compares texts token by token: for every word of the query, find its best match in the document, then add those up. The matching happens <em>after</em> encoding, hence "late interaction".</p>
+  <div class="eq" style="margin-top:12px;">
+    <span class="eq-var">MaxSim</span>(query, doc) <span class="eq-op">=</span> Σ<sub>q ∈ query</sub> max<sub>d ∈ doc</sub> cos(<span class="eq-var">q</span>, <span class="eq-var">d</span>)
+  </div>
+  <div class="two-col" style="margin-top:10px;align-items:start;">
+    <div class="card green">
+      <h3>Why it fits this problem</h3>
+      <p style="font-size:0.9rem;">Look at the formula next to the scoring loop from the previous slides: <em>for each word the taster wrote, the best match in the reference</em>. That is the same operation. ColBERT's vectors are trained so that exactly this max means "these match" — the production engine borrows the loop and applies it to vectors trained for something else.</p>
+    </div>
+    <div>
+      <div class="card accent">
+        <h3>mLateOn — the multilingual one</h3>
+        <ul>
+          <li>By LightOn, on mmBERT-base; trained on nine languages including Norwegian; Apache 2.0</li>
+          <li>128 numbers per token; the projection and normalisation are inside the ONNX graph</li>
+          <li>Taster note as the <span class="cb">[Q]</span>uery, Vinmonopolet note as the <span class="cb">[D]</span>ocument</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h3>Two ways to read it</h3>
+        <p style="font-size:0.88rem;"><span class="cv">colbert-token</span>: late interaction per subword, averaged within each word — the operation it was trained on. <span class="cv">colbert-word</span>: pool the subwords into one vector per word first, then the usual word-level MaxSim. Both ran.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  30c  How they were wired in
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s30c">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application · BERT &amp; ColBERT</div>
+  <h2>How They Were Wired In</h2>
+  <p style="font-size:1rem;color:#8888aa;">Neither model touches the credit ladder, the derivation map or the formula. They are alternative suppliers of one number, the soft term, behind one interface that production, the benchmark and the demo page all share.</p>
+  <div class="pipeline">
+    <div class="pipe-step">Note<div class="sub">negation applied, stopwords kept</div></div><div class="pipe-arr">→</div>
+    <div class="pipe-step">Tokenise once<div class="sub">word spans from Ġ / ▁ markers</div></div><div class="pipe-arr">→</div>
+    <div class="pipe-step">Forward pass<div class="sub">int8 ONNX, ~10 ms</div></div><div class="pipe-arr">→</div>
+    <div class="pipe-step">Centre<div class="sub">subtract corpus mean</div></div><div class="pipe-arr">→</div>
+    <div class="pipe-step">MaxSim precision<div class="sub">taster words only, idf-weighted</div></div><div class="pipe-arr">→</div>
+    <div class="pipe-step">Rescale<div class="sub">(raw − floor) / (1 − floor)</div></div><div class="pipe-arr">→</div>
+    <div class="pipe-step">0–100<div class="sub">into the same formula</div></div>
+  </div>
+  <div class="two-col" style="margin-top:8px;align-items:start;">
+    <div class="card yellow">
+      <h3>Surprise 1 — word boundaries</h3>
+      <p style="font-size:0.88rem;">The obvious way to know which subwords belong to which word is to tokenise word by word and concatenate. Measured on 200 real notes it matched whole-text tokenisation in <strong>1.5%</strong> of them for NorBERT and <strong>0%</strong> for mLateOn: a word at the start of a text tokenises differently from the same word mid-sentence, and a stray space token every word then shared made ColBERT read ~0.98 for unrelated words. Fix: tokenise the whole note once, recover spans from the tokenizer's own word-start markers. 100% agreement.</p>
+    </div>
+    <div class="card yellow">
+      <h3>Surprise 2 — the cone, again</h3>
+      <p style="font-size:0.88rem;">mLateOn's mean token vector has norm <strong>0.978</strong>; 1.0 would mean every vector is identical. Before centring, any two descriptor words scored 0.89–0.94, matched or not. The same anisotropy the production engine removes from OpenAI vectors (0.46 → 0.00 for unrelated notes), only stronger. After centring, a measured floor per reference length puts "unrelated" at 0 for every engine.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  30d  What was measured
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s30d">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application · BERT &amp; ColBERT</div>
+  <h2>Same Benchmark, Four Engines</h2>
+  <p style="font-size:0.95rem;color:#8888aa;">236 real note fields from the frozen evaluation set, 100 random wines as distractors, seeded and reproducible. Only the soft term differs between rows.</p>
+  <table style="margin-top:10px;font-size:0.88rem;">
+    <tr><th>soft term</th><th>+HIT</th><th>+WRONG</th><th>MISS</th><th>r(len)</th><th>d</th><th>top-1</th><th>vs LLM panel</th><th>constructed set</th></tr>
+    <tr><td><span class="cg">OpenAI tokens</span> (in production)</td><td style="color:#86efac;">+12.6</td><td style="color:#86efac;">−3.2</td><td>+3.5</td><td style="color:#86efac;">0.26</td><td style="color:#86efac;">1.19</td><td style="color:#86efac;">18%</td><td>0.66</td><td>0.70</td></tr>
+    <tr><td>NorBERT3</td><td>+9.9</td><td>−0.9</td><td style="color:#86efac;">+2.0</td><td>0.35</td><td>0.92</td><td>10%</td><td>0.71</td><td>0.75</td></tr>
+    <tr><td>mLateOn, word-pooled</td><td>+9.5</td><td>−1.2</td><td style="color:#86efac;">+2.1</td><td>0.31</td><td>0.94</td><td>12%</td><td style="color:#86efac;">0.71</td><td style="color:#86efac;">0.78</td></tr>
+    <tr><td>mLateOn, late interaction</td><td>+9.6</td><td>−1.2</td><td style="color:#86efac;">+1.8</td><td>0.32</td><td>0.94</td><td>12%</td><td style="color:#86efac;">0.71</td><td>0.77</td></tr>
+  </table>
+  <div class="two-col" style="margin-top:14px;align-items:start;">
+    <div class="card accent">
+      <h3>Properties: OpenAI wins, clearly</h3>
+      <p style="font-size:0.88rem;">A correct descriptor earns more, a wrong one costs more, the real wine stands out further from random ones. The local engines win only on MISS. Decision: the production engine stays.</p>
+    </div>
+    <div class="card green">
+      <h3>Validity: a lean the other way, inside the noise</h3>
+      <p style="font-size:0.88rem;">Against three language models rating with the human rubric, and on notes with ratings known by construction, the local engines score a little higher. And the full engine, the lexical half alone and a bare direct-hit count all agree with the panel equally (0.62): on four-word notes the dictionary decides, whichever vectors sit behind it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+  30e  What the local models buy
+════════════════════════════════════════════════════════════ -->
+<div class="slide s-arch" id="s30e">
+  <div class="tag" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6ee7b7;">Application · BERT &amp; ColBERT</div>
+  <h2>What BERT and ColBERT Buy This Project</h2>
+  <div class="three-col" style="margin-top:6px;align-items:start;">
+    <div class="card green">
+      <h3>Owned, not rented</h3>
+      <ul>
+        <li>No API key, no per-call cost, no network in the scoring path</li>
+        <li>Deterministic and versioned: the benchmark reproduces byte for byte, offline</li>
+        <li>Notes never leave the server</li>
+        <li>~10 ms per pair on a CPU; 142 MB and 347 MB on disk</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>Reads, not looks up</h3>
+      <ul>
+        <li>Modifiers survive: "hvit pepper" is not "pepper"</li>
+        <li>Late interaction found <span class="cg">brioche → bakverk</span>, which neither isolated-token engine does</li>
+        <li>Best separation of true pairs on the shortest references (1–3 words), where most Vinmonopolet notes live</li>
+        <li>Norwegian-trained, so "krekling" and "tyttebær" are words, not byte soup</li>
+      </ul>
+    </div>
+    <div class="card pink">
+      <h3>A road that exists</h3>
+      <ul>
+        <li>mLateOn is open weights: it can be <strong>fine-tuned on this app's own credit ladder</strong>, teaching MaxSim what "correct" means for wine — OpenAI's embeddings cannot be</li>
+        <li>Shadow mode is wired: <span class="cb">SOFT_ENGINE_SHADOW</span> logs a second engine's score on every new tasting without changing anything</li>
+        <li>The demo page shows all four engines side by side, word by word</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card yellow" style="margin-top:14px;">
+    <h3>And what they cost today</h3>
+    <p style="font-size:0.9rem;">They lost the property gate, and they weigh 350 MB on a serverless cold start. So they ship as an option behind a flag, with the measurements beside them, not as the default. The interface they forced into existence is the lasting gain: the next engine, fine-tuned or not, plugs in without touching the scorer.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
   31  Summary table
 ════════════════════════════════════════════════════════════ -->
 <div class="slide" id="s31">
@@ -1163,6 +1321,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <tr><td>Highest accuracy reranking</td><td>Cross-encoder</td><td style="color:#86efac;">Best</td><td style="color:#86efac;">Yes</td><td style="color:#ef4444;">Slow</td></tr>
     <tr><td>Domain vocabulary scoring</td><td>IDF-weighted lemma + Semantic</td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Yes</td><td style="color:#fbbf24;">Medium</td></tr>
     <tr><td>Asymmetric skill scoring<br><span style="font-size:0.8rem;color:#6b6b88;">reward hits, ignore omissions</span></td><td>Directional MaxSim + credit ladder<br><span style="font-size:0.8rem;color:#6b6b88;">+ domain derivation map</span></td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Fast<span style="font-size:0.8rem;color:#6b6b88;"> (cached)</span></td></tr>
+    <tr><td>Same, offline and contextual<br><span style="font-size:0.8rem;color:#6b6b88;">measured, kept behind a flag</span></td><td>NorBERT3 / mLateOn ColBERT soft term<br><span style="font-size:0.8rem;color:#6b6b88;">centred, floor-rescaled, same ladder</span></td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Yes</td><td style="color:#86efac;">Fast<span style="font-size:0.8rem;color:#6b6b88;"> (~10 ms, CPU)</span></td></tr>
   </table>
 </div>
 
