@@ -1,11 +1,12 @@
 # Soft-engine calibration — 2026-10-29
 
-Commit `0c08650`; frozen set `scripts/validation-results/frozen-set-2026-10.json` (236 fields); 400 calibration wines (catalogue ids 3000–3399, none tasted).
+Commit `42ac7d7`; frozen set `scripts/validation-results/frozen-set-2026-10.json` (236 fields); 400 calibration wines (catalogue ids 3000–3399, none tasted).
 
 ## Centring
 
 | family | model | vectors | dims | ‖mean‖ (0 = isotropic, 1 = collapsed) |
 | --- | --- | --- | --- | --- |
+| cooc | catalogue co-occurrence PPMI+SVD (53901 wines, df ≥ 5, α 0.75) | 3519 | 128 | 0.462 |
 
 ## MaxSim floor per reference-length bucket (centred vectors)
 
@@ -13,11 +14,8 @@ Random pairs: every taster note against each calibration wine's note of the same
 
 | engine | bucket | random pairs | b = mean random | sd random | true pairs | mean true | separation | exact-match level (top) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| colbert-table | 1-3 | 50805 | 0.099 | 0.132 | 41 | 0.165 | 0.49 | 0.682 (n=223) |
-| colbert-table | 4-6 | 30245 | 0.209 | 0.134 | 111 | 0.357 | 1.11 | 0.682 (n=223) |
-| colbert-table | 7-10 | 5570 | 0.267 | 0.139 | 72 | 0.427 | 1.15 | 0.682 (n=223) |
-| colbert-tuned | 1-3 | 50805 | 0.091 | 0.165 | 41 | 0.147 | 0.34 | 0.716 (n=222) |
-| colbert-tuned | 4-6 | 30245 | 0.238 | 0.138 | 111 | 0.387 | 1.08 | 0.716 (n=222) |
-| colbert-tuned | 7-10 | 5570 | 0.313 | 0.132 | 72 | 0.475 | 1.23 | 0.716 (n=222) |
+| cooc | 1-3 | 50805 | 0.135 | 0.270 | 41 | 0.278 | 0.53 | 1.000 (n=223) |
+| cooc | 4-6 | 30245 | 0.281 | 0.266 | 111 | 0.556 | 1.03 | 1.000 (n=223) |
+| cooc | 7-10 | 5570 | 0.390 | 0.263 | 72 | 0.636 | 0.94 | 1.000 (n=223) |
 
 The OpenAI engine is listed for comparison only; it centres instead of rescaling and ignores this file.

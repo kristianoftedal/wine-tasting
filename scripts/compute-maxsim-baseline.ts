@@ -34,6 +34,7 @@ import { applyNegation } from '../src/lib/negation';
 import { getSoftEngineById, isSoftEngineId, type NoteInput, type SoftEngineId } from '../src/lib/softEngines';
 import { bertCalibration, bertIsoCalibration } from '../src/lib/softEngines/bert';
 import { colbertCalibration, colbertIsoCalibration } from '../src/lib/softEngines/colbert';
+import { coocCalibration } from '../src/lib/softEngines/colbertTable';
 import { BASELINE_BUCKETS, bucketFor, type BaselineBucket } from '../src/lib/softEngines/baseline';
 import { contentWords } from '../src/lib/softEngines/maxsim';
 import { mean, sd } from '../src/lib/stats';
@@ -73,10 +74,11 @@ async function main() {
   ])].map(input);
 
   // ── step 1: corpus means ─────────────────────────────────────────────────
-  const families: Array<{ key: 'bert' | 'bert-iso' | 'colbert' | 'colbert-iso'; engine: SoftEngineId; model: string; collect: (n: NoteInput) => Promise<Float32Array[]>; set: (m: Float32Array | null) => void }> = [];
+  const families: Array<{ key: 'bert' | 'bert-iso' | 'colbert' | 'colbert-iso' | 'cooc'; engine: SoftEngineId; model: string; collect: (n: NoteInput) => Promise<Float32Array[]>; set: (m: Float32Array | null) => void }> = [];
   if (ENGINE_IDS.includes('bert')) families.push({ key: 'bert', engine: 'bert', model: getSoftEngineById('bert').model, collect: n => bertCalibration.contentVectors(n), set: m => bertCalibration.setMean(m) });
   if (ENGINE_IDS.includes('bert-iso')) families.push({ key: 'bert-iso', engine: 'bert-iso', model: getSoftEngineById('bert-iso').model, collect: n => bertIsoCalibration.contentVectors(n), set: m => bertIsoCalibration.setMean(m) });
   if (ENGINE_IDS.some(id => id === 'colbert-word' || id === 'colbert-token')) families.push({ key: 'colbert', engine: 'colbert-word', model: getSoftEngineById('colbert-word').model, collect: n => colbertCalibration.tokenVectors(n), set: m => colbertCalibration.setMean(m) });
+  if (ENGINE_IDS.includes('cooc')) families.push({ key: 'cooc', engine: 'cooc', model: getSoftEngineById('cooc').model, collect: n => coocCalibration.contentVectors(n), set: m => coocCalibration.setMean(m) });
   if (ENGINE_IDS.includes('colbert-iso')) families.push({ key: 'colbert-iso', engine: 'colbert-iso', model: getSoftEngineById('colbert-iso').model, collect: n => colbertIsoCalibration.tokenVectors(n), set: m => colbertIsoCalibration.setMean(m) });
 
   log('## Centring');

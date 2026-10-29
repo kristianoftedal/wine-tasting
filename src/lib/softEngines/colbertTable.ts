@@ -4,6 +4,7 @@ import { centered, loadMean, noteWords } from './words';
 import type { NoteInput, SoftEngine, SoftEngineId, SoftResult } from './types';
 import tableRaw from './colbert-table.generated.json';
 import projectionRaw from './colbert-projection.generated.json';
+import coocRaw from './cooc-table.generated.json';
 
 /**
  * mLateOn as a lookup table: no model at runtime.
@@ -28,6 +29,7 @@ type TableFile = { meta: { model?: string; dimensions?: number; words?: number; 
 type ProjectionFile = { dimensions?: number; matrix?: string; trainedAt?: string; pairs?: number; fit?: Record<string, number> };
 
 const TABLE = tableRaw as TableFile;
+const COOC = coocRaw as TableFile;
 const PROJECTION = projectionRaw as unknown as ProjectionFile;
 const DIM = TABLE.meta.dimensions ?? 128;
 
@@ -37,11 +39,11 @@ const decode = (b64: string): Float32Array => {
 };
 
 const vectorCache = new Map<string, Float32Array>();
-function tableVector(word: string, side: 'q' | 'd'): Float32Array | null {
-  const key = `${side}\u0000${word}`;
+function tableVector(table: TableFile, word: string, side: 'q' | 'd'): Float32Array | null {
+  const key = `${table === COOC ? 'c' : 't'}${side}\u0000${word}`;
   const hit = vectorCache.get(key);
   if (hit) return hit;
-  const entry = TABLE.words[word];
+  const entry = table.words[word];
   if (!entry) return null;
   const vec = decode(entry[side]);
   vectorCache.set(key, vec);
@@ -73,29 +75,47 @@ export const colbertTableCalibration = {
   setMean(mean: Float32Array | null) { this.mean = mean; },
 };
 
+/**
+ * Catalogue co-occurrence vectors (scripts/build-cooc-vectors.ts): which
+ * descriptors are written about the same wines, PPMI + SVD over 59 423
+ * notes. Not synonymy but association — vanilje sits by sjokolade and
+ * kaffe, tjære by steinsopp and trøfler — which is the "what the wine
+ * plausibly shows" judgement the human rater makes and no dictionary holds.
+ */
+export const coocCalibration = {
+  mean: loadMean('cooc'),
+  setMean(mean: Float32Array | null) { this.mean = mean; },
+  /** Uncentred vector per content word, for the calibration script. */
+  async contentVectors(note: NoteInput): Promise<Float32Array[]> {
+    return noteWords(note).filter(x => x.content).flatMap(x => { const v = tableVector(COOC, x.key, 'q'); return v ? [v] : []; });
+  },
+};
+
 export const TABLE_META = { ...TABLE.meta, size: Object.keys(TABLE.words).length, projection: PROJECTION.matrix ? { trainedAt: PROJECTION.trainedAt, pairs: PROJECTION.pairs, fit: PROJECTION.fit } : null };
 
-function makeEngine(id: Extract<SoftEngineId, 'colbert-table' | 'colbert-tuned'>): SoftEngine {
+function makeEngine(id: Extract<SoftEngineId, 'colbert-table' | 'colbert-tuned' | 'cooc'>): SoftEngine {
   const tuned = id === 'colbert-tuned';
+  const table = id === 'cooc' ? COOC : TABLE;
+  const calibration = id === 'cooc' ? coocCalibration : colbertTableCalibration;
   const engine: SoftEngine = {
     id,
-    model: `${TABLE.meta.model ?? 'lightonai/mLateOn'} table${tuned ? ' + projection' : ''}`,
+    model: id === 'cooc' ? (COOC.meta.model ?? 'catalogue co-occurrence') : `${TABLE.meta.model ?? 'lightonai/mLateOn'} table${tuned ? ' + projection' : ''}`,
 
     async available() {
-      if (!Object.keys(TABLE.words).length) return { ok: false, reason: 'tabellen er tom (kjør scripts/build-colbert-table.ts)' };
+      if (!Object.keys(table.words).length) return { ok: false, reason: id === 'cooc' ? 'tabellen er tom (kjør scripts/build-cooc-vectors.ts)' : 'tabellen er tom (kjør scripts/build-colbert-table.ts)' };
       if (tuned && !projectionMatrix()) return { ok: false, reason: 'ingen projeksjon (kjør scripts/train-soft-projection.ts)' };
       return { ok: true };
     },
 
     async score(user: NoteInput, reference: NoteInput): Promise<SoftResult> {
       const started = performance.now();
-      const mean = colbertTableCalibration.mean;
+      const mean = calibration.mean;
       const w = tuned ? projectionMatrix() : null;
       const vectorsOf = (note: NoteInput, side: 'q' | 'd'): { list: WordVector[]; count: number } => {
         const words = noteWords(note).filter(x => x.content);
         const list: WordVector[] = [];
         for (const x of words) {
-          const raw = tableVector(x.key, side);
+          const raw = tableVector(table, x.key, side);
           if (!raw) continue;
           const c = centered(raw, mean);
           list.push({ word: x.key, vec: w ? project(c, w) : c });
@@ -121,3 +141,4 @@ function makeEngine(id: Extract<SoftEngineId, 'colbert-table' | 'colbert-tuned'>
 
 export const colbertTableEngine = makeEngine('colbert-table');
 export const colbertTunedEngine = makeEngine('colbert-tuned');
+export const coocEngine = makeEngine('cooc');

@@ -48,7 +48,7 @@ function main() {
   ];
 
   const header = ['key', 'event', 'wine', 'field', 'taster', 'user_note', 'reference_note', 'stored_score', 'score_previous_engine_aug_2026', 'rating_kristian', 'rating_llm_panel',
-    'score_openai', 'score_bert', 'score_bert_iso', 'score_colbert_word', 'score_colbert_token', 'score_colbert_iso', 'score_colbert_table', 'score_colbert_tuned',
+    'score_openai', 'score_bert', 'score_bert_iso', 'score_colbert_word', 'score_colbert_token', 'score_colbert_iso', 'score_colbert_table', 'score_colbert_tuned', 'score_cooc', 'score_openai_cooc',
     ...VARIANTS.map(v => v.column),
     'reason_ladder', 'reason_soft_openai', 'reason_soft_bert', 'reason_soft_colbert', 'why_engines_differ'];
   const rows: string[] = [header.join(';')];
@@ -119,7 +119,7 @@ function main() {
     rows.push([
       f.key, f.event?.name ?? '', `${f.wine.name}${f.wine.year ? ` ${f.wine.year}` : ''}`, f.field, f.taster, f.userNote, f.referenceNote,
       f.storedScore ?? '', f.previousScore ?? '', human?.get(f.key) ?? '', p.length ? mean(p).toFixed(1) : '',
-      o?.score ?? '', x?.scores.bert?.score ?? '', x?.scores['bert-iso']?.score ?? '', x?.scores['colbert-word']?.score ?? '', x?.scores['colbert-token']?.score ?? '', x?.scores['colbert-iso']?.score ?? '', x?.scores['colbert-table']?.score ?? '', x?.scores['colbert-tuned']?.score ?? '',
+      o?.score ?? '', x?.scores.bert?.score ?? '', x?.scores['bert-iso']?.score ?? '', x?.scores['colbert-word']?.score ?? '', x?.scores['colbert-token']?.score ?? '', x?.scores['colbert-iso']?.score ?? '', x?.scores['colbert-table']?.score ?? '', x?.scores['colbert-tuned']?.score ?? '', x?.scores.cooc?.score ?? '', x?.scores['openai+cooc']?.score ?? '',
       ...variantScores,
       ladder, soft('openai'), soft('bert'), soft('colbert-token'), why,
     ].map(q).join(';'));

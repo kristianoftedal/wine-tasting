@@ -13,10 +13,10 @@
  * well. The alignments are what a reviewer looks at when two engines disagree.
  */
 
-export type SoftEngineId = 'openai' | 'bert' | 'bert-iso' | 'colbert-word' | 'colbert-token' | 'colbert-iso' | 'colbert-table' | 'colbert-tuned';
+export type SoftEngineId = 'openai' | 'bert' | 'bert-iso' | 'colbert-word' | 'colbert-token' | 'colbert-iso' | 'colbert-table' | 'colbert-tuned' | 'cooc' | 'openai+cooc';
 
 /** `-iso` variants encode each content word on its own, as the OpenAI engine does, instead of the whole note. */
-export const SOFT_ENGINE_IDS: readonly SoftEngineId[] = ['openai', 'bert', 'bert-iso', 'colbert-word', 'colbert-token', 'colbert-iso', 'colbert-table', 'colbert-tuned'];
+export const SOFT_ENGINE_IDS: readonly SoftEngineId[] = ['openai', 'bert', 'bert-iso', 'colbert-word', 'colbert-token', 'colbert-iso', 'colbert-table', 'colbert-tuned', 'cooc', 'openai+cooc'];
 
 export type TokenAlignment = {
   /** The user's content word (after sanitising and synonym normalisation). */
