@@ -103,7 +103,15 @@ export const HYPERNYMS: Record<string, { main: string; sub?: string }> = {
   sitrus: { main: 'Frukt og bær', sub: 'sitrus' },
   steinfrukt: { main: 'Frukt og bær', sub: 'steinfrukt' },
   kjernefrukt: { main: 'Frukt og bær' },
-  krydder: { main: 'Krydder' },
+  // `krydder` deliberately absent. A reference saying "krydder" licensed any
+  // named spice as a near-direct hit (0.85), and "pepper" was the single most
+  // frequent specific match on the tasting corpus. Measured against 149
+  // human ratings (29 Oct 2026): those fields averaged 2.4 of 4, and removing
+  // this one licensing word was the only ladder change that raised agreement
+  // with the rater for both soft engines (0.569 -> 0.599 and 0.616 -> 0.624)
+  // with the property benchmark unchanged. Nearly every red shows some
+  // spice, so naming one identifies nothing; pepper against "krydder" now
+  // earns category credit (0.3) like any other same-branch near miss.
   urt: { main: 'Urter' },
   blomst: { main: 'Blomst' },
   nøtt: { main: 'Nøtter' },
