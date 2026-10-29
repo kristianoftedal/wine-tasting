@@ -19,7 +19,7 @@ import { STYLE_WEIGHTS_ENABLED } from './scoringConfig';
 const globalIdf = idfRaw as Record<string, number>;
 
 /** Per-call scoring context: the wine's style, and whether to weight by it. */
-export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number; /** Ladder-credited words count as full soft matches (src/lib/softEngines/hybrid.ts). */ hybridSoft?: boolean; /** Tuning overrides for the `specific` tier: its credit, and category words that must not license it. */ specificCredit?: number; hypernymExclude?: readonly string[] };
+export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number; /** Ladder-credited words count as full soft matches (src/lib/softEngines/hybrid.ts). */ hybridSoft?: boolean; /** Tuning overrides for the `specific` tier: its credit, and category words that must not license it. */ specificCredit?: number; hypernymExclude?: readonly string[]; /** Tuning overrides for the combine constants (scripts/tune-combine-constants.ts). */ tau?: number; hitWeight?: number; precisionFloor?: number; /** Extra derivation edges under test (scripts/measure-options.ts). */ extraDerivations?: Record<string, readonly string[]>; /** Leave structural (GENERIC) words out of the ladder entirely; under test. */ ignoreGeneric?: boolean };
 import {
   CREDIT_CATEGORY,
   CREDIT_DERIVED,
@@ -115,6 +115,7 @@ export function lemmasWithWeight(text: string, options: ScoringOptions = {}): Ma
   for (const item of data.lemmatized) {
     if (item.category === 'ukjent') continue;
     const path = (norwegianLemmas[item.original] ?? norwegianLemmas[item.lemma])?.categoryPath;
+    if (options.ignoreGeneric && (!path?.main || path.main === 'GENERIC')) continue;
     let weight = item.weight;
     if (useStyle && path?.main && path.main !== 'GENERIC') {
       // item.weight is profile × global idf; swap the global multiplier for
@@ -153,6 +154,7 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
 
   const referenceLemmas = new Set(reference.keys());
   const derived = derivedFrom(referenceLemmas);
+  if (options.extraDerivations) for (const l of referenceLemmas) for (const d of options.extraDerivations[l] ?? []) derived.add(d);
   const specificCredit = options.specificCredit ?? CREDIT_SPECIFIC;
   const licensing = options.hypernymExclude?.length
     ? new Set([...referenceLemmas].filter(l => !options.hypernymExclude!.includes(l)))
@@ -202,7 +204,7 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
     hitMass,
     userMass,
     precision: userMass > 0 ? hitMass / userMass : 0,
-    hitScore: 100 * (1 - Math.exp(-hitMass / SATURATION_TAU)),
+    hitScore: 100 * (1 - Math.exp(-hitMass / (options.tau ?? SATURATION_TAU))),
     matches,
   };
 }
@@ -214,10 +216,13 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
  * and `SOFT_SCALE` for OpenAI, a measured baseline for the others) is the
  * engine's business, not this function's.
  */
-export function combineScoreScaled(lexical: LexicalCredit, softScore: number, scoreable = true): FlavourScoreBreakdown {
+export function combineScoreScaled(lexical: LexicalCredit, softScore: number, scoreable = true, options: ScoringOptions = {}): FlavourScoreBreakdown {
   const soft = Math.max(0, Math.min(100, softScore));
-  const blended = HIT_WEIGHT * lexical.hitScore + SOFT_WEIGHT * soft;
-  const precisionFactor = PRECISION_FLOOR + (1 - PRECISION_FLOOR) * lexical.precision;
+  const hitWeight = options.hitWeight ?? HIT_WEIGHT;
+  const softWeight = options.hitWeight !== undefined ? 1 - options.hitWeight : SOFT_WEIGHT;
+  const floor = options.precisionFloor ?? PRECISION_FLOOR;
+  const blended = hitWeight * lexical.hitScore + softWeight * soft;
+  const precisionFactor = floor + (1 - floor) * lexical.precision;
   const score = Math.round(Math.max(0, Math.min(100, blended * precisionFactor)));
   return { ...lexical, softScore: soft, score, scoreable };
 }

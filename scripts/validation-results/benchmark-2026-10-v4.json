@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "date": "2026-10-29T13:56:08.078Z",
+    "commit": "70e790c",
+    "source": "scripts/validation-results/frozen-set-2026-10.json (236 fields)",
+    "cases": 236,
+    "distractors": 100,
+    "engines": [
+      "openai"
+    ],
+    "styleWeights": false,
+    "hybridSoft": false,
+    "hypernymExclude": [],
+    "combine": {}
+  },
+  "rows": [
+    {
+      "scorer": "previous (recall=ON)",
+      "base": 62.23728813559322,
+      "hit": 11.470338983050848,
+      "wrong": 0.8177966101694916,
+      "neg": 0,
+      "miss": -0.2627118644067797,
+      "rLen": 0.40110976568689566,
+      "d": 0.5913032549324058,
+      "top1": 10.59322033898305,
+      "ms": 422.51387499999964
+    },
+    {
+      "scorer": "current + openai",
+      "base": 56.097457627118644,
+      "hit": 12.788135593220339,
+      "wrong": -3.139830508474576,
+      "neg": 0,
+      "miss": 3.9364406779661016,
+      "rLen": 0.2846510592180966,
+      "d": 1.2231534154602008,
+      "top1": 19.915254237288135,
+      "ms": 852.4921249999998
+    }
+  ]
+}

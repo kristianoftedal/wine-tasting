@@ -53,10 +53,18 @@ export const DERIVATIONS: Record<string, readonly string[]> = {
   fløte: ['smør', 'meieri'],
 
   // ── Lees contact / autolysis ─────────────────────────────────────────────
-  gjær: ['brioche', 'kjeks', 'bakverk', 'nøtt', 'mandel', 'brød'],
+  gjær: ['brioche', 'kjeks', 'bakverk', 'nøtt', 'mandel', 'brød', 'smør'],
   gjærbakst: ['brioche', 'kjeks', 'bakverk', 'nøtt', 'mandel', 'brød', 'gjær'],
-  bakverk: ['brioche', 'kjeks', 'gjær', 'brød'],
-  brioche: ['gjær', 'bakverk', 'kjeks'],
+  // Lees autolysis gives biscuit, brioche, nutty and buttery notes together,
+  // and the Vinmonopolet house style names one of them. Measured on the
+  // tasting corpus (29 Oct 2026): "nøtt" was the most frequent uncredited
+  // word in notes the human rater scored 3 or 4, nearly always on a
+  // champagne whose reference said kjeks, bakverk or brioche; adding these
+  // edges moved agreement with the rater 0.599 -> 0.622 with the panel and
+  // the constructed set unchanged.
+  bakverk: ['brioche', 'kjeks', 'gjær', 'brød', 'nøtt', 'mandel', 'smør'],
+  brioche: ['gjær', 'bakverk', 'kjeks', 'nøtt', 'mandel', 'smør'],
+  kjeks: ['nøtt', 'mandel', 'smør', 'brioche', 'bakverk', 'gjær'],
 
   // ── Bottle age / tertiary development ────────────────────────────────────
   // Deliberately keyed on explicit age markers, never on "moden" (= ripe, not aged).

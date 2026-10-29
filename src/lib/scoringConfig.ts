@@ -58,7 +58,7 @@ export const EMBEDDING_MODEL = 'text-embedding-3-small';
  * the number a taster sees would change for the same note: a new soft engine,
  * a constant below, a dictionary change that moves scores.
  */
-export const SCORER_VERSION = 'directional-3:text-embedding-3-small'; // 2: synonym map grew (brioch, toasty, bakt, autolyse); 3: krydder no longer licenses specific credit — 29 Oct 2026
+export const SCORER_VERSION = 'directional-4:text-embedding-3-small'; // 2: synonym map grew (brioch, toasty, bakt, autolyse); 3: krydder no longer licenses specific credit; 4: lees-ageing derivations (kjeks/bakverk/brioche -> nøtt, mandel, smør) — 29 Oct 2026
 
 /**
  * Saturation constant for matched mass, in weighted-lemma units where a

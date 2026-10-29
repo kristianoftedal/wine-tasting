@@ -35,6 +35,7 @@
  *     [--style=on]   style-relative descriptor weights (STYLE_WEIGHTS_ENABLED) using the wine's category
  *     [--hybrid=on]  ladder-credited words count as full soft matches (SOFT_HYBRID_ENABLED)
  *     [--specific=0.6] [--exclude-hypernyms=krydder,frukt]   tuning overrides for the specific tier
+ *     [--hit-weight=0.9] [--tau=3] [--floor=0.9]   tuning overrides for the combine constants
  *     [--out=scripts/validation-results/<file>.md]   also writes <file>.json
  *
  * The sampler is seeded; two runs on the same data are identical.
@@ -70,6 +71,8 @@ const STYLE = arg('style') === 'on';
 const HYBRID = arg('hybrid') === 'on';
 const SPECIFIC = arg('specific') !== undefined ? Number(arg('specific')) : undefined;
 const EXCLUDE = (arg('exclude-hypernyms') ?? '').split(',').map(s => s.trim()).filter(Boolean);
+const num = (name: string) => (arg(name) !== undefined ? Number(arg(name)) : undefined);
+const COMBINE = { hitWeight: num('hit-weight'), tau: num('tau'), precisionFloor: num('floor') };
 const SIDECAR = 'scripts/validation-results/frozen-set-2026-10.categories.json';
 if (!ENGINE_IDS.length) throw new Error('--engines names no known engine');
 
@@ -144,8 +147,9 @@ function engineScorer(engine: SoftEngine) {
     const u = prep(userText), r = prep(referenceText);
     const soft = await engine.score({ raw: rawOf(userText), norm: u }, { raw: rawOf(referenceText), norm: r });
     const category = STYLE ? categoryOfReference.get(referenceText) ?? null : null;
-    const lexical = lexicalCredit(u, r, { styleWeights: STYLE, category, specificCredit: SPECIFIC, hypernymExclude: EXCLUDE });
-    const score = combineScoreScaled(lexical, HYBRID ? hybridSoftScore(soft, lexical) : soft.softScore).score;
+    const opts = { styleWeights: STYLE, category, specificCredit: SPECIFIC, hypernymExclude: EXCLUDE, ...COMBINE };
+    const lexical = lexicalCredit(u, r, opts);
+    const score = combineScoreScaled(lexical, HYBRID ? hybridSoftScore(soft, lexical) : soft.softScore, true, opts).score;
     memo.set(key, score);
     return score;
   };
@@ -171,7 +175,7 @@ async function main() {
       const sidecar = existsSync(SIDECAR) ? JSON.parse(readFileSync(SIDECAR, 'utf8')) as Record<string, string | null> : {};
       for (const f of frozen.fields) categoryOfReference.set(f.referenceNote, sidecar[f.wine.id] ?? null);
     }
-    source = `${FROZEN} (${frozen.meta.fields} fields)${STYLE ? ', style weights on' : ''}${HYBRID ? ', hybrid soft on' : ''}${SPECIFIC !== undefined ? `, specific credit ${SPECIFIC}` : ''}${EXCLUDE.length ? `, hypernyms excluded: ${EXCLUDE.join(' ')}` : ''}`;
+    source = `${FROZEN} (${frozen.meta.fields} fields)${STYLE ? ', style weights on' : ''}${HYBRID ? ', hybrid soft on' : ''}${SPECIFIC !== undefined ? `, specific credit ${SPECIFIC}` : ''}${EXCLUDE.length ? `, hypernyms excluded: ${EXCLUDE.join(' ')}` : ''}${COMBINE.hitWeight !== undefined || COMBINE.tau !== undefined || COMBINE.precisionFloor !== undefined ? `, combine ${JSON.stringify(COMBINE)}` : ''}`;
   } else {
     // Ordered: PostgREST guarantees nothing without it, and the seeded sampler
     // consumes randomness in row order, so an unordered query made every run
@@ -362,7 +366,7 @@ async function main() {
     writeFileSync(OUT, md);
     const json = OUT.replace(/\.md$/, '') + '.json';
     writeFileSync(json, JSON.stringify({
-      meta: { date: new Date().toISOString(), commit, source, cases: cases.length, distractors: distractors.length, engines: ENGINE_IDS, styleWeights: STYLE, hybridSoft: HYBRID, specificCredit: SPECIFIC, hypernymExclude: EXCLUDE },
+      meta: { date: new Date().toISOString(), commit, source, cases: cases.length, distractors: distractors.length, engines: ENGINE_IDS, styleWeights: STYLE, hybridSoft: HYBRID, specificCredit: SPECIFIC, hypernymExclude: EXCLUDE, combine: COMBINE },
       rows,
     }, null, 2) + '\n');
     console.log(`\nwritten ${OUT} and ${json}`);

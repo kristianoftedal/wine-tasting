@@ -71,7 +71,7 @@ function main() {
       if (exact.length) bits.push(`exact: ${exact.join(', ')}`);
       if (strong.length) bits.push(`near: ${strong.join(', ')}`);
       if (weak.length) bits.push(`far: ${weak.join(', ')}`);
-      return `soft ${Math.round(s.softScore)} (raw ${s.raw.toFixed(2)}${s.baseline ? `, floor ${s.baseline.toFixed(2)}` : ''}): ${bits.join(' | ')}`;
+      return `soft ${Math.round(s.softScore)} (raw ${s.raw.toFixed(2)}): ${bits.join(' | ')}`;
     };
 
     let why = '';
