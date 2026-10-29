@@ -1,0 +1,56 @@
+key;event;event_date;wine;field;reference_note;user_note;rating;comment;attended
+d8bc4f93-5ce1-4c30-8080-3fc43b1d9512:lukt;;;Birichino Saint Georges Zinfandel Old Vines 2023 2023;lukt;Ungdommelig, modne røde og mørke bær, krydder og blomster.;Juicy, røde bær, mørk frukt krydder;4;;ja
+a44ab139-33f5-4ada-95f8-7919cb20714a:lukt;;;Cavas de Weinert Gran Vino 2012 2012;lukt;Tydelig utviklet og kompleks, preg av moden solbær, tørket frukt, innslag av fat, lær og tobakk.;Mørk frukt, litt syltet krydder  fat;4;;ja
+c61e9d34-dbed-4850-b56b-dbe4a4791fea:smak;;;Ch. Langoa Barton 2016 2016;smak;Saftig mørk frukt og lett krydret. Konsentrert og fyldig med faste tanniner. Lang.;Solbær tobakk tre;2;;ja
+c61e9d34-dbed-4850-b56b-dbe4a4791fea:lukt;;;Ch. Langoa Barton 2016 2016;lukt;Aroma av friske mørke bær, krydder og tobakk.;Solbær tre tobakk;2;;ja
+27935fb6-6c24-4c04-9371-9ac452360e08:lukt;;;Elodie D. Collection Secréte Millésime 1996 1996;lukt;Sitrus, mandler, tørket frukt.;brioche, modent eple nøtter;1;;ja
+5b423af2-70ec-4168-8ef7-24281519e76c:smak;;;Opta Touriga Nacional 2023 2023;smak;God fylde og fasthet, saftig preg av bjørnebær, blåbær, litt fat, grønn urt, lakris og kamfer.;Jordbærsyltetøy kamfer fat vanilje;3;;ja
+e88bd01f-e250-4e48-9d4b-cf8b20f36048:smak;;;Prod. del Barbaresco 2021 2021;smak;Litt utviklet og sammensatt preg av røde bær, nype og rosin, litt urter, te og fat, fast ettersmak.;Rød frukt kamfer te nype tørket frukt;3;;ja
+5607da20-8c7a-48df-b550-219c932280b2:lukt;;;Rotem & Mounir Saouma Magis Chateauneuf-du-Pape Blanc 2022 2022;lukt;Aroma av steinfrukt og tropisk frukt, mineraler.;sitrus frisk;2;;ja
+30fa2f9f-2a62-4c95-aacf-2c3d0f1027a3:lukt;TEST;2026-01-31;Carlines Côtes du Jura La Vouivre 2022 2022;lukt;Fruktig duft med eple, aprikos og mineralitet.;sitrus eple nøtter;2;;ja
+30fa2f9f-2a62-4c95-aacf-2c3d0f1027a3:smak;TEST;2026-01-31;Carlines Côtes du Jura La Vouivre 2022 2022;smak;Tørr med tydelig eplepreg, sitrus og mineralsk ettersmak.;sitrus eple nøtter;2;;ja
+89316bb4-c603-4fce-8f01-d80017b207ca:lukt;TEST;2026-01-31;David & Nadia Chenin Blanc 2024;lukt;Ren, fokusert og lett krydret.;eple, frisk mineralsk;2;;ja
+9bb85ec9-78ef-4d06-8072-18ccbf2cc89b:smak;Hvitvin #2;2026-02-03;Au Bon Climat Santa Barbara County Chardonnay 2023 2023;smak;Fyldig og lang med kremet munnfølelse, preg av sitrus og fersken, litt honning, fat, smør og nøtt.;sitrus vanilje nøtter;2;;ja
+9bb85ec9-78ef-4d06-8072-18ccbf2cc89b:lukt;Hvitvin #2;2026-02-03;Au Bon Climat Santa Barbara County Chardonnay 2023 2023;lukt;Tydelig aroma preget av moden steinfrukt, eple og sitrus, innslag av fat, vanilje, smør og nøtt.;sitrus eple vanilje nøtter aprikos;2;;ja
+6370f135-5449-4bf0-a312-692fab8e2332:lukt;Hvitvin #2;2026-02-03;Cueva del Monge Rioja Blanco 2010 2010;lukt;Sammensatt aroma med utviklet og litt krydret preg av modne epler, trekrydder, blomst og nøtt.;svovel flint og litt marmelade;1;;ja
+6370f135-5449-4bf0-a312-692fab8e2332:smak;Hvitvin #2;2026-02-03;Cueva del Monge Rioja Blanco 2010 2010;smak;Utviklet, kompleks og lang, preg av lagret eple og tørket frukt, litt fat, honning, krydder og urt.;svovel flint og litt marmelade;1;;ja
+f4938235-ddad-4a32-941a-19c037091e27:smak;Hvitvin #2;2026-02-03;Cuilleron Biousse Saint-Peray 2023 2023;smak;Fyldig med litt feit munnfølelse, preg av modent eple, fersken og sitrus, litt fat, krydder og nøtt.;sitrus eple fersken aprikos nøtt vanilje;4;;ja
+8dcfa1ad-d54f-49b9-88c3-ca4cf1156c63:lukt;Hvitvin #2;2026-02-03;Cuilleron Biousse Saint-Peray 2023 2023;lukt;Modent og ungdommelig preg av eple, sitrus, aprikos og fersken, litt fat, fløte, nøtt og blomst.;sitrus eple fersken aprikos nøtt vanilje;4;;ja
+1c654633-c3b5-4147-9192-a3d91bdfb009:lukt;Hvitvin #2;2026-02-03;La Chablisienne Chablis 1er Cru Montmains 2022 2022;lukt;Nyansert aroma av grønt eple, sitrus og urter, innslag av litt smør, nøtt og mineraler.;litt salt og sjøaktig, sitrus og eple;3;;ja
+1c654633-c3b5-4147-9192-a3d91bdfb009:smak;Hvitvin #2;2026-02-03;La Chablisienne Chablis 1er Cru Montmains 2022 2022;smak;Ungdommelig og sammensatt preg av fersken, grønt eple, sitrus, smør og nøtt, hint av mineraler.;litt salt og sjøaktig, sitrus og eple mineralsk;3;;ja
+5dbb2d51-9a9d-45e3-bf43-b10f836ed5b8:lukt;Rhone;2026-04-10;Ch. la Nerthe Châteauneuf-du-Pape 2022 2022;lukt;Sval og sammensatt aroma av mørke og røde bær, krydder, lær og lakris, litt fat og kamfer.;Mørke bær. Kirsebær. Far.;2;;ja
+4e4f9599-bfc4-4b28-a363-e91beeb32333:smak;Rhone;2026-04-10;Cuilleron Les Vignes d'à Côté Syrah 2024 2024;smak;Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.;"Middels taniner
+
+Fruktig, mørke bær og pepper, jordlig";2;;ja
+6cc4e152-9d61-4924-ac55-679410c37bd4:smak;Rhone;2026-04-10;Cuilleron Les Vignes d'à Côté Syrah 2024 2024;smak;Saftig, litt pepret og krydret, preg av moden kirsebær, krekling og bringebær, litt fat og urt.;"Mørke bær
+Solbær
+Pepper";3;;ja
+ae47bc6d-61aa-46f8-8a4f-7ca1b7bdbdc0:lukt;Rhone;2026-04-10;Cuilleron Les Vignes d'à Côté Syrah 2024 2024;lukt;Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.;Pepper, mørk bær;2;;ja
+6cc4e152-9d61-4924-ac55-679410c37bd4:lukt;Rhone;2026-04-10;Cuilleron Les Vignes d'à Côté Syrah 2024 2024;lukt;Fruktig og litt krydret preg av modne mørke og røde bær, litt skogbunn, fat og kamfer.;"Mørke bær
+Rød frukt";3;;ja
+c72612f1-f6ad-4623-9c30-37f09a68c04d:smak;Rhone;2026-04-10;Dom. du Colombier Crozes-Hermitage 2024 2024;smak;Ung, livlig og saftig med toner av moden kirsebær og krekling, litt svale urter, pepper og fat.;Litt mer syre, lett, friske bær, et eller annet med kjerne;2;;ja
+3e329c22-5ef8-458b-9083-c509162bbeaa:smak;Rhone;2026-04-10;Dom. du Colombier Crozes-Hermitage 2024 2024;smak;Ung, livlig og saftig med toner av moden kirsebær og krekling, litt svale urter, pepper og fat.;Røde og mørke bær og urt;3;;ja
+3e329c22-5ef8-458b-9083-c509162bbeaa:lukt;Rhone;2026-04-10;Dom. du Colombier Crozes-Hermitage 2024 2024;lukt;Aroma med ungdommelig preg av modne mørke skogsbær, svale urter, krydder, litt pepper og fat.;Røde og mørke bær urter;3;;ja
+536e678d-d8da-4492-819e-07deb784aa70:lukt;Champagne;2026-05-13;André Clouet Grande Reserve Brut;lukt;Litt utviklet aroma av modne epler, sitrus og bakverk, innslag av appelsin, nøtt og mineraler.;Eple. Plomme. Mineral.;3;;ja
+d7872056-a17f-4eff-ab33-29955216f78e:lukt;Champagne;2026-05-13;André Clouet Un Jour de 1911;lukt;Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.;Brioch, smør, nøtt,;3;;ja
+e73cd82b-5f3f-4d88-af26-86bf28d70c95:lukt;Champagne;2026-05-13;André Clouet Un Jour de 1911;lukt;Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.;Gult eple, brioche, kjeks, honning, citrus, nøtter;4;;ja
+7012dbb2-998b-409a-8a96-32ec704931c6:lukt;Champagne;2026-05-13;André Clouet Un Jour de 1911;lukt;Aroma med nyansert preg av modne epler, sitrus og steinfrukt, innslag av kjeks, brioche og blomst.;Brioche, modent eple;3;;ja
+995624e2-8d46-47c3-a20f-93579b0e5c72:lukt;Champagne;2026-05-13;Diebolt-Vallois Blanc de Blancs Brut 2022;lukt;Sval og fruktig, preg av sitrus, blomst og grønt eple, hint av kjeks.;Sitrus eple mineralsk;3;;ja
+ee61de90-9dc1-452d-9dc0-b8d77866c29e:smak;Champagne;2026-05-13;Diebolt-Vallois Blanc de Blancs Brut 2022;smak;Preg av eple og sitrus, hint av nøtt, kjeks og sjømineraler.;Sitrus, eple,;2;;ja
+26986834-8818-41ed-ad3f-fa306f10b8c7:smak;Champagne;2026-05-13;Louis Nicaise Brut Rosé;smak;Kremet og frisk, saftig preg av bringebær, jordbær, rips og kjeks, innslag av mandel og mineraler.;Mineral. Grønt eple. Kremet. Gjør;0;;ja
+2e3ccfa1-8458-46b9-a55c-25c309c268bb:lukt;Champagne;2026-05-13;Louis Nicaise Brut Rosé;lukt;Aroma med modent preg av bringebær, jordbær, eple og bakverk, litt roser, nype og mineraler.;Rips markjordbær sitrus;2;;ja
+ca50a259-7a4e-4149-9538-a7eb4d11d68d:smak;Burgund;2026-08-28;Faiveley Nuits-Saint-Georges Les Montroziers 2022 2022;smak;Saftig. Røde bær. God dybde.;Røde bær, urter fat;3;;ja
+ca50a259-7a4e-4149-9538-a7eb4d11d68d:lukt;Burgund;2026-08-28;Faiveley Nuits-Saint-Georges Les Montroziers 2022 2022;lukt;Frisk duft av steinfrukt og røde bær.;Urter, røde bær nype skogbunn;2;;ja
+e2ff0ef6-2ba5-481e-87b1-0e916f1b2245:lukt;Burgund;2026-08-28;Matrot Bourgogne Chardonnay 2023 2023;lukt;Ung aroma av sitrus, epler og fersken, litt fat, smør og blomst, hint av flint og våt stein.;Mineralsk floralt;2;;ja
+41db6c0a-746c-4e3a-b529-66ddcc582fb4:smak;Burgund;2026-08-28;Matrot Bourgogne Chardonnay 2023 2023;smak;Frisk, saftig og litt kremet, preg av sitrus, steinfrukt, litt vanilje, nøtt, mineraler og urter.;Sitrus eple litt sjøbunn tre;3;;ja
+7ce5d70b-4ca7-4061-88d4-c8a69f6ea34f:lukt;Burgund;2026-08-28;Matrot Bourgogne Chardonnay 2023 2023;lukt;Ung aroma av sitrus, epler og fersken, litt fat, smør og blomst, hint av flint og våt stein.;Vanilje, citrus, mineralsk, steinfrukt;2;;ja
+7ce5d70b-4ca7-4061-88d4-c8a69f6ea34f:smak;Burgund;2026-08-28;Matrot Bourgogne Chardonnay 2023 2023;smak;Frisk, saftig og litt kremet, preg av sitrus, steinfrukt, litt vanilje, nøtt, mineraler og urter.;Smør, litt nøtter, citrus, litt steinfrukt, mineralsk;4;;ja
+142b5d54-3cb3-4816-8dc4-f28c59456419:smak;Burgund;2026-08-28;Matrot Meursault 1er Cru Les Perrières 2018 2018;smak;Konsentrert, kompleks, saftig med lang ettersmak.;Smør nøtter fersken sitrus flint fat;3;;ja
+63295eaa-8c89-4133-a541-7c5a6c228219:smak;Burgund;2026-08-28;Matrot Meursault 2023 2023;smak;Ung, lang og kompleks, saftig preg av sitrus, fersken og eple, litt fat, smør, nøtt og mineraler.;Sitrus, nøtter smør litt steinfrukt flint;3;;ja
+00842981-0ac2-410a-94f4-578a5197315d:lukt;Jura;2026-10-23;Carlines Château Chalon 2017 2017;lukt;Aroma av nøtter, krydder, blomster og mineraler.;Aprikos tørket frukt skarp;2;;ja
+269a1587-3887-4c31-a08b-6e8bb54d2216:smak;Jura;2026-10-23;Carlines Côtes du Jura En Charnay 2022 2022;smak;Tørr og strukturert, frisk syre, saltmineralitet og lang, nøttepreget avslutning.;Eple fersken honning;2;;ja
+50517ac2-f1d2-4cee-94a9-cef98579e763:smak;Jura;2026-10-23;Carlines Côtes du Jura En Charnay 2022 2022;smak;Tørr og strukturert, frisk syre, saltmineralitet og lang, nøttepreget avslutning.;God lengde;0;;ja
+1330ee3f-25e6-4be0-9b10-3e27b9aeb18f:lukt;Jura;2026-10-23;Carlines Côtes du Jura Poulsard 2023 2023;lukt;Røde bær og blomster, hint av mineralitet.;Rips, syrlige bringebær;3;;ja
+3cf04e02-88e7-40a8-8e3a-60c816fcdb2d:lukt;Jura;2026-10-23;Jean-Luc Mouillard Côtes du Jura Pinot Noir 2022 2022;lukt;Aroma av rips, granateple, blåbær, fiol og krydder.;Fruktig morell;2;;ja
+edaa1fab-33be-4d5e-a66d-d29f571142cf:smak;Jura;2026-10-23;Rolet L'Etoile Chardonnay 2023 2023;smak;Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.;Flintstein, sitrus, mineralsk;3;;ja
+b09c2502-4b46-4468-a945-ea58c3f340b7:smak;Jura;2026-10-23;Tissot Savagnin Sous Voile 2020 2020;smak;Kraftig, frisk og strukturert smak, konsentrert og lang.;Aprikos nøtt honning;2;;ja
