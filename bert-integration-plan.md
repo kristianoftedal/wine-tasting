@@ -500,6 +500,20 @@ Property benchmark with the flag on (floor 0.5): +HIT +13.2, +WRONG −3.0, +NEG
 
   Isolated NorBERT is worse on every target: its word vectors are not built for isolated comparison (floor 0.52 after centring, separation 0.44). Isolated mLateOn is the closest any local engine has come to the production engine on the property gate (d 1.19 vs 1.22, +WRONG −3.0 vs −3.1, less length dependence) with validity just under the contextual variants; it is also the cheapest engine in the tree (one vector per vocabulary word, no span recovery, no per-note model call once warm). **Decision unchanged**: nothing beats OpenAI on the gate. If a local engine is ever wanted for cost or offline reasons, `colbert-iso` is the one.
 
+**ColBERT as a table, and a projection trained on the ladder (29 Oct 2026, steps 1 and 2 of the ColBERT plan).**
+
+- *Step 1, the table — works.* `scripts/build-colbert-table.ts` encodes the scoring vocabulary once with isolated mLateOn (2 243 words: every dictionary surface form, every synonym target, every content word in ≥ 2 of the 59 423 catalogue notes, every word in the frozen set's taster notes), under `[Q]` and `[D]`, into `colbert-table.generated.json` (3 MB). `colbert-table` is a lookup: no ONNX runtime, no download, no cold start, and it reproduces `colbert-iso` to within rounding (d 1.18 vs 1.19, +WRONG −3.1, human 0.607 vs 0.604, panel 0.656, constructed 0.704). **This is the deployable local engine.** A word outside the table gets no soft vector, as the ladder already treats words it does not know; on the frozen set that cost nothing measurable.
+- *Step 2, the projection — does not help, and says why.* `scripts/train-soft-projection.ts` fits one 128×128 matrix on 4 404 pairs the dictionary already grades (derivation edges 1.0, hypernym members 0.85, same subcategory 0.6, same category 0.3, unrelated 0, same word 1.0), 20% held out. The fit is real: held-out derived pairs go from cosine 0.11 to 0.28, specific 0.05 → 0.24, unrelated 0.01 → 0.07. The score gets worse on every target: human 0.607 → 0.574, panel 0.656 → 0.637, constructed 0.704 → 0.651, +HIT 12.1 → 11.4, top1 17 → 15%. Same lesson as the hybrid, from the other side: the soft term earns its place as a signal *independent* of the ladder; teaching it the ladder makes it a second vote, and a second vote is worth less than a different opinion. The contingency "distil the credit ladder into mLateOn" is therefore closed, not deferred: a full fine-tune would do the same thing at greater cost.
+
+  | engine | +HIT | +WRONG | MISS | r(len) | d | top1 | ρ human | ρ panel | ρ constructed | runtime |
+  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+  | openai | +12.8 | −3.1 | +3.9 | 0.28 | 1.22 | 20% | 0.622 | 0.661 | 0.685 | API call per new word |
+  | colbert-iso | +12.1 | −3.0 | +2.3 | 0.26 | 1.19 | 18% | 0.604 | 0.652 | 0.696 | ONNX, 347 MB |
+  | colbert-table | +12.1 | −3.1 | +2.2 | 0.26 | 1.18 | 17% | 0.607 | 0.656 | 0.704 | 3 MB table |
+  | colbert-tuned | +11.4 | −3.2 | +2.4 | 0.28 | 1.18 | 15% | 0.574 | 0.637 | 0.651 | table + matrix |
+
+  **Decision unchanged**: OpenAI stays. The ColBERT plan's remaining steps are 3 (one event in shadow mode with `colbert-table`) and 4 (switch for new tastings), to be taken for cost or offline reasons, not accuracy; nothing in the tree now needs a model server to run them.
+
 3. **Re-measure the engines when the corpus has grown.** All three validity rows lean toward the local engines by ~0.05, inside the noise every time; at 500 fields the noise is half what it is now. The frozen set is dated so the next one is a new file, not a regeneration.
 
 4. **PyTorch parity check** (`scripts/parity-dump.ts`, `scripts/parity-check.py`), one run.

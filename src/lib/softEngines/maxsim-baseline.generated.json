@@ -69,5 +69,29 @@
       "7-10": 0.2632
     },
     "top": 0.6665
+  },
+  "colbert-table": {
+    "model": "lightonai/mLateOn@int8 (isolated words) table",
+    "measuredAt": "2026-10-29T17:40:49.006Z",
+    "pairs": 86620,
+    "centered": true,
+    "buckets": {
+      "1-3": 0.0994,
+      "4-6": 0.2085,
+      "7-10": 0.2666
+    },
+    "top": 0.6819
+  },
+  "colbert-tuned": {
+    "model": "lightonai/mLateOn@int8 (isolated words) table + projection",
+    "measuredAt": "2026-10-29T17:41:02.951Z",
+    "pairs": 86620,
+    "centered": true,
+    "buckets": {
+      "1-3": 0.0908,
+      "4-6": 0.2378,
+      "7-10": 0.3129
+    },
+    "top": 0.7157
   }
 }

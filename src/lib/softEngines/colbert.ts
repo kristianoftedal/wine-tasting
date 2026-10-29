@@ -70,6 +70,12 @@ export const colbertIsoCalibration = {
 
 const isoCache = new EncodingCache<Float32Array[]>(8000);
 
+/** One pooled, L2-normalised, uncentred vector per word, encoded alone under the given prefix. For the table builder. */
+export async function colbertIsolatedWordVector(word: string, prefix: 'Q' | 'D'): Promise<Float32Array> {
+  const enc = await encodeIsolated({ raw: word, norm: word }, prefix === 'Q' ? QUERY_PREFIX : DOCUMENT_PREFIX);
+  return enc.pooled.get(word) ?? enc.pooled.values().next().value ?? new Float32Array(0);
+}
+
 /** Each content word encoded alone as "[Q] word" / "[D] word", cached per word and prefix. */
 async function encodeIsolated(note: NoteInput, prefix: string): Promise<Encoded> {
   const { tokenizer, run, cls, sep } = await load();

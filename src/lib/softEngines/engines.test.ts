@@ -5,6 +5,7 @@ import { normalizeWineSynonyms } from '../synonymNormalization'
 import { applyNegation } from '../negation'
 import { bertEngine, bertIsoEngine } from './bert'
 import { colbertIsoEngine, colbertTokenEngine, colbertWordEngine } from './colbert'
+import { colbertTableEngine } from './colbertTable'
 import { spanStats } from './words'
 import type { NoteInput, SoftEngine } from './types'
 
@@ -21,7 +22,7 @@ const input = (t: string): NoteInput => {
 }
 
 describe.skipIf(!MODELS)('local soft engines', () => {
-  const engines: SoftEngine[] = [bertEngine, bertIsoEngine, colbertWordEngine, colbertTokenEngine, colbertIsoEngine]
+  const engines: SoftEngine[] = [bertEngine, bertIsoEngine, colbertWordEngine, colbertTokenEngine, colbertIsoEngine, colbertTableEngine]
 
   it('recover word spans from whole-text tokenisation on at least 99% of real notes', async () => {
     const frozen = JSON.parse(readFileSync(FROZEN, 'utf8')) as { fields: Array<{ userNote: string; referenceNote: string }> }
