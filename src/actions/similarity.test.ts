@@ -65,15 +65,25 @@ describe('scoreFlavourNote — objective invariants', () => {
   })
 
   it('credits a more precise answer than the reference gave', async () => {
-    // Vinmonopolet often declines to be specific ("Saftig mørk frukt"). A taster
-    // answering "solbær" named a dark fruit — correct, and more precise than the
+    // Vinmonopolet often declines to be specific ("Saftig frukt"). A taster
+    // answering "bringebær" named a fruit — correct, and more precise than the
     // reference. The hierarchy alone rates it a near-miss because `frukt` is
-    // filed under Frukt og bær/annet and `solbær` under Frukt og bær/baer.
+    // filed under Frukt og bær/annet and `bringebær` under Frukt og bær/baer.
+    const { matches } = await scoreFlavourNote('bringebær', 'Saftig frukt og lett krydret.')
+    const bringebær = matches.find(m => m.lemma === 'bringebær')
+
+    expect(bringebær?.kind).toBe('specific')
+    expect(bringebær?.via).toBe('frukt')
+  })
+
+  it('does not credit a pair the club reviewed as not specific', async () => {
+    // "solbær" against a bare "frukt" was judged a guess, not precision, in
+    // the 31 Oct 2026 review (SPECIFIC_EXCEPTIONS); it keeps family credit.
     const { matches } = await scoreFlavourNote('solbær', 'Saftig mørk frukt og lett krydret.')
     const solbær = matches.find(m => m.lemma === 'solbær')
 
-    expect(solbær?.kind).toBe('specific')
-    expect(solbær?.via).toBe('frukt')
+    expect(solbær?.kind).not.toBe('specific')
+    expect(solbær?.kind).not.toBe('none')
   })
 
   it('does not credit a vaguer answer as though it were precise', async () => {

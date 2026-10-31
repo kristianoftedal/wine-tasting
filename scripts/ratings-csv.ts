@@ -35,6 +35,20 @@ export function parseCsv(text: string): Record<string, string>[] {
   return body.filter(r => r.some(Boolean)).map(r => Object.fromEntries(head.map((h, i) => [h.trim().toLowerCase(), r[i] ?? ''])));
 }
 
+/**
+ * The evaluation target: the human rater's rating where there is one, else
+ * the calibrated gpt-4o panel member's (agreement with the human 0.61 on
+ * fields it never saw rated), so every scoreable field has a rating.
+ */
+export function loadTarget(primary = 'kristian', fallback = 'llmcal-gpt-4o'): { ratings: Map<string, number>; fromHuman: number; fromFallback: number } {
+  const raters = loadRaterFiles();
+  const h = raters.get(primary) ?? new Map<string, number>();
+  const f = raters.get(fallback) ?? new Map<string, number>();
+  const ratings = new Map<string, number>(f);
+  for (const [k, v] of h) ratings.set(k, v);
+  return { ratings, fromHuman: h.size, fromFallback: ratings.size - h.size };
+}
+
 /** rater name → (field key → rating 0..4), one entry per readable rater file. */
 export function loadRaterFiles(): Map<string, Map<string, number>> {
   const out = new Map<string, Map<string, number>>();

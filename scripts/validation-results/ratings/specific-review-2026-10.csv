@@ -1,52 +1,52 @@
-﻿reference_word;taster_word;occurrences;example_wine;example_reference_note;example_taster_note;second_example_taster_note;is_specific_answer (ja/nei);comment
-"bær";"solbær";"11";"Guigal Côtes du Rhône Rouge 2022";"Aroma preget av modne mørke bær, plomme og krydder over innslag av fat og lær.";"Anis
+reference_word;taster_word;occurrences;example_wine;example_reference_note;example_taster_note;second_example_taster_note;is_specific_answer (ja/nei);comment
+bær;solbær;11;Guigal Côtes du Rhône Rouge 2022;Aroma preget av modne mørke bær, plomme og krydder over innslag av fat og lær.;"Anis
 Krydder
 Solbær";"Fruktig
 Solbær
 Krydder
-Fat";"";""
-"bær";"kirsebær";"8";"Ch. de Ségriès 2023";"Aroma preget av modne mørke bær og litt tørket frukt, innslag av kamfer og salvie.";"Kirsebær rød frukt urt jord og krydder vanilje";"Balansert, litt taniner, solbær, kirsebær, temper";"";""
-"bær";"skogsbær";"4";"Guigal Côtes du Rhône Rouge 2022";"Ørlite utviklet, preg av mørke bær, litt tørket frukt, krydder og urter, fast ettersmak.";"Bjørnebær. Jord. Krydder. Skogsbær. Lakris";"Skogsbær urt og jord";"";""
-"bær";"jordbær";"3";"Faiveley Nuits-Saint-Georges Les Montroziers 2022";"Saftig. Røde bær. God dybde.";"Mørk sjokolade jordbær bringebær kirsebær";"Jordbær, kirsebær, mørk sjokolade, urter";"";""
-"bær";"bringebær";"3";"Faiveley Nuits-Saint-Georges Les Montroziers 2022";"Saftig. Røde bær. God dybde.";"Mørk sjokolade jordbær bringebær kirsebær";"Jordbær, kirsebær, bringebær";"";""
-"bær";"morell";"2";"Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023";"Fyldig og krydret, preg av røde og mørke bær, litt tørket frukt, svale urter og fat, hint av pepper.";"Urter
+Fat";ja;
+bær;kirsebær;8;Ch. de Ségriès 2023;Aroma preget av modne mørke bær og litt tørket frukt, innslag av kamfer og salvie.;Kirsebær rød frukt urt jord og krydder vanilje;Balansert, litt taniner, solbær, kirsebær, temper;ja;
+bær;skogsbær;4;Guigal Côtes du Rhône Rouge 2022;Ørlite utviklet, preg av mørke bær, litt tørket frukt, krydder og urter, fast ettersmak.;Bjørnebær. Jord. Krydder. Skogsbær. Lakris;Skogsbær urt og jord;ja;
+bær;jordbær;3;Faiveley Nuits-Saint-Georges Les Montroziers 2022;Saftig. Røde bær. God dybde.;Mørk sjokolade jordbær bringebær kirsebær;Jordbær, kirsebær, mørk sjokolade, urter;ja;
+bær;bringebær;3;Faiveley Nuits-Saint-Georges Les Montroziers 2022;Saftig. Røde bær. God dybde.;Mørk sjokolade jordbær bringebær kirsebær;Jordbær, kirsebær, bringebær;ja;
+bær;morell;2;Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023;Fyldig og krydret, preg av røde og mørke bær, litt tørket frukt, svale urter og fat, hint av pepper.;"Urter
 Solbær
 Moreller
-Tobakk";"Skogsbær moreller urt og krydder og vanilje";"";""
-"bær";"bjørnebær";"1";"Guigal Côtes du Rhône Rouge 2022";"Ørlite utviklet, preg av mørke bær, litt tørket frukt, krydder og urter, fast ettersmak.";"Bjørnebær. Jord. Krydder. Skogsbær. Lakris";"";"";""
-"bær";"krekling";"1";"Ch. de Ségriès 2023";"Saftig og fyldig preg av sødmerike mørke bær, innslag av krydder og tørket urt. God lengde.";"Krekling
+Tobakk";Skogsbær moreller urt og krydder og vanilje;ja;
+bær;bjørnebær;1;Guigal Côtes du Rhône Rouge 2022;Ørlite utviklet, preg av mørke bær, litt tørket frukt, krydder og urter, fast ettersmak.;Bjørnebær. Jord. Krydder. Skogsbær. Lakris;;ja;
+bær;krekling;1;Ch. de Ségriès 2023;Saftig og fyldig preg av sødmerike mørke bær, innslag av krydder og tørket urt. God lengde.;"Krekling
 Vanilje
 Solbær
-Krydder urter";"";"";""
-"bær";"nype";"1";"Faiveley Nuits-Saint-Georges Les Montroziers 2022";"Frisk duft av steinfrukt og røde bær.";"Urter, røde bær nype skogbunn";"";"";""
-"bær";"rips";"1";"Carlines Côtes du Jura Poulsard 2023";"Røde bær og blomster, hint av mineralitet.";"Rips, syrlige bringebær";"";"";""
-"frukt";"sitrus";"8";"Rotem & Mounir Saouma Magis Chateauneuf-du-Pape Blanc 2022";"Aroma av steinfrukt og tropisk frukt, mineraler.";"sitrus frisk";"sitrus eple nøtter";"";""
-"frukt";"eple";"5";"Elodie D. Collection Secréte Millésime 1996";"Sitrus, mandler, tørket frukt.";"brioche, modent eple nøtter";"Epler og mineralsk";"";""
-"frukt";"bringebær";"5";"Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023";"Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.";"Søtt, frukt, meineralsk, bringebær,";"Bringebær, urt tre";"";""
-"frukt";"marmelade";"2";"Cueva del Monge Rioja Blanco 2010";"Utviklet, kompleks og lang, preg av lagret eple og tørket frukt, litt fat, honning, krydder og urt.";"svovel flint og litt marmelade";"Mørk frukt, litt syltet krydder  fat";"";""
-"frukt";"solbær";"2";"Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023";"Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.";"Solbær
-Moreller";"Solbær tobakk tre";"";""
-"frukt";"morell";"2";"Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023";"Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.";"Solbær
-Moreller";"Moreller urter anis mynte bringebær";"";""
-"frukt";"pære";"2";"Diebolt-Vallois Blanc de Blancs Brut";"Sval og fruktig, preg av sitrus, blomst og grønt eple, hint av kjeks.";"Gult eple, pære, brioche";"Gule epler, pære, mineraler";"";""
-"frukt";"kirsebær";"2";"Joseph Faiveley Bourgogne Pinot Noir 2023";"Fruktig, forfriskende og saftig med god lengde, preg av ferske røde bær, urter og hint av fat.";"Bringebær, nellik, kirsebær";"Kirsebær sur eple chili pepper";"";""
-"frukt";"aprikos";"2";"Rolet L'Etoile Chardonnay 2023";"Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.";"Smør aprikos stikkelsbær";"Aprikos tørket sødmefull";"";""
-"frukt";"moden";"1";"Elodie D. Collection Secréte Millésime 1996";"Sitrus, mandler, tørket frukt.";"brioche, modent eple nøtter";"";"";""
-"frukt";"jordbær";"1";"Carlines Côtes du Jura Poulsard 2023";"Frisk og fruktig med syrlige røde bær.";"Jordbær";"";"";""
-"frukt";"stikkelsbær";"1";"Rolet L'Etoile Chardonnay 2023";"Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.";"Smør aprikos stikkelsbær";"";"";""
-"frukt";"tropisk";"1";"Rolet L'Etoile Chardonnay 2023";"Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.";"Tropisk brioche sitrus gult eple";"";"";""
-"mineral";"sjø";"5";"La Chablisienne Chablis 1er Cru Montmains 2022";"Nyansert aroma av grønt eple, sitrus og urter, innslag av litt smør, nøtt og mineraler.";"litt salt og sjøaktig, sitrus og eple";"litt salt og sjøaktig, sitrus og eple mineralsk";"";""
-"mineral";"salt";"3";"La Chablisienne Chablis 1er Cru Montmains 2022";"Nyansert aroma av grønt eple, sitrus og urter, innslag av litt smør, nøtt og mineraler.";"litt salt og sjøaktig, sitrus og eple";"litt salt og sjøaktig, sitrus og eple mineralsk";"";""
-"mineral";"svovel";"2";"Carlines Côtes du Jura Poulsard 2023";"Røde bær og blomster, hint av mineralitet.";"Svovel kirsebær jord solbær";"Svovel aske jord kirsebær solbær";"";""
-"mineral";"jord";"2";"Carlines Côtes du Jura Poulsard 2023";"Røde bær og blomster, hint av mineralitet.";"Svovel kirsebær jord solbær";"Svovel aske jord kirsebær solbær";"";""
-"sitrus";"grapefrukt";"1";"Champagne Aubry Premier Cru Brut";"God fylde og lengde, preg av syrlige epler, sitrus, litt jordbær, fersken, bakverk og mineraler.";"Grapefrukt, mineraler, litt søtere";"";"";""
-"steinfrukt";"aprikos";"2";"Au Bon Climat Santa Barbara County Chardonnay 2023";"Tydelig aroma preget av moden steinfrukt, eple og sitrus, innslag av fat, vanilje, smør og nøtt.";"sitrus eple vanilje nøtter aprikos";"Rødt eple, citrus, mineralsk, aprikos, fersken";"";""
-"steinfrukt";"fersken";"2";"Champagne Aubry Premier Cru Brut";"Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.";"Fersken, plomme,";"Rødt eple, citrus, mineralsk, aprikos, fersken";"";""
-"steinfrukt";"plomme";"1";"Champagne Aubry Premier Cru Brut";"Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.";"Fersken, plomme,";"";"";""
-"steinfrukt";"nektarin";"1";"Matrot Bourgogne Chardonnay 2023";"Frisk, saftig og litt kremet, preg av sitrus, steinfrukt, litt vanilje, nøtt, mineraler og urter.";"Smør brioch frisk syre hibiscus mineralsk nektarin";"";"";""
-"urt";"tobakk";"1";"Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023";"Fyldig og krydret, preg av røde og mørke bær, litt tørket frukt, svale urter og fat, hint av pepper.";"Urter
+Krydder urter";;ja;
+bær;nype;1;Faiveley Nuits-Saint-Georges Les Montroziers 2022;Frisk duft av steinfrukt og røde bær.;Urter, røde bær nype skogbunn;;ja;
+bær;rips;1;Carlines Côtes du Jura Poulsard 2023;Røde bær og blomster, hint av mineralitet.;Rips, syrlige bringebær;;ja;
+frukt;sitrus;8;Rotem & Mounir Saouma Magis Chateauneuf-du-Pape Blanc 2022;Aroma av steinfrukt og tropisk frukt, mineraler.;sitrus frisk;sitrus eple nøtter;nei;
+frukt;eple;5;Elodie D. Collection Secréte Millésime 1996;Sitrus, mandler, tørket frukt.;brioche, modent eple nøtter;Epler og mineralsk;ja;
+frukt;bringebær;5;Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023;Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.;Søtt, frukt, meineralsk, bringebær,;Bringebær, urt tre;ja;
+frukt;marmelade;2;Cueva del Monge Rioja Blanco 2010;Utviklet, kompleks og lang, preg av lagret eple og tørket frukt, litt fat, honning, krydder og urt.;svovel flint og litt marmelade;Mørk frukt, litt syltet krydder  fat;ja;
+frukt;solbær;2;Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023;Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.;"Solbær
+Moreller";Solbær tobakk tre;nei;
+frukt;morell;2;Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023;Aroma med fruktig og krydret preg av modne mørke og røde bær, litt tørket frukt, lakris, urt og fat.;"Solbær
+Moreller";Moreller urter anis mynte bringebær;ja;
+frukt;pære;2;Diebolt-Vallois Blanc de Blancs Brut;Sval og fruktig, preg av sitrus, blomst og grønt eple, hint av kjeks.;Gult eple, pære, brioche;Gule epler, pære, mineraler;ja;
+frukt;kirsebær;2;Joseph Faiveley Bourgogne Pinot Noir 2023;Fruktig, forfriskende og saftig med god lengde, preg av ferske røde bær, urter og hint av fat.;Bringebær, nellik, kirsebær;Kirsebær sur eple chili pepper;ja;
+frukt;aprikos;2;Rolet L'Etoile Chardonnay 2023;Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.;Smør aprikos stikkelsbær;Aprikos tørket sødmefull;ja;
+frukt;moden;1;Elodie D. Collection Secréte Millésime 1996;Sitrus, mandler, tørket frukt.;brioche, modent eple nøtter;;ja;
+frukt;jordbær;1;Carlines Côtes du Jura Poulsard 2023;Frisk og fruktig med syrlige røde bær.;Jordbær;;nei;
+frukt;stikkelsbær;1;Rolet L'Etoile Chardonnay 2023;Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.;Smør aprikos stikkelsbær;;ja;
+frukt;tropisk;1;Rolet L'Etoile Chardonnay 2023;Frisk, fruktig og balanser smak med eple, mineraler og lang ettersmak.;Tropisk brioche sitrus gult eple;;ja;
+mineral;sjø;5;La Chablisienne Chablis 1er Cru Montmains 2022;Nyansert aroma av grønt eple, sitrus og urter, innslag av litt smør, nøtt og mineraler.;litt salt og sjøaktig, sitrus og eple;litt salt og sjøaktig, sitrus og eple mineralsk;ja;
+mineral;salt;3;La Chablisienne Chablis 1er Cru Montmains 2022;Nyansert aroma av grønt eple, sitrus og urter, innslag av litt smør, nøtt og mineraler.;litt salt og sjøaktig, sitrus og eple;litt salt og sjøaktig, sitrus og eple mineralsk;ja;
+mineral;svovel;2;Carlines Côtes du Jura Poulsard 2023;Røde bær og blomster, hint av mineralitet.;Svovel kirsebær jord solbær;Svovel aske jord kirsebær solbær;ja;
+mineral;jord;2;Carlines Côtes du Jura Poulsard 2023;Røde bær og blomster, hint av mineralitet.;Svovel kirsebær jord solbær;Svovel aske jord kirsebær solbær;ja;
+sitrus;grapefrukt;1;Champagne Aubry Premier Cru Brut;God fylde og lengde, preg av syrlige epler, sitrus, litt jordbær, fersken, bakverk og mineraler.;Grapefrukt, mineraler, litt søtere;;nei;
+steinfrukt;aprikos;2;Au Bon Climat Santa Barbara County Chardonnay 2023;Tydelig aroma preget av moden steinfrukt, eple og sitrus, innslag av fat, vanilje, smør og nøtt.;sitrus eple vanilje nøtter aprikos;Rødt eple, citrus, mineralsk, aprikos, fersken;ja;
+steinfrukt;fersken;2;Champagne Aubry Premier Cru Brut;Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.;Fersken, plomme,;Rødt eple, citrus, mineralsk, aprikos, fersken;ja;
+steinfrukt;plomme;1;Champagne Aubry Premier Cru Brut;Litt utviklet og mineralsk, preg av gule epler, steinfrukt, kjeks, litt sitrus, røde bær og flint.;Fersken, plomme,;;nei;
+steinfrukt;nektarin;1;Matrot Bourgogne Chardonnay 2023;Frisk, saftig og litt kremet, preg av sitrus, steinfrukt, litt vanilje, nøtt, mineraler og urter.;Smør brioch frisk syre hibiscus mineralsk nektarin;;ja;
+urt;tobakk;1;Dom. du Vieux Lazaret Châteauneuf-du-Pape 2023;Fyldig og krydret, preg av røde og mørke bær, litt tørket frukt, svale urter og fat, hint av pepper.;"Urter
 Solbær
 Moreller
-Tobakk";"";"";""
-"urt";"mynte";"1";"Joseph Faiveley Bourgogne Pinot Noir 2023";"Fruktig, forfriskende og saftig med god lengde, preg av ferske røde bær, urter og hint av fat.";"Moreller urter anis mynte bringebær";"";"";""
-"urt";"kamfer";"1";"Prod. del Barbaresco 2021";"Litt utviklet og sammensatt preg av røde bær, nype og rosin, litt urter, te og fat, fast ettersmak.";"Rød frukt kamfer te nype tørket frukt";"";"";""
+Tobakk";;ja;
+urt;mynte;1;Joseph Faiveley Bourgogne Pinot Noir 2023;Fruktig, forfriskende og saftig med god lengde, preg av ferske røde bær, urter og hint av fat.;Moreller urter anis mynte bringebær;;ja;
+urt;kamfer;1;Prod. del Barbaresco 2021;Litt utviklet og sammensatt preg av røde bær, nype og rosin, litt urter, te og fat, fast ettersmak.;Rød frukt kamfer te nype tørket frukt;;ja;

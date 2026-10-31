@@ -19,7 +19,7 @@ import { STYLE_WEIGHTS_ENABLED } from './scoringConfig';
 const globalIdf = idfRaw as Record<string, number>;
 
 /** Per-call scoring context: the wine's style, and whether to weight by it. */
-export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number; /** Ladder-credited words count as full soft matches (src/lib/softEngines/hybrid.ts). */ hybridSoft?: boolean; /** Tuning overrides for the `specific` tier: its credit, and category words that must not license it. */ specificCredit?: number; hypernymExclude?: readonly string[]; /** Tuning overrides for the combine constants (scripts/tune-combine-constants.ts). */ tau?: number; hitWeight?: number; precisionFloor?: number; /** Extra derivation edges under test (scripts/measure-options.ts). */ extraDerivations?: Record<string, readonly string[]>; /** Leave structural (GENERIC) words out of the ladder entirely; under test. */ ignoreGeneric?: boolean };
+export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number; /** Ladder-credited words count as full soft matches (src/lib/softEngines/hybrid.ts). */ hybridSoft?: boolean; /** Tuning overrides for the `specific` tier: its credit, and category words that must not license it. */ specificCredit?: number; hypernymExclude?: readonly string[]; /** Tuning overrides for the combine constants (scripts/tune-combine-constants.ts). */ tau?: number; hitWeight?: number; precisionFloor?: number; /** Extra derivation edges under test (scripts/measure-options.ts). */ extraDerivations?: Record<string, readonly string[]>; /** Leave structural (GENERIC) words out of the ladder entirely; under test. */ ignoreGeneric?: boolean; /** Override of SPECIFIC_EXCEPTIONS ({} = none), for measurement. */ specificExceptions?: Record<string, readonly string[]> };
 import {
   CREDIT_CATEGORY,
   CREDIT_DERIVED,
@@ -182,7 +182,7 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
       kind = 'derived';
       factor = CREDIT_DERIVED;
       via = derivationSource(info.lemma, referenceLemmas) ?? undefined;
-    } else if ((via = isSpecificOfReference(info, licensing) ?? undefined)) {
+    } else if ((via = isSpecificOfReference(info, licensing, options.specificExceptions) ?? undefined)) {
       kind = 'specific';
       factor = specificCredit;
     } else if (info.main && info.sub && referenceSubPaths.has(`${info.main}/${info.sub}`)) {

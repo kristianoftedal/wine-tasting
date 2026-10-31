@@ -28,7 +28,7 @@ import { combineScoreScaled, hasScoreableFlavour, lexicalCredit, type ScoringOpt
 import { HIT_WEIGHT, PRECISION_FLOOR, SATURATION_TAU } from '../src/lib/scoringConfig';
 import { getSoftEngineById, isSoftEngineId, type NoteInput, type SoftEngineId } from '../src/lib/softEngines';
 import { bootstrapSpearmanCi, mean, seededRandom, spearman } from '../src/lib/stats';
-import { loadRaterFiles } from './ratings-csv';
+import { loadRaterFiles, loadTarget } from './ratings-csv';
 import type { FrozenSet } from './export-frozen-set';
 
 const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);

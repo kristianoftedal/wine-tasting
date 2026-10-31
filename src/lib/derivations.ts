@@ -128,12 +128,33 @@ export const HYPERNYMS: Record<string, { main: string; sub?: string }> = {
 };
 
 /**
+ * Pairs a hypernym does NOT license, by the club's own judgement.
+ *
+ * On 31 Oct 2026 a club member reviewed every (reference word → taster word)
+ * pair that earned specific credit on the tasting corpus (35 pairs) with one
+ * question: is the taster's word a specific, informative answer to the
+ * reference word, or the default member of that family? Five were "nei":
+ * "sitrus" against "frukt" is the default fruit of every white; "solbær"
+ * and "jordbær" against a bare "frukt" are guesses, not precision; a
+ * grapefruit is just a citrus; a plum is not stone fruit in the sense the
+ * house style means. These fall through to the ordinary family credit.
+ * `krydder` is handled one level up: it licenses nothing (see HYPERNYMS).
+ */
+export const SPECIFIC_EXCEPTIONS: Record<string, readonly string[]> = {
+  frukt: ['sitrus', 'solbær', 'jordbær'],
+  sitrus: ['grapefrukt'],
+  steinfrukt: ['plomme'],
+};
+
+/**
  * Whether the reference generalises over the user's descriptor — i.e. the
  * reference used a category term and the taster named something inside it.
+ * `exceptions` defaults to SPECIFIC_EXCEPTIONS; pass {} to measure without.
  */
 export function isSpecificOfReference(
-  userPath: { main?: string; sub?: string },
-  referenceLemmas: Set<string>
+  userPath: { main?: string; sub?: string; lemma?: string },
+  referenceLemmas: Set<string>,
+  exceptions: Record<string, readonly string[]> = SPECIFIC_EXCEPTIONS
 ): string | null {
   if (!userPath.main) return null;
   for (const lemma of referenceLemmas) {
@@ -141,6 +162,7 @@ export function isSpecificOfReference(
     if (!scope) continue;
     if (scope.main !== userPath.main) continue;
     if (scope.sub && scope.sub !== userPath.sub) continue;
+    if (userPath.lemma && exceptions[lemma]?.includes(userPath.lemma)) continue;
     return lemma;
   }
   return null;
