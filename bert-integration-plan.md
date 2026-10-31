@@ -523,6 +523,22 @@ Property benchmark with the flag on (floor 0.5): +HIT +13.2, +WRONG −3.0, +NEG
 
 **Evaluation target from here (item 5).** `loadTarget()` in `scripts/ratings-csv.ts`: the human rating where there is one (149 fields), else calibrated gpt-4o (agreement with the human 0.61 on fields it never saw rated), so every scoreable field has a rating and the measurement scripts report "ρ target" beside "ρ human". Current engine on the full target: 0.674 (95% 0.57–0.73).
 
+**Item 4, the rater's statements as a sweep (31 Oct 2026).** Two statements in plain language, each made a measurable option (`scripts/sweep-statements.ts`, `statements-sweep-2026-10-31.md`, benchmarks `benchmark-2026-10-stmt-A..D.md`):
+
+1. *"Adding a fourth correct word should matter the same as the second did."* → `linearMassForFull`: the hit score is linear in matched mass up to 100, instead of 100(1 − e^(−m/3)) which pays 49/74/87/93 for one to four specific words. Linear with 100 at mass 6 (three specific words) alone: human 0.623 → 0.639, full target 0.674 → 0.693, constructed 0.676 → 0.695. The best single change measured on this target so far.
+2. *"You should be rewarded for picking the correct family even without the correct word (bær, fat, krydder)."* → two things. Raising the family credits themselves (subcategory 0.6 → 0.75/0.85, category 0.3 → 0.45/0.6) makes agreement *worse* at every value; the current credits stay. The `familyCredit` rule, "bær" or "krydder" named against a reference that names a member counts as a family hit at the subcategory rate rather than a category near-miss, helps slightly (+0.003) and says what the statement says.
+
+Property gate on the candidates (current v5: +HIT +12.9, +WRONG −3.2, MISS +3.9, r(len) 0.29, d 1.25, top1 20%):
+
+| candidate | +HIT | +WRONG | MISS | r(len) | d | top1 | ρ human | ρ target |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| A: linear 6, family rule, soft 0.45 | +14.7 | −2.9 | +3.9 | 0.33 | 1.31 | 21% | 0.642 | 0.696 |
+| B: A with soft 0.35 | +15.4 | −2.1 | +4.0 | 0.36 | 1.26 | 21% | 0.661 | 0.708 |
+| C: linear 8, family rule, soft 0.35 | +14.7 | −1.8 | +3.4 | 0.40 | 1.40 | 20% | 0.662 | 0.709 |
+| D: linear 6 alone | +14.8 | −2.8 | +3.9 | 0.32 | 1.31 | 21% | 0.639 | 0.693 |
+
+Reading: the linear reward raises +HIT, d and top1 and costs a little on the two gate rows it has always traded against, the wrong-guess penalty (−3.2 → −2.9) and length dependence (0.29 → 0.33). Lowering the soft weight on top (B, C) buys another 0.02 of agreement for a halved wrong-guess penalty, which is the same trade the constants sweep refused. **Recommendation: A**, the statements with the soft weight left alone — the gate is dented by 0.3 points and 0.04 of correlation, the rater's stated preference is honoured, and every discriminating metric improves. A scoring change for new tastings; the owner decides.
+
 3. **Re-measure the engines when the corpus has grown.** All three validity rows lean toward the local engines by ~0.05, inside the noise every time; at 500 fields the noise is half what it is now. The frozen set is dated so the next one is a new file, not a regeneration.
 
 4. ~~PyTorch parity check~~ — done 31 Oct 2026, both graphs within 0.01 of their originals.

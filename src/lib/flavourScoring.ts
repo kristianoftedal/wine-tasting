@@ -9,7 +9,7 @@
  * behind each constant.
  */
 import { lemmatizeAndWeight, norwegianLemmas } from './lemmatizeAndWeight';
-import { derivationSource, derivedFrom, isSpecificOfReference } from './derivations';
+import { HYPERNYMS, derivationSource, derivedFrom, isSpecificOfReference } from './derivations';
 import type { SoftEngineId, TokenAlignment } from './softEngines/types';
 import type { OovMapping } from './oovMapping';
 import idfRaw from './idf-weights.generated.json';
@@ -19,7 +19,9 @@ import { STYLE_WEIGHTS_ENABLED } from './scoringConfig';
 const globalIdf = idfRaw as Record<string, number>;
 
 /** Per-call scoring context: the wine's style, and whether to weight by it. */
-export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number; /** Ladder-credited words count as full soft matches (src/lib/softEngines/hybrid.ts). */ hybridSoft?: boolean; /** Tuning overrides for the `specific` tier: its credit, and category words that must not license it. */ specificCredit?: number; hypernymExclude?: readonly string[]; /** Tuning overrides for the combine constants (scripts/tune-combine-constants.ts). */ tau?: number; hitWeight?: number; precisionFloor?: number; /** Extra derivation edges under test (scripts/measure-options.ts). */ extraDerivations?: Record<string, readonly string[]>; /** Leave structural (GENERIC) words out of the ladder entirely; under test. */ ignoreGeneric?: boolean; /** Override of SPECIFIC_EXCEPTIONS ({} = none), for measurement. */ specificExceptions?: Record<string, readonly string[]> };
+export type ScoringOptions = { category?: string | null; styleWeights?: boolean; /** Override of STYLE_WEIGHT_FLOOR, for the tuning sweep only. */ styleFloor?: number; /** Ladder-credited words count as full soft matches (src/lib/softEngines/hybrid.ts). */ hybridSoft?: boolean; /** Tuning overrides for the `specific` tier: its credit, and category words that must not license it. */ specificCredit?: number; hypernymExclude?: readonly string[]; /** Tuning overrides for the combine constants (scripts/tune-combine-constants.ts). */ tau?: number; hitWeight?: number; precisionFloor?: number; /** Extra derivation edges under test (scripts/measure-options.ts). */ extraDerivations?: Record<string, readonly string[]>; /** Leave structural (GENERIC) words out of the ladder entirely; under test. */ ignoreGeneric?: boolean; /** Override of SPECIFIC_EXCEPTIONS ({} = none), for measurement. */ specificExceptions?: Record<string, readonly string[]>;
+  /** Statement 1 (31 Oct 2026): a linear reward that reaches 100 at this hit mass, instead of the saturating curve. */ linearMassForFull?: number;
+  /** Statement 2: family-tier credits, and whether naming the family word of a reference member counts as a family hit. */ subcategoryCredit?: number; categoryCredit?: number; familyCredit?: boolean };
 import {
   CREDIT_CATEGORY,
   CREDIT_DERIVED,
@@ -131,6 +133,17 @@ export function lemmasWithWeight(text: string, options: ScoringOptions = {}): Ma
   return out;
 }
 
+/** The reference lemma inside the family the user's lemma names, if any ("bær" → "solbær"). */
+function familyMember(userLemma: string, reference: Map<string, LemmaInfo>): string | null {
+  const scope = HYPERNYMS[userLemma];
+  if (!scope) return null;
+  for (const info of reference.values()) {
+    if (info.lemma === userLemma || !info.main || info.main === 'GENERIC') continue;
+    if (scope.main === info.main && (!scope.sub || scope.sub === info.sub)) return info.lemma;
+  }
+  return null;
+}
+
 /**
  * Score every descriptor the user wrote against the reference note.
  *
@@ -187,10 +200,16 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
       factor = specificCredit;
     } else if (info.main && info.sub && referenceSubPaths.has(`${info.main}/${info.sub}`)) {
       kind = 'subcategory';
-      factor = CREDIT_SUBCATEGORY;
+      factor = options.subcategoryCredit ?? CREDIT_SUBCATEGORY;
+    } else if (options.familyCredit && (via = familyMember(info.lemma, reference) ?? undefined)) {
+      // The taster named the family ("bær", "krydder") and the reference
+      // names a member of it ("solbær", "pepper"): the reverse of `specific`,
+      // paid at the subcategory rate. Statement 2 of the 31 Oct 2026 sweep.
+      kind = 'subcategory';
+      factor = options.subcategoryCredit ?? CREDIT_SUBCATEGORY;
     } else if (info.main && referenceMains.has(info.main)) {
       kind = 'category';
-      factor = CREDIT_CATEGORY;
+      factor = options.categoryCredit ?? CREDIT_CATEGORY;
     }
 
     const credit = info.weight * factor;
@@ -204,7 +223,9 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
     hitMass,
     userMass,
     precision: userMass > 0 ? hitMass / userMass : 0,
-    hitScore: 100 * (1 - Math.exp(-hitMass / (options.tau ?? SATURATION_TAU))),
+    hitScore: options.linearMassForFull
+      ? Math.min(100, (100 * hitMass) / options.linearMassForFull)
+      : 100 * (1 - Math.exp(-hitMass / (options.tau ?? SATURATION_TAU))),
     matches,
   };
 }

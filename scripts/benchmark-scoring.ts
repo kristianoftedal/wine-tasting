@@ -36,6 +36,7 @@
  *     [--hybrid=on]  ladder-credited words count as full soft matches (SOFT_HYBRID_ENABLED)
  *     [--specific=0.6] [--exclude-hypernyms=krydder,frukt]   tuning overrides for the specific tier
  *     [--hit-weight=0.9] [--tau=3] [--floor=0.9]   tuning overrides for the combine constants
+ *     [--linear=8] [--sub=0.75] [--cat=0.45] [--family=on]   statement sweep overrides (31 Oct 2026)
  *     [--out=scripts/validation-results/<file>.md]   also writes <file>.json
  *
  * The sampler is seeded; two runs on the same data are identical.
@@ -72,7 +73,7 @@ const HYBRID = arg('hybrid') === 'on';
 const SPECIFIC = arg('specific') !== undefined ? Number(arg('specific')) : undefined;
 const EXCLUDE = (arg('exclude-hypernyms') ?? '').split(',').map(s => s.trim()).filter(Boolean);
 const num = (name: string) => (arg(name) !== undefined ? Number(arg(name)) : undefined);
-const COMBINE = { hitWeight: num('hit-weight'), tau: num('tau'), precisionFloor: num('floor') };
+const COMBINE = { hitWeight: num('hit-weight'), tau: num('tau'), precisionFloor: num('floor'), linearMassForFull: num('linear'), subcategoryCredit: num('sub'), categoryCredit: num('cat'), familyCredit: arg('family') === 'on' ? true : undefined };
 const SIDECAR = 'scripts/validation-results/frozen-set-2026-10.categories.json';
 if (!ENGINE_IDS.length) throw new Error('--engines names no known engine');
 
@@ -175,7 +176,7 @@ async function main() {
       const sidecar = existsSync(SIDECAR) ? JSON.parse(readFileSync(SIDECAR, 'utf8')) as Record<string, string | null> : {};
       for (const f of frozen.fields) categoryOfReference.set(f.referenceNote, sidecar[f.wine.id] ?? null);
     }
-    source = `${FROZEN} (${frozen.meta.fields} fields)${STYLE ? ', style weights on' : ''}${HYBRID ? ', hybrid soft on' : ''}${SPECIFIC !== undefined ? `, specific credit ${SPECIFIC}` : ''}${EXCLUDE.length ? `, hypernyms excluded: ${EXCLUDE.join(' ')}` : ''}${COMBINE.hitWeight !== undefined || COMBINE.tau !== undefined || COMBINE.precisionFloor !== undefined ? `, combine ${JSON.stringify(COMBINE)}` : ''}`;
+    source = `${FROZEN} (${frozen.meta.fields} fields)${STYLE ? ', style weights on' : ''}${HYBRID ? ', hybrid soft on' : ''}${SPECIFIC !== undefined ? `, specific credit ${SPECIFIC}` : ''}${EXCLUDE.length ? `, hypernyms excluded: ${EXCLUDE.join(' ')}` : ''}${Object.values(COMBINE).some(v => v !== undefined) ? `, overrides ${JSON.stringify(COMBINE)}` : ''}`;
   } else {
     // Ordered: PostgREST guarantees nothing without it, and the seeded sampler
     // consumes randomness in row order, so an unordered query made every run
