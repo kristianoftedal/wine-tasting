@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server';
-import { norwegianLemmas } from '@/lib/lemmatizeAndWeight';
 import ScoringDemo from './ScoringDemo';
 import EngineComparison from './EngineComparison';
 import { listSoftEngines } from '@/lib/softEngines';
@@ -23,70 +22,6 @@ export type PastTasting = {
   tasteScore: number | null;
   smellScore: number | null;
 };
-
-export type LemmaEntry = {
-  lemma: string;
-  sub: string;
-  category: string;
-};
-
-export type LemmaSub = {
-  name: string;
-  terms: LemmaEntry[];
-};
-
-export type LemmaGroup = {
-  main: string;
-  subs: LemmaSub[];
-  total: number;
-};
-
-const SUB_LABELS: Record<string, string> = {
-  baer: 'Bær', sitrus: 'Sitrus', steinfrukt: 'Steinfrukt', tropisk: 'Tropisk',
-  toerket: 'Tørket/modent', annet: 'Annet',
-  varm: 'Varme krydder', soet: 'Søte krydder',
-  fatlagring: 'Fatlagring', ristet: 'Ristet',
-  stein: 'Stein/mineraler', jord: 'Jord/skogbunn',
-  groenn: 'Grønne urter',
-  structure: 'Struktur', quality: 'Kvalitet', finish: 'Finish',
-  body: 'Fylde', acidity: 'Syre', sweetness: 'Sødme',
-  texture: 'Tekstur', general: 'Generelt',
-};
-
-function computeLemmaGroups(): LemmaGroup[] {
-  const seen = new Set<string>();
-  const grouped = new Map<string, Map<string, LemmaEntry[]>>();
-
-  for (const entry of Object.values(norwegianLemmas)) {
-    if (seen.has(entry.lemma)) continue;
-    seen.add(entry.lemma);
-    const main = entry.categoryPath?.main ?? 'GENERIC';
-    const sub = entry.categoryPath?.sub ?? '';
-    if (!grouped.has(main)) grouped.set(main, new Map());
-    const subMap = grouped.get(main)!;
-    if (!subMap.has(sub)) subMap.set(sub, []);
-    subMap.get(sub)!.push({ lemma: entry.lemma, sub, category: entry.category });
-  }
-
-  const ORDER = ['Frukt og bær', 'Krydder', 'Urter', 'Blomst', 'Treverk', 'Karamellisert', 'Nøtter', 'Jordaktig', 'Animalsk', 'Grønnsaker', 'GENERIC'];
-
-  return [...grouped.entries()]
-    .map(([main, subMap]) => ({
-      main,
-      subs: [...subMap.entries()]
-        .map(([name, terms]) => ({
-          name: SUB_LABELS[name] ?? name,
-          terms: terms.sort((a, b) => a.lemma.localeCompare(b.lemma, 'nb')),
-        }))
-        .sort((a, b) => a.name.localeCompare(b.name, 'nb')),
-      total: [...subMap.values()].reduce((s, t) => s + t.length, 0),
-    }))
-    .sort((a, b) => {
-      const ai = ORDER.indexOf(a.main);
-      const bi = ORDER.indexOf(b.main);
-      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
-    });
-}
 
 async function getPastTastings(): Promise<PastTasting[]> {
   const supabase = await createClient();
@@ -121,9 +56,8 @@ async function getPastTastings(): Promise<PastTasting[]> {
 }
 
 export default async function ScoringDemoPage() {
-  const [pastTastings, lemmaGroups, engines, style] = await Promise.all([
+  const [pastTastings, engines, style] = await Promise.all([
     getPastTastings(),
-    Promise.resolve(computeLemmaGroups()),
     listSoftEngines(),
     listStyleCategories(),
   ]);
@@ -139,7 +73,6 @@ export default async function ScoringDemoPage() {
       </div>
       <ScoringDemo
         pastTastings={pastTastings}
-        lemmaGroups={lemmaGroups}
         engines={engines}
         styleCategories={style.categories}
         styleDefault={style.enabledByDefault}

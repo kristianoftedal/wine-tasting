@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition } from 'react';
 import { getScoringBreakdown, type ScoringBreakdown, type TermDetail, type SoftEngineComparison } from '@/actions/scoring-debug';
 import type { SoftEngineId, SoftEngineUnavailable, TokenAlignment } from '@/lib/softEngines/types';
-import type { PastTasting, LemmaGroup } from './page';
+import type { PastTasting } from './page';
 import styles from './page.module.css';
 
 const EXAMPLES = [
@@ -164,49 +164,6 @@ function TermTable({ terms, title }: { terms: TermDetail[]; title: string }) {
   );
 }
 
-function LemmaBrowser({ groups }: { groups: LemmaGroup[] }) {
-  const [openMain, setOpenMain] = useState<string | null>(null);
-
-  return (
-    <div className={styles.section}>
-      <h3 className={styles.sectionTitle}>Ordbok — alle gjenkjente termer</h3>
-      <div className={styles.lemmaGroups}>
-        {groups.map(group => {
-          const isOpen = openMain === group.main;
-          return (
-            <div key={group.main} className={styles.lemmaGroup}>
-              <button
-                className={styles.lemmaGroupBtn}
-                onClick={() => setOpenMain(isOpen ? null : group.main)}
-              >
-                <span className={styles.catBadge} data-main={group.main}>{group.main}</span>
-                <span className={styles.lemmaGroupCount}>{group.total} termer</span>
-                <span className={styles.chevron}>{isOpen ? '▲' : '▼'}</span>
-              </button>
-              {isOpen && (
-                <div className={styles.lemmaGroupContent}>
-                  {group.subs.map(sub => (
-                    <div key={sub.name} className={styles.lemmaSub}>
-                      {sub.name && (
-                        <div className={styles.lemmaSubTitle}>{sub.name}</div>
-                      )}
-                      <div className={styles.lemmaChips}>
-                        {sub.terms.map(term => (
-                          <span key={term.lemma} className={styles.lemmaChip}>{term.lemma}</span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 function TokenChips({ rawTokens, flavorTokens, terms, label }: {
   rawTokens: string[];
   flavorTokens: string[];
@@ -262,56 +219,120 @@ function AlignmentPanel({ title, model, alignments, disagreeWith }: {
   );
 }
 
-function EngineTable({ data }: { data: ScoringBreakdown }) {
-  const current = data.alignments;
-  const rows: SoftEngineComparison[] = data.softEngines;
-  if (!rows.length) return null;
+type EngineSection = {
+  id: SoftEngineId | string;
+  model: string;
+  active: boolean;
+  available: boolean;
+  reason?: string;
+  softScore: number;
+  total: number;
+  delta: number;
+  raw?: number;
+  baseline?: number;
+  ms?: number;
+  alignments: TokenAlignment[];
+};
+
+/**
+ * One accordion item per soft engine: the engine in production first (its
+ * numbers are the breakdown's own), then every engine selected for
+ * comparison. The lexical half is the same for all of them; what differs is
+ * the soft term and therefore the total.
+ */
+function EngineAccordion({ data, engines }: { data: ScoringBreakdown; engines: EngineInfo[] }) {
+  const activeId = data.engine ?? 'openai';
+  const sections: EngineSection[] = [
+    {
+      id: activeId, model: engines.find(e => e.id === activeId)?.model ?? '', active: true, available: true,
+      softScore: data.softScore, total: data.currentScore, delta: 0, alignments: data.alignments,
+    },
+    ...data.softEngines.map((r): EngineSection => r.available
+      ? { id: r.engine, model: r.model, active: false, available: true, softScore: r.softScore, total: r.combinedScore, delta: r.delta, raw: r.raw, baseline: r.baseline, ms: r.ms, alignments: r.alignments }
+      : { id: r.engine, model: r.model, active: false, available: false, reason: (r as SoftEngineUnavailable).reason, softScore: 0, total: 0, delta: 0, alignments: [] }),
+  ];
+  const [open, setOpen] = useState<Set<string>>(() => new Set([activeId]));
+  const toggle = (id: string) => setOpen(prev => { const next = new Set(prev); if (next.has(id)) next.delete(id); else next.add(id); return next; });
+  const precisionPct = Math.round(data.precision * 100);
+
   return (
-    <div className={styles.section}>
-      <h3 className={styles.sectionTitle}>Motorsammenligning</h3>
-      <div className={styles.tableWrap}>
-        <table className={styles.table}>
-          <thead>
-            <tr><th>Motor</th><th>Modell</th><th>Rå MaxSim</th><th>Baseline</th><th>Token-likhet</th><th>Totalscore</th><th>Δ mot nå</th><th>ms</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className={styles.mono}>{data.engine ?? 'openai'} (nå)</td><td>—</td><td className={styles.num}>—</td><td className={styles.num}>—</td>
-              <td className={styles.num}>{Math.round(data.softScore)}</td><td className={styles.num} style={{ fontWeight: 600 }}>{data.currentScore}</td><td className={styles.num}>0</td><td className={styles.num}>—</td>
-            </tr>
-            {rows.map(r => r.available ? (
-              <tr key={r.engine}>
-                <td className={styles.mono}>{r.engine}</td><td className={styles.mono}>{r.model}</td>
-                <td className={styles.num}>{r.raw.toFixed(3)}</td><td className={styles.num}>{r.baseline.toFixed(3)}</td>
-                <td className={styles.num}>{Math.round(r.softScore)}</td><td className={styles.num} style={{ fontWeight: 600 }}>{r.combinedScore}</td>
-                <td className={styles.num} style={{ color: r.delta > 0 ? '#16a34a' : r.delta < 0 ? '#dc2626' : '#9ca3af' }}>{r.delta > 0 ? '+' : ''}{r.delta}</td>
-                <td className={styles.num}>{Math.round(r.ms)}</td>
-              </tr>
-            ) : (
-              <tr key={r.engine}>
-                <td className={styles.mono}>{r.engine}</td><td className={styles.mono}>{r.model}</td>
-                <td colSpan={6} className={styles.unavailable}>ikke tilgjengelig: {(r as SoftEngineUnavailable).reason}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className={styles.alignGrid}>
-        <AlignmentPanel title={`${data.engine ?? 'openai'} (nå)`} model="" alignments={current} />
-        {rows.map(r => r.available && (
-          <AlignmentPanel key={r.engine} title={r.engine} model={r.model} alignments={r.alignments} disagreeWith={current} />
-        ))}
-      </div>
-      <div className={styles.compareNote}>Oransje rader: motoren velger et annet referanseord enn motoren i drift. Det er de parene som er verdt å se på for hånd.</div>
+    <div className={styles.engineAccordion}>
+      {sections.map(sec => {
+        const isOpen = open.has(sec.id);
+        return (
+          <div key={sec.id} className={styles.engineItem}>
+            <button className={styles.engineItemBtn} onClick={() => toggle(sec.id)} aria-expanded={isOpen}>
+              <span className={styles.mono} style={{ fontWeight: 600 }}>{sec.id}</span>
+              {sec.active && <span className={styles.engineActive}>i drift</span>}
+              <span className={styles.engineItemModel}>{sec.model}</span>
+              <span className={styles.engineItemScores}>
+                {sec.available ? (
+                  <>
+                    <span className={styles.engineItemTotal} style={{ color: scoreColor(sec.total) }}>{sec.total}</span>
+                    {!sec.active && (
+                      <span className={styles.engineItemDelta} style={{ color: sec.delta > 0 ? '#16a34a' : sec.delta < 0 ? '#dc2626' : '#9ca3af' }}>
+                        {sec.delta > 0 ? '+' : ''}{sec.delta}
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  <span className={styles.unavailable}>ikke tilgjengelig</span>
+                )}
+              </span>
+              <span className={styles.chevron}>{isOpen ? '▲' : '▼'}</span>
+            </button>
+            {isOpen && (
+              <div className={styles.engineItemContent}>
+                {!sec.available ? (
+                  <div className={styles.unavailable}>{sec.reason}</div>
+                ) : (
+                  <>
+                    <div className={styles.scoreGrid}>
+                      <ScoreCard title="Treffscore" value={Math.round(data.hitScore)} description={`Metning på ${data.hitMass.toFixed(1)} treffmasse (lik for alle motorer)`} />
+                      <ScoreCard
+                        title="Token-likhet"
+                        value={Math.round(sec.softScore)}
+                        description={sec.raw !== undefined ? `rå ${sec.raw.toFixed(3)}${sec.baseline ? `, gulv ${sec.baseline.toFixed(3)}` : ''}${sec.ms !== undefined ? ` · ${Math.round(sec.ms)} ms` : ''}` : 'MaxSim-presisjon (nærsynonymer)'}
+                      />
+                      <div className={styles.scoreCard}>
+                        <div className={styles.scoreCardTitle}>Presisjon</div>
+                        <div className={styles.scoreCardValue} style={{ color: '#8b5cf6' }}>{precisionPct}%</div>
+                        <div className={styles.formula}>{data.hitMass.toFixed(1)} / {data.userMass.toFixed(1)} masse</div>
+                        <div className={styles.scoreCardDesc}>Andel av det du skrev som traff</div>
+                      </div>
+                      <div className={styles.finalCard}>
+                        <ScoreRing value={sec.total} label="Totalscore" sub={sec.active ? 'beregnet nå' : `${sec.delta > 0 ? '+' : ''}${sec.delta} mot drift`} />
+                        <div className={styles.finalFormula}>
+                          0.55 × {Math.round(data.hitScore)} + 0.45 × {Math.round(sec.softScore)} → {sec.total}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.alignGrid}>
+                      <AlignmentPanel
+                        title="Ordtreff"
+                        model={sec.model}
+                        alignments={sec.alignments}
+                        disagreeWith={sec.active ? undefined : data.alignments}
+                      />
+                    </div>
+                    {!sec.active && (
+                      <div className={styles.compareNote}>Oransje rader: denne motoren velger et annet referanseord enn motoren i drift.</div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: number | null }) {
+function Results({ data, storedScore, engines }: { data: ScoringBreakdown; storedScore: number | null; engines: EngineInfo[] }) {
   const idfBoosted = data.userTerms.filter(t => t.idfMultiplier > 1.0 && t.matched);
   const diff = storedScore !== null ? data.currentScore - storedScore : null;
   const precisionPct = Math.round(data.precision * 100);
-  const derived = data.matches.filter(m => m.kind === 'derived');
 
   return (
     <div className={styles.results}>
@@ -357,25 +378,9 @@ function Results({ data, storedScore }: { data: ScoringBreakdown; storedScore: n
             </div>
           )}
         </div>
-        <div className={styles.scoreGrid}>
-          <ScoreCard title="Treffscore" value={Math.round(data.hitScore)} description={`Metning på ${data.hitMass.toFixed(1)} treffmasse`} />
-          <ScoreCard title="Token-likhet" value={Math.round(data.softScore)} description="MaxSim-presisjon (nærsynonymer)" />
-          <div className={styles.scoreCard}>
-            <div className={styles.scoreCardTitle}>Presisjon</div>
-            <div className={styles.scoreCardValue} style={{ color: '#8b5cf6' }}>{precisionPct}%</div>
-            <div className={styles.formula}>{data.hitMass.toFixed(1)} / {data.userMass.toFixed(1)} masse</div>
-            <div className={styles.scoreCardDesc}>Andel av det du skrev som traff</div>
-          </div>
-          <div className={styles.finalCard}>
-            <ScoreRing value={data.currentScore} label="Totalscore" sub="beregnet nå" />
-            <div className={styles.finalFormula}>
-              0.55 × {Math.round(data.hitScore)} + 0.45 × {Math.round(data.softScore)} → {data.currentScore}
-            </div>
-          </div>
-        </div>
+        <EngineAccordion data={data} engines={engines} />
       </div>
 
-      <EngineTable data={data} />
 
       {/* Stored vs calculated comparison — only shown when scores differ */}
       {storedScore !== null && diff !== null && diff !== 0 && (
@@ -515,9 +520,8 @@ function TastingSelector({
   );
 }
 
-export default function ScoringDemo({ pastTastings, lemmaGroups, engines, styleCategories, styleDefault }: {
+export default function ScoringDemo({ pastTastings, engines, styleCategories, styleDefault }: {
   pastTastings: PastTasting[];
-  lemmaGroups: LemmaGroup[];
   engines: EngineInfo[];
   styleCategories: string[];
   styleDefault: boolean;
@@ -688,6 +692,7 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, engines, styleC
       {result && (
         <Results
           data={result}
+          engines={engines}
           storedScore={
             selectedTasting
               ? (noteType === 'smak' ? selectedTasting.tasteScore : selectedTasting.smellScore)
@@ -695,7 +700,6 @@ export default function ScoringDemo({ pastTastings, lemmaGroups, engines, styleC
           }
         />
       )}
-      <LemmaBrowser groups={lemmaGroups} />
     </div>
   );
 }
