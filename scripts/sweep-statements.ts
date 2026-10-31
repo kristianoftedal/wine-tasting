@@ -34,7 +34,7 @@ const OUT = `scripts/validation-results/statements-sweep-${new Date().toISOStrin
 const input = (t: string): NoteInput => { const n = applyNegation(t); return { raw: n.text, norm: normalizeWineSynonyms(sanitizeText(n.text)) }; };
 
 const SHAPES: Array<{ name: string; opts: ScoringOptions }> = [
-  { name: 'saturating τ3 (current)', opts: {} },
+  { name: 'saturating τ3 (pre-v6)', opts: { linearMassForFull: 0 as unknown as number, tau: 3 } },
   { name: 'saturating τ6', opts: { tau: 6 } },
   { name: 'linear, 100 at mass 6', opts: { linearMassForFull: 6 } },
   { name: 'linear, 100 at mass 8', opts: { linearMassForFull: 8 } },
@@ -87,7 +87,7 @@ async function main() {
       rLen: pearson(fields.map(scoreOf), fields.map(p => p.words)), meanScore: mean(fields.map(scoreOf)),
     });
   }
-  const current = rows.find(r => r.name.startsWith('saturating τ3 (current) · sub 0.6 · cat 0.3 · family off · hit 0.55'))!;
+  const current = rows.find(r => r.name.startsWith('linear, 100 at mass 6 · sub 0.6 · cat 0.3 · family on · hit 0.55'))!;
   const fmt = (r: Row) => `| ${r.name} | ${r.human.toFixed(3)} (${r.lo.toFixed(2)}–${r.hi.toFixed(2)}) | ${r.target.toFixed(3)} | ${r.constructed.toFixed(3)} | ${r.pairwise.toFixed(1)}% | ${r.rLen.toFixed(2)} | ${r.meanScore.toFixed(1)} |`;
   const lines = [`# Statement sweep — ${new Date().toISOString().slice(0, 10)}`, '', `Commit \`${commit}\`, ${rows.length} grid points, OpenAI engine, ${rated.length} human-rated and ${targeted.length} target fields.`, '',
     '| constants | ρ human (95%) | ρ target | ρ constructed | pairwise | r(len) | mean |', '| --- | --- | --- | --- | --- | --- | --- |', fmt(current), ''];

@@ -521,6 +521,8 @@ Property benchmark with the flag on (floor 0.5): +HIT +13.2, +WRONG −3.0, +NEG
 
 **Review sheet applied, scorer v5 (31 Oct 2026).** The club member answered all 35 pairs: five `nei` (`frukt → sitrus` ×8, `frukt → solbær`, `frukt → jordbær`, `sitrus → grapefrukt`, `steinfrukt → plomme`), thirty `ja` (all of `bær`, `frukt → eple`, every `mineral` and `steinfrukt` pair). The five are `SPECIFIC_EXCEPTIONS` in `derivations.ts`: the pair falls through to ordinary family credit. 11 fields change; validity is unchanged (human 0.623 vs 0.622, full target 0.674 vs 0.673, panel −0.005, constructed −0.009) and the gate holds (+WRONG −3.2, d 1.25). Shipped as the club's judgement at no measured cost.
 
+**Scorer v6 shipped 31 Oct 2026**: linear hit score (100 at mass 6), family-word credit, category credit 0. The numbers are under item 4 of the what's-next list.
+
 **Evaluation target from here (item 5).** `loadTarget()` in `scripts/ratings-csv.ts`: the human rating where there is one (149 fields), else calibrated gpt-4o (agreement with the human 0.61 on fields it never saw rated), so every scoreable field has a rating and the measurement scripts report "ρ target" beside "ρ human". Current engine on the full target: 0.674 (95% 0.57–0.73).
 
 **Item 4, the rater's statements as a sweep (31 Oct 2026).** Two statements in plain language, each made a measurable option (`scripts/sweep-statements.ts`, `statements-sweep-2026-10-31.md`, benchmarks `benchmark-2026-10-stmt-A..D.md`):
@@ -537,7 +539,16 @@ Property gate on the candidates (current v5: +HIT +12.9, +WRONG −3.2, MISS +3.
 | C: linear 8, family rule, soft 0.35 | +14.7 | −1.8 | +3.4 | 0.40 | 1.40 | 20% | 0.662 | 0.709 |
 | D: linear 6 alone | +14.8 | −2.8 | +3.9 | 0.32 | 1.31 | 21% | 0.639 | 0.693 |
 
-Reading: the linear reward raises +HIT, d and top1 and costs a little on the two gate rows it has always traded against, the wrong-guess penalty (−3.2 → −2.9) and length dependence (0.29 → 0.33). Lowering the soft weight on top (B, C) buys another 0.02 of agreement for a halved wrong-guess penalty, which is the same trade the constants sweep refused. **Recommendation: A**, the statements with the soft weight left alone — the gate is dented by 0.3 points and 0.04 of correlation, the rater's stated preference is honoured, and every discriminating metric improves. A scoring change for new tastings; the owner decides.
+Reading: the linear reward raises +HIT, d and top1 and costs a little on the wrong-guess penalty (−3.2 → −2.9) and length dependence (0.29 → 0.33). Lowering the soft weight on top (B, C) buys another 0.02 of agreement for a halved wrong-guess penalty, the trade the constants sweep refused.
+
+**What shipping A found, and what shipped instead (scorer v6).** The owner chose A. The offline invariants test then failed on the lexical half: "kirsebær krydder" scored 37 and the same note padded with five wrong words scored 41. With a linear reward, category credit (0.3 for merely sharing the main branch, fersken against a wine showing kirsebær) adds more mass than the precision factor removes, and the benchmark's soft term had been hiding it. Category credit set to 0 (A2) restores the invariant and improves everything else:
+
+| | +HIT | +WRONG | MISS | r(len) | d | top1 | ρ human | ρ target | ρ panel |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| v5 | +12.9 | −3.2 | +3.9 | 0.29 | 1.25 | 20% | 0.623 | 0.674 | 0.747 |
+| **v6 = A2: linear 6, family-word rule, category credit 0** | +14.9 | −4.4 | +3.5 | 0.33 | 1.37 | 21% | 0.658 | 0.708 | 0.753 |
+
+The strongest wrong-guess penalty and the best agreement with the rater of anything measured, from two sentences of the rater's and one invariant that refused to be bent. The family the taster gets right is still paid (subcategory 0.6, and the family word at the same rate); what no longer pays is landing in the same broad branch by accident.
 
 3. **Re-measure the engines when the corpus has grown.** All three validity rows lean toward the local engines by ~0.05, inside the noise every time; at 500 fields the noise is half what it is now. The frozen set is dated so the next one is a new file, not a regeneration.
 

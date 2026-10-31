@@ -58,21 +58,40 @@ export const EMBEDDING_MODEL = 'text-embedding-3-small';
  * the number a taster sees would change for the same note: a new soft engine,
  * a constant below, a dictionary change that moves scores.
  */
-export const SCORER_VERSION = 'directional-5:text-embedding-3-small'; // 2: synonym map grew (brioch, toasty, bakt, autolyse); 3: krydder no longer licenses specific credit; 4: lees-ageing derivations (kjeks/bakverk/brioche -> nøtt, mandel, smør) — 29 Oct 2026; 5: five specific-credit exceptions from the club's review (frukt↛sitrus/solbær/jordbær, sitrus↛grapefrukt, steinfrukt↛plomme) — 31 Oct 2026
+export const SCORER_VERSION = 'directional-6:text-embedding-3-small'; // 2: synonym map grew (brioch, toasty, bakt, autolyse); 3: krydder no longer licenses specific credit; 4: lees-ageing derivations (kjeks/bakverk/brioche -> nøtt, mandel, smør) — 29 Oct 2026; 5: five specific-credit exceptions from the club's review (frukt↛sitrus/solbær/jordbær, sitrus↛grapefrukt, steinfrukt↛plomme); 6: linear hit score (100 at mass 6) and family-word credit — 31 Oct 2026
 
 /**
  * Saturation constant for matched mass, in weighted-lemma units where a
- * specific descriptor carries ~2.0 under the inverted profile.
+ * specific descriptor carries ~2.0 under the inverted profile. Used only
+ * when LINEAR_MASS_FOR_FULL is unset.
  *
  *   1 correct specific descriptor  ->  49
  *   2                              ->  74
  *   3                              ->  87
  *   4                              ->  93
- *
- * Raise it to demand more descriptors for a high score; lower it to be more
- * generous to short notes.
  */
 export const SATURATION_TAU = 3.0;
+
+/**
+ * Scorer v6, 31 Oct 2026: the hit score is linear in matched mass up to 100,
+ * reached at this mass (three specific descriptors at ~2.0 each), instead of
+ * the saturating curve above. The club's rater asked for it in one sentence:
+ * "adding a fourth correct word should matter the same as the second did."
+ * Measured with CREDIT_CATEGORY 0 (statements-sweep-2026-10-31.md,
+ * benchmark-2026-10-stmt-A2.md): agreement with the rater 0.623 -> 0.658,
+ * with the full target 0.674 -> 0.708, +HIT +12.9 -> +14.9, +WRONG -3.2 ->
+ * -4.4, d 1.25 -> 1.37, length dependence 0.29 -> 0.33. Set to undefined
+ * to return to the saturating curve.
+ */
+export const LINEAR_MASS_FOR_FULL: number | undefined = 6;
+
+/**
+ * Also v6: naming the family word ("bær", "krydder") against a reference
+ * that names a member ("solbær", "pepper") is a family hit at the
+ * subcategory rate, not a category near-miss. The reverse of `specific`.
+ * Raising the family credits themselves measured worse at every value.
+ */
+export const FAMILY_CREDIT = true;
 
 /**
  * Style-relative descriptor weights (src/lib/styleWeights.ts), behind
@@ -111,7 +130,17 @@ export const CREDIT_DERIVED = 1.0;
  */
 export const CREDIT_SPECIFIC = 0.85;
 export const CREDIT_SUBCATEGORY = 0.6;
-export const CREDIT_CATEGORY = 0.3;
+/**
+ * Same main category only (fersken against a wine that shows kirsebær):
+ * 0 since scorer v6. With the linear reward below, 0.3 let a note padded
+ * with same-branch near misses outscore the honest note (37 -> 41 on the
+ * lexical half; the invariants test caught it). At 0 the padded note falls
+ * to 26, the wrong-guess penalty on the benchmark improves from -3.2 to
+ * -4.4, and agreement with the rater rises further (0.642 -> 0.658). The
+ * family a taster gets right is still paid: subcategory 0.6, and the
+ * family-word rule (FAMILY_CREDIT) at the same rate.
+ */
+export const CREDIT_CATEGORY = 0;
 
 /**
  * Blend between the lexical hit term and the soft token-similarity term.

@@ -14,7 +14,7 @@ import type { SoftEngineId, TokenAlignment } from './softEngines/types';
 import type { OovMapping } from './oovMapping';
 import idfRaw from './idf-weights.generated.json';
 import { styleMultiplier } from './styleWeights';
-import { STYLE_WEIGHTS_ENABLED } from './scoringConfig';
+import { FAMILY_CREDIT, LINEAR_MASS_FOR_FULL, STYLE_WEIGHTS_ENABLED } from './scoringConfig';
 
 const globalIdf = idfRaw as Record<string, number>;
 
@@ -201,7 +201,7 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
     } else if (info.main && info.sub && referenceSubPaths.has(`${info.main}/${info.sub}`)) {
       kind = 'subcategory';
       factor = options.subcategoryCredit ?? CREDIT_SUBCATEGORY;
-    } else if (options.familyCredit && (via = familyMember(info.lemma, reference) ?? undefined)) {
+    } else if ((options.familyCredit ?? FAMILY_CREDIT) && (via = familyMember(info.lemma, reference) ?? undefined)) {
       // The taster named the family ("bær", "krydder") and the reference
       // names a member of it ("solbær", "pepper"): the reverse of `specific`,
       // paid at the subcategory rate. Statement 2 of the 31 Oct 2026 sweep.
@@ -223,8 +223,8 @@ export function lexicalCredit(userText: string, referenceText: string, options: 
     hitMass,
     userMass,
     precision: userMass > 0 ? hitMass / userMass : 0,
-    hitScore: options.linearMassForFull
-      ? Math.min(100, (100 * hitMass) / options.linearMassForFull)
+    hitScore: (options.linearMassForFull ?? LINEAR_MASS_FOR_FULL)
+      ? Math.min(100, (100 * hitMass) / (options.linearMassForFull ?? LINEAR_MASS_FOR_FULL)!)
       : 100 * (1 - Math.exp(-hitMass / (options.tau ?? SATURATION_TAU))),
     matches,
   };
