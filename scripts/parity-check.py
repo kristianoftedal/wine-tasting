@@ -22,7 +22,7 @@ def cos(a, b):
 
 # ── NorBERT3 (custom code; last hidden state) ──
 from transformers import AutoModel
-norbert = AutoModel.from_pretrained('ltg/norbert3-base', trust_remote_code=True).eval()
+norbert = AutoModel.from_pretrained('ltg/norbert3-base', trust_remote_code=True).to('cpu').eval()
 sims = []
 for note in dump['bert']:
     ids = torch.tensor([note['ids']])
@@ -35,10 +35,10 @@ print(f"bert: {len(sims)} tokens, mean cos {np.mean(sims):.4f}, min {np.min(sims
 
 # ── mLateOn via PyLate (projection + normalisation included) ──
 from pylate import models
-colbert = models.ColBERT(model_name_or_path='lightonai/mLateOn')
+colbert = models.ColBERT(model_name_or_path='lightonai/mLateOn', device='cpu')
 sims = []
-st = colbert[0].auto_model.eval()
-dense = [colbert[i] for i in range(1, len(colbert))]
+st = colbert[0].auto_model.to('cpu').eval()
+dense = [colbert[i].to('cpu') for i in range(1, len(colbert))]
 for note in dump['colbert']:
     ids = torch.tensor([note['ids']])
     with torch.no_grad():

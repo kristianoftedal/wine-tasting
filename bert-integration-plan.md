@@ -357,7 +357,7 @@ Every engine orders the levels; the set is too small at levels 2 and 0 to separa
 - [x] **Word spans are recovered from one whole-text tokenisation**, not from per-word concatenation as the draft proposed. Measured first: per-word concatenation equalled whole-text tokenisation in 1.5% of real notes for NorBERT and 0% for mLateOn (sentence-initial forms, stray space tokens that every word then shared, giving ColBERT ~0.98 for unrelated words). `words.ts` groups the tokenizer's token strings by their word-start markers (`Ġ` for NorBERT's byte-level BPE, `▁` for mLateOn's sentencepiece); a leading space makes the first word tokenise like every other. Agreement on 200 real notes: 100% for both; per-word tokenising remains as a counted fallback
 - [x] Vitest: `maxsim.test.ts` (pure: directional property, weighting, alignments, grouping, bucketing, rescale) and `engines.test.ts` (skips without models: ≥ 99% span recovery on 200 real notes, a matching word beats an unrelated one, one alignment per content word, soft score within 0–100)
 - [x] **Contextual engines are only approximately directional.** Extending the reference changes the context, so its word vectors move and the raw value can drop slightly. The test allows 0.05 of drift; the benchmark's MISS column measures what that does to scores (phase 10)
-- [ ] **Parity against PyTorch not run.** `scripts/parity-dump.ts` (Node, ids + ONNX vectors for five notes) and `scripts/parity-check.py` (PyTorch originals on the same ids, per-token cosine, pass at mean > 0.99) are in the repo; running the Python half was blocked in this session. Needs an environment with `torch`, `transformers` and `pylate`, and downloads the originals (~1.7 GB)
+- [x] **Parity against PyTorch, run 31 Oct 2026.** `scripts/parity-dump.ts` (Node, ids + ONNX vectors for five notes) and `scripts/parity-check.py` (PyTorch originals on the same ids, CPU, per-token cosine): NorBERT3 int8 mean 0.991 over 93 tokens (min 0.83, one position), mLateOn int8 mean 0.998 over 116 tokens (min 0.99). Both graphs reproduce their originals; the int8 quantisation costs about a hundredth
 - [x] All engines visible on `/scoring-demo` once `models/` is present; the extract is regenerated after calibration in phase 09, since uncalibrated local engines report raw ≈ 0.9 for everything
 
 Observed before calibration (raw MaxSim, int8): NorBERT separates a little (0.77 for a close note, 0.33 for "vanilje" on an oaked wine, 0.46 for an unrelated note) but places `brioche` nearest `fersken`, not `bakverk`; mLateOn places `brioche` nearest `bakverk` (0.84) but sits at 0.89–0.94 for everything, matched or not, which is the anisotropy phase 09 exists to remove.
@@ -445,7 +445,7 @@ Property benchmark with the flag on (floor 0.5): +HIT +13.2, +WRONG −3.0, +NEG
 ### Step 3: housekeeping — done 29 Oct 2026
 
 - [x] `WINE_SYNONYMS` grew by the typos and loanwords real notes contain and the vector mapping could not resolve: `brioch`, `toasty`, `bakt`, `autolyse`. `SCORER_VERSION` is now `directional-2:text-embedding-3-small`; new tastings carry it, stored scores are untouched
-- [ ] PyTorch parity check: still needs a person to run it
+- [x] PyTorch parity check: run 31 Oct 2026, NorBERT3 0.991, mLateOn 0.998 mean token cosine
 - [ ] `package-lock.json` and the concurrent dependency cleanup: left for their author to commit
 - [x] `main` fast-forwarded to the branch
 
@@ -525,7 +525,7 @@ Property benchmark with the flag on (floor 0.5): +HIT +13.2, +WRONG −3.0, +NEG
 
 3. **Re-measure the engines when the corpus has grown.** All three validity rows lean toward the local engines by ~0.05, inside the noise every time; at 500 fields the noise is half what it is now. The frozen set is dated so the next one is a new file, not a regeneration.
 
-4. **PyTorch parity check** (`scripts/parity-dump.ts`, `scripts/parity-check.py`), one run.
+4. ~~PyTorch parity check~~ — done 31 Oct 2026, both graphs within 0.01 of their originals.
 
 5. **Commit `package-lock.json`** with the dependency cleanup it belongs to.
 
