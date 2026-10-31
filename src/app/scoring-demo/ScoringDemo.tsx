@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from 'react';
 import { getScoringBreakdown, type ScoringBreakdown, type TermDetail, type SoftEngineComparison } from '@/actions/scoring-debug';
+import type { MatchKind, TermMatch } from '@/lib/flavourScoring';
 import type { SoftEngineId, SoftEngineUnavailable, TokenAlignment } from '@/lib/softEngines/types';
 import type { PastTasting } from './page';
 import styles from './page.module.css';
@@ -102,92 +103,58 @@ function ScoreCard({ title, value, description }: { title: string; value: number
   );
 }
 
-function TermTable({ terms, title }: { terms: TermDetail[]; title: string }) {
-  if (terms.length === 0) return null;
+const KIND_LABEL: Record<MatchKind, string> = {
+  direct: 'direkte treff', derived: 'avledet (f.eks. vanilje fra fat)', specific: 'mer presist enn vinnotatet',
+  subcategory: 'riktig familie', category: 'samme hovedkategori', none: 'ikke i vinen',
+};
 
-  const matched = terms.filter(t => t.matched).length;
-  const porterCount = terms.filter(t => t.foundViaPorter).length;
-  const idfBoosted = terms.filter(t => t.idfMultiplier > 1.0).length;
-
-  return (
-    <div className={styles.termSection}>
-      <div className={styles.termHeader}>
-        <span className={styles.termTitle}>{title}</span>
-        <span className={styles.accordionMeta}>
-          <span className={styles.termBadge} style={{ background: '#dcfce7', color: '#16a34a' }}>{matched} treff</span>
-          {idfBoosted > 0 && <span className={styles.termBadge} style={{ background: '#fef3c7', color: '#b45309' }}>{idfBoosted} IDF↑</span>}
-          {porterCount > 0 && <span className={styles.termBadge} style={{ background: '#ede9fe', color: '#7c3aed' }}>{porterCount} Porter</span>}
-          <span className={styles.termBadge} style={{ background: '#f3f4f6', color: '#374151' }}>{terms.length} ord</span>
-        </span>
-      </div>
-      <div className={styles.tableWrap}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Original</th>
-              <th>Lemma</th>
-              <th>Kategori</th>
-              <th>Grunnvekt</th>
-              <th>IDF ×</th>
-              <th>Endelig vekt</th>
-              <th>Porter</th>
-              <th>Treff</th>
-            </tr>
-          </thead>
-          <tbody>
-            {terms.map((t, i) => (
-              <tr key={i} className={t.matched ? styles.rowMatch : styles.rowMiss}>
-                <td className={styles.mono}>{t.original}</td>
-                <td className={styles.mono}>{t.lemma}</td>
-                <td>
-                  <span className={styles.catBadge} data-main={t.main}>
-                    {t.main === 'GENERIC' ? t.sub || 'GENERIC' : `${t.main}${t.sub ? `/${t.sub}` : ''}`}
-                  </span>
-                </td>
-                <td className={styles.num}>{t.baseWeight.toFixed(1)}</td>
-                <td className={styles.num} style={{ color: t.idfMultiplier > 1 ? '#d97706' : '#6b7280' }}>
-                  {t.idfMultiplier > 1.0 ? `${t.idfMultiplier.toFixed(2)} ↑` : t.idfMultiplier.toFixed(2)}
-                </td>
-                <td className={styles.num} style={{ fontWeight: 600 }}>{t.finalWeight.toFixed(2)}</td>
-                <td className={styles.centered}>{t.foundViaPorter ? '✓' : '—'}</td>
-                <td className={styles.centered}>
-                  {t.matched
-                    ? <span className={styles.matchYes}>✓ Treff</span>
-                    : <span className={styles.matchNo}>✗</span>}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-function TokenChips({ rawTokens, flavorTokens, terms, label }: {
+/**
+ * The taster's words, each coloured by the ladder tier it earned; the wine's
+ * words, coloured by whether something in the taster's note reached them.
+ * Hover for the tier and the word that licensed it.
+ */
+function TokenChips({ rawTokens, flavorTokens, terms, matches, side, label }: {
   rawTokens: string[];
   flavorTokens: string[];
   terms: TermDetail[];
+  matches: TermMatch[];
+  side: 'user' | 'wine';
   label: string;
 }) {
-  const matchedOriginals = new Set(terms.filter(t => t.matched).map(t => t.original));
-  const recognizedOriginals = new Set(terms.map(t => t.original));
+  const lemmaOf = new Map(terms.map(t => [t.original, t.lemma]));
+  const kindOf = new Map(matches.map(m => [m.lemma, m]));
+  const reached = new Set(matches.filter(m => m.credit > 0).flatMap(m => [m.lemma, m.via ?? '']));
   const flavorSet = new Set(flavorTokens);
 
   return (
     <div className={styles.tokenRow}>
       <span className={styles.tokenRowLabel}>{label}</span>
       {rawTokens.map((tok, i) => {
-        const isStripped = recognizedOriginals.has(tok) && !flavorSet.has(tok);
-        const cls = isStripped
-          ? styles.tokenChipStripped
-          : matchedOriginals.has(tok)
-            ? styles.tokenChipMatched
-            : recognizedOriginals.has(tok)
-              ? styles.tokenChipRecognized
-              : styles.tokenChipUnknown;
-        return <span key={i} className={`${styles.tokenChip} ${cls}`}>{tok}</span>;
+        const lemma = lemmaOf.get(tok);
+        const stripped = !!lemma && !flavorSet.has(tok);
+        let cls = styles.tokenChipUnknown, title = 'ikke i ordboken';
+        if (stripped) { cls = styles.tokenChipStripped; title = 'strukturord: telles ikke som aroma'; }
+        else if (side === 'user' && lemma && kindOf.has(lemma)) {
+          const m = kindOf.get(lemma)!;
+          cls = styles[`kind_${m.kind}`] ?? styles.tokenChipRecognized;
+          title = `${KIND_LABEL[m.kind]}${m.via ? ` · via «${m.via}»` : ''} · ${Math.round(m.credit * 100) / 100} av ${m.weight.toFixed(2)}`;
+        } else if (side === 'wine' && lemma) {
+          cls = reached.has(lemma) ? styles.kind_direct : styles.tokenChipRecognized;
+          title = reached.has(lemma) ? 'nådd av notatet ditt' : 'ikke nevnt i notatet ditt (koster ingenting)';
+        }
+        return <span key={i} className={`${styles.tokenChip} ${cls}`} title={title}>{tok}</span>;
       })}
+    </div>
+  );
+}
+
+function KindLegend() {
+  const items: Array<[MatchKind, string]> = [['direct', 'direkte'], ['derived', 'avledet'], ['specific', 'presist'], ['subcategory', 'familie'], ['none', 'bom']];
+  return (
+    <div className={styles.legend}>
+      {items.map(([k, t]) => <span key={k} className={`${styles.tokenChip} ${styles[`kind_${k}`]}`} title={KIND_LABEL[k]}>{t}</span>)}
+      <span className={`${styles.tokenChip} ${styles.tokenChipStripped}`} title="strukturord">struktur</span>
+      <span className={`${styles.tokenChip} ${styles.tokenChipUnknown}`} title="ikke i ordboken">ukjent</span>
     </div>
   );
 }
@@ -330,33 +297,42 @@ function EngineAccordion({ data, engines }: { data: ScoringBreakdown; engines: E
 }
 
 function Results({ data, storedScore, engines }: { data: ScoringBreakdown; storedScore: number | null; engines: EngineInfo[] }) {
-  const idfBoosted = data.userTerms.filter(t => t.idfMultiplier > 1.0 && t.matched);
   const diff = storedScore !== null ? data.currentScore - storedScore : null;
-  const precisionPct = Math.round(data.precision * 100);
+  const notes: string[] = [];
+  if (!data.scoreable) notes.push('Vinnotatet nevner ingen aroma, bare struktur: komponenten telles ikke i en ekte smaking, så scoren her er 0.');
+  if (data.styleWeights) notes.push(`Stilvekter på: deskriptorvekter relativt til ${data.styleCategory}.`);
+  if (data.contradicted.length) notes.push(`Du negerte noe vinnotatet nevner: ${data.contradicted.join(', ')}.`);
 
   return (
     <div className={styles.results}>
-      {/* Main scores row */}
       <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>Komponentscorer</h3>
-        {data.styleWeights && (
-          <div className={styles.compareNote}>Stilvekter på: deskriptorvekter relativt til {data.styleCategory}. Termtabellen under viser de globale vektene.</div>
-        )}
-        {!data.scoreable && (
-          <div className={styles.compareNote}>
-            Vinnotatet nevner ingen aroma, bare struktur. Komponenten telles ikke med i en ekte smaking, så scoren her er 0.
+        <div className={styles.resultHeader}>
+          <div>
+            <h3 className={styles.sectionTitle}>Resultat</h3>
+            <div className={styles.resultMeta}>
+              motor i drift <span className={styles.mono}>{data.engine ?? 'openai'}</span>
+              {storedScore !== null && diff !== null && (
+                <span className={styles.storedBadge} title="Scoren som ble lagret da smakingen ble registrert, mot scoren beregnet nå">
+                  lagret {storedScore} · nå {data.currentScore}
+                  {diff !== 0 && <span style={{ color: diff > 0 ? '#16a34a' : '#dc2626' }}> ({diff > 0 ? '+' : ''}{diff})</span>}
+                </span>
+              )}
+            </div>
           </div>
-        )}
+          <ScoreRing value={data.currentScore} label="Totalscore" sub={`presisjon ${Math.round(data.precision * 100)}%`} />
+        </div>
+        {notes.map((n, i) => <div key={i} className={styles.compareNote}>{n}</div>)}
+
         <div className={styles.tokenRows}>
-          <TokenChips rawTokens={data.userRawTokens} flavorTokens={data.userFlavorTokens} terms={data.userTerms} label="Ditt notat" />
-          <TokenChips rawTokens={data.wineRawTokens} flavorTokens={data.wineFlavorTokens} terms={data.wineTerms} label="Vinnota" />
+          <TokenChips rawTokens={data.userRawTokens} flavorTokens={data.userFlavorTokens} terms={data.userTerms} matches={data.matches} side="user" label="Ditt notat" />
+          <TokenChips rawTokens={data.wineRawTokens} flavorTokens={data.wineFlavorTokens} terms={data.wineTerms} matches={data.matches} side="wine" label="Vinnota" />
           {data.unknownWords.length > 0 && (
             <div className={styles.tokenRow}>
               <span className={styles.tokenRowLabel}>Lest som</span>
               {data.unknownWords.map((u, i) => (
                 <span
                   key={i}
-                  className={`${styles.tokenChip} ${u.applied ? styles.tokenChipMatched : u.sim >= data.oovThreshold ? styles.tokenChipRecognized : styles.tokenChipUnknown}`}
+                  className={`${styles.tokenChip} ${u.applied ? styles.kind_direct : u.sim >= data.oovThreshold ? styles.tokenChipRecognized : styles.tokenChipUnknown}`}
                   title={u.applied ? 'Brukt i scoringen (OOV_MAPPING_ENABLED)' : u.sim >= data.oovThreshold ? 'Ville blitt brukt med OOV_MAPPING_ENABLED=true' : `Under terskelen ${data.oovThreshold}`}
                 >
                   {u.from} → {u.to} {u.sim.toFixed(2)}
@@ -368,90 +344,14 @@ function Results({ data, storedScore, engines }: { data: ScoringBreakdown; store
             <div className={styles.tokenRow}>
               <span className={styles.tokenRowLabel}>Negert</span>
               {data.negated.map((w, i) => (
-                <span key={i} className={`${styles.tokenChip} ${styles.tokenChipStripped}`} title="Fjernet fra scoringen fordi du skrev at det ikke var der">
-                  {w}
-                </span>
+                <span key={i} className={`${styles.tokenChip} ${styles.tokenChipStripped}`} title="Fjernet fra scoringen fordi du skrev at det ikke var der">{w}</span>
               ))}
-              {data.contradicted.length > 0 && (
-                <span className={styles.compareNote}>Vinnotatet nevner: {data.contradicted.join(', ')}</span>
-              )}
             </div>
           )}
+          <KindLegend />
         </div>
+
         <EngineAccordion data={data} engines={engines} />
-      </div>
-
-
-      {/* Stored vs calculated comparison — only shown when scores differ */}
-      {storedScore !== null && diff !== null && diff !== 0 && (
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Beregnet score vs. lagret score</h3>
-          <div className={styles.compareGrid}>
-            <div className={styles.compareCard}>
-              <div className={styles.compareHeader}>Beregnet nå</div>
-              <div className={styles.compareBody}>
-                <div className={styles.compareRow}>
-                  <span>Treffscore</span><strong>{Math.round(data.hitScore)}</strong>
-                </div>
-                <div className={styles.compareRow}>
-                  <span>Token-likhet</span><strong>{Math.round(data.softScore)}</strong>
-                </div>
-                <div className={styles.compareRow}>
-                  <span>Presisjon</span><strong>{precisionPct}%</strong>
-                </div>
-                <div className={styles.compareTotal}>
-                  <span>Totalt</span>
-                  <strong style={{ color: scoreColor(data.currentScore) }}>{data.currentScore}</strong>
-                </div>
-              </div>
-            </div>
-            <div className={styles.compareDivider}>
-              <div className={styles.diffBadge} style={{
-                background: diff >= 0 ? '#dcfce7' : '#fee2e2',
-                color: diff >= 0 ? '#16a34a' : '#dc2626',
-              }}>
-                {diff >= 0 ? '+' : ''}{diff}
-              </div>
-            </div>
-            <div className={styles.compareCard} style={{ opacity: 0.85 }}>
-              <div className={styles.compareHeader}>Lagret fra smakingen</div>
-              <div className={styles.compareBody}>
-                <div className={styles.compareTotal} style={{ marginTop: 0, paddingTop: 0, border: 'none' }}>
-                  <span>Score</span>
-                  <strong style={{ color: scoreColor(storedScore) }}>{storedScore}</strong>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.compareNote}>
-            Differansen viser effekten av algoritmeendringer siden smakingen ble registrert
-          </div>
-        </div>
-      )}
-
-      {/* IDF highlights */}
-      {idfBoosted.length > 0 && (
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>IDF-boost (sjeldne deskriptorer som traff)</h3>
-          <div className={styles.idfGrid}>
-            {idfBoosted.map((t, i) => (
-              <div key={i} className={styles.idfCard}>
-                <div className={styles.idfLemma}>{t.lemma}</div>
-                <div className={styles.idfMult}>×{t.idfMultiplier.toFixed(2)}</div>
-                <div className={styles.idfDetail}>
-                  {t.baseWeight.toFixed(1)} → {t.finalWeight.toFixed(2)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Term tables */}
-      <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>Termdetaljer</h3>
-        <TermTable terms={data.userTerms} title="Ditt notat" />
-        <TermTable terms={data.wineTerms} title="Vinnota" />
       </div>
     </div>
   );
@@ -606,10 +506,7 @@ export default function ScoringDemo({ pastTastings, engines, styleCategories, st
             {e.id}{e.active && <span className={styles.engineActive}>i drift</span>}
           </button>
         ))}
-      </div>
-
-      <div className={styles.engineRow}>
-        <span className={styles.engineRowLabel}>Stilvekter</span>
+        <span className={styles.engineRowLabel} style={{ marginLeft: 'auto' }}>Stilvekter</span>
         <button
           className={`${styles.engineChip} ${styleWeights ? styles.engineChipOn : ''}`}
           onClick={() => setStyleWeights(v => !v)}

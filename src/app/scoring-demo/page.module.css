@@ -257,70 +257,11 @@
 }
 
 /* ── Old vs New comparison ── */
-.compareGrid {
-  display: grid;
-  grid-template-columns: 1fr 60px 1fr;
-  gap: 1rem;
-  align-items: center;
-}
 
 @media (max-width: 600px) {
   .compareGrid {
     grid-template-columns: 1fr;
   }
-}
-
-.compareCard {
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.compareHeader {
-  background: #f3f4f6;
-  padding: 0.5rem 1rem;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: #374151;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.compareBody {
-  padding: 0.75rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.compareRow {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.875rem;
-  color: #374151;
-}
-
-.compareTotal {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1rem;
-  font-weight: 700;
-  margin-top: 0.25rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.compareDivider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.diffBadge {
-  font-size: 1.25rem;
-  font-weight: 800;
-  padding: 0.35rem 0.65rem;
-  border-radius: 8px;
 }
 
 .compareNote {
@@ -329,57 +270,7 @@
   color: #9ca3af;
 }
 
-/* ── IDF cards ── */
-.idfGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.idfCard {
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 80px;
-}
-
-.idfLemma {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: #374151;
-}
-
-.idfMult {
-  font-size: 1rem;
-  font-weight: 800;
-  color: #d97706;
-}
-
-.idfDetail {
-  font-size: 0.7rem;
-  color: #9ca3af;
-  font-family: monospace;
-}
-
 /* ── Term tables ── */
-.termSection {
-  margin-bottom: 1.25rem;
-}
-
-.termSection:last-child {
-  margin-bottom: 0;
-}
-
-.termTitle {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #374151;
-  margin: 0 0 0.5rem;
-}
 
 .tableWrap {
   overflow-x: auto;
@@ -416,14 +307,6 @@
   border-bottom: none;
 }
 
-.rowMatch {
-  background: #f0fdf4;
-}
-
-.rowMiss {
-  background: white;
-}
-
 .mono {
   font-family: monospace;
   font-size: 0.8rem;
@@ -432,65 +315,6 @@
 .num {
   font-family: monospace;
   text-align: right;
-}
-
-.centered {
-  text-align: center;
-}
-
-.catBadge {
-  display: inline-block;
-  padding: 0.1rem 0.45rem;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  background: #ede9fe;
-  color: #6d28d9;
-}
-
-.catBadge[data-main="GENERIC"] {
-  background: #f3f4f6;
-  color: #6b7280;
-}
-
-.catBadge[data-main="Frukt"] {
-  background: #fef3c7;
-  color: #b45309;
-}
-
-.catBadge[data-main="Krydder"] {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.catBadge[data-main="Mineral"] {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-.catBadge[data-main="Urter"] {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.catBadge[data-main="Blomster"] {
-  background: #fce7f3;
-  color: #be185d;
-}
-
-.catBadge[data-main="Eik/fat"] {
-  background: #fef9c3;
-  color: #854d0e;
-}
-
-.matchYes {
-  color: #16a34a;
-  font-weight: 600;
-  font-size: 0.75rem;
-}
-
-.matchNo {
-  color: #d1d5db;
 }
 
 /* ── Tasting selector ── */
@@ -683,29 +507,6 @@
   cursor: not-allowed;
 }
 
-/* ── Term table header (always visible) ── */
-.termHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 0 0.6rem;
-}
-
-.accordionMeta {
-  display: flex;
-  gap: 0.35rem;
-  flex-wrap: wrap;
-  margin-left: auto;
-}
-
-.termBadge {
-  display: inline-block;
-  padding: 0.1rem 0.5rem;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
 /* ── Engine accordion in Komponentscorer ── */
 .engineAccordion {
   display: flex;
@@ -810,12 +611,6 @@
   font-size: 0.8125rem;
   font-family: var(--font-mono, monospace);
   border: 1px solid transparent;
-}
-
-.tokenChipMatched {
-  background: #dcfce7;
-  color: #15803d;
-  border-color: #bbf7d0;
 }
 
 .tokenChipRecognized {
@@ -988,3 +783,45 @@
 .deltaPos { color: #16a34a; font-weight: 600; }
 .deltaNeg { color: #dc2626; font-weight: 600; }
 .deltaZero { color: #9ca3af; }
+
+/* ── Result header, legend, ladder-tier chips ── */
+.resultHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.resultMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin-top: -0.5rem;
+}
+
+.storedBadge {
+  padding: 0.15rem 0.6rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  background: #f9fafb;
+  color: #374151;
+  font-variant-numeric: tabular-nums;
+}
+
+.legend {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  padding-top: 0.25rem;
+  border-top: 1px dashed #e5e7eb;
+  opacity: 0.85;
+}
+
+.kind_direct { background: #dcfce7; border-color: #86efac; color: #166534; }
+.kind_derived { background: #ccfbf1; border-color: #5eead4; color: #115e59; }
+.kind_specific { background: #dbeafe; border-color: #93c5fd; color: #1e3a8a; }
+.kind_subcategory { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+.kind_category { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+.kind_none { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
