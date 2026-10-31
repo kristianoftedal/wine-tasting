@@ -863,7 +863,7 @@ export const sanitizeText = (text: string): string => {
 // All surface forms whose categoryPath.main is 'GENERIC' — used to strip
 // structural/quality/texture terms before semantic embedding so that the
 // embedding comparison focuses on aroma/flavor descriptors only.
-export const genericWords = new Set(
+const genericWords = new Set(
   Object.entries(norwegianLemmas)
     .filter(([, v]) => v.categoryPath?.main === 'GENERIC')
     .map(([k]) => k)

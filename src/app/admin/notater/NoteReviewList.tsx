@@ -78,10 +78,10 @@ export default function NoteReviewList({ rows }: { rows: ReviewRow[] }) {
   // waiting for a round trip before acknowledging a click makes a queue of
   // sixty feel broken.
   const [decided, setDecided] = useState<Record<string, 'approved' | 'rejected'>>({});
-  // Feedback is inline rather than a toast: react-hot-toast is a dependency but
-  // <Toaster /> is mounted nowhere in this app, so a toast here would fail
-  // silently — and a reviewer who thinks they approved a note and did not is
-  // the one failure this page must never produce.
+  // Feedback is inline rather than a toast: no toast provider is mounted in
+  // this app, so a toast here would fail silently — and a reviewer who thinks
+  // they approved a note and did not is the one failure this page must never
+  // produce.
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
 

@@ -36,6 +36,3 @@ export const WINE_SEARCH_DEBOUNCE_MS = 0;
 
 /** How many recent queries to keep client-side, so backspacing is free. */
 export const WINE_SEARCH_CACHE_SIZE = 50;
-
-export const EMBEDDING_MAX_RETRIES = 3;
-export const EMBEDDING_MAX_LENGTH = 8000;

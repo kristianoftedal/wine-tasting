@@ -27,8 +27,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "types/next-auth.d.tsgenerated",
-    "contentlayer.config.js",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]

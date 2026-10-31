@@ -23,7 +23,7 @@
  * answered. Callers should test for `null`, not falsiness.
  */
 
-export const SCALE_RANGE = 12;
+const SCALE_RANGE = 12;
 
 const parseNumber = (val: string | number | undefined | null): number => {
   if (val === undefined || val === null || val === '' || val === '-') return Number.NaN;

@@ -48,7 +48,3 @@ export async function embedTokens(tokens: string[]): Promise<Map<string, Float32
   }
   return out;
 }
-
-export async function tokenCacheSize(): Promise<number> {
-  return tokenCache.size;
-}

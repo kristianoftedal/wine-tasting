@@ -52,10 +52,6 @@ const SHOW_MORE_STEP = 10;
 /** Norwegian decimals, so the header reads "snitt 8,5" like the paragraph below it. */
 const karakterFormatter = new Intl.NumberFormat('nb-NO', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-const useLocalSimilarity =
-  typeof window !== 'undefined' &&
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-
 export default function PreferenceTab({ tastings, wines, allWines, tasteSummaries }: PreferenceTabProps) {
   const [rodvinRecs, setRodvinRecs] = useState<CategoryRecommendations>(INITIAL_RECS);
   const [hvitvinRecs, setHvitvinRecs] = useState<CategoryRecommendations>(INITIAL_RECS);
@@ -114,8 +110,7 @@ export default function PreferenceTab({ tastings, wines, allWines, tasteSummarie
           desiredCount,
           weights,
           thresholds,
-          category,
-          useLocalSimilarity
+          category
         );
         // If the backend returned fewer wines than we asked for, there are
         // no more candidates for this category — hide the "show more" button.

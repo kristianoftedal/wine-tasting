@@ -30,13 +30,6 @@ type CorpusMean = { model: string; dimensions: number; sampleSize: number; meanN
 const MEAN = corpusMean as CorpusMean;
 const MEAN_VECTOR = Float32Array.from(MEAN.vector);
 
-export const CORPUS_MEAN_META = {
-  model: MEAN.model,
-  dimensions: MEAN.dimensions,
-  sampleSize: MEAN.sampleSize,
-  meanNorm: MEAN.meanNorm,
-};
-
 /**
  * L2-normalise, then subtract the corpus mean direction. Returns a new vector;
  * the input is untouched. Dimension mismatches pass the vector through rather

@@ -17,13 +17,6 @@ export type Group = {
   created_at: string;
 };
 
-export type GroupMember = {
-  id: string;
-  group_id: string;
-  user_id: string;
-  joined_at: string;
-};
-
 export type GroupInvite = {
   id: string;
   group_id: string;
@@ -191,11 +184,6 @@ export type SelectedFlavor = {
 
 export type Intensitet = 'lav' | 'middels' | 'høy' | '';
 
-  /** Exactly what the smell/taste score was computed on: chip names + free text. */
-  luktScored?: string;
-  smakScored?: string;
-  /** SCORER_VERSION at the time of scoring; see src/lib/scoringConfig.ts. */
-  scorerVersion?: string;
 export type TastingFormData = {
   eventId?: string;
   farge: string;
@@ -203,6 +191,11 @@ export type TastingFormData = {
   taste: string; // Transformed from selectedFlavorsSmak
   lukt: string;
   smak: string;
+  /** Exactly what the smell/taste score was computed on: chip names + free text. */
+  luktScored?: string;
+  smakScored?: string;
+  /** SCORER_VERSION at the time of scoring; see src/lib/scoringConfig.ts. */
+  scorerVersion?: string;
   friskhet: number;
   fylde: number;
   sodme: number;

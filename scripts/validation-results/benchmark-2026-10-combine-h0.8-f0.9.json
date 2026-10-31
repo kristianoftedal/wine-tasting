@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "date": "2026-10-29T13:51:44.056Z",
+    "commit": "70e790c",
+    "source": "scripts/validation-results/frozen-set-2026-10.json (236 fields), combine {\"hitWeight\":0.8,\"tau\":3,\"precisionFloor\":0.9}",
+    "cases": 236,
+    "distractors": 100,
+    "engines": [
+      "openai",
+      "colbert-token"
+    ],
+    "styleWeights": false,
+    "hybridSoft": false,
+    "hypernymExclude": [],
+    "combine": {
+      "hitWeight": 0.8,
+      "tau": 3,
+      "precisionFloor": 0.9
+    }
+  },
+  "rows": [
+    {
+      "scorer": "previous (recall=ON)",
+      "base": 62.228813559322035,
+      "hit": 11.453389830508474,
+      "wrong": 1.1144067796610169,
+      "neg": 0,
+      "miss": -0.6440677966101694,
+      "rLen": 0.4008670314107972,
+      "d": 0.5910384845408432,
+      "top1": 10.59322033898305,
+      "ms": 432.38629200000014
+    },
+    {
+      "scorer": "current + openai",
+      "base": 61.389830508474574,
+      "hit": 14.245762711864407,
+      "wrong": 0.9194915254237288,
+      "neg": 0,
+      "miss": 4.067796610169491,
+      "rLen": 0.3923125390262474,
+      "d": 0.8521340999947218,
+      "top1": 19.491525423728813,
+      "ms": 873.5479589999995
+    },
+    {
+      "scorer": "current + colbert-token",
+      "base": 52.25423728813559,
+      "hit": 12.84322033898305,
+      "wrong": 1.4957627118644068,
+      "neg": 0,
+      "miss": 3.1991525423728815,
+      "rLen": 0.4286655577775079,
+      "d": 0.7124736970853904,
+      "top1": 13.983050847457626,
+      "ms": 8617.488709000001
+    }
+  ]
+}

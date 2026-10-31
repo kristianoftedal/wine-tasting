@@ -21,7 +21,6 @@ import type { Wine } from '@/lib/types';
 async function scoreAgainstHighRated(
   highRatedTexts: string[],
   candidateTexts: Array<string | null>,
-  useLocal: boolean,
   topN = 3
 ): Promise<Array<number | null>> {
   const hr = highRatedTexts.filter(t => t && t.length >= 10);
@@ -35,17 +34,9 @@ async function scoreAgainstHighRated(
 
   if (pairs.length === 0) return candidateTexts.map(() => null);
 
-  let sims: number[];
-  try {
-    sims = await batchSemanticSimilarity(
-      pairs.filter((p): p is NonNullable<typeof p> => p !== null).map(p => ({ text1: p.text1, text2: p.text2 }))
-    );
-  } catch (err) {
-    if (!useLocal) throw err;
-    sims = await fallbackLocalSimilarity(
-      pairs.filter((p): p is NonNullable<typeof p> => p !== null).map(p => ({ text1: p.text1, text2: p.text2 }))
-    );
-  }
+  const sims = await batchSemanticSimilarity(
+    pairs.filter((p): p is NonNullable<typeof p> => p !== null).map(p => ({ text1: p.text1, text2: p.text2 }))
+  );
 
   const bucketByCandidate = new Map<number, number[]>();
   let i = 0;
@@ -62,11 +53,6 @@ async function scoreAgainstHighRated(
     const top = [...scores].sort((a, b) => b - a).slice(0, topN);
     return top.reduce((s, v) => s + v, 0) / top.length;
   });
-}
-
-async function fallbackLocalSimilarity(pairs: Array<{ text1: string; text2: string }>): Promise<number[]> {
-  const { localSemanticSimilarity } = await import('@/lib/localSemanticSimilarity');
-  return Promise.all(pairs.map(p => localSemanticSimilarity(p.text1, p.text2)));
 }
 
 function numericSimilarity(userAvg: number, wineValue: number | null | undefined): number | null {
@@ -107,7 +93,6 @@ export async function findSimilarWinesSQL(
   weights: RecommendationWeights,
   thresholds: RecommendationThresholds,
   category?: 'Rødvin' | 'Hvitvin' | 'Musserende vin',
-  useLocalSimilarity = false,
   // Optional pre-built Supabase client. Production callers (Next.js pages/
   // actions) rely on the cookie-based server client and leave this unset;
   // offline scripts inject a service-role client to bypass the request-scope
@@ -295,8 +280,8 @@ export async function findSimilarWinesSQL(
     // mean of its top-3 similarities to the high-rated set, which preserves
     // per-candidate variance instead of collapsing into one averaged corpus.
     const [smellScores, tasteScores] = await Promise.all([
-      scoreAgainstHighRated(highRatedSmells, slicedCandidates.map(c => c.smell ?? null), useLocalSimilarity),
-      scoreAgainstHighRated(highRatedTastes, slicedCandidates.map(c => c.taste ?? null), useLocalSimilarity)
+      scoreAgainstHighRated(highRatedSmells, slicedCandidates.map(c => c.smell ?? null)),
+      scoreAgainstHighRated(highRatedTastes, slicedCandidates.map(c => c.taste ?? null))
     ]);
 
     const scoredWines: WineSimilarityScore[] = [];

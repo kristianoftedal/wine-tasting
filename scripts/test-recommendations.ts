@@ -56,7 +56,6 @@ async function runCase(
     DEFAULT_WEIGHTS,
     DEFAULT_THRESHOLDS,
     category,
-    false,
     supabase
   );
   const ms = Date.now() - started;
