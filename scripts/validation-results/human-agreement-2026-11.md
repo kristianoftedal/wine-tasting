@@ -1,28 +1,28 @@
-# Human agreement — 2026-10-29
+# Human agreement — 2026-10-31
 
-Frozen set `scripts/validation-results/frozen-set-2026-10.json` (236 fields, 8 tasters); 232 fields with a stored score; commit `42ac7d7`.
+Frozen set `scripts/validation-results/frozen-set-2026-10.json` (236 fields, 8 tasters); 232 fields with a stored score; commit `9cf1e5c`.
 
 ## Stored score vs recomputed now
 
 | | value |
 | --- | --- |
-| fields where the recompute differs from the stored score | 56 of 232 |
-| mean absolute difference | 2.47 |
-| Spearman(stored, recomputed) | 0.956 |
+| fields where the recompute differs from the stored score | 214 of 232 |
+| mean absolute difference | 9.02 |
+| Spearman(stored, recomputed) | 0.892 |
 | reference notes now unscoreable (names no aroma) | 12 |
 
 A non-zero difference is expected: scores were stored with the flavour chips included in the text, and only the free text is on the row. The database is not changed.
 
-Previous-engine scores exist for 148 fields; Spearman(previous, current) on those = 0.575.
+Previous-engine scores exist for 148 fields; Spearman(previous, current) on those = 0.630.
 
 ## Scorers against each other (Spearman)
 
 | | stored score | current engine (recomputed) | lexical half only (soft = 0) | direct-hit count |
 | --- | --- | --- | --- | --- |
-| stored score | 1.000 | 0.956 | 0.855 | 0.854 |
-| current engine (recomputed) | 0.956 | 1.000 | 0.925 | 0.883 |
-| lexical half only (soft = 0) | 0.855 | 0.925 | 1.000 | 0.829 |
-| direct-hit count | 0.854 | 0.883 | 0.829 | 1.000 |
+| stored score | 1.000 | 0.892 | 0.826 | 0.854 |
+| current engine (recomputed) | 0.892 | 1.000 | 0.960 | 0.874 |
+| lexical half only (soft = 0) | 0.826 | 0.960 | 1.000 | 0.822 |
+| direct-hit count | 0.854 | 0.874 | 0.822 | 1.000 |
 
 ## Inter-rater agreement (4 raters: kristian, llmcal-gpt-4.1-mini, llmcal-gpt-4o-mini, llmcal-gpt-4o)
 
@@ -40,8 +40,8 @@ Previous-engine scores exist for 148 fields; Spearman(previous, current) on thos
 | scorer | Spearman | bootstrap 95% |
 | --- | --- | --- |
 | stored score | 0.674 | 0.602 – 0.756 |
-| current engine (recomputed) | 0.723 | 0.658 – 0.796 |
-| lexical half only (soft = 0) | 0.763 | 0.697 – 0.837 |
+| current engine (recomputed) | 0.737 | 0.670 – 0.804 |
+| lexical half only (soft = 0) | 0.742 | 0.669 – 0.818 |
 | direct-hit count | 0.712 | 0.645 – 0.782 |
 
 The current engine must beat the lexical-only and direct-hit rows by more than the interval width for the soft term to be earning its weight. A new engine must beat the current one the same way.

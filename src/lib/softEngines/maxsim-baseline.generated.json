@@ -9,7 +9,13 @@
       "4-6": 0.1268,
       "7-10": 0.1766
     },
-    "top": 0.5797
+    "top": 0.5797,
+    "scale": {
+      "a": 44.5047,
+      "b": 0.7256,
+      "fittedOn": 220,
+      "fittedAt": "2026-10-31T13:18:58.956Z"
+    }
   },
   "colbert-word": {
     "model": "lightonai/mLateOn@int8",
@@ -21,7 +27,13 @@
       "4-6": 0.1505,
       "7-10": 0.1751
     },
-    "top": 0.5195
+    "top": 0.5195,
+    "scale": {
+      "a": 40.7966,
+      "b": 0.7626,
+      "fittedOn": 220,
+      "fittedAt": "2026-10-31T13:18:57.608Z"
+    }
   },
   "colbert-token": {
     "model": "lightonai/mLateOn@int8",
@@ -33,7 +45,13 @@
       "4-6": 0.2057,
       "7-10": 0.2321
     },
-    "top": 0.5239
+    "top": 0.5239,
+    "scale": {
+      "a": 36.9206,
+      "b": 0.8212,
+      "fittedOn": 220,
+      "fittedAt": "2026-10-31T13:18:57.605Z"
+    }
   },
   "openai": {
     "model": "text-embedding-3-small",
@@ -68,7 +86,13 @@
       "4-6": 0.2059,
       "7-10": 0.2632
     },
-    "top": 0.6665
+    "top": 0.6665,
+    "scale": {
+      "a": 36.8955,
+      "b": 0.8614,
+      "fittedOn": 220,
+      "fittedAt": "2026-10-31T13:18:56.092Z"
+    }
   },
   "colbert-table": {
     "model": "lightonai/mLateOn@int8 (isolated words) table",
@@ -80,7 +104,13 @@
       "4-6": 0.2085,
       "7-10": 0.2666
     },
-    "top": 0.6819
+    "top": 0.6819,
+    "scale": {
+      "a": 34.5499,
+      "b": 0.885,
+      "fittedOn": 220,
+      "fittedAt": "2026-10-31T13:18:54.482Z"
+    }
   },
   "colbert-tuned": {
     "model": "lightonai/mLateOn@int8 (isolated words) table + projection",
@@ -104,6 +134,12 @@
       "4-6": 0.2808,
       "7-10": 0.3904
     },
-    "top": 1
+    "top": 1,
+    "scale": {
+      "a": 32.3964,
+      "b": 0.8174,
+      "fittedOn": 220,
+      "fittedAt": "2026-10-31T13:18:54.492Z"
+    }
   }
 }

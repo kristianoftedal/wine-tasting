@@ -556,6 +556,20 @@ The strongest wrong-guess penalty and the best agreement with the rater of anyth
 
 5. **Commit `package-lock.json`** with the dependency cleanup it belongs to.
 
+## Engine decision revisited, 31 Oct 2026: ColBERT table in production (scorer v7)
+
+The owner asked for ColBERT and no OpenAI in the scoring path. Measured under the v6 ladder, the gap had closed to noise on quality and was only a *level* difference: the local engines are calibrated so an unrelated pair reads 0 and an exact match 100, which lands their soft term near 33 where OpenAI's `SOFT_SCALE` lands near 64, so totals came out ten points lower. `scripts/fit-soft-scale.ts` fits, per engine, the least-squares line onto OpenAI's soft term over the frozen set (`colbert-table`: soft′ = 34.6 + 0.885·soft, r 0.80) and the engines apply it last; monotone, so no rank inside an engine moves.
+
+| engine (v6 ladder, levelled) | +HIT | +WRONG | MISS | r(len) | d | top1 | ρ human | ρ target | ρ panel | ρ constructed | mean |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| openai | +14.9 | −4.4 | +3.5 | 0.33 | 1.37 | 21% | 0.658 | 0.708 | 0.753 | 0.686 | 53.3 |
+| **colbert-table** | +14.2 | −4.1 | +2.6 | 0.33 | 1.29 | 20% | **0.671** | 0.705 | **0.764** | **0.705** | 52.4 |
+| colbert+cooc | +13.6 | −4.1 | +2.4 | 0.35 | 1.28 | 18% | 0.676 | 0.712 | 0.771 | 0.698 | 52.3 |
+
+`colbert-table` is the production default (`DEFAULT_SOFT_ENGINE`; `SOFT_ENGINE=openai` restores the old engine for the demo and the benchmark). It agrees with the rater and the panel slightly better than OpenAI, trails it slightly on discrimination, and all of it is inside the noise; what is not inside the noise is that it costs nothing per call, needs no key, and reproduces bit for bit. `colbert+cooc` is a hair better on validity and a hair worse on the gate; one table is simpler, so the table ships alone. Scorer version `directional-7:colbert-table`; stored scores untouched.
+
+**What still calls OpenAI in a tasting.** Colour (`rawSemanticSimilarity` embeds the two colour phrases whole). It is the last API call in the score and a separate, small job: a colour lexicon (hue and depth) scored structurally, measured against the stored colour scores. Recommendations, food pairing, note enrichment and the LLM rater are features, not the score, and keep their models.
+
 ## Engine decision, 29 Oct 2026
 
 Everything measured on existing notes, in one place:

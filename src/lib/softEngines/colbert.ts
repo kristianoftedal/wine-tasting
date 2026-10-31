@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { baselineFor, rescale, topFor } from './baseline';
+import { baselineFor, levelFor, rescale, topFor } from './baseline';
 import { idfWeight, maxSimPrecision, type WordVector } from './maxsim';
 import { cosineSimilarity } from '../math';
 import { EncodingCache, MODEL_DIR, centered, l2normalize, loadMean, meanPool, noteWords, tokenizeWithSpans, type Tokenizer } from './words';
@@ -222,7 +222,7 @@ function makeEngine(id: Extract<SoftEngineId, 'colbert-word' | 'colbert-token' |
         model: engine.model,
         raw,
         baseline,
-        softScore: u.pooled.size && r.pooled.size ? rescale(raw, baseline, topFor(id)) : 0,
+        softScore: u.pooled.size && r.pooled.size ? levelFor(id, rescale(raw, baseline, topFor(id))) : 0,
         alignments,
         ms: performance.now() - started,
       };

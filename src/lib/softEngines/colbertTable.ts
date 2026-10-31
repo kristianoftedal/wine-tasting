@@ -1,4 +1,4 @@
-import { baselineFor, rescale, topFor } from './baseline';
+import { baselineFor, levelFor, rescale, topFor } from './baseline';
 import { idfWeight, maxSimPrecision, type WordVector } from './maxsim';
 import { centered, loadMean, noteWords } from './words';
 import type { NoteInput, SoftEngine, SoftEngineId, SoftResult } from './types';
@@ -130,7 +130,7 @@ function makeEngine(id: Extract<SoftEngineId, 'colbert-table' | 'colbert-tuned' 
         model: engine.model,
         raw,
         baseline,
-        softScore: u.list.length && r.list.length ? rescale(raw, baseline, topFor(id)) : 0,
+        softScore: u.list.length && r.list.length ? levelFor(id, rescale(raw, baseline, topFor(id))) : 0,
         alignments,
         ms: performance.now() - started,
       };

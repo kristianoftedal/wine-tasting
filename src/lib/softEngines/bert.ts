@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { baselineFor, rescale, topFor } from './baseline';
+import { baselineFor, levelFor, rescale, topFor } from './baseline';
 import { idfWeight, maxSimPrecision, type WordVector } from './maxsim';
 import { EncodingCache, MODEL_DIR, centered, l2normalize, loadMean, meanPool, noteWords, tokenizeWithSpans, type Tokenizer } from './words';
 import type { NoteInput, SoftEngine, SoftResult } from './types';
@@ -170,7 +170,7 @@ function makeEngine(id: 'bert' | 'bert-iso'): SoftEngine {
         model: engine.model,
         raw,
         baseline,
-        softScore: u.vectors.size && r.vectors.size ? rescale(raw, baseline, topFor(id)) : 0,
+        softScore: u.vectors.size && r.vectors.size ? levelFor(id, rescale(raw, baseline, topFor(id))) : 0,
         alignments,
         ms: performance.now() - started,
       };

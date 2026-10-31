@@ -19,7 +19,7 @@ import type { SoftEngineId } from './types';
 export const BASELINE_BUCKETS = ['1-3', '4-6', '7-10', '11+'] as const;
 export type BaselineBucket = (typeof BASELINE_BUCKETS)[number];
 
-type BaselineFile = Partial<Record<SoftEngineId, { model: string; measuredAt: string; pairs: number; buckets: Partial<Record<BaselineBucket, number>>; /** Mean raw similarity of an exact word match (same word on both sides), the engine's own 100. */ top?: number }>>;
+type BaselineFile = Partial<Record<SoftEngineId, { model?: string; measuredAt?: string; pairs?: number; buckets?: Partial<Record<BaselineBucket, number>>; /** Mean raw similarity of an exact word match (same word on both sides), the engine's own 100. */ top?: number; /** Level fit onto the OpenAI engine's soft term (scripts/fit-soft-scale.ts); monotone, rank-preserving. */ scale?: { a: number; b: number } }>>;
 
 const BASELINES = baselineRaw as BaselineFile;
 
@@ -34,6 +34,17 @@ export function bucketFor(referenceWordCount: number): BaselineBucket {
  * The engine's floor for this reference length; the nearest measured bucket
  * when this one has no measurement, 0 when the engine was never calibrated.
  */
+/**
+ * Level fit of this engine's soft term onto the OpenAI engine's (a + b·soft,
+ * clamped), so a switch of engine does not read as everyone scoring lower.
+ * Identity when not fitted. Applied last, after the floor/top rescale.
+ */
+export function levelFor(engine: SoftEngineId, soft: number): number {
+  const s = BASELINES[engine]?.scale;
+  if (!s) return soft;
+  return Math.max(0, Math.min(100, s.a + s.b * soft));
+}
+
 export function baselineFor(engine: SoftEngineId, referenceWordCount: number): number {
   const buckets = BASELINES[engine]?.buckets;
   if (!buckets) return 0;
