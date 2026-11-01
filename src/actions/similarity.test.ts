@@ -128,14 +128,27 @@ describe('scoreFlavourNote — objective invariants', () => {
 })
 
 describe('semanticOnlySimilarity — colour', () => {
-  it('strips punctuation from both sides before embedding', async () => {
+  it('scores colour with the lexicon by default and never calls the embedding', async () => {
     const { rawSemanticSimilarity } = await import('@/lib/semanticSimilarity')
     const { semanticOnlySimilarity } = await import('./similarity')
     vi.mocked(rawSemanticSimilarity).mockClear()
 
-    await semanticOnlySimilarity('Lys rubinrød', 'Lys rubinrød, med fiolett skjær.')
+    expect(await semanticOnlySimilarity('Lys rubinrød', 'Lys rubinrød, med fiolett skjær.')).toBeGreaterThanOrEqual(90)
+    expect(await semanticOnlySimilarity('Lys strågul', 'Dyp rød.')).toBe(0)
+    expect(rawSemanticSimilarity).not.toHaveBeenCalled()
+  })
 
-    expect(rawSemanticSimilarity).toHaveBeenCalledWith('lys rubinrød', 'lys rubinrød med fiolett skjær')
+  it('strips punctuation from both sides when the embedding path is selected', async () => {
+    const { rawSemanticSimilarity } = await import('@/lib/semanticSimilarity')
+    const { semanticOnlySimilarity } = await import('./similarity')
+    vi.mocked(rawSemanticSimilarity).mockClear()
+    process.env.COLOUR_ENGINE = 'openai'
+    try {
+      await semanticOnlySimilarity('Lys rubinrød', 'Lys rubinrød, med fiolett skjær.')
+      expect(rawSemanticSimilarity).toHaveBeenCalledWith('lys rubinrød', 'lys rubinrød med fiolett skjær')
+    } finally {
+      delete process.env.COLOUR_ENGINE
+    }
   })
 
   it('keeps stopwords and shade words intact', async () => {

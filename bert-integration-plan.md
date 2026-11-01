@@ -568,7 +568,7 @@ The owner asked for ColBERT and no OpenAI in the scoring path. Measured under th
 
 `colbert-table` is the production default (`DEFAULT_SOFT_ENGINE`; `SOFT_ENGINE=openai` restores the old engine for the demo and the benchmark). It agrees with the rater and the panel slightly better than OpenAI, trails it slightly on discrimination, and all of it is inside the noise; what is not inside the noise is that it costs nothing per call, needs no key, and reproduces bit for bit. `colbert+cooc` is a hair better on validity and a hair worse on the gate; one table is simpler, so the table ships alone. Scorer version `directional-7:colbert-table`; stored scores untouched.
 
-**What still calls OpenAI in a tasting.** Colour (`rawSemanticSimilarity` embeds the two colour phrases whole). It is the last API call in the score and a separate, small job: a colour lexicon (hue and depth) scored structurally, measured against the stored colour scores. Recommendations, food pairing, note enrichment and the LLM rater are features, not the score, and keep their models.
+**Colour without OpenAI (scorer v8, 1 Nov 2026).** The last API call in a tasting was colour: the cosine of two whole-phrase OpenAI embeddings. The catalogue's 54 863 colour notes use 516 distinct words, nearly all a depth word plus a hue word on one line (grønn → grønngul → strågul → gyllen → rav → rosa → rød → blårød/lilla, with brick and brown beside red as an ageing tint), so `src/lib/colourScoring.ts` scores hue distance (0.75) and depth distance (0.25) with tints as a small modifier, no model. Against the 129 stored OpenAI colour scores it agrees at Spearman 0.50, and the disagreement table (`colour-lexicon-2026-11-01.md`) is a list of the embedding's mistakes: "Korngul" against "Lys strågul" 21, "Gul" against "Middels dyp strågul" 28, "Lilla" against "Dyp blårød" 27, an exact "Dyp rød" 93. The lexicon gives 100, 100, 90 and 100. The level is therefore not fitted onto the old scores; an exact match is 100. Colour is 0.2 of the overall weight and its mean rises from 57 to 83, about one point on a typical total. `COLOUR_ENGINE=openai` keeps the old path for comparison. **No API call remains in a tasting score.** Recommendations, food pairing, note enrichment and the LLM rater are features, not the score, and keep their models.
 
 ## Engine decision, 29 Oct 2026
 
@@ -624,7 +624,7 @@ Record the full table for every engine either way, so a later fine-tuning attemp
 Open questions:
 
 - [ ] Which rater attended which of the six events? Needed to assign fields.
-- [ ] Should colour move to a local model too? Out of scope; measure separately once an engine exists.
+- [x] Colour moved to a local lexicon (scorer v8, 1 Nov 2026); see the engine decision section.
 - [ ] Recommendations still use OpenAI note-level embeddings; revisit after phase 11.
 
 ## Appendix A: descriptor tagger (deferred)

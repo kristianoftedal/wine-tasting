@@ -66,7 +66,7 @@ Flow for smell (`lukt`) and taste (`smak`):
 Things that are structurally load-bearing:
 
 - **`scoreable: false`** — 18.7% of Vinmonopolet taste notes describe only structure and name no aroma. `hasScoreableFlavour` returns false, `serverSideSimilarity` returns `null`, and `Summary.tsx` **drops** the component from the weighted average rather than scoring it 0.
-- **Colour uses a different path.** `semanticOnlySimilarity` → `rawSemanticSimilarity` embeds the text with no term stripping; the generic-term filter would destroy "lys rubinrød".
+- **Colour uses a different path.** `semanticOnlySimilarity` scores the two colour phrases with a hue-and-depth lexicon (`src/lib/colourScoring.ts`, no model) since scorer v8; `COLOUR_ENGINE=openai` restores the old whole-phrase embedding cosine, which was measured to misrank obvious pairs ("Korngul" vs "Lys strågul" at 21). The aroma pipeline's generic-term filter is never applied to colour.
 - **Weight profiles** (`src/lib/profiles/`) set per-category lemma weights, selected by `NEXT_PUBLIC_WEIGHT_PROFILE` (`inverted` default, or `moderate`).
 - **`src/lib/lemmatizeAndWeight.ts`** (~1000 lines) is the Norwegian lemma dictionary + stopwords + `sanitizeText`/`stripGenericTerms`/`flavorOnlyText`. Every key in `DERIVATIONS` and `HYPERNYMS` must exist here as a *lemma* surface form — `derivations.test.ts` enforces it.
 - **`src/actions/scoring-debug.ts`** decomposes the current scorer to power the debug UI and `/scoring-demo`. It is explanation, not scoring — do not route production scores through it.

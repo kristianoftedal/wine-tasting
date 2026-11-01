@@ -9,6 +9,7 @@ import { normalizeWineSynonyms } from '@/lib/synonymNormalization';
 import { combineScoreScaled, hasScoreableFlavour, lemmasWithWeight, lexicalCredit, type FlavourScoreBreakdown, type ScoringOptions } from '@/lib/flavourScoring';
 import { normalizeCategory } from '@/lib/styleWeights';
 import { SOFT_HYBRID_ENABLED, hybridSoftScore } from '@/lib/softEngines/hybrid';
+import { colourSimilarity } from '@/lib/colourScoring';
 
 export type { FlavourScoreBreakdown, MatchKind, TermMatch } from '@/lib/flavourScoring';
 
@@ -102,21 +103,23 @@ async function shadowScore(
 }
 
 /**
- * Colour comparison: embed text whole without any term stripping.
- * Colour descriptors ("lys rubinrød", "dyp gylden") would be corrupted by the
- * generic-term filter used for smell and taste, and the vocabulary is too small
- * for token-level matching to add anything.
+ * Colour comparison. Since scorer v8 a hue-and-depth lexicon
+ * (src/lib/colourScoring.ts): no model, no API. `COLOUR_ENGINE=openai`
+ * restores the whole-phrase embedding cosine for comparison on the demo
+ * and in scripts; it was the last API call in a tasting, and the lexicon
+ * measured more sensible than it on the stored scores it would have been
+ * fitted to.
  *
- * Punctuation is still removed on both sides. The catalogue's colour notes are
- * sentences ("Dyp rubinrød.", "Lys gul, grønnlig skjær.") while the taster
- * types a bare phrase, and that formatting difference is not something the
- * taster should be graded on.
+ * Punctuation is removed on both sides either way. The catalogue's colour
+ * notes are sentences ("Dyp rubinrød.") while the taster types a bare
+ * phrase, and that formatting difference is not something to be graded on.
  */
 export async function semanticOnlySimilarity(text1: string, text2: string): Promise<number> {
   const a = stripPunctuation(text1 ?? '');
   const b = stripPunctuation(text2 ?? '');
   if (!a || !b) return 0;
-  return rawSemanticSimilarity(a, b);
+  if (process.env.COLOUR_ENGINE === 'openai') return rawSemanticSimilarity(a, b);
+  return colourSimilarity(a, b) ?? 0;
 }
 
 /**
