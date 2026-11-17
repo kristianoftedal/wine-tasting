@@ -74,6 +74,12 @@ function RegisterForm() {
       }
     }
 
+    if (data.session) {
+      router.push(inviteToken ? `/invitasjon/${inviteToken}` : '/');
+      router.refresh();
+      return;
+    }
+
     const message = encodeURIComponent('Sjekk e-posten din for å bekrefte kontoen');
     router.push(inviteToken ? `/login?invitasjon=${inviteToken}&message=${message}` : `/login?message=${message}`);
   };
