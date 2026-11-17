@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="no"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Søkehastighet</title>
+<style>
+  :root { --ink:#2b2b2b; --muted:#6b6b6b; --rule:#ddd6d0; --panel:#faf7f4; --wine:#7b1e3a; --win:#e9f3ec; --winInk:#1f6b3a; --bg:#fff; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:48px 16px; background:var(--bg); color:var(--ink);
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  .slide { max-width:1100px; margin:0 auto; }
+  h1 { font-size:34px; margin:0 0 6px; letter-spacing:-.4px; }
+  .lede { color:var(--muted); font-size:18px; margin:0 0 28px; }
+  .lede b { color:var(--wine); }
+  table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+  th, td { padding:14px 18px; border-bottom:1px solid var(--rule); text-align:left; }
+  thead th { font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; }
+  thead th.ours { color:var(--wine); }
+  .summary td { font-size:22px; }
+  .summary td:first-child { color:var(--muted); font-size:18px; }
+  .num { text-align:right; white-space:nowrap; }
+  td.win { background:var(--win); color:var(--winInk); font-weight:650; }
+  .note { color:var(--muted); font-size:13px; line-height:1.5; margin-top:18px; }
+  details { margin-top:40px; }
+  summary { cursor:pointer; color:var(--muted); font-size:15px; }
+  .detail td { font-size:14px; padding:6px 12px; }
+  @media (max-width:640px) { .summary td { font-size:16px; } h1 { font-size:26px; } th, td { padding:10px 8px; } }
+</style></head>
+<body><div class="slide">
+  <h1>Søkehastighet: Smak Vin mot Vinmonopolet</h1>
+  <p class="lede">100 tilfeldige viner, søkt på fullt navn. <b>Smak Vin</b> er raskest i snitt — 1.7× raskere enn Vinmonopolet.</p>
+  <table class="summary">
+    <thead><tr><th></th><th class="num ours">Smak Vin</th><th class="num">Vinmonopolet</th></tr></thead>
+    <tbody>
+      <tr><td>Snitt responstid</td><td class="num win">297 ms</td><td class="num">518 ms</td></tr>
+      <tr><td>Median (p50)</td><td class="num win">244 ms</td><td class="num">486 ms</td></tr>
+      <tr><td>95-persentil (p95)</td><td class="num win">707 ms</td><td class="num">945 ms</td></tr>
+      <tr><td>Raskest per vin</td><td class="num win">86 av 100</td><td class="num">14 av 100</td></tr>
+      <tr><td>Fant vinen (topp 20)</td><td class="num">100 av 100</td><td class="num">100 av 100</td></tr>
+    </tbody>
+  </table>
+  <p class="note">
+    Målt 17. november 2026 fra samme maskin over offentlig internett; begge tall inkluderer nettverkstid.
+    Smak Vin: 3 søk per vin (n=300), Vinmonopolet: 2 søk per vin (n=200), kjørt etter hverandre per vin.
+    Bare viner Vinmonopolet fører er med: 106 trukne viner som Vinmonopolet ikke fant, ble byttet ut med en ny tilfeldig vin.
+  </p>
+  <details>
+    <summary>Alle 100 viner</summary>
+    <table class="detail">
+      <thead><tr><th class="num">#</th><th>Vin</th><th class="num ours">Smak Vin</th><th class="num">Vinmonopolet</th></tr></thead>
+      <tbody>
+<tr><td class="num">1</td><td>Magliano Brissaia Ansonica Maremma Toscana</td><td class="num" class="win">545 ms</td><td class="num">627 ms</td></tr>
+<tr><td class="num">2</td><td>Partida Creus VN Vinel-lo Tinto</td><td class="num" class="win">384 ms</td><td class="num">457 ms</td></tr>
+<tr><td class="num">3</td><td>Ch. Climens 2015</td><td class="num">245 ms</td><td class="num" class="win">185 ms</td></tr>
+<tr><td class="num">4</td><td>Jean Paul Brun Beaujolais Blanc Chardonnay Vinification Bourguignonne 2023</td><td class="num" class="win">527 ms</td><td class="num">938 ms</td></tr>
+<tr><td class="num">5</td><td>Drouhin Grands Echezeaux 2020</td><td class="num" class="win">260 ms</td><td class="num">425 ms</td></tr>
+<tr><td class="num">6</td><td>Lindsay Old Mac Merlot</td><td class="num" class="win">205 ms</td><td class="num">404 ms</td></tr>
+<tr><td class="num">7</td><td>Levorato Valpolicella Ripasso Classico Superiore 2020</td><td class="num" class="win">379 ms</td><td class="num">855 ms</td></tr>
+<tr><td class="num">8</td><td>Stekar Jankot 2022</td><td class="num" class="win">200 ms</td><td class="num">554 ms</td></tr>
+<tr><td class="num">9</td><td>Ramonet Bienvenues Batard-Montrachet Grand Cru 2023</td><td class="num" class="win">425 ms</td><td class="num">769 ms</td></tr>
+<tr><td class="num">10</td><td>Markus Molitor Haus Klosterberg Riesling Feinherb 2024</td><td class="num" class="win">357 ms</td><td class="num">783 ms</td></tr>
+<tr><td class="num">11</td><td>Le Strette Barolo Bergera Pezzole Riserva 2013</td><td class="num" class="win">302 ms</td><td class="num">320 ms</td></tr>
+<tr><td class="num">12</td><td>Asso di Denari Barbera d'Alba Superiore 2024</td><td class="num">290 ms</td><td class="num" class="win">173 ms</td></tr>
+<tr><td class="num">13</td><td>Ch. Coutet 2022</td><td class="num">166 ms</td><td class="num" class="win">111 ms</td></tr>
+<tr><td class="num">14</td><td>Antoniotti Pramartel</td><td class="num" class="win">165 ms</td><td class="num">395 ms</td></tr>
+<tr><td class="num">15</td><td>Guerrieri Rizzardi Prosecco Extra Dry</td><td class="num">244 ms</td><td class="num" class="win">176 ms</td></tr>
+<tr><td class="num">16</td><td>Marques de Riscal Gran Reserva 2019</td><td class="num" class="win">235 ms</td><td class="num">327 ms</td></tr>
+<tr><td class="num">17</td><td>Droin Chablis Premier Cru Montée de Tonnerre 2024</td><td class="num" class="win">429 ms</td><td class="num">799 ms</td></tr>
+<tr><td class="num">18</td><td>Catherine Bernard et Nicolas Allain L'alicante</td><td class="num">734 ms</td><td class="num" class="win">536 ms</td></tr>
+<tr><td class="num">19</td><td>Le Grappin Bourgogne Côte d'Or Rouge Les Seuretts 2022</td><td class="num" class="win">712 ms</td><td class="num">824 ms</td></tr>
+<tr><td class="num">20</td><td>Balthasar Ress Orange Riesling-Pinot Blanc</td><td class="num">530 ms</td><td class="num" class="win">225 ms</td></tr>
+<tr><td class="num">21</td><td>Isole e Olena Cepparello 2022</td><td class="num">372 ms</td><td class="num" class="win">283 ms</td></tr>
+<tr><td class="num">22</td><td>Patrice Rion Côte de Nuits-Villages Vieilles Vignes 2023</td><td class="num" class="win">457 ms</td><td class="num">857 ms</td></tr>
+<tr><td class="num">23</td><td>Vincent Girardin Chassagne-Montrachet 1er Cru Les Chaumées 2023</td><td class="num" class="win">448 ms</td><td class="num">732 ms</td></tr>
+<tr><td class="num">24</td><td>Jean Leon Vinya Gigi Chardonnay</td><td class="num" class="win">235 ms</td><td class="num">469 ms</td></tr>
+<tr><td class="num">25</td><td>Rousseaux-Batteux Celles-lès-Condé Les Échaudées Extra Brut 2022</td><td class="num" class="win">354 ms</td><td class="num">1 750 ms</td></tr>
+<tr><td class="num">26</td><td>Salamandre Orange</td><td class="num" class="win">219 ms</td><td class="num">336 ms</td></tr>
+<tr><td class="num">27</td><td>Vignaioli Contra Soarda Musso Rosso</td><td class="num" class="win">277 ms</td><td class="num">345 ms</td></tr>
+<tr><td class="num">28</td><td>Haider Zweigelt Trockenbeerenauslese</td><td class="num" class="win">261 ms</td><td class="num">571 ms</td></tr>
+<tr><td class="num">29</td><td>Donnafugata Mille e una Notte 2019</td><td class="num" class="win">294 ms</td><td class="num">536 ms</td></tr>
+<tr><td class="num">30</td><td>Dom. Lafouge Auxey-Duresses 1er Cru Les Duresses 2023</td><td class="num">541 ms</td><td class="num" class="win">488 ms</td></tr>
+<tr><td class="num">31</td><td>Joyce Pelio Vineyard Pinot Noir 2024</td><td class="num" class="win">288 ms</td><td class="num">656 ms</td></tr>
+<tr><td class="num">32</td><td>Philippe Chatillon Côtes du Jura Autrement... 2017</td><td class="num" class="win">318 ms</td><td class="num">521 ms</td></tr>
+<tr><td class="num">33</td><td>Guigal Côte-Rôtie La Landonne 2021</td><td class="num" class="win">262 ms</td><td class="num">634 ms</td></tr>
+<tr><td class="num">34</td><td>Olivero Mario Barolo Vigne Unite 2018</td><td class="num" class="win">375 ms</td><td class="num">585 ms</td></tr>
+<tr><td class="num">35</td><td>Marchesi di Gresy Martinenga Barbaresco 2018</td><td class="num" class="win">280 ms</td><td class="num">386 ms</td></tr>
+<tr><td class="num">36</td><td>Haut-Batailley Verso 2017</td><td class="num" class="win">202 ms</td><td class="num">363 ms</td></tr>
+<tr><td class="num">37</td><td>I Prefer Sauvignon Blanc 2025</td><td class="num" class="win">274 ms</td><td class="num">441 ms</td></tr>
+<tr><td class="num">38</td><td>Ch. du Coing de St. Fiacre Comte de St. Hubert 2020</td><td class="num">461 ms</td><td class="num" class="win">440 ms</td></tr>
+<tr><td class="num">39</td><td>Charles de Fère Crémant du Jura Brut Rosé</td><td class="num" class="win">315 ms</td><td class="num">552 ms</td></tr>
+<tr><td class="num">40</td><td>Arnaud Lambert Saumur Rouge Brézé L'Etoile 2020</td><td class="num" class="win">315 ms</td><td class="num">674 ms</td></tr>
+<tr><td class="num">41</td><td>Bouchard Père &amp; Fils Meursault Les Clous 2022</td><td class="num" class="win">328 ms</td><td class="num">507 ms</td></tr>
+<tr><td class="num">42</td><td>Ghiomo Fussot Langhe Arneis</td><td class="num" class="win">218 ms</td><td class="num">358 ms</td></tr>
+<tr><td class="num">43</td><td>K. Wechsler Morstein Riesling Trocken 2024</td><td class="num" class="win">286 ms</td><td class="num">406 ms</td></tr>
+<tr><td class="num">44</td><td>Faiveley Gevrey-Chambertin 1er Cru Les Cazetiers 2023</td><td class="num" class="win">331 ms</td><td class="num">890 ms</td></tr>
+<tr><td class="num">45</td><td>Capka Chardonnay</td><td class="num" class="win">171 ms</td><td class="num">448 ms</td></tr>
+<tr><td class="num">46</td><td>Pousse d'Or Puligny-Montrachet 1er Cru Le Cailleret 2022</td><td class="num" class="win">370 ms</td><td class="num">828 ms</td></tr>
+<tr><td class="num">47</td><td>Boschendal Chardonnay Pinot Noir Brut</td><td class="num" class="win">550 ms</td><td class="num">811 ms</td></tr>
+<tr><td class="num">48</td><td>Winter Steinwein Riesling Trocken</td><td class="num" class="win">255 ms</td><td class="num">385 ms</td></tr>
+<tr><td class="num">49</td><td>Vincent Girardin Meursault Les Tillets 2022</td><td class="num" class="win">381 ms</td><td class="num">624 ms</td></tr>
+<tr><td class="num">50</td><td>Badagoni Kakhetian Noble 2020</td><td class="num" class="win">213 ms</td><td class="num">414 ms</td></tr>
+<tr><td class="num">51</td><td>Champagne Piot-Sévillano Fraicheur de Coteau Extra Brut</td><td class="num" class="win">374 ms</td><td class="num">675 ms</td></tr>
+<tr><td class="num">52</td><td>Salwey Kaiserstuhl Chardonnay 2023</td><td class="num" class="win">219 ms</td><td class="num">322 ms</td></tr>
+<tr><td class="num">53</td><td>Ch. Ormes de Pez 2017</td><td class="num" class="win">177 ms</td><td class="num">463 ms</td></tr>
+<tr><td class="num">54</td><td>J. Charpentier Prestige Brut</td><td class="num" class="win">190 ms</td><td class="num">986 ms</td></tr>
+<tr><td class="num">55</td><td>Landerer Oberrotweiler Kirchberg Syrah 2022</td><td class="num" class="win">420 ms</td><td class="num">578 ms</td></tr>
+<tr><td class="num">56</td><td>Taittinger Millesime Brut 2015</td><td class="num">218 ms</td><td class="num" class="win">171 ms</td></tr>
+<tr><td class="num">57</td><td>Dom. Bois de la Neuve 2024</td><td class="num" class="win">206 ms</td><td class="num">448 ms</td></tr>
+<tr><td class="num">58</td><td>Marchese Antinori Cuvee Royale Franciacorta Brut</td><td class="num" class="win">382 ms</td><td class="num">523 ms</td></tr>
+<tr><td class="num">59</td><td>Gillardi Dogliani Maestra 2021</td><td class="num" class="win">199 ms</td><td class="num">388 ms</td></tr>
+<tr><td class="num">60</td><td>Le Petit Mouton de Mouton Rothschild 2022</td><td class="num" class="win">239 ms</td><td class="num">355 ms</td></tr>
+<tr><td class="num">61</td><td>Fritsch Wagram Riesling 2025</td><td class="num" class="win">188 ms</td><td class="num">268 ms</td></tr>
+<tr><td class="num">62</td><td>Les Pensées de Lafleur 2022</td><td class="num" class="win">160 ms</td><td class="num">261 ms</td></tr>
+<tr><td class="num">63</td><td>Christmann &amp; Kauffmann Cuvée No. 204 Sekt Brut Nature</td><td class="num" class="win">225 ms</td><td class="num">537 ms</td></tr>
+<tr><td class="num">64</td><td>Ostertag Fronholz Riesling 2023</td><td class="num" class="win">375 ms</td><td class="num">417 ms</td></tr>
+<tr><td class="num">65</td><td>Rosner Wildrose Rot</td><td class="num" class="win">182 ms</td><td class="num">569 ms</td></tr>
+<tr><td class="num">66</td><td>El Coto Crianza 2022</td><td class="num" class="win">193 ms</td><td class="num">216 ms</td></tr>
+<tr><td class="num">67</td><td>Diablo Volcanic Cab</td><td class="num" class="win">192 ms</td><td class="num">1 173 ms</td></tr>
+<tr><td class="num">68</td><td>Ch. La Mission Haut-Brion 2021</td><td class="num">311 ms</td><td class="num" class="win">301 ms</td></tr>
+<tr><td class="num">69</td><td>Mosbacher Deidesheimer Kieselberg Riesling GG 2024</td><td class="num" class="win">370 ms</td><td class="num">505 ms</td></tr>
+<tr><td class="num">70</td><td>Dourthe No.1 Bordeaux Rouge 2021</td><td class="num" class="win">230 ms</td><td class="num">293 ms</td></tr>
+<tr><td class="num">71</td><td>Fritz Haag Brauneberger Juffer-Sonnenuhr Riesling Trocken GG 2022</td><td class="num" class="win">348 ms</td><td class="num">681 ms</td></tr>
+<tr><td class="num">72</td><td>Dom. de Montbourgeau L'Étoile En Banode 2019</td><td class="num" class="win">351 ms</td><td class="num">364 ms</td></tr>
+<tr><td class="num">73</td><td>Folonari Pinot Grigio Pavia</td><td class="num" class="win">248 ms</td><td class="num">383 ms</td></tr>
+<tr><td class="num">74</td><td>Pittnauer Pitti 2022</td><td class="num" class="win">146 ms</td><td class="num">667 ms</td></tr>
+<tr><td class="num">75</td><td>De Muller Legitim Priorat</td><td class="num" class="win">178 ms</td><td class="num">246 ms</td></tr>
+<tr><td class="num">76</td><td>Conde Villar Vinho Verde Rosé 2024</td><td class="num" class="win">271 ms</td><td class="num">555 ms</td></tr>
+<tr><td class="num">77</td><td>Roberto Voerzio Barolo Rocche dell' Annunziata 2021</td><td class="num" class="win">349 ms</td><td class="num">520 ms</td></tr>
+<tr><td class="num">78</td><td>Aseginolaza &amp; Leunda Beltza 20 Sy:G 2020</td><td class="num" class="win">200 ms</td><td class="num">434 ms</td></tr>
+<tr><td class="num">79</td><td>Cuveé Esplendor Vardon Kennett 2018</td><td class="num" class="win">209 ms</td><td class="num">465 ms</td></tr>
+<tr><td class="num">80</td><td>Michel Gonet Vindey Montgueux Blanc de Blancs Extra Brut</td><td class="num" class="win">309 ms</td><td class="num">833 ms</td></tr>
+<tr><td class="num">81</td><td>Dom. Ponsot Morey-St.-Denis 1er Cru Clos des Monts Luisants VV 2023</td><td class="num" class="win">330 ms</td><td class="num">686 ms</td></tr>
+<tr><td class="num">82</td><td>Ch. Haut-Bailly 2018</td><td class="num" class="win">227 ms</td><td class="num">761 ms</td></tr>
+<tr><td class="num">83</td><td>Ournac Frères Pinot Noir</td><td class="num">331 ms</td><td class="num" class="win">328 ms</td></tr>
+<tr><td class="num">84</td><td>Ridge Geyserville 2023</td><td class="num" class="win">218 ms</td><td class="num">810 ms</td></tr>
+<tr><td class="num">85</td><td>Matassa Tommy Ferriol</td><td class="num" class="win">190 ms</td><td class="num">572 ms</td></tr>
+<tr><td class="num">86</td><td>Demarie Roero Arneis</td><td class="num" class="win">178 ms</td><td class="num">691 ms</td></tr>
+<tr><td class="num">87</td><td>Künstler Kostheim Weiss Erd Riesling Trocken GG 2022</td><td class="num">299 ms</td><td class="num" class="win">188 ms</td></tr>
+<tr><td class="num">88</td><td>Joblot Givry 1er Cru Clos du Cellier aux Moines 2023</td><td class="num" class="win">310 ms</td><td class="num">516 ms</td></tr>
+<tr><td class="num">89</td><td>Dufouleur Gevrey-Chambertin 2022</td><td class="num">477 ms</td><td class="num" class="win">448 ms</td></tr>
+<tr><td class="num">90</td><td>Borgo San Daniele Arbis Blanc 2017</td><td class="num" class="win">271 ms</td><td class="num">490 ms</td></tr>
+<tr><td class="num">91</td><td>Griesel Blanc et Noir Brut</td><td class="num" class="win">219 ms</td><td class="num">390 ms</td></tr>
+<tr><td class="num">92</td><td>Luca Leggero Retro Langhe Dolcetto</td><td class="num" class="win">227 ms</td><td class="num">351 ms</td></tr>
+<tr><td class="num">93</td><td>Andres Mugler Pinot Blanc Brut</td><td class="num" class="win">225 ms</td><td class="num">382 ms</td></tr>
+<tr><td class="num">94</td><td>Scintilla - Rosso Di Valtellina</td><td class="num" class="win">216 ms</td><td class="num">521 ms</td></tr>
+<tr><td class="num">95</td><td>Weing. Frank Riesling 2024</td><td class="num" class="win">195 ms</td><td class="num">483 ms</td></tr>
+<tr><td class="num">96</td><td>Allegre &amp; Valgañon Rioja Tinto 2022</td><td class="num" class="win">220 ms</td><td class="num">371 ms</td></tr>
+<tr><td class="num">97</td><td>Mirabel Pic Saint Loup Les Èclats 2022</td><td class="num" class="win">288 ms</td><td class="num">547 ms</td></tr>
+<tr><td class="num">98</td><td>Gripa Saint-Joseph Rouge Le Berceau 2021</td><td class="num" class="win">290 ms</td><td class="num">395 ms</td></tr>
+<tr><td class="num">99</td><td>Fedellos Bastarda 2023</td><td class="num" class="win">186 ms</td><td class="num">522 ms</td></tr>
+<tr><td class="num">100</td><td>Bolla Prosecco</td><td class="num" class="win">201 ms</td><td class="num">539 ms</td></tr>
+      </tbody>
+    </table>
+  </details>
+</div></body></html>
