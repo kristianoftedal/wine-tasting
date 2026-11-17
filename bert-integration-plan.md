@@ -570,6 +570,36 @@ The owner asked for ColBERT and no OpenAI in the scoring path. Measured under th
 
 **Colour without OpenAI (scorer v8, 1 Nov 2026).** The last API call in a tasting was colour: the cosine of two whole-phrase OpenAI embeddings. The catalogue's 54 863 colour notes use 516 distinct words, nearly all a depth word plus a hue word on one line (grønn → grønngul → strågul → gyllen → rav → rosa → rød → blårød/lilla, with brick and brown beside red as an ageing tint), so `src/lib/colourScoring.ts` scores hue distance (0.75) and depth distance (0.25) with tints as a small modifier, no model. Against the 129 stored OpenAI colour scores it agrees at Spearman 0.50, and the disagreement table (`colour-lexicon-2026-11-01.md`) is a list of the embedding's mistakes: "Korngul" against "Lys strågul" 21, "Gul" against "Middels dyp strågul" 28, "Lilla" against "Dyp blårød" 27, an exact "Dyp rød" 93. The lexicon gives 100, 100, 90 and 100. The level is therefore not fitted onto the old scores; an exact match is 100. Colour is 0.2 of the overall weight and its mean rises from 57 to 83, about one point on a typical total. `COLOUR_ENGINE=openai` keeps the old path for comparison. **No API call remains in a tasting score.** Recommendations, food pairing, note enrichment and the LLM rater are features, not the score, and keep their models.
 
+## What each technique contributes, 15–17 Nov 2026
+
+Every pipeline technique switched off one at a time, production engine (`colbert-table`), frozen set: 149 human ratings, the LLM panel, the constructed set, and seeded +HIT / +WRONG perturbations over 220 fields. The owner's note on reading this: the human column is one rater, not an answer key (bootstrap ±0.1); a change has to hold up on the properties too.
+
+| switched off | ρ human | ρ panel | ρ constructed | +WRONG | wrong paid |
+| --- | --- | --- | --- | --- | --- |
+| nothing (production) | 0.671 | 0.764 | 0.705 | −11.2 | 2 |
+| the whole ladder (soft term only) | **0.515** | 0.656 | 0.664 | −16.6 | 2 |
+| the soft term (ladder only) | 0.681 | 0.751 | 0.738 | −6.8 | 0 |
+| precision factor | 0.674 | 0.776 | 0.690 | **−5.8** | **5** |
+| derivations | 0.641 | 0.780 | 0.705 | −10.4 | 2 |
+| hypernyms (specific + family) | 0.645 | 0.754 | 0.668 | −10.6 | 2 |
+| subcategory / family credit | 0.650 | 0.772 | 0.738 | −10.2 | 2 |
+| negation rule | 0.671 | 0.764 | 0.705 | −11.2 | 2 |
+| synonym normalisation | 0.672 | 0.774 | 0.700 | −10.5 | 3 |
+| category weights (flat 2.0) | 0.662 | 0.762 | 0.707 | −11.1 | 2 |
+| idf multiplier | 0.672 | 0.765 | 0.710 | −11.1 | 2 |
+
+The ladder carries the score; derivations and hypernyms are the techniques that move agreement (≈ +0.03 each). The precision factor does nothing for agreement and is the guard against padding. Negation, idf, category weights and synonym normalisation are below noise on this set (negation fires on 2 of 236 notes; it stays for correctness).
+
+**The soft term, looked at closely.** Partial correlation with the human rating, holding the ladder fixed, is the information a soft engine adds: `cooc` 0.17, `colbert-table` 0.13, `colbert-word` 0.11, `colbert-token` / `colbert-iso` 0.07, `bert` 0.05, `bert-iso` 0.00. On word pairs (AUC against unrelated pairs) `cooc` separates same-family words at 0.72 where every ColBERT variant sits at 0.54–0.58 and NorBERT at 0.55; the table scores "eik" against "fat" at 0.05, below "banan" against "fat" (0.21), and every non-hit lands near 35 after the level fit. What the soft term does earn is discrimination and length-neutrality: without it the true wine beats 20 random references in 11% of fields instead of 20%, and r(len) rises 0.45 → 0.52. It stays.
+
+**ColBERT by the book** (full notes, every token, [Q]/[D], summed MaxSim, used to rank the true wine among 150 same-category notes): retrieval works — true wine at the 75th percentile, top-10% in 71 of 220 — but the rank adds nothing to the human ratings once the ladder is known (partial ρ 0.00), and the absolute MaxSim correlates *negatively* (−0.18). Retrieval rewards words rare in the style (31 of 150 red smell notes say "kirsebær"); the rater rewards words that are right. ColBERT's natural home here is search-by-description and recommendations, not the score.
+
+**cooc as a ladder-edge generator**: 871 uncredited pairs with cooc ≥ 0.3; adding them as derivations makes wrong guesses pay (1 → 31–60 of 220) and lowers the constructed set at every threshold. The top pairs are style, not flavour (eple–kjeks is champagne, tobakk–solbær Bordeaux, nesle–stikkelsbær Sauvignon). A handful are worth human review (sjokolade–vanilje, tobakk–sedertre, honning–aprikos, fersken–pære, bjørnebær–plomme).
+
+**Fine-tuning mLateOn**: see `colbert-finetune-plan.md` (pilot and round 2). Learns its teacher, not the taster; nothing beat the ladder alone against the human, and the table route only matched production.
+
+**Blend weights** re-measured and left at 55/45; the table and the reason 60/40 was reverted are at `HIT_WEIGHT` in `scoringConfig.ts`.
+
 ## Engine decision, 29 Oct 2026
 
 Everything measured on existing notes, in one place:

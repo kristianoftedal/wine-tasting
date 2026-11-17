@@ -146,6 +146,24 @@ export const CREDIT_CATEGORY = 0;
  * Blend between the lexical hit term and the soft token-similarity term.
  * The lexical side is exact and explainable; the soft side gives partial credit
  * for near-synonyms the dictionary does not link.
+ *
+ * Re-measured 17 Nov 2026 with colbert-table, frozen set (rho human / panel /
+ * constructed; top1 = the true wine beats 20 random references; r(len) =
+ * score against note length):
+ *
+ *   blend    human  panel  constr  +WRONG  top1  r(len)
+ *   55/45    0.671  0.764  0.705   -11.2   20%   0.45   kept
+ *   60/40    0.676  0.767  0.712   -10.7   19%   0.47
+ *   70/30    0.685  0.769  0.715    -9.7   20%   0.51
+ *   100/0    0.684  0.749  0.757   -13.4   11%   0.52   (floor 0.2)
+ *
+ * Every agreement difference is inside the bootstrap interval (±0.1). 60/40
+ * was tried and reverted: the invariants test's verbosity check sits at the
+ * threshold for every blend (|r| 0.4990 at 55/45, 0.5001 at 60/40, 0.5004 at
+ * 70/30) because the lexical half only changes by integer rounding, and a
+ * change that tips it is not worth a threshold edit when the gain is noise.
+ * Dropping the soft term was rejected on what it is for: telling the right
+ * wine from others (top1 20% -> 11%) and not leaning on note length.
  */
 export const HIT_WEIGHT = 0.55;
 export const SOFT_WEIGHT = 0.45;

@@ -65,3 +65,52 @@ Output: a folder `mLateOn-ft/` with `config.json`, `tokenizer.json`, `config_sen
 ## First step
 
 Say go and I write `build-colbert-pairs.ts` and run it; the data lands in a folder you upload. Nothing in production changes until step 7.
+
+## Pilot, 15 Nov 2026 — measured, not shipped
+
+Ran locally (Apple M4 Pro, MPS, ~2 min per run) with `scripts/build-colbert-pairs.ts` and `scripts/finetune-mlateon.py`. Two changes from the plan above, both from measurements the same day:
+
+- **No contrastive phase.** ColBERT used by the book (full notes, every token, ranking the true wine among 150 of its category) retrieves well — the true wine sits at the 75th percentile — but the rank carries nothing about the human ratings once the ladder is known (partial ρ 0.00). Retrieval rewards words that are rare in the style; the rater rewards words that are right. The loss is therefore listwise per *reference note*: which of six taster notes describes it best (KL against the teacher's distribution).
+- **Per field, not per wine.** A document is one lukt or smak note, as the score compares them.
+
+Data: 1 000 training and 200 validation reference notes (frozen-set wines held out), six candidate notes each — gpt-4o-mini levels 4/2/0, level 4 padded with two level-0 words, two neighbours' level-4 notes — rated by the calibrated rubric on gpt-4.1-mini (7 194 ratings, ≈ $5). The same notes carry the ladder's score, so "train on the ladder" is the same run with the other teacher.
+
+Measured on the frozen set (139 human-rated fields; soft term scaled by its own 5th–95th percentile, blended 55/45 as production):
+
+| engine | ρ soft alone | partial ρ \| ladder | ρ blend vs human | ρ full target | ρ constructed | wrong paid |
+| --- | --- | --- | --- | --- | --- | --- |
+| ladder only | — | — | 0.681 | 0.719 | 0.738 | 0/220 |
+| colbert-table (production) | 0.474 | 0.127 | 0.671 | 0.705 | 0.705 | 2/220 |
+| mLateOn, no fine-tune | −0.169 | 0.060 | 0.617 | 0.643 | 0.618 | 0/220 |
+| fine-tuned, LLM teacher | **0.523** | **0.155** | 0.679 | **0.750** | 0.731 | **41/220** |
+| fine-tuned, ladder teacher | 0.521 | 0.041 | 0.667 | 0.721 | 0.705 | 53/220 |
+
+What it shows:
+
+1. **Fine-tuning works.** Two minutes of training take the soft term from −0.17 to 0.52 against the human, the best of any engine measured, and the full target to 0.750, the highest recorded (inside the bootstrap interval of the ladder's 0.719, so not yet a result).
+2. **The teacher matters, as predicted.** Trained on the ladder, the model learns what the ladder already knows (partial ρ 0.04); trained on the LLM rater it carries the most information the ladder lacks (0.155). The ladder-teacher route stays closed.
+3. **It is not shippable: wrong guesses pay.** Appending two wrong descriptors raises the blended score in 41–53 of 220 fields. Adding the padded notes to training did not fix it (43/220); scoring content words only halves it (24/220) at the cost of the signal (partial ρ 0.076). The teacher is part of the cause — asked about 40 of those perturbations it lowered its rating in only 18 — and the rest looks like noise amplified by a compressed score band (fine-tuned MaxSim sits between 0.82 and 0.89).
+
+Next, if continued: a stricter teacher on padding (rubric line: an unsupported descriptor lowers the rating), five to ten times the data, training and scoring on the same token set, and the table route (isolated words) measured before anything else, since only a table deploys.
+
+## Round 2, 16 Nov 2026 — stricter teacher, the table route, five times the data
+
+Same frozen-set measurement as round 1. Table rows are scored the way `colbert-table` scores (content words, each encoded alone, centred, idf-weighted MaxSim); the "production table, re-created" row checks that harness against the real engine.
+
+| engine | ρ soft alone | partial ρ \| ladder | ρ blend vs human | ρ full target | ρ constructed | wrong paid |
+| --- | --- | --- | --- | --- | --- | --- |
+| ladder only | — | — | **0.681** | 0.719 | 0.738 | 0/220 |
+| colbert-table (production) | 0.474 | 0.127 | 0.671 | 0.705 | 0.705 | 2/220 |
+| production table, re-created | 0.460 | 0.074 | 0.658 | 0.690 | 0.695 | 3/220 |
+| whole notes, 1k (round 1) | 0.523 | 0.155 | 0.679 | 0.750 | 0.731 | 41/220 |
+| whole notes, 1k → table | 0.400 | 0.033 | 0.643 | 0.708 | 0.697 | 6/220 |
+| word by word, 1k, padded penalty → table | 0.419 | 0.063 | 0.659 | 0.732 | 0.693 | 5/220 |
+| word by word, 5k, padded penalty → table | 0.380 | 0.015 | 0.638 | 0.722 | 0.737 | 8/220 |
+| whole notes, 5k, padded penalty | 0.493 | 0.092 | 0.672 | 0.747 | 0.768 | 33/220 |
+
+1. **A stricter rubric does not make a stricter teacher.** One added line ("an unsupported descriptor lowers the rating") moved agreement with the human from 0.573 to 0.496 and lowered padded notes in 15 of 60 against 14. Left off; `--padded-penalty` puts the rule in the targets instead, and it works where the scoring is word by word (41 → 5 wrong guesses paid).
+2. **Whole-note training does not survive conversion to a table** (partial ρ 0.138 → 0.033). Training word by word (`--isolated`) is what the table needs; it matches the production table, no more.
+3. **Five times the data trains the teacher, not the taster.** Validation agreement with the LLM teacher rises (0.795 → 0.808 for whole notes) while agreement with the human falls (partial ρ 0.155 → 0.092; for the table 0.063 → 0.015). The risk this plan named — "if only the panel moves, the model learned the judge" — is what happened.
+4. **No variant beats the ladder alone against the human (0.681).** The full-target gains (up to 0.750) sit inside the bootstrap interval and lean on the LLM fallback ratings, which is the teacher's own family.
+
+Closed for now. What would change it is a second human rater, not more synthetic data: the teacher agrees with the human at 0.57, the ladder at 0.68, and a student cannot learn agreement its teacher does not have. MPS notes for anyone rerunning: `--freeze-embeddings` is needed for `--isolated` on 48 GB, and the clip runs with `foreach=False` (the fused clip wrote NaN into every parameter after ~14 steps).

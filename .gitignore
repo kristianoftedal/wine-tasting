@@ -9,3 +9,6 @@ backups/
 .probe*.mjs
 recordings/
 models/
+
+# fine-tuning data, regenerable with scripts/build-colbert-pairs.ts
+scripts/validation-results/finetune/
